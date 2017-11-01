@@ -185,7 +185,7 @@ export default class Recomendations extends React.Component {
                     {this.renderHeart(index)}
                 </View>
               </View>
-                <View style={{ flexDirection: 'column', justifyContent: 'flex-end', backgroundColor: 'transparent' }}>
+                <View pointerEvents='none' style={{ flexDirection: 'column', justifyContent: 'flex-end', backgroundColor: 'transparent' }}>
                 {this.renderLogo(item.restourantLogo)}
                     <Text style={{ color: 'white', fontSize: 14, lineHeight: 22, fontFamily: 'stem-medium', alignItems: 'flex-end', letterSpacing: 0.4 }}>{item.restourantName}</Text>
                     <Text style={{ color: '#dcc49c', fontSize: 11, lineHeight: 11, fontFamily: 'open-sans',}}>{item.restourantTags.length < 3 ? item.restourantTags.map(tag => tag + ', ') : item.restourantTags[0] + ', ' + item.restourantTags[1] + ' + ' + (item.restourantTags.length - 1).toString() + ' кухонь'}</Text>

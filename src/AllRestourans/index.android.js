@@ -139,12 +139,15 @@ export default class AllRestourans extends React.Component {
 					<View style={{ height: 20 }} />
 				</ScrollView>
 
-				<LinearGradient colors={['rgba(39, 40, 48, 0)', 'rgba(39, 40, 48, 1)']} style={{
+				<View pointerEvents='none' style={{
 					height: 60,
 					position: 'absolute',
 					bottom: 0,
 					width: viewportWidth
-				}} />
+				}}>
+					<LinearGradient colors={['rgba(39, 40, 48, 0)', 'rgba(39, 40, 48, 1)']} style={{
+						flex: 1
+					}} /></View>
 
 					
 			</View></Drawer>

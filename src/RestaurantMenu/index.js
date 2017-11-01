@@ -516,12 +516,15 @@ export default class RestaurantMenu extends React.Component {
 
 			<View style={{height: 60}}/>
 		</ScrollView>
-		<LinearGradient colors={['rgba(39, 40, 48, 0)', 'rgba(39, 40, 48, 1)']} style={{
-			height: 60,
-			position: 'absolute',
-			bottom: 0,
-			width: viewportWidth
-		}} /></View>;
+			<View pointerEvents='none' style={{
+				height: 60,
+				position: 'absolute',
+				bottom: 0,
+				width: viewportWidth
+			}}>
+				<LinearGradient colors={['rgba(39, 40, 48, 0)', 'rgba(39, 40, 48, 1)']} style={{
+					flex: 1
+				}} /></View></View>;
 
 		return restaurant;
 	}
