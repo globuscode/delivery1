@@ -31,6 +31,7 @@ export default class Recomendations extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      canNav: true,
       activeSlide: 0,
       restourans: [
         {
@@ -139,7 +140,13 @@ export default class Recomendations extends React.Component {
   };
   
   navigate = () => {
-    this.props.navigation.navigate('Restaurant');
+    if (this.state.canNav) {
+      this.props.navigation.navigate('Restaurant');
+      this.state.canNav = false;
+      setTimeout(() => {
+        this.state.canNav = true;
+      }, 1500);
+    }
   };
 
   render() {
@@ -155,7 +162,7 @@ export default class Recomendations extends React.Component {
           this.state.restourans.map((item, index) => {
             return (
               <View key={index} style={[styles.itemContainer, {width: SLIDER_WIDTH, height: SLIDER_WIDTH}]}>
-                <TouchableOpacity activeOpacity={0.8} style={{ position: 'absolute' }} onPress={() => this.props.navigation.navigate('Plate')}>
+                <TouchableOpacity activeOpacity={0.8} style={{ position: 'absolute' }} onPress={this.navigate}>
                 <Image
                 style={[styles.itemBackgroundImage, { width: SLIDER_WIDTH, height: SLIDER_WIDTH}]}
                 source={{ uri: item.photo }}

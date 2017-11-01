@@ -39,6 +39,7 @@ export default class Plate extends React.Component {
 		this.state = { 
 			promocode: '',
 			cart: [],
+			canNav: true,
 			cartSet: [],
 			restaurant: {
 				id: 0,
@@ -303,6 +304,16 @@ export default class Plate extends React.Component {
 			</View>
 		};
 
+	nav = () => {
+		if (this.state.canNav) {
+			this.props.navigation.navigate('SetAddress');
+			this.state.canNav = false;
+			setTimeout(() => {
+				this.state.canNav = true;
+			}, 1500);
+		}
+	}
+
 	render() {
 		const screen = (viewportWidth >= 320 && viewportWidth < 375) ? 0 : (viewportWidth >= 375 && viewportWidth < 414) ? 1 : 2;
 		if (this.state.cart && this.state.cart != [])
@@ -341,7 +352,7 @@ export default class Plate extends React.Component {
 			}}>{'Ресторан установил ограничение \nна минимальную сумму заказа '+this.state.restaurant.minBill+'.\nВам осталось выбрать еще на '+(-this.totalPrice()+this.state.restaurant.minBill).toString()+' ₽'}</Text>}
 
 		{/* Кнопка Открыть меню ресторана */}
-		{this.renderButton('Открыть меню ресторана', () => this.props.navigation.navigate('SetAddress'))}
+		{this.renderButton('Открыть меню ресторана', this.nav)}
 
 		<View style={{ width: screen == 0 ? 290 : screen == 1 ? 346 : 376, height: 1, borderWidth: 1, borderColor: 'rgb( 87, 88, 98)' }} />
 		{unique(this.state.cart).map((e,i,a)=>{

@@ -25,6 +25,7 @@ export default class Recomendations extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      canNav: true,
       activeSlide: 0,
       entries: [
         {
@@ -99,105 +100,15 @@ export default class Recomendations extends React.Component {
 
   }
 
-  _renderItem = ({ item, index }) => {
-
-    const screen = (viewportWidth >= 320 && viewportWidth < 375) ? 0 : (viewportWidth >= 375 && viewportWidth < 414) ? 1 : 2;
-    const WIDTH = screen == 0 ? 280 : screen == 1 ? 328.1 : 362.3;
-    f = this.fav;
-    return (
-      <View style={{
-        flex: 1,
-        padding: 20,
-        justifyContent: 'space-between',
-      }}>
-      <Image style={{
-          width: WIDTH,
-          height: (WIDTH)*1.32,
-        borderRadius: 10,
-        position: 'absolute',
-        backgroundColor: 'transparent'
-      }}
-        source={{ uri: item.image }}
-      />
-
-        <LinearGradient colors={['rgba(0,0,0, 0.8)', 'transparent', 'rgba(0,0,0, 0.8)']} style={{
-          height: (WIDTH) *1.32+1,
-          top: -0.5,
-          position: 'absolute',
-          width: WIDTH - 1 + 1,
-          left: -0.5,
-          borderRadius: 10,
-        }} />
-
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <View>
-
-            <TouchableOpacity activeOpacity={0.8} onPress={() => this.props.navigation.navigate('Plate')}>
-            <Text style={{
-              flexDirection: 'row',
-              backgroundColor: 'transparent',
-              fontSize: 20,
-              color: '#ffffff',
-              fontFamily: 'stem-medium',
-              maxWidth: viewportWidth - 100
-            }}>{ item.title }</Text>
-            <Text style={{
-              flexDirection: 'row',
-              backgroundColor: 'transparent',
-              fontSize: 12,
-              color: '#dcc49c',
-              letterSpacing: 0.5,
-              fontFamily: 'stem-medium',
-            }}>{item.restourant}</Text>
-            <Text style={{
-              flexDirection: 'row',
-              backgroundColor: 'transparent',
-              fontSize: 12,
-              color: 'rgb(119, 122, 136)',
-              letterSpacing: 0.5,
-              fontFamily: 'stem-medium',
-            }}>{item.weight}</Text>
-            </TouchableOpacity>
-          </View>
-
-          <View>
-            <TouchableOpacity onPress={() => f(index)}>
-              <View style={{ backgroundColor: 'transparent' }}>
-                <IconD
-                  name={item.favourite ? 'heart_full' : 'heart_empty'}
-                  size={18}
-                  color='#dcc49c'
-                /></View>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={{ 
-          flexDirection: 'row', 
-          justifyContent: 'space-between',
-          alignItems: 'flex-end',
-          height: 100,
-        }}>
-          <TouchableOpacity activeOpacity={0.8} onPress={() => this.props.navigation.navigate('Plate')}>
-          <WebView
-            bounces={false}
-            scrollEnabled={false}
-            source={{
-              html: '<div style="width:100%; height: 100%; background: url(' + item.restourantLogo + ') left bottom no-repeat; background-size: contain" />'
-              }}
-            style={{
-              width: (WIDTH)/2,
-              height: (WIDTH) / 2,
-              backgroundColor: 'transparent',
-            }} /></TouchableOpacity>
-            <PriceButton value={item.price} onPress={() => {
-                this.addPlateToCart(item);
-              }}/>
-        </View>
-
-        
-      </View>
-    );
-  };
+  nav = () => {
+    if (this.state.canNav) {
+      this.props.navigation.navigate('Plate');
+      this.state.canNav = false;
+      setTimeout(() => {
+        this.state.canNav = true;
+      }, 1500);
+    }
+  }
 
   _renderNewItem = ({ item, index }) => {
 
@@ -310,7 +221,7 @@ export default class Recomendations extends React.Component {
       <View>
         <TouchableOpacity
           activeOpacity={0.8}
-          onPress={() => this.props.navigation.navigate('Plate')}>
+          onPress={this.nav}>
           {/* Название блюда */}
           {titleText}
           
@@ -349,7 +260,7 @@ export default class Recomendations extends React.Component {
     }}>
       <TouchableOpacity 
         activeOpacity={0.8} 
-        onPress={() => this.props.navigation.navigate('Plate')}>
+        onPress={this.nav}>
         {logo}</TouchableOpacity>
       <PriceButton
       value={item.price} onPress={() => {
@@ -365,7 +276,7 @@ export default class Recomendations extends React.Component {
     return <View style={itemStyles.containerSlider}>
         <View style={itemStyles.viewSlider}>
         {/* Задний фон карточки */}
-        <TouchableOpacity activeOpacity={0.8} style={{ position: 'absolute' }} onPress={() => this.props.navigation.navigate('Plate')}>
+        <TouchableOpacity activeOpacity={0.8} style={{ position: 'absolute' }} onPress={this.nav}>
           <Image style={itemStyles.BG_IMAGE} source={{ uri: item.image }} />
 
           {/* Градиент */}

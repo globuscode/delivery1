@@ -18,6 +18,7 @@ export default class SelectCity extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			canNav: true,
 			hidePrevious: false,
 			restouran: 'Джон Джоли',
 			history: [
@@ -68,7 +69,13 @@ export default class SelectCity extends React.Component {
 
 	next = () => {
 		if (this.notDeliver(this.state.address))
-			this.props.navigation.navigate('RestaurantMenu');
+			if (this.state.canNav) {
+				this.props.navigation.navigate('RestaurantMenu');
+				this.state.canNav = false;
+				setTimeout(() => {
+					this.state.canNav = true;
+				}, 1500);
+			}
 	}
 
 	render() {

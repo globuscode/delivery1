@@ -67,6 +67,7 @@ export default class SelectTags extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      canNav: true,
       kitchens: [
         {
           title: 'Россия',
@@ -152,7 +153,14 @@ export default class SelectTags extends React.Component {
 
   next = () => {
     //this.setTags();
-    this.isNext() ? this.props.navigation.navigate('SelectTastes') : null
+    if (this.isNext())
+    if (this.state.canNav) {
+      this.props.navigation.navigate('SelectTastes');
+      this.state.canNav = false;
+      setTimeout(() => {
+        this.state.canNav = true;
+      }, 1500);
+    }
   };
 
   isNext = () => {

@@ -39,6 +39,7 @@ export default class RestaurantMenu extends React.Component {
 		this.state = {
 			rang: 2,
 			hideInfo: false,
+			canNav: true,
 			data: {
 				id: 0,
 				title: "Джон Джоли",
@@ -264,7 +265,15 @@ export default class RestaurantMenu extends React.Component {
 		return (
 			<View style={{flexDirection: 'column', width: viewportWidth}}>
 				{section.plates.map((e, i) => {
-					return <TouchableOpacity key={i} onPress={()=>this.props.navigation.navigate('Plate')}><View style={{
+					return <TouchableOpacity key={i} onPress={() => {
+						if (this.state.canNav) {
+							this.props.navigation.navigate('Plate');
+							this.state.canNav = false;
+							setTimeout(() => {
+								this.state.canNav = true;
+							}, 1500);
+						}
+					}}><View style={{
 						flexDirection: 'row',
 						marginLeft: 10,
 						width: viewportWidth - 10,

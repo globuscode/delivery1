@@ -37,6 +37,7 @@ export default class Restaurant extends React.Component {
 		super(props);
 		this.state = {
 			rang: 2,
+			canNav: true,
 			data: {
 				id: 0,
 				title: "Джон Джоли",
@@ -252,11 +253,16 @@ export default class Restaurant extends React.Component {
 				<Text style={{ marginTop: 6, color: '#fff', fontSize: 13, fontFamily: 'stem-medium', lineHeight: 16, letterSpacing: 0.6, top: 4 }}>{this.state.data.type}</Text>
 			</View>
 
-
-
-
 			{/* Кнопка Открыть меню ресторана */}
-			{this.renderButton('Открыть меню ресторана', () => this.props.navigation.navigate('SetAddress'))}
+			{this.renderButton('Открыть меню ресторана', () => {
+				if (this.state.canNav) {
+					this.props.navigation.navigate('SetAddress');
+					this.state.canNav = false;
+					setTimeout(() => {
+						this.state.canNav = true;
+					}, 1500);
+				}
+				})}
 
 
 			{/* Минимальная сумма заказа и бесплатная доставка */}

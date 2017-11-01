@@ -21,6 +21,7 @@ export default class SelectTags extends React.Component {
     super(props);
     
     this.state = {
+      canNav: true,
       tastes: [
       ],
       selected: []
@@ -105,7 +106,14 @@ export default class SelectTags extends React.Component {
 
   next = () => {
     this.setTastes();
-    this.state.selected.length != 0 ? this.props.navigation.navigate('LoadingScreen') : null
+    if (this.state.selected.length != 0)
+      if (this.state.canNav) {
+        this.props.navigation.navigate('LoadingScreen');
+        this.state.canNav = false;
+        setTimeout(() => {
+          this.state.canNav = true;
+        }, 1500);
+      }
   };
 
 

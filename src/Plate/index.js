@@ -32,6 +32,7 @@ export default class Plate extends React.Component{
 		super(props);
 
 		this.state = {
+			canNav: true,
 			plate: {
 				"id": 101,
 				"shortTitle": 'Шоколадный милкшейк',
@@ -265,6 +266,16 @@ export default class Plate extends React.Component{
 		</View>
 	};
 
+	nav = () => {
+		if (this.state.canNav) {
+			this.props.navigation.navigate('Restaurant');
+			this.state.canNav = false;
+			setTimeout(() => {
+				this.state.canNav = true;
+			}, 1500);
+		}
+	}
+
 	render() {
 		return <View ><ScrollView style={styles.container} contentContainerStyle={{
 			justifyContent: 'flex-start',
@@ -292,7 +303,7 @@ export default class Plate extends React.Component{
 						fontSize: 13,
 						letterSpacing: 0.8
 					}}>{this.state.plate.shortTitle}</Text>
-					<TouchableOpacity onPress={()=>{this.props.navigation.navigate('Restaurant')}}><Text style={{
+					<TouchableOpacity onPress={this.nav}><Text style={{
 						color: 'rgb( 39, 40, 51)',
 						backgroundColor: 'transparent',
 						textAlign: 'center',
@@ -437,7 +448,7 @@ export default class Plate extends React.Component{
 
 			<View>
 				<View style={[styles.row, { justifyContent: 'center', marginTop: 31 }]}>
-					{this.renderButton('О ресторане', () => { this.props.navigation.navigate('Restaurant') })}
+					{this.renderButton('О ресторане', this.nav)}
 			</View>
 
 				{/* Минимальная сумма заказа и бесплатная доставка */}

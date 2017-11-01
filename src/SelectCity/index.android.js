@@ -17,6 +17,7 @@ export default class SelectCity extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      canNav: true,
       cities: [
         {
           title: 'Москва',
@@ -67,7 +68,14 @@ export default class SelectCity extends React.Component {
 
   next = () => {
     this.setCity(JSON.stringify(this.state.selectedCity));
-    this.props.navigation.navigate('About');
+
+    if (this.state.canNav) {
+      this.props.navigation.navigate('About');
+      this.state.canNav = false;
+      setTimeout(() => {
+        this.state.canNav = true;
+      }, 1500);
+    }
   };
 
   render() {

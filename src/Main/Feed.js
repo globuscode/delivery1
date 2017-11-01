@@ -25,6 +25,7 @@ export default class Feed extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			canNav: true,
 			"plates": null,
 			"popular": null,
 			"collections": null,
@@ -76,7 +77,13 @@ export default class Feed extends React.Component {
 				}}>{title}</Text>
 
 				<TouchableOpacity onPress={() => {
-					this.props.navigation.navigate(nav);
+					if (this.state.canNav) {
+						this.props.navigation.navigate(nav);
+     				this.state.canNav = false;
+						setTimeout(() => {
+							this.state.canNav = true;
+						}, 1500);
+ 			   }
 				}}>
 					<View style={{
 						flexDirection: 'row',
