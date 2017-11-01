@@ -145,7 +145,7 @@ export default class Feed extends React.Component {
 				<ScrollView ref='scroll'  horizontal={false}>
 
 					{this.renderCardHeader('Рекомендуем', 'cutlery', 'Изменить\nсвои вкусы', 'SelectTags')}
-					<Recomendations data={this.state.plates} navigation={this.props.navigation} onNextButtonPress={() => { this.refs['scroll'].scrollTo({ y: 550, animated: true })}}/>
+					<Recomendations data={this.state.plates} navigation={this.props.navigation} onNextButtonPress={() => { this.refs['scroll'].scrollTo({ y: 580, animated: true })}}/>
 
 					{this.renderCardHeader('Подборки', 'settings', 'Настроить\nподборки', 'SelectTastes')}
 					<Collections data={this.state.collections} onNextButtonPress={() => { this.refs['scroll'].scrollTo({ y: 1130, animated: true }) }}/>
