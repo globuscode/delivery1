@@ -1,0 +1,231 @@
+import React from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Dimensions,
+  ScrollView,
+  AsyncStorage,
+} from 'react-native';
+
+const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
+
+
+
+
+
+
+export default class SelectTags extends React.Component {
+  constructor(props) {
+    super(props);
+    
+    this.state = {
+      tastes: [
+      ],
+      selected: []
+    }
+  };
+
+  componentWillMount() {
+    fetch('http://dostavka1.com/v1/classificator/tags')
+      .then((response) => response.json())
+      .then((responseJson) => {
+        this.state.tastes = [];
+        for (name in responseJson.data) {
+          this.state.tastes.push(responseJson.data[name]);
+        }
+        this.setState({});
+        return responseJson;
+      });
+  };
+
+  selectRandom(count) {
+    this.state.selected = [];
+    for (var i = 0; i < count; i++) {
+      if (Math.random() > 0.5) {
+        this.state.selected.push(i);
+      }
+    }
+    this.setState({});
+  };
+
+
+  renderTastes() {
+    var result = [];
+    for (let i=0; i<this.state.tastes.length; i+=1 ) {
+      result.push((
+          <TouchableOpacity
+            key={i}
+            onPress={() => {
+              if (this.state.selected.indexOf(i) == -1) {
+                this.state.selected.push(i);
+                this.setState({});
+              } else {
+                this.state.selected.splice(this.state.selected.indexOf(i), 1);
+                this.setState({});
+              }
+            }}
+            style={{
+              height: 36,
+              padding: 10,
+              paddingHorizontal: 20,
+              justifyContent: 'center',
+              borderRadius: 5,
+              flexDirection: 'column-reverse',
+              margin: 5,
+              borderColor: 'rgb(225, 199, 155)',
+              borderWidth: 1,
+              backgroundColor: this.state.selected.indexOf(i) != -1 ? 'rgb(225, 199, 155)' : '#292b37',
+            }}
+            pressed={this.state.selected.indexOf(i) != -1}
+          >
+            <Text style={{ 
+              fontFamily: 'open-sans-semibold',
+              fontSize: 11,
+              color: this.state.selected.indexOf(i) != -1 ? '#292b37' : 'rgb(225, 199, 155)'
+            }}>
+              {this.state.tastes[i].title.toUpperCase()}
+            </Text>
+          </TouchableOpacity>));
+    }
+    return result;
+  };
+
+  getSelectedTastes() {
+    return this.state.selected.map((element, index) => {
+      return this.state.tastes[element];
+    });
+  };
+
+  setTastes = async () => {
+    await AsyncStorage.setItem('tags', JSON.stringify(this.getSelectedTastes()));
+    return 0;
+  };
+
+  next = () => {
+    this.setTastes();
+    this.state.selected.length != 0 ? this.props.navigation.navigate('LoadingScreen') : null
+  };
+
+
+  render() {
+
+    return (
+      <View style={styles.container}>
+
+        <View style={{ alignSelf: 'stretch', paddingHorizontal: 15 }}>
+          <View style={{ alignSelf: 'stretch', justifyContent: 'center', borderBottomWidth: 2, borderColor: 'rgb(87, 88, 98)' }}>
+            <TouchableOpacity onPress={() => this.selectRandom(this.state.tastes.length)}>
+              <Text style={[
+                styles.text, {
+                  color: 'rgb( 135, 136, 140)',
+                  fontFamily: 'open-sans',
+                  alignSelf: 'flex-end',
+                  fontSize: 14,
+                  letterSpacing: 0.4,
+                  paddingTop: 13,
+                  paddingBottom: 13
+                }]}>
+                {'Выбрать наугад'}</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <Text style={[{
+          marginTop: 9,
+          fontSize: 16,
+          lineHeight: 20,
+          letterSpacing: 1,
+          fontFamily: 'stem-medium',
+          color: 'rgb(255,255,255)'
+        }]}>Рассскажите о своих вкусах</Text>
+        <Text style={{
+          fontSize: 12,
+          lineHeight: 13,
+          letterSpacing: 0.8,
+          marginBottom: 21,
+          paddingHorizontal: 40,
+          color: 'rgb( 119, 122, 136)',
+          textAlign: 'center',
+
+        }}>Выберите тэги наиболее релевантные для вас и мы поможем вам с выбором блюд</Text>
+
+        <ScrollView contentContainerStyle={{
+          width: viewportWidth,
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignSelf: 'center',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+        }}>
+            {
+              this.renderTastes()
+            }
+        </ScrollView>
+        <View style={{height: 55}}/>
+
+
+        <View style={{
+          position: 'absolute',
+          alignSelf: 'center',
+          width: viewportWidth - 30,
+          bottom: 0,
+          height: 49,
+          borderTopWidth: 2,
+          borderColor: this.state.selected.length != 0 ? 'rgb(225, 199, 155)' : '#575862',
+          flexDirection: 'row',
+          justifyContent: 'center'
+        }}>
+          <TouchableOpacity onPress={this.next}
+            style={{
+              alignSelf: 'center',
+            }}>
+            <Text style={[
+              styles.nextButtonText,
+              {
+                color: this.state.selected.length != 0 ? 'rgb(225, 199, 155)' : '#575862'
+              }
+            ]}>Далее</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const styles = StyleSheet.create({
+  text: {
+    color: 'white',
+    fontSize: 20,
+  },
+  container: {
+    flex: 1,
+    paddingTop: 20,
+    backgroundColor: '#292b37',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  nextButtonText: {
+    fontSize: 16,
+    color: 'rgb(225, 199, 155)',
+    marginTop: 17,
+    marginBottom: 17,
+    textAlign: 'center',
+    letterSpacing: 0.8,
+    fontFamily: 'stem-regular'
+  },
+});

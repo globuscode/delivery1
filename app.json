@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "delivery1",
+    "description": "An empty new project",
+    "slug": "delivery1",
+    "privacy": "public",
+    "sdkVersion": "21.0.0",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "primaryColor": "#cccccc",
+    "icon": "./assets/icons/app-icon.png",
+    "loading": {
+      "backgroundColor": "#292b37",
+      "icon": "./assets/icons/app-icon.png",
+      "backgroundImage": "./assets/img/kitchen.png"
+    },
+    "packagerOpts": {
+      "assetExts": ["ttf", "mp4"]
+    },
+    "ios": {
+      "supportsTablet": true,
+      "splash": {
+        "backgroundColor": "#292b37",
+        "resizeMode": "cover"
+      }
+
+    },
+    "android": {
+      "splash": {
+        "backgroundColor": "#292b37",
+        "resizeMode": "cover"
+      }
+    }
+  }
+}
