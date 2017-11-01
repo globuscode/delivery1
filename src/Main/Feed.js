@@ -154,13 +154,15 @@ export default class Feed extends React.Component {
 					<RestouransOfTheWeek data={this.state.restaurants} navigation={this.props.navigation} />
 					<View style={{ height: 20 }} />
 				</ScrollView>
-
-				<LinearGradient colors={['rgba(39, 40, 48, 0)', 'rgba(39, 40, 48, 1)']} style={{
+				<View pointerEvents='none' style={{
 					height: 60,
 					position: 'absolute',
 					bottom: 0,
 					width: viewportWidth
-				}} />
+				}}>
+				<LinearGradient colors={['rgba(39, 40, 48, 0)', 'rgba(39, 40, 48, 1)']} style={{
+					flex: 1
+				}} /></View>
 			</View>
 		);
 	}
