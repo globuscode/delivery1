@@ -165,9 +165,15 @@ export default class SelectTags extends React.Component {
 
   isNext = () => {
     var isNext = false;
+    let i = 0;
+    while (!isNext && i < this.state.kitchens.length) {
+      isNext = this.state.kitchens[i].selected;
+      i++;
+    }
+    /*
     for (var i = 0; i < this.state.kitchens.length; i++) {
       isNext = isNext || this.state.kitchens[i].selected;
-    }
+    }*/
     return isNext;
   }
 
@@ -176,9 +182,10 @@ export default class SelectTags extends React.Component {
    */
   onMessage = (event) => {
     data = JSON.parse(event.nativeEvent.data);
-    if (data.index) {
+    if (data.index >= 0) {
       var index = parseInt(data.index);
       this.state.kitchens[index].selected = !this.state.kitchens[index].selected;
+      console.log(this.state.kitchens);
       this.setState({});
     }
   }

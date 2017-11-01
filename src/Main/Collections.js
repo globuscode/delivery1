@@ -255,12 +255,12 @@ export default class Recomendations extends React.Component {
               style="
               width:100%;
               height: 100%;
-              background: url('` + item.restourantLogo + `') left bottom no-repeat;
+              background: url(` + item.restourantLogo + `) left bottom no-repeat;
               background-size: contain" />`
           }}
           style={{
-            width: (viewportWidth - 40) / 2,
-            height: (viewportWidth - 40) / 2,
+            width: screen == 0 ? 90 : screen == 1 ? 120 : 150,
+            height: screen == 0 ? 90 : screen == 1 ? 120 : 150,
             backgroundColor: 'transparent',
           }} />
       </View>
@@ -284,7 +284,6 @@ export default class Recomendations extends React.Component {
         backgroundColor: 'transparent',
         fontSize: 25,
         fontFamily: 'stem-medium',
-        lineHeight: 30,
         top: 5,
         color: 'white',
         flexDirection: 'row',

@@ -244,7 +244,7 @@ export default class Recomendations extends React.Component {
         html: `<div 
           style="width:100%;
           height: 100%;
-          background: url('` + item.restourantLogo + `') left bottom no-repeat;
+          background: url(` + item.restourantLogo + `) left bottom no-repeat contain;
           background-size: contain" />`
       }}
       style={{
