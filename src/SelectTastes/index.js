@@ -76,7 +76,7 @@ export default class SelectTags extends React.Component {
               flexDirection: 'column-reverse',
               margin: 5,
               borderColor: 'rgb(225, 199, 155)',
-              borderWidth: 1,
+              borderWidth: 1.5,
               backgroundColor: this.state.selected.indexOf(i) != -1 ? 'rgb(225, 199, 155)' : '#292b37',
             }}
             pressed={this.state.selected.indexOf(i) != -1}
