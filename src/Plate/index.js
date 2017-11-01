@@ -405,13 +405,14 @@ export default class Plate extends React.Component{
 						flexDirection: 'column-reverse',
 						margin: 5,
 						borderColor: '#dcc49c',
-						borderWidth: 1,
+						borderWidth: 1.5,
 						backgroundColor: 0 ? '#dcc49c' : 'transparent',
 					}}
 					pressed={0}
 				>
 					<Text style={{
-						fontWeight: 'bold',
+						fontFamily: 'open-sans-semibold',
+						fontSize: 11,
 						color: 0 ? '#292b37' : '#dcc49c'
 					}}>
 						{e.title.toUpperCase()}
