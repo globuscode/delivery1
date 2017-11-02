@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { TextField } from 'react-native-material-textfield';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import TabNavigator from 'react-native-tab-navigator';
 import Button from 'react-native-button';
 import {
@@ -41,7 +42,7 @@ export default class Login extends React.Component {
 	};
 
 	render = () => {
-        return <KeyboardAvoidingView behavior='position' style={styles.container} contentContainerStyle={{flex: 1}}>
+        return <KeyboardAwareScrollView behavior='position' style={styles.container} contentContainerStyle={{flex: 1}}>
             <View style={{height: (screen == 0 ? 24 : screen == 1 ? 41 : 53) + 4}}/>
 
             <Text style={{
@@ -95,7 +96,7 @@ export default class Login extends React.Component {
                 ]}>Далее</Text>
             </TouchableOpacity>
             </View>
-        </KeyboardAvoidingView>;
+        </KeyboardAwareScrollView>;
     }
 
     isNext = () => {
