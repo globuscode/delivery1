@@ -185,7 +185,6 @@ export default class SelectTags extends React.Component {
     if (data.index >= 0) {
       var index = parseInt(data.index);
       this.state.kitchens[index].selected = !this.state.kitchens[index].selected;
-      console.log(this.state.kitchens);
       this.setState({});
     }
   }
