@@ -5,9 +5,9 @@ import {
 	Dimensions,
 	StyleSheet,
 	ScrollView,
-	Image,
 	WebView,
     Linking,
+    Keyboard,
     KeyboardAvoidingView,
 	Text
 } from 'react-native';
@@ -41,9 +41,9 @@ export default class Login extends React.Component {
 	};
 
 	render = () => {
-        return <KeyboardAvoidingView style={styles.container}>
+        return <KeyboardAvoidingView behavior='position' style={styles.container} contentContainerStyle={{flex: 1}}>
             <View style={{height: screen == 0 ? 18 : screen == 1 ? 34 : 45}}/>
-
+            
             <Text style={{
                 fontFamily: 'open-sans',
                 fontSize: 14,
@@ -92,6 +92,7 @@ export default class Login extends React.Component {
             }}>{'Рады видеть вас снова'}</Text>
             <View style={{flexDirection: 'column', paddingHorizontal: screen == 0 ? 20 : screen == 1 ? 27 : 30}}>
                 <TextField 
+                    onBlur={()=>{Keyboard.dismiss()}}
                     tintColor='#dcc49c'
                     baseColor='rgb( 87, 88, 98)'
                     textColor='white'
@@ -100,6 +101,7 @@ export default class Login extends React.Component {
                         alignItems: 'center',
                         textAlign: 'center',
                     }}
+                    keyboardType="email-address"
                     inputContainerStyle={{ flexDirection: 'column' , alignItems: 'center', justifyContent: 'center' }}
                     label='E-mail адрес'
                     value={this.state.email}
@@ -108,6 +110,7 @@ export default class Login extends React.Component {
                 />
                 <View style={{height: (screen == 0 ? 34 : screen == 1 ? 42 : 48)-10}}/>
                 <TextField 
+                    onBlur={()=>{Keyboard.dismiss()}}
                     secureTextEntry
                     tintColor='#dcc49c'
                     baseColor='rgb( 87, 88, 98)'
@@ -175,6 +178,7 @@ const styles = StyleSheet.create({
       fontFamily: 'stem-regular'
     },
 	container: {
+        //height: viewportHeight,
         flex: 1,
         flexDirection: 'column',
 		elevation: -10,

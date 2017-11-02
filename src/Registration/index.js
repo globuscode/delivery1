@@ -41,7 +41,7 @@ export default class Login extends React.Component {
 	};
 
 	render = () => {
-        return <KeyboardAvoidingView style={styles.container}>
+        return <KeyboardAvoidingView behavior='position' style={styles.container} contentContainerStyle={{flex: 1}}>
             <View style={{height: (screen == 0 ? 20 : screen == 1 ? 37 : 49) + 4}}/>
 
             <Text style={{
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
 	container: {
         flex: 1,
         flexDirection: 'column',
-		elevation: -25,
+		elevation: -10,
 		backgroundColor: 'rgb( 45, 46, 58)',
 	},
 });
