@@ -5,6 +5,8 @@ import {Font} from 'expo';
 import Expo from 'expo';
 import IconD from './src/IconD';
 
+import Login from './src/Login';
+import Registration from './src/Registration';
 import SelectCity from './src/SelectCity';
 import SelectTags from './src/SelectTags';
 import SetAddress from './src/SetAddress';
@@ -66,6 +68,44 @@ const A = StackNavigator({
     navigationOptions: {
       header: null,
       gesturesEnabled: false
+    }
+  },
+  Login: {
+    screen: Login,
+    navigationOptions: {
+      title: 'Авторизация',
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontFamily: 'stem-medium',
+        fontSize: 14,
+        letterSpacing: 0.8
+      },
+      headerBackTitleStyle: {
+        color: '#dcc49c'
+      },
+      headerStyle: {
+        marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
+        backgroundColor: '#292b37'
+      }
+    }
+  },
+  Registration: {
+    screen: Registration,
+    navigationOptions: {
+      title: 'Регистрация',
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontFamily: 'stem-medium',
+        fontSize: 14,
+        letterSpacing: 0.8
+      },
+      headerBackTitleStyle: {
+        color: '#dcc49c'
+      },
+      headerStyle: {
+        marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
+        backgroundColor: '#292b37'
+      }
     }
   },
   SelectTags: {

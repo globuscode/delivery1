@@ -122,7 +122,15 @@ export default class Feed extends React.Component {
 					borderBottomWidth: 1,
 					borderColor: 'rgb(119, 122, 136)'
 				}}>
-					<TouchableOpacity>
+					<TouchableOpacity onPress={() => {
+					if (this.state.canNav) {
+							this.props.navigation.navigate('Login');
+     					this.state.canNav = false;
+						setTimeout(() => {
+							this.state.canNav = true;
+						}, 1500);
+					}
+					}}>
 						<View style={{
 							flexDirection: 'row', alignItems: 'center'
 						}}>
