@@ -335,7 +335,7 @@ export default class RestaurantMenu extends React.Component {
 					borderRadius: 4,
 					borderColor: 'white'
 				}]}>
-				<Text style={{ color: '#ffffff', fontSize: 14, fontFamily: 'stem-medium', }}>{title}</Text></View>
+				<Text style={{ color: '#ffffff', fontSize: 14, fontFamily: 'stem-medium', top: 2}}>{title}</Text></View>
 
 			<TouchableOpacity
 				activeOpacity={0}
@@ -354,7 +354,7 @@ export default class RestaurantMenu extends React.Component {
 						borderRadius: 4,
 						borderColor: '#dcc49c'
 					}]}>
-				<Text style={{ color: '#ffffff', fontSize: 14, fontFamily: 'stem-medium', }}>{title}</Text>
+				<Text style={{ color: '#ffffff', fontSize: 14, fontFamily: 'stem-medium', top: 2}}>{title}</Text>
 			</TouchableOpacity></View>;
 	}
 
