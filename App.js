@@ -6,6 +6,7 @@ import Expo from 'expo';
 import IconD from './src/IconD';
 
 import Login from './src/Login';
+import RegistratePhone from './src/RegistatePhone';
 import Registration from './src/Registration';
 import SelectCity from './src/SelectCity';
 import SelectTags from './src/SelectTags';
@@ -68,6 +69,25 @@ const A = StackNavigator({
     navigationOptions: {
       header: null,
       gesturesEnabled: false
+    }
+  },
+  RegistratePhone: {
+    screen: RegistratePhone,
+    navigationOptions: {
+      title: 'Номер телефона',
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontFamily: 'stem-medium',
+        fontSize: 14,
+        letterSpacing: 0.8
+      },
+      headerBackTitleStyle: {
+        color: '#dcc49c'
+      },
+      headerStyle: {
+        marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
+        backgroundColor: '#292b37'
+      }
     }
   },
   Login: {

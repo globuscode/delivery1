@@ -42,15 +42,15 @@ export default class Login extends React.Component {
 
 	render = () => {
         return <KeyboardAvoidingView behavior='position' style={styles.container} contentContainerStyle={{flex: 1}}>
-            <View style={{height: (screen == 0 ? 20 : screen == 1 ? 37 : 49) + 4}}/>
+            <View style={{height: (screen == 0 ? 24 : screen == 1 ? 41 : 53) + 4}}/>
 
             <Text style={{
                 fontFamily: 'stem-medium',
-                fontSize: 16,
+                fontSize: 14,
                 alignSelf: 'center',
                 letterSpacing: 1.1,
                 color: 'rgb( 255, 255, 255)',
-            }}>{'Пожалуйста представьтесь'}</Text>
+            }}>{'Введите новый номер телефона'}</Text>
 
             <View style={{flexDirection: 'column', paddingHorizontal: screen == 0 ? 20 : screen == 1 ? 27 : 30}}>
 
@@ -64,63 +64,12 @@ export default class Login extends React.Component {
                         textAlign: 'center',
                     }}
                     inputContainerStyle={{ flexDirection: 'column' , alignItems: 'center', justifyContent: 'center' }}
-                    label='Имя'
-                    value={this.state.firstName}
-                    onChangeText={(firstName) => {this.state.firstName = firstName; }}
+                    label='Введите новый номер телефона'
+                    value={this.state.phone}
+                    onChangeText={(phone) => {this.state.phone = phone; }}
                     onBlur={() => this.setState({hidePrevious: true})}
                 />
-                <View style={{height: (screen == 0 ? 34 : screen == 1 ? 42 : 48)-25}}/>
-
-                <TextField 
-                    tintColor='#dcc49c'
-                    baseColor='rgb( 87, 88, 98)'
-                    textColor='white'
-                    returnKeyType='send'
-                    style={{
-                        alignItems: 'center',
-                        textAlign: 'center',
-                    }}
-                    inputContainerStyle={{ flexDirection: 'column' , alignItems: 'center', justifyContent: 'center' }}
-                    label='Фамилия'
-                    value={this.state.secondName}
-                    onChangeText={(name) => {this.state.secondName = name; }}
-                    onBlur={() => this.setState({hidePrevious: true})}
-                />
-                <View style={{height: (screen == 0 ? 34 : screen == 1 ? 42 : 48)-25}}/>
-
-                <TextField 
-                    tintColor='#dcc49c'
-                    baseColor='rgb( 87, 88, 98)'
-                    textColor='white'
-                    returnKeyType='send'
-                    style={{
-                        alignItems: 'center',
-                        textAlign: 'center',
-                    }}
-                    inputContainerStyle={{ flexDirection: 'column' , alignItems: 'center', justifyContent: 'center' }}
-                    label='E-mail адрес'
-                    value={this.state.email}
-                    onChangeText={(address) => {this.state.email = address; }}
-                    onBlur={() => this.setState({hidePrevious: true})}
-                />
-                <View style={{height: (screen == 0 ? 34 : screen == 1 ? 42 : 48)-25}}/>
-
-                <TextField 
-                    secureTextEntry
-                    tintColor='#dcc49c'
-                    baseColor='rgb( 87, 88, 98)'
-                    textColor='white'
-                    returnKeyType='send'
-                    style={{
-                        alignItems: 'center',
-                        textAlign: 'center',
-                    }}
-                    inputContainerStyle={{ flexDirection: 'column' , alignItems: 'center', justifyContent: 'center' }}
-                    label='Пароль'
-                    value={this.state.password}
-                    onChangeText={(address) => {this.state.password = address; }}
-                    onBlur={() => this.setState({hidePrevious: true})}
-                />
+                <View style={{height: (screen == 0 ? 30 : screen == 1 ? 39 : 45)-25}}/>
             </View>
 
             <View style={{
@@ -147,16 +96,6 @@ export default class Login extends React.Component {
             </TouchableOpacity>
             </View>
         </KeyboardAvoidingView>;
-    }
-
-    next = () => {
-        if (this.state.canNav && this.isNext()) {
-            this.props.navigation.navigate('RegistratePhone');
-            this.state.canNav = false;
-            setTimeout(() => {
-                this.state.canNav = true;
-            }, 1500);
-        }
     }
 
     isNext = () => {
