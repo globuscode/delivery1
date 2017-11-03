@@ -15,7 +15,6 @@ import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { LinearGradient } from 'expo';
 import SvgUri from 'react-native-svg-uri';
 
-import Cart from '../Cart';
 
 import PriceButton from '../PriceButton';
 import IconD from '../IconD';
@@ -89,12 +88,10 @@ export default class Recomendations extends React.Component {
     cart = JSON.parse(cart);
     if (cart) {
       cart.push(plate);
-
       await AsyncStorage.setItem('cart', JSON.stringify(cart));
     } else {
       cart = [];
       cart.push(plate);
-
       await AsyncStorage.setItem('cart', JSON.stringify(cart));
     }
 
@@ -256,7 +253,7 @@ export default class Recomendations extends React.Component {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'flex-end',
-      height: 100,
+      height: (SLIDER_WIDTH) / 2,
     }}>
       <TouchableOpacity 
         activeOpacity={0.8} 
