@@ -15,6 +15,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { TextField } from 'react-native-material-textfield';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import TabNavigator from 'react-native-tab-navigator';
+import { TextInputMask } from 'react-native-masked-text';
 import Button from 'react-native-button';
 import {
 	LinearGradient,
@@ -83,7 +84,6 @@ export default class Login extends React.Component {
 	}
 
 	render = () => {
-        console.log(this.props.navigation);
         return <KeyboardAwareScrollView behavior='position' style={styles.container} contentContainerStyle={{flex: 1}}>
             <View style={{height: (screen == 0 ? 24 : screen == 1 ? 41 : 53) + 4}}/>
 
@@ -97,18 +97,26 @@ export default class Login extends React.Component {
 
             <View style={{flexDirection: 'column', paddingHorizontal: screen == 0 ? 20 : screen == 1 ? 27 : 30}}>
 
-                <TextField 
-                    tintColor='#dcc49c'
-                    baseColor='rgb( 87, 88, 98)'
-                    textColor='white'
-                    returnKeyType='send'
-                    keyboardType='phone-pad'
-                    style={{
-                        alignItems: 'center',
-                        textAlign: 'center',
+                <TextInputMask
+                    ref={'myDateText'}
+                    type={'custom'}
+                    customTextInputProps={{
+                        tintColor: '#dcc49c',
+                        baseColor: 'rgb( 87, 88, 98)',
+                        textColor: 'white',
+                        returnKeyType: 'send',
+                        keyboardType: 'phone-pad',
+                        style: {
+                            alignItems: 'center',
+                            textAlign: 'center',
+                        },
+                        inputContainerStyle: { flexDirection: 'column' , alignItems: 'center', justifyContent: 'center' },
+                        label: 'Введите новый номер телефона',
                     }}
-                    inputContainerStyle={{ flexDirection: 'column' , alignItems: 'center', justifyContent: 'center' }}
-                    label='Введите новый номер телефона'
+                    options={{
+	                    mask: '+7 999 999 99-99',
+                    }}
+                    customTextInput={TextField} 
                     value={this.state.phone}
                     onChangeText={(phone) => {this.state.phone = phone; }}
                     onBlur={() => this.setState({hidePrevious: true})}
@@ -157,7 +165,6 @@ export default class Login extends React.Component {
             var data = new FormData();
             data.append( "json", JSON.stringify( payload ) );
             
-            console.log("Телефон ", payload);
             fetch("http://dostavka1.com/v1/auth/register",
             {
                 method: "POST",
@@ -168,7 +175,8 @@ export default class Login extends React.Component {
             })
             .then((data) => {
                 console.log( JSON.stringify( data ) );
-                this.props.navigation.goBack('Login', data);
+                this.props.navigation.setParams(data);
+                this.props.navigation.goBack(this.props.navigation.state.params.loginKey, );
             })
         }
             
