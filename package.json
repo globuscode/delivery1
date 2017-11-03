@@ -29,6 +29,7 @@
     "react-native-htmlview": "^0.12.1",
     "react-native-keyboard-aware-scroll-view": "^0.4.1",
     "react-native-linear-gradient": "^2.3.0",
+    "react-native-masked-text": "^1.6.2",
     "react-native-material-textfield": "^0.10.0",
     "react-native-snap-carousel": "^3.2.3",
     "react-native-svg-uri": "^1.2.1",
