@@ -163,7 +163,9 @@ export default class Login extends React.Component {
                 "password": this.props.navigation.state.params.password
             };
             var data = new FormData();
-            data.append( "json", JSON.stringify( payload ) );
+            for (param in payload)
+                data.append(param, payload[param]);
+            console.log(data);
             
             fetch("http://dostavka1.com/v1/auth/register",
             {
