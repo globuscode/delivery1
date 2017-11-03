@@ -86,10 +86,11 @@ export default class Login extends React.Component {
                 top: 4,
                 letterSpacing: 1.1,
                 alignSelf: 'center',
+                textAlign: 'center',
                 color: 'rgb( 255, 255, 255)',
                 marginTop: screen == 0 ? 46 : screen == 1 ? 55 : 63,
                 marginBottom: screen == 0 ? 36 : screen == 1 ? 46 : 52,
-            }}>{'Рады видеть вас снова'}</Text>
+            }}>{this.props.navigation.state.params ? (this.props.navigation.state.params.errors.title + '\n' + this.props.navigation.state.params.errors.detail) : 'Рады видеть вас снова'}</Text>
             <View style={{flexDirection: 'column', paddingHorizontal: screen == 0 ? 20 : screen == 1 ? 27 : 30}}>
                 <TextField 
                     onBlur={()=>{Keyboard.dismiss()}}
