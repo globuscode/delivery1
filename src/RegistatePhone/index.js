@@ -39,9 +39,51 @@ export default class Login extends React.Component {
 			rang: 2,
 			canNav: true,
 		};
-	};
+    };
+    
+    renderButton = (title, callback) => {
+		return <View style={{ alignSelf: 'stretch' }}>
+			<View style={[
+				styles.row,
+				{
+					justifyContent: 'center',
+					position: 'absolute',
+					width: viewportWidth - 80,
+					borderWidth: 1,
+					height: (viewportWidth >= 320 && viewportWidth < 375) ? 44 : (viewportWidth >= 375 && viewportWidth < 414) ? 52 : 57,
+					marginTop: 31,
+					marginBottom: 10,
+					marginHorizontal: 40,
+					alignItems: 'center',
+					alignContent: 'center',
+					borderRadius: 8,
+					borderColor: 'white'
+				}]}>
+				<Text style={{ color: '#ffffff', fontSize: 14, fontFamily: 'stem-medium', }}>{title}</Text></View>
+
+			<TouchableOpacity
+				activeOpacity={0}
+				onPress={callback}
+				style={[
+					styles.row,
+					{
+						justifyContent: 'center',
+						borderWidth: 1,
+						height: (viewportWidth >= 320 && viewportWidth < 375) ? 44 : (viewportWidth >= 375 && viewportWidth < 414) ? 52 : 57,
+						marginTop: 31,
+						marginBottom: 10,
+						marginHorizontal: 40,
+						alignItems: 'center',
+						alignContent: 'center',
+						borderRadius: 8,
+						borderColor: 'rgb( 87, 88, 98)'
+					}]}>
+				<Text style={{ color: '#ffffff', fontSize: 14, fontFamily: 'stem-medium', }}>{title}</Text>
+			</TouchableOpacity></View>;
+	}
 
 	render = () => {
+        console.log(this.props.navigation);
         return <KeyboardAwareScrollView behavior='position' style={styles.container} contentContainerStyle={{flex: 1}}>
             <View style={{height: (screen == 0 ? 24 : screen == 1 ? 41 : 53) + 4}}/>
 
@@ -60,6 +102,7 @@ export default class Login extends React.Component {
                     baseColor='rgb( 87, 88, 98)'
                     textColor='white'
                     returnKeyType='send'
+                    keyboardType='phone-pad'
                     style={{
                         alignItems: 'center',
                         textAlign: 'center',
@@ -72,6 +115,7 @@ export default class Login extends React.Component {
                 />
                 <View style={{height: (screen == 0 ? 30 : screen == 1 ? 39 : 45)-25}}/>
             </View>
+            {this.renderButton('Получить код', ()=>{})}
 
             <View style={{
             position: 'absolute',
@@ -99,8 +143,39 @@ export default class Login extends React.Component {
         </KeyboardAwareScrollView>;
     }
 
+    next = () => {
+        if (this.isNext()) {
+            var payload = {
+                "userName": this.props.navigation.state.params.userName ? this.props.navigation.state.params.userName : 'null',
+                "firstName": this.props.navigation.state.params.firstName ? this.props.navigation.state.params.firstName : 'null',
+                "middleName": this.props.navigation.state.params.middleName ? this.props.navigation.state.params.middleName : 'null',
+                "lastName": this.props.navigation.state.params.lastName ? this.props.navigation.state.params.lastName : 'null',
+                "email": this.props.navigation.state.params.email ? this.props.navigation.state.params.email : 'null',
+                "phone": this.state.phone ? this.state.phone : 'null',
+                "password": this.props.navigation.state.params.password
+            };
+            var data = new FormData();
+            data.append( "json", JSON.stringify( payload ) );
+            
+            console.log("Телефон ", payload);
+            fetch("http://dostavka1.com/v1/auth/register",
+            {
+                method: "POST",
+                body: data
+            })
+            .then((res)=>{
+                return res.json();
+            })
+            .then((data) => {
+                console.log( JSON.stringify( data ) );
+                this.props.navigation.goBack('Login', data);
+            })
+        }
+            
+    }
+
     isNext = () => {
-        return  (this.state.firstName && this.state.secondName && this.state.password && this.state.email);
+        return  (this.state.phone);
     }
 }
 
