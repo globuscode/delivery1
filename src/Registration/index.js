@@ -156,9 +156,10 @@ export default class Login extends React.Component {
                 "userName": this.state.email,
                 "firstName": this.state.firstName,
                 "middleName": this.state.firstName,
-                "lastName": this.state.lastName,
+                "lastName": this.state.secondName,
                 "email": this.state.email,
-                "password": this.state.password
+                "password": this.state.password,
+                "loginKey": this.props.navigation.state.key
             });
             this.state.canNav = false;
             setTimeout(() => {
