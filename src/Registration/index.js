@@ -152,7 +152,14 @@ export default class Login extends React.Component {
 
     next = () => {
         if (this.state.canNav && this.isNext()) {
-            this.props.navigation.navigate('RegistratePhone');
+            this.props.navigation.navigate('RegistratePhone', {
+                "userName": this.state.email,
+                "firstName": this.state.firstName,
+                "middleName": this.state.firstName,
+                "lastName": this.state.lastName,
+                "email": this.state.email,
+                "password": this.state.password
+            });
             this.state.canNav = false;
             setTimeout(() => {
                 this.state.canNav = true;
