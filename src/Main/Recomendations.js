@@ -85,6 +85,7 @@ export default class Recomendations extends React.Component {
   addPlateToCart = async (plate) => {
     //await AsyncStorage.removeItem('cart');
     let cart = await AsyncStorage.getItem('cart');
+    Store.dispatch({type: 'ADD_PLATE', payload: plate});
     cart = JSON.parse(cart);
     if (cart) {
       cart.push(plate);
@@ -245,8 +246,8 @@ export default class Recomendations extends React.Component {
           background-size: contain" />`
       }}
       style={{
-        width: (SLIDER_WIDTH) / 2,
-        height: (SLIDER_WIDTH) / 2,
+        width: (SLIDER_WIDTH) / 4,
+        height: (SLIDER_WIDTH) / 4,
         backgroundColor: 'transparent',
       }} />;
     var bottomView = <View style={{
