@@ -127,6 +127,19 @@ export default class Restaurant extends React.Component {
 		this.navigationOptions.title = this.state.data.title;
 	};
 
+	componentWillMount = async () => {
+		const restaurantId = this.props.navigation.state ? this.props.navigation.state.restaurantId : (0).toString();
+		fetch('http://dostavka1.com/v1/restaurant?restaurantId='+restaurantId)
+			.then((response) => response.json())
+			.then((responseJson) => {
+				console.log(responseJson['data']);
+				if (responseJson["data"] && responseJson["data"]["result"])
+					this.state.data = responseJson['data']["result"];
+				this.setState({});
+				return responseJson;
+			});
+	}
+
 	renderButton = (title, callback) => {
 		return <View style={{ alignSelf: 'stretch' }}>
 			<View style={[
@@ -291,7 +304,7 @@ export default class Restaurant extends React.Component {
 			<View style={[styles.row, { justifyContent: 'flex-start', marginTop: 12 }]}>
 				<Text style={{ color: '#FFF', fontSize: 20, marginLeft: 20, }}>{'Лучшие блюда'}</Text>
 			</View>
-			<View style={{height: (viewportWidth - 40)*1.32+130}}><Recomendations navigation={this.props.navigation}/></View>
+			<View style={{height: (viewportWidth - 40)*1.32+130}}><Recomendations data={this.state.data.bestPlates} navigation={this.props.navigation}/></View>
 
 			{/* Дополнительная информация */}
 			{hrShort}

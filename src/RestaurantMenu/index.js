@@ -171,6 +171,21 @@ export default class RestaurantMenu extends React.Component {
 		this.navigationOptions.title = this.state.data.title;
 	};
 
+
+
+	componentWillMount = async () => {
+		const restaurantId = this.props.navigation.state ? this.props.navigation.state.restaurantId : (0).toString();
+		fetch('http://dostavka1.com/v1/restaurant?restaurantId='+restaurantId)
+			.then((response) => response.json())
+			.then((responseJson) => {
+				console.log(responseJson['data']);
+				if (responseJson["data"] && responseJson["data"]["result"])
+					this.state.data = responseJson['data']["result"];
+				this.setState({});
+				return responseJson;
+			});
+	}
+
 	/**
 	 * Возвращает меню в формате массива объектов
 	 */
