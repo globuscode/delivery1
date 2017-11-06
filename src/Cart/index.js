@@ -25,6 +25,7 @@ import { connect } from 'react-redux';
 
 import Counter from '../Counter';
 import PriceButton from '../PriceButton';
+import Storage from '../Reducers';
 
 import Recomendations from '../Main/Recomendations';
 import IconD from '../IconD';
@@ -224,18 +225,19 @@ class Cart extends React.Component {
 	}
 
 	update = async () => {
+		this.forceUpdate();
 	}
 
 	totalPrice = () => {
 		let result = 0;
 		for (var i=0; i<this.props.globalStore.cart.length; i++) {
-			result += parseFloat(this.props.globalStore.cart[i].price);
+			result += parseFloat(this.props.globalStore.cart[i].plate.price) * parseFloat(this.props.globalStore.cart[i].count);
 		}
 
 		return result;
 	}
 
-	_renderContent = (e) => {
+	_renderContent = (e, index) => {
 		const imageHeight = (viewportWidth >= 320 && viewportWidth < 375) ? 100 : (viewportWidth >= 375 && viewportWidth < 414) ? 117 : 130;
 		const screen = (viewportWidth >= 320 && viewportWidth < 375) ? 0 : (viewportWidth >= 375 && viewportWidth < 414) ? 1 : 2;
 		//const textMarginRight = (viewportWidth >= 320 && viewportWidth < 375) ? 40 : (viewportWidth >= 375 && viewportWidth < 414) ? 117 : 130;
@@ -247,7 +249,7 @@ class Cart extends React.Component {
 			justifyContent: 'flex-start'
 		}}>
 				<Image source={{
-					uri: e.image
+					uri: e.plate.image
 				}}
 					style={{
 						width: imageHeight,
@@ -257,30 +259,28 @@ class Cart extends React.Component {
 				/>
 				<View style={{ flexDirection: 'column', justifyContent: 'space-between', marginLeft: 10, width: viewportWidth - 20 - 20 - imageHeight }}>
 					<View style={{top: 4}}>
-						<Text style={{ color: '#fff', fontSize: 14, fontFamily: 'stem-medium', top: 3, lineHeight: 18, letterSpacing: 1 }}>{e.title}</Text>
+						<Text style={{ color: '#fff', fontSize: 14, fontFamily: 'stem-medium', top: 3, lineHeight: 18, letterSpacing: 1 }}>{e.plate.title}</Text>
 						<Text style={{
 							color: 'rgb( 119, 122, 136)', fontSize: 14, lineHeight: 18, marginBottom: 5, fontFamily: 'stem-medium'
-						}}>{e.weight}
+						}}>{e.plate.weight}
 						</Text>
 					</View>
 					
 					<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-					<Counter value={count(this.props.globalStore.cart, e)}
+					<Counter value={e.count}
 					onRemovePress={async () => {
-						var index = this.props.globalStore.cart.indexOf(e);
-						if (index > -1)
-							this.props.globalStore.cart.splice(index, 1);
-
-						this.setState({});
+						this.props.removePlate(index);
 					}}
-					onAddPress={() => { this.addPlate(e); }}
+					onAddPress={() => {
+						this.props.addPlate(e.plate);
+					}}
 					/>
 
 						<Text style={{
 							color: 'rgb( 255, 255, 255)',
 							fontSize: 16,
 							fontFamily: 'stem-medium'
-						}}>{e.price.toString() + ' ₽'}
+						}}>{e.plate.price.toString() + ' ₽'}
 						</Text>
 					</View>
 				</View>
@@ -298,6 +298,9 @@ class Cart extends React.Component {
 	}
 
 	render() {
+		Storage.subscribe(() => {
+			this.forceUpdate();
+		});
 		const screen = (viewportWidth >= 320 && viewportWidth < 375) ? 0 : (viewportWidth >= 375 && viewportWidth < 414) ? 1 : 2;
 		if (this.props.globalStore.cart.length != 0)
 		return <View style={styles.container} ><ScrollView contentContainerStyle={{
@@ -338,9 +341,9 @@ class Cart extends React.Component {
 		{this.renderButton('Открыть меню ресторана', this.nav)}
 
 		<View style={{ width: screen == 0 ? 290 : screen == 1 ? 346 : 376, height: 1, borderWidth: 1, borderColor: 'rgb( 87, 88, 98)' }} />
-		{unique(this.props.globalStore.cart).map((e,i,a)=>{
+		{this.props.globalStore.cart.map((e,i)=>{
 			return <View key={i} style={{flexDirection: 'row'}}>
-				{this._renderContent(e)}
+				{this._renderContent(e, i)}
 				</View>
 		})}
 		<View style={{ height: screen == 0 ? 30 : screen == 1 ? 34 : 39.1,}}/>
@@ -542,34 +545,15 @@ class Cart extends React.Component {
 	}
 };
 
-function unique(arr) {
-	var result = [];
-
-	nextInput:
-	for (var i = 0; i < arr.length; i++) {
-		var str = arr[i]; // для каждого элемента
-		for (var j = 0; j < result.length; j++) { // ищем, был ли он уже?
-			if (result[j].id == str.id) continue nextInput; // если да, то следующий
-		}
-		result.push(str);
-	}
-
-	return result;
-}
-
-
-function count(arr, element) {
-	let result = 0;
-	for(var i=0; i<arr.length; i++)
-		result += arr[i].id == element.id ? 1 : 0;
-	return result;
-}
 
 export default connect(
 	state => ({
 	  globalStore: state
 	}),
-	dispatch => ({})
+	dispatch => ({
+		removePlate: plateIndex => dispatch({type: 'REMOVE_PLATE', index: plateIndex }),
+		addPlate: plate => dispatch({type: 'ADD_PLATE', payload: plate })
+	})
   )(Cart);
 
 const styles = StyleSheet.create({
