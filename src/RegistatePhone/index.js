@@ -8,6 +8,7 @@ import {
 	Image,
 	WebView,
     Linking,
+    Alert,
     KeyboardAvoidingView,
 	Text
 } from 'react-native';
@@ -30,7 +31,7 @@ const hrShort = <View style={{ width: 290, alignSelf: 'center', margin: 0, heigh
 
 const screen = (viewportWidth >= 320 && viewportWidth < 375) ? 0 : (viewportWidth >= 375 && viewportWidth < 414) ? 1 : 2;
 
-export default class Login extends React.Component {
+export default class Registration extends React.Component {
     navigationOptions = {
 		title: 'Авторизация',
 	};
@@ -176,9 +177,10 @@ export default class Login extends React.Component {
                 return res.json();
             })
             .then((data) => {
-                console.log( JSON.stringify( data ) );
-                this.props.navigation.setParams(data);
-                this.props.navigation.goBack(this.props.navigation.state.params.loginKey, );
+                if (data.errors.code != 200) {
+                    Alert.alert(data.errors.title, data.errors.detail);
+                }
+                this.props.navigation.goBack();
             })
         }
             
