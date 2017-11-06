@@ -246,8 +246,8 @@ class Recomendations extends React.Component {
           background-size: contain" />`
       }}
       style={{
-        width: (SLIDER_WIDTH) / 4,
-        height: (SLIDER_WIDTH) / 4,
+        width: (SLIDER_WIDTH) / 2,
+        height: (SLIDER_WIDTH) / 2,
         backgroundColor: 'transparent',
       }} />;
     var bottomView = <View style={{

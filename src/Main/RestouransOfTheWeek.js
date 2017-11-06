@@ -126,6 +126,7 @@ export default class Recomendations extends React.Component {
   renderLogo(logo) {
 
     const screen = (viewportWidth >= 320 && viewportWidth < 375) ? 0 : (viewportWidth >= 375 && viewportWidth < 414) ? 1 : 2;
+    const SLIDER_WIDTH = screen == 0 ? 280 : screen == 1 ? 328.1 : 362.3;
     return <View style={{ height: 100 }}>
       <WebView
         bounces={false}
@@ -134,8 +135,8 @@ export default class Recomendations extends React.Component {
           html: `<div style="width:100%; height: 100%; background: url(` + logo + `) left bottom no-repeat; background-size: contain" />`
         }}
         style={{
-          width: screen == 0 ? 90 : 100,
-          height: screen == 0 ? 90 : 100,
+          width: SLIDER_WIDTH * 2 / 3,
+          height: SLIDER_WIDTH * 2 / 3,
           backgroundColor: 'transparent',
         }} />
     </View>
