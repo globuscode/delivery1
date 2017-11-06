@@ -10,7 +10,6 @@ import {
 	WebView,
 	Platform,
 	Linking,
-	AsyncStorage,
 	Text
 } from 'react-native';
 import { Header } from 'react-native-elements';
@@ -22,6 +21,8 @@ import {
 	LinearGradient,
 	Constants
 } from 'expo';
+import { connect } from 'react-redux';
+
 import Counter from '../Counter';
 import PriceButton from '../PriceButton';
 
@@ -32,7 +33,7 @@ const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window'
 const hr = <View style={{ alignSelf: 'stretch', marginHorizontal: 20, height: 1, backgroundColor: 'rgb(87, 88, 98)' }} />;
 const hrShort = <View style={{ width: 290, alignSelf: 'center', margin: 0, height: 1, backgroundColor: 'rgb(87, 88, 98)' }} />;
 
-export default class Plate extends React.Component {
+class Cart extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -172,27 +173,13 @@ export default class Plate extends React.Component {
 	}
 
 	componentWillMount = async () => {
-		let cart = await AsyncStorage.getItem('cart');
-		cart = JSON.parse(cart);
-		this.setState({ cart: cart, cartSet: Array.from(new Set(cart))});
 
 	}
 
 	addPlate = async (plate) => {
-		let cart = await AsyncStorage.getItem('cart');
-		cart = JSON.parse(cart);
-		if (cart) {
-			cart.push(plate);
-		} else {
-			cart = [plate];
-		}
-		await AsyncStorage.setItem('cart', JSON.stringify(cart));
-		this.setState({ cart: cart, cartSet: Array.from(new Set(cart)) });
 	}
 
 	clear = async () => {
-		await AsyncStorage.removeItem('cart');
-		this.setState({ cart: [], cartSet: []});
 	}
 
 	renderButton = (title, callback) => {
@@ -237,15 +224,12 @@ export default class Plate extends React.Component {
 	}
 
 	update = async () => {
-		let cart = await AsyncStorage.getItem('cart');
-		cart = JSON.parse(cart);
-		this.setState({ cart: cart, cartSet: Array.from(new Set(cart)) });
 	}
 
 	totalPrice = () => {
 		let result = 0;
-		for (var i=0; i<this.state.cart.length; i++) {
-			result += parseFloat(this.state.cart[i].price);
+		for (var i=0; i<this.props.globalStore.cart.length; i++) {
+			result += parseFloat(this.props.globalStore.cart[i].price);
 		}
 
 		return result;
@@ -281,13 +265,12 @@ export default class Plate extends React.Component {
 					</View>
 					
 					<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-					<Counter value={count(this.state.cart, e)}
+					<Counter value={count(this.props.globalStore.cart, e)}
 					onRemovePress={async () => {
-						var index = this.state.cart.indexOf(e);
+						var index = this.props.globalStore.cart.indexOf(e);
 						if (index > -1)
-							this.state.cart.splice(index, 1);
+							this.props.globalStore.cart.splice(index, 1);
 
-						await AsyncStorage.setItem('cart', JSON.stringify(this.state.cart));
 						this.setState({});
 					}}
 					onAddPress={() => { this.addPlate(e); }}
@@ -316,7 +299,7 @@ export default class Plate extends React.Component {
 
 	render() {
 		const screen = (viewportWidth >= 320 && viewportWidth < 375) ? 0 : (viewportWidth >= 375 && viewportWidth < 414) ? 1 : 2;
-		if (this.state.cart && this.state.cart != [])
+		if (this.props.globalStore.cart.length != 0)
 		return <View style={styles.container} ><ScrollView contentContainerStyle={{
 			justifyContent: 'flex-start',
 			alignItems: 'center',
@@ -355,7 +338,7 @@ export default class Plate extends React.Component {
 		{this.renderButton('Открыть меню ресторана', this.nav)}
 
 		<View style={{ width: screen == 0 ? 290 : screen == 1 ? 346 : 376, height: 1, borderWidth: 1, borderColor: 'rgb( 87, 88, 98)' }} />
-		{unique(this.state.cart).map((e,i,a)=>{
+		{unique(this.props.globalStore.cart).map((e,i,a)=>{
 			return <View key={i} style={{flexDirection: 'row'}}>
 				{this._renderContent(e)}
 				</View>
@@ -581,6 +564,13 @@ function count(arr, element) {
 		result += arr[i].id == element.id ? 1 : 0;
 	return result;
 }
+
+export default connect(
+	state => ({
+	  globalStore: state
+	}),
+	dispatch => ({})
+  )(Cart);
 
 const styles = StyleSheet.create({
 	text: {

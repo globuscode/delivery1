@@ -14,13 +14,13 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { LinearGradient } from 'expo';
 import SvgUri from 'react-native-svg-uri';
-
+import { connect } from 'react-redux';
 
 import PriceButton from '../PriceButton';
 import IconD from '../IconD';
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
-export default class Recomendations extends React.Component {
+class Recomendations extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -84,9 +84,9 @@ export default class Recomendations extends React.Component {
 
   addPlateToCart = async (plate) => {
     //await AsyncStorage.removeItem('cart');
-    let cart = await AsyncStorage.getItem('cart');
-    Store.dispatch({type: 'ADD_PLATE', payload: plate});
-    cart = JSON.parse(cart);
+    //let cart = await AsyncStorage.getItem('cart');
+    this.props.onAddPlate(plate);
+    /*cart = JSON.parse(cart);
     if (cart) {
       cart.push(plate);
       await AsyncStorage.setItem('cart', JSON.stringify(cart));
@@ -94,7 +94,7 @@ export default class Recomendations extends React.Component {
       cart = [];
       cart.push(plate);
       await AsyncStorage.setItem('cart', JSON.stringify(cart));
-    }
+    }*/
 
   }
 
@@ -343,6 +343,17 @@ export default class Recomendations extends React.Component {
     );
   }
 }
+
+export default connect(
+  state => ({
+    globalStore: state
+  }),
+  dispatch => ({
+    onAddPlate: plate => {
+      dispatch({ type: 'ADD_PLATE', payload: plate });
+    }
+  })
+)(Recomendations);
 
 const styles = StyleSheet.create({
   text: {
