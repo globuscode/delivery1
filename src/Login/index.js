@@ -38,7 +38,56 @@ export default class Login extends React.Component {
 			rang: 2,
 			canNav: true,
 		};
-	};
+    };
+
+    renderStatus = () => {
+        return 'Рады видеть вас снова';
+    }
+    
+    renderForms = () => {
+        return 
+        <View
+        style={{
+            flexDirection: 'column',
+            paddingHorizontal: screen == 0 ? 20 : screen == 1 ? 27 : 30
+        }}>
+            <TextField 
+                onBlur={()=>{Keyboard.dismiss()}}
+                tintColor='#dcc49c'
+                baseColor='rgb( 87, 88, 98)'
+                textColor='white'
+                returnKeyType='send'
+                style={{
+                    alignItems: 'center',
+                    textAlign: 'center',
+                }}
+                keyboardType="email-address"
+                inputContainerStyle={styles.formContainer}
+                label='E-mail адрес'
+                value={this.state.email}
+                onChangeText={(address) => {this.state.email = address; }}
+                onBlur={() => this.setState({hidePrevious: true})}
+            />
+            <View style={{height: (screen == 0 ? 34 : screen == 1 ? 42 : 48)-10}}/>
+            <TextField 
+                onBlur={()=>{Keyboard.dismiss()}}
+                secureTextEntry
+                tintColor='#dcc49c'
+                baseColor='rgb( 87, 88, 98)'
+                textColor='white'
+                returnKeyType='send'
+                style={{
+                    alignItems: 'center',
+                    textAlign: 'center',
+                }}
+                inputContainerStyle={styles.formContainer}
+                label='Пароль'
+                value={this.state.password}
+                onChangeText={(password) => {this.state.password = password; }}
+                onBlur={() => this.setState({hidePrevious: true})}
+            />
+        </View>;
+    }
 
 	render = () => {
         return <KeyboardAvoidingView behavior='position' style={styles.container} contentContainerStyle={{flex: 1}}>
@@ -90,7 +139,7 @@ export default class Login extends React.Component {
                 color: 'rgb( 255, 255, 255)',
                 marginTop: screen == 0 ? 46 : screen == 1 ? 55 : 63,
                 marginBottom: screen == 0 ? 36 : screen == 1 ? 46 : 52,
-            }}>{this.props.navigation.state.params ? (this.props.navigation.state.params.errors.title + '\n' + this.props.navigation.state.params.errors.detail) : 'Рады видеть вас снова'}</Text>
+            }}>{this.renderStatus()}</Text>
             <View style={{flexDirection: 'column', paddingHorizontal: screen == 0 ? 20 : screen == 1 ? 27 : 30}}>
                 <TextField 
                     onBlur={()=>{Keyboard.dismiss()}}
@@ -128,6 +177,7 @@ export default class Login extends React.Component {
                     onBlur={() => this.setState({hidePrevious: true})}
                 />
             </View>
+            {this.renderForms()}
 
             <View style={{
             position: 'absolute',
@@ -177,6 +227,11 @@ const styles = StyleSheet.create({
       textAlign: 'center',
       letterSpacing: 0.8,
       fontFamily: 'stem-regular'
+    },
+    formContainer: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
 	container: {
         //height: viewportHeight,
