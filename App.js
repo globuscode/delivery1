@@ -1,25 +1,28 @@
 import React from 'react';
+import { Font } from 'expo';
+import Expo from 'expo';
 import { StatusBar, Platform} from 'react-native';
 import { StackNavigator } from 'react-navigation';
-import {Font} from 'expo';
-import Expo from 'expo';
-import IconD from './src/IconD';
+import { Provider } from 'react-redux';
 
-import Login from './src/Login';
+import IconD from './src/IconD';
+import Reducer from './src/Reducers';
+
+import Login from           './src/Login';
+import Registration from    './src/Registration';
 import RegistratePhone from './src/RegistatePhone';
-import Registration from './src/Registration';
-import SelectCity from './src/SelectCity';
-import SelectTags from './src/SelectTags';
-import SetAddress from './src/SetAddress';
-import SelectTastes from './src/SelectTastes';
-import About from './src/about';
-import SpecialScreen from './src/SpecialScreen';
-import LoadingScreen from './src/LoadingScreen';
-import Main from './src/Main'; 
-import AllRestourans from './src/AllRestourans';
-import Restaurant from './src/Restaurant'; 
-import RestaurantMenu from './src/RestaurantMenu';
-import Plate from './src/Plate';
+import SelectCity from      './src/SelectCity';
+import SelectTags from      './src/SelectTags';
+import SetAddress from      './src/SetAddress';
+import SelectTastes from    './src/SelectTastes';
+import About from           './src/about';
+import SpecialScreen from   './src/SpecialScreen';
+import LoadingScreen from   './src/LoadingScreen';
+import Main from            './src/Main'; 
+import AllRestourans from   './src/AllRestourans';
+import Restaurant from      './src/Restaurant'; 
+import RestaurantMenu from  './src/RestaurantMenu';
+import Plate from           './src/Plate';
 
 
 StatusBar.setBarStyle('light-content', true);
@@ -181,7 +184,9 @@ export default class App extends React.Component {
   render() {
     if (this.state.canRender)
       return (
-        <A />
+        <Provider store={Reducer}>
+          <A />
+        </Provider>
       )
     else return null;
   }
