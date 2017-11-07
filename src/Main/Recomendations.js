@@ -244,7 +244,7 @@ class Recomendations extends React.Component {
         html: `<div 
           style="width:100%;
           height: 100%;
-          background: url('` + item.restourantLogo + `') left bottom no-repeat;
+          background: url('` + item.restourantLogo + `') left bottom;
           background-size: contain" />`
       }}
       style={{
@@ -267,7 +267,7 @@ class Recomendations extends React.Component {
       value={item.price} onPress={() => {
         this.addPlateToCart(item);
       }} />
-      {itemCount == 0 ? null :
+      {true ? null :
         <Badge
           wrapperStyle={{
             position: 'absolute',
