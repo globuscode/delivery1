@@ -13,7 +13,6 @@ import IconFA from 'react-native-vector-icons/FontAwesome';
 var IconD;
 
 Font.loadAsync({
-	'open-sans-bold': require('../assets/fonts/OpenSans-Semibold.ttf'),
 	'FontName': require('../assets/icons/fonts/icomoon.ttf')
 });
 
