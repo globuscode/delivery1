@@ -163,15 +163,11 @@ export default class Registration extends React.Component {
                 "phone": this.state.phone ? this.state.phone : 'null',
                 "password": this.props.navigation.state.params.password
             };
-            var data = new FormData();
-            for (param in payload)
-                data.append(param, payload[param]);
-            console.log(data);
             
             fetch("http://dostavka1.com/v1/auth/register",
             {
                 method: "POST",
-                body: data
+                body: JSON.stringify(payload)
             })
             .then((res)=>{
                 return res.json();
