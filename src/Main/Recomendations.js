@@ -13,9 +13,11 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { LinearGradient } from 'expo';
+import { Badge } from 'react-native-elements';
 import SvgUri from 'react-native-svg-uri';
 import { connect } from 'react-redux';
 
+import Storage from '../Reducers';
 import PriceButton from '../PriceButton';
 import IconD from '../IconD';
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
@@ -250,6 +252,7 @@ class Recomendations extends React.Component {
         height: (SLIDER_WIDTH) / 2,
         backgroundColor: 'transparent',
       }} />;
+    var itemCount = getCount(this.props.globalStore, item);
     var bottomView = <View style={{
       flexDirection: 'row',
       justifyContent: 'space-between',
@@ -264,6 +267,19 @@ class Recomendations extends React.Component {
       value={item.price} onPress={() => {
         this.addPlateToCart(item);
       }} />
+      {itemCount == 0 ? null :
+        <Badge
+          wrapperStyle={{
+            position: 'absolute',
+            bottom: 15,
+            right: -10,
+          }}
+          containerStyle={{
+            backgroundColor: 'white',
+          }}
+          value={itemCount}
+          textStyle={{ color: 'black' }}
+        />}
     </View>
 
 
@@ -290,6 +306,10 @@ class Recomendations extends React.Component {
   };
 
   render() {
+		Storage.subscribe(() => {
+			this.forceUpdate();
+    });
+    
     const screen = (viewportWidth >= 320 && viewportWidth < 375) ? 0 : (viewportWidth >= 375 && viewportWidth < 414) ? 1 : 2;
     let slideW = screen == 0 ? 280 : screen == 1 ? 328.1 : 362.3;
     const SLIDER_MARGIN = screen == 0 ? 10 / 2 : screen == 1 ? 11.7 / 2 : 13.2 / 2;
@@ -344,9 +364,27 @@ class Recomendations extends React.Component {
   }
 }
 
+/**
+ * Возвращает колличество блюд plate в корзине
+ * @param {Object} cart 
+ * @param {Object} plate 
+ */
+function getCount(cart, plate) {
+  var i = 0;
+  while (i < cart.length) {
+      let equalTitle = plate.title == cart[i].plate.title;
+      let equalRestaurant = plate.restourant == cart[i].plate.restourant;
+      if (equalTitle && equalRestaurant) {
+        return cart[i].count;
+      }
+      i++;
+  }
+  return 0;
+}
+
 export default connect(
   state => ({
-    globalStore: state
+    globalStore: state.cart
   }),
   dispatch => ({
     onAddPlate: plate => {
