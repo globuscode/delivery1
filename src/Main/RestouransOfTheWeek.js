@@ -135,8 +135,8 @@ export default class Recomendations extends React.Component {
           html: `<div style="width:100%; height: 100%; background: url(` + logo + `) left bottom no-repeat; background-size: contain" />`
         }}
         style={{
-          width: SLIDER_WIDTH * 2 / 3,
-          height: SLIDER_WIDTH * 2 / 3,
+          width: SLIDER_WIDTH / 4,
+          height: SLIDER_WIDTH / 4,
           backgroundColor: 'transparent',
         }} />
     </View>
