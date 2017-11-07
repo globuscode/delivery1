@@ -37,7 +37,9 @@ export default class Login extends React.Component {
 		super(props);
 		this.state = {
 			rang: 2,
-			canNav: true,
+            canNav: true,
+            passwordInputError: null,
+            emailInputError: null,
 		};
 	};
 
@@ -100,27 +102,46 @@ export default class Login extends React.Component {
                     }}
                     inputContainerStyle={{ flexDirection: 'column' , alignItems: 'center', justifyContent: 'center' }}
                     label='E-mail адрес'
+                    error={ this.state.emailInputError }
                     value={this.state.email}
-                    onChangeText={(address) => {this.state.email = address; }}
+                    onChangeText={(address) => {
+                        this.state.email = address;
+
+                        if ( !validateEmail(this.state.email) )
+                            this.setState({ emailInputError: 'Ошибка. Неверный формат' });
+                        else
+                            this.setState({ emailInputError: null });
+                    }}
                     onBlur={() => this.setState({hidePrevious: true})}
                 />
                 <View style={{height: (screen == 0 ? 34 : screen == 1 ? 42 : 48)-25}}/>
 
                 <TextField 
+                    ref='password'
                     secureTextEntry
                     tintColor='#dcc49c'
                     baseColor='rgb( 87, 88, 98)'
                     textColor='white'
                     returnKeyType='send'
+                    error={ this.state.passwordInputError }
                     style={{
                         alignItems: 'center',
                         textAlign: 'center',
                     }}
                     inputContainerStyle={{ flexDirection: 'column' , alignItems: 'center', justifyContent: 'center' }}
                     label='Пароль'
-                    value={this.state.password}
-                    onChangeText={(address) => {this.state.password = address; }}
-                    onBlur={() => this.setState({hidePrevious: true})}
+                    keyboardType='email-address'
+                    value={ this.state.password }
+                    onChangeText={(address) => {
+                        this.state.password = address;
+                        if ( this.state.password.length <= 6 )
+                            this.setState({ passwordInputError: 'Ошибка. Пароль должен быть больше 6 символов.' });
+                        else
+                            this.setState({ passwordInputError: null });
+                    }}
+                    onBlur={() => {
+                        this.setState({hidePrevious: true});
+                    }}
                 />
             </View>
 
@@ -169,8 +190,13 @@ export default class Login extends React.Component {
     }
 
     isNext = () => {
-        return  (this.state.firstName && this.state.secondName && this.state.password && this.state.email);
+        return  (this.state.firstName && this.state.secondName && this.state.passwordInputError == null && this.state.emailInputError == null);
     }
+}
+
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
 }
 
 const styles = StyleSheet.create({
