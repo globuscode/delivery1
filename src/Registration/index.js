@@ -62,6 +62,7 @@ export default class Login extends React.Component {
                     baseColor='rgb( 87, 88, 98)'
                     textColor='white'
                     returnKeyType='send'
+                    autoCapitalize='words'
                     style={{
                         alignItems: 'center',
                         textAlign: 'center',
@@ -70,7 +71,7 @@ export default class Login extends React.Component {
                     label='Имя'
                     value={this.state.firstName}
                     onChangeText={(firstName) => {this.state.firstName = firstName; }}
-                    onBlur={() => this.setState({hidePrevious: true})}
+                    
                 />
                 <View style={{height: (screen == 0 ? 34 : screen == 1 ? 42 : 48)-25}}/>
 
@@ -79,6 +80,7 @@ export default class Login extends React.Component {
                     baseColor='rgb( 87, 88, 98)'
                     textColor='white'
                     returnKeyType='send'
+                    autoCapitalize='words'
                     style={{
                         alignItems: 'center',
                         textAlign: 'center',
@@ -87,7 +89,7 @@ export default class Login extends React.Component {
                     label='Фамилия'
                     value={this.state.secondName}
                     onChangeText={(name) => {this.state.secondName = name; }}
-                    onBlur={() => this.setState({hidePrevious: true})}
+                    
                 />
                 <View style={{height: (screen == 0 ? 34 : screen == 1 ? 42 : 48)-25}}/>
 
@@ -100,19 +102,22 @@ export default class Login extends React.Component {
                         alignItems: 'center',
                         textAlign: 'center',
                     }}
+                    autoCapitalize='none'
+                    keyboardType='email-address'
                     inputContainerStyle={{ flexDirection: 'column' , alignItems: 'center', justifyContent: 'center' }}
                     label='E-mail адрес'
                     error={ this.state.emailInputError }
                     value={this.state.email}
-                    onChangeText={(address) => {
-                        this.state.email = address;
-
+                    onEndEditing={() => {
                         if ( !validateEmail(this.state.email) )
                             this.setState({ emailInputError: 'Ошибка. Неверный формат' });
                         else
                             this.setState({ emailInputError: null });
                     }}
-                    onBlur={() => this.setState({hidePrevious: true})}
+                    onChangeText={(address) => {
+                        this.state.email = address;
+                    }}
+                    
                 />
                 <View style={{height: (screen == 0 ? 34 : screen == 1 ? 42 : 48)-25}}/>
 
@@ -130,18 +135,20 @@ export default class Login extends React.Component {
                     }}
                     inputContainerStyle={{ flexDirection: 'column' , alignItems: 'center', justifyContent: 'center' }}
                     label='Пароль'
-                    keyboardType='email-address'
                     value={ this.state.password }
+                    onEndEditing={() => {
+                        if (this.state.password)
+                            if ( this.state.password.length <= 6 )
+                                this.setState({ passwordInputError: 'Ошибка. Пароль должен быть больше 6 символов.' });
+                            else
+                                this.setState({ passwordInputError: null });
+                        else
+                            this.setState({ passwordInputError: 'Ошибка. Это поле обязательно' });
+                    }}
                     onChangeText={(address) => {
                         this.state.password = address;
-                        if ( this.state.password.length <= 6 )
-                            this.setState({ passwordInputError: 'Ошибка. Пароль должен быть больше 6 символов.' });
-                        else
-                            this.setState({ passwordInputError: null });
                     }}
-                    onBlur={() => {
-                        this.setState({hidePrevious: true});
-                    }}
+                    
                 />
             </View>
 
