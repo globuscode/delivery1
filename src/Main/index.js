@@ -12,7 +12,6 @@ import {
 } from 'react-native'; 
 import { Font, LinearGradient } from 'expo';
 import Icon from 'react-native-vector-icons/Ionicons';
-//import TabNavigator from 'react-native-tab-navigator';
 import Recomendations from './Recomendations';
 import RestouransOfTheWeek from './RestouransOfTheWeek';
 import Collections from './Collections';

@@ -14,7 +14,6 @@ import IconFA from 'react-native-vector-icons/FontAwesome';
 import Drawer from 'react-native-drawer'
 import Picker from "../Picker";
 import { LinearGradient } from 'expo';
-import TabNavigator from 'react-native-tab-navigator';
 
 import RestouransOfTheWeek from '../Main/RestouransOfTheWeek';
 

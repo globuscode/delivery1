@@ -11,13 +11,11 @@ import {
 	Text
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import TabNavigator from 'react-native-tab-navigator';
 import Button from 'react-native-button';
 import {
 	LinearGradient,
 	Constants
 } from 'expo';
-import HTMLView from 'react-native-htmlview';
 
 
 import Recomendations from '../Main/Recomendations';

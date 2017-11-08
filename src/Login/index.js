@@ -13,7 +13,6 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { TextField } from 'react-native-material-textfield';
-import TabNavigator from 'react-native-tab-navigator';
 import Button from 'react-native-button';
 import {
 	LinearGradient,

@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
-import SvgUri from 'react-native-svg-uri';
 
 import IconD from '../IconD';
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');

@@ -12,7 +12,6 @@ import {
 } from 'react-native';
 import { Header } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
-import TabNavigator from 'react-native-tab-navigator';
 import Button from 'react-native-button';
 import {
 	LinearGradient,

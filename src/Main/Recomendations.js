@@ -14,7 +14,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { LinearGradient } from 'expo';
 import { Badge } from 'react-native-elements';
-import SvgUri from 'react-native-svg-uri';
 import { connect } from 'react-redux';
 
 import Storage from '../Reducers';
@@ -244,7 +243,8 @@ class Recomendations extends React.Component {
         html: `<div 
           style="width:100%;
           height: 100%;
-          background: url('` + item.restourantLogo + `') left bottom;
+          background-image: url('` + item.restourantLogo + `');
+          background-position: left bottom;
           background-size: contain" />`
       }}
       style={{
