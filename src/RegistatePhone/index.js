@@ -181,19 +181,29 @@ export default class Registration extends React.Component {
                 "password": this.props.navigation.state.params.password
             };
             
-            fetch("http://dostavka1.com/v1/auth/register",
+            fetch("http://dostavka1.com/v1/auth/register/",
             {
                 method: "POST",
-                body: JSON.stringify(payload)
+                headers: {  
+                    "Content-type": "application/json; charset=UTF-8"  
+                },  
+                body: JSON.stringify( payload )
             })
             .then((res)=>{
                 return res.json();
             })
             .then((data) => {
-                if (data.errors.code != 200) {
-                    Alert.alert(data.errors.title, data.errors.detail);
+                if (data.errors) {
+                    if (data.errors.code != 200) {
+                        Alert.alert(data.errors.title, data.errors.detail);
+                    }
+                    this.props.navigation.goBack();
                 }
-                this.props.navigation.goBack();
+                else {
+                    Alert.alert("Все ОК", JSON.stringify(data));
+                    this.props.navigation.goBack();
+                }
+                    
             })
         }
             
