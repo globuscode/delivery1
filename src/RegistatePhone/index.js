@@ -15,7 +15,6 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import { TextField } from 'react-native-material-textfield';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import TabNavigator from 'react-native-tab-navigator';
 import { TextInputMask } from 'react-native-masked-text';
 import Button from 'react-native-button';
 import {
@@ -61,7 +60,7 @@ export default class Registration extends React.Component {
 					borderRadius: 8,
 					borderColor: 'white'
 				}]}>
-				<Text style={{ color: '#ffffff', fontSize: 14, fontFamily: 'stem-medium', }}>{title}</Text></View>
+				<Text style={{ color: '#ffffff', fontSize: 14, fontFamily: 'stem-medium', top: 3}}>{title}</Text></View>
 
 			<TouchableOpacity
 				activeOpacity={0}
@@ -80,7 +79,7 @@ export default class Registration extends React.Component {
 						borderRadius: 8,
 						borderColor: 'rgb( 87, 88, 98)'
 					}]}>
-				<Text style={{ color: '#ffffff', fontSize: 14, fontFamily: 'stem-medium', }}>{title}</Text>
+				<Text style={{ color: 'rgb( 225, 199, 155)', fontSize: 14, fontFamily: 'stem-medium', top: 3}}>{title}</Text>
 			</TouchableOpacity></View>;
 	}
 
@@ -125,7 +124,25 @@ export default class Registration extends React.Component {
                 <View style={{height: (screen == 0 ? 30 : screen == 1 ? 39 : 45)-25}}/>
             </View>
             {this.renderButton('Получить код', ()=>{})}
-
+            <View style={{
+                flexDirection: 'column',
+                alignSelf: 'center',
+                width: screen==0 ? 136 : screen == 1 ? 160 : 177,
+            }}>
+            <TextField
+                tintColor={'#dcc49c'}
+                baseColor={'rgb( 87, 88, 98)'}
+                textColor={'white'}
+                returnKeyType={'send'}
+                keyboardType={'phone-pad'}
+                style={{
+                    alignItems: 'center',
+                    textAlign: 'center',
+                }}
+                inputContainerStyle={{ flexDirection: 'column' , alignItems: 'center', justifyContent: 'center' }}
+                label={'Код подтверждения'}
+            />
+            </View>
             <View style={{
             position: 'absolute',
             alignSelf: 'center',
