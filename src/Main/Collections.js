@@ -97,7 +97,11 @@ export default class Recomendations extends React.Component {
               bounces={false}
               scrollEnabled={false}
               source={{
-                html: '<div style="width:100%; height: 100%; background: url(' + item.restourantLogo + ') left bottom no-repeat; background-size: contain" />'
+                html: 
+                `<img 
+                src="` + item.restourantLogo + `"
+                  style="
+                  width:100%;">`
               }}
               style={{
                 width: (viewportWidth-40)/2,

@@ -240,12 +240,10 @@ class Recomendations extends React.Component {
       bounces={false}
       scrollEnabled={false}
       source={{
-        html: `<div 
-          style="width:100%;
-          height: 100%;
-          background-image: url('` + item.restourantLogo + `');
-          background-position: left bottom;
-          background-size: contain" />`
+        html: `<img 
+        src="` + item.restourantLogo + `"
+          style="
+          width:100%;">`
       }}
       style={{
         width: (SLIDER_WIDTH) / 2,

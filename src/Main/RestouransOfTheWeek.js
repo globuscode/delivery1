@@ -132,7 +132,10 @@ export default class Recomendations extends React.Component {
         bounces={false}
         scrollEnabled={false}
         source={{
-          html: `<div style="width:100%; height: 100%; background: url(` + logo + `) left bottom no-repeat; background-size: contain" />`
+          html: `<img 
+          src="` + logo + `"
+            style="
+            width:100%;">`
         }}
         style={{
           width: SLIDER_WIDTH / 4,
