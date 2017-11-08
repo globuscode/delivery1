@@ -13,7 +13,6 @@ import {
 } from 'react-native';
 import { Badge } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
-import TabNavigator from 'react-native-tab-navigator';
 import {
 	LinearGradient,
 	Constants
