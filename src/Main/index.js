@@ -28,6 +28,8 @@ import Plate from '../Plate';
 import SelectTags from '../SelectTags';
 import SelectTastes from '../SelectTastes';
 
+import Profile from '../Profile';
+
 import SpecialScreen from '../SpecialScreen';
 import LoadingScreen from '../LoadingScreen';
 
@@ -90,6 +92,25 @@ const FirstScreen = StackNavigator({
     screen: RestaurantMenu,
     navigationOptions: {
       title: 'Джон Джоли',
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontFamily: 'stem-medium',
+        fontSize: 14,
+        letterSpacing: 0.8
+      },
+      headerBackTitleStyle: {
+        color: '#dcc49c'
+      },
+      headerStyle: {
+        marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
+        backgroundColor: '#292b37'
+      }
+    }
+  },
+  Profile: {
+    screen: Profile,
+    navigationOptions: {
+      title: 'Личный кабинет',
       headerTintColor: '#fff',
       headerTitleStyle: {
         fontFamily: 'stem-medium',
@@ -206,7 +227,7 @@ export default TabNavigator({
         if (!IconD)
           return <View />;
         return (
-          <View>
+          <View style={{top: -15}}>
             <IconD
               size={25}
               name={focused ? 'homeFill' : 'home'}
@@ -224,7 +245,7 @@ export default TabNavigator({
         if (!IconD)
           return <View />;
         return (
-          <View>
+          <View style={{top: -15}}>
             <IconD
               size={25}
               name={focused ? 'book-fill' : 'book'}
@@ -242,7 +263,7 @@ export default TabNavigator({
         if (!IconD)
           return <View />;
         return (
-          <View>
+          <View style={{top: -15}}>
             <IconD
               size={25}
               name={focused ? 'heart-fill' : 'heart'}
@@ -260,7 +281,7 @@ export default TabNavigator({
         if (!IconD)
           return <View />;
         return (
-          <View>
+          <View style={{top: -15}}>
             <IconD
               size={25}
               name={focused ? 'cart-fill' : 'cart'}
