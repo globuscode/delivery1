@@ -1,13 +1,13 @@
 import { createStore } from 'redux';
+import { AsyncStorage } from 'react-native';
 
 const initialState = {
-    user: {},
-    auth: {}
 };
 
 export default function user(state = initialState, action) {
     if (action.type === 'AUTH') {
-        return action.payload;
+        AsyncStorage.setItem('lastToken', JSON.stringify(action.payload.data.token), ()=>{ console.log('Последний токен сохранен')        });
+        return action.payload.data;
     }
     if (action.type === 'REGISTRATION_ERROR') {
         console.log(action.payload);
