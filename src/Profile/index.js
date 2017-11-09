@@ -27,7 +27,12 @@ class Profile extends React.Component {
   };
 
   async componentWillMount() {
-    
+    var currentCity = await AsyncStorage.getItem('city');
+    currentCity = JSON.parse(currentCity);
+    this.setState({
+      city: currentCity.title,
+      count: currentCity.restaurantCount
+    });
   };
 
   next = () => {
@@ -111,8 +116,8 @@ class Profile extends React.Component {
           borderColor: 'rgb( 87, 88, 98)',
           borderTopWidth: 1,
           marginTop: screen == 0 ? 22 : screen == 1 ? 27 : 31}}/>
-        {this.renderMenuItem('contact', 'Мои заказы', null)}
-        {this.renderMenuItem('cart-small', 'Мои данные', null)}
+        {this.renderMenuItem('cart-small', 'Мои заказы', null)}
+        {this.renderMenuItem('contact', 'Мои данные', null)}
         {this.renderMenuItem('dostavka', 'О программе лояльности', null)}
         {this.renderMenuItem('book-small', 'Путеводитель по приложению', null)}
 
@@ -148,15 +153,16 @@ class Profile extends React.Component {
                 <Text style={{
                   fontFamily: 'stem-medium',
                   fontSize: 20,
+                  height: 20,
                   lineHeight: 20,
                   color: 'rgb( 225, 199, 155)'
                 }}>{this.state.city}</Text>
-                <Text style={{
+                <TouchableOpacity onPress={()=>this.props.navigation.navigate('SelectCity')}><Text style={{
                   fontFamily: 'open-sans-semibold',
                   fontSize: 12,
                   opacity: 0.5,
                   color: 'rgb( 225, 199, 155)'
-                }}>{'Изменить город'}</Text>
+                }}>{'Изменить город'}</Text></TouchableOpacity>
               </View>
             </View>
 
@@ -175,6 +181,7 @@ class Profile extends React.Component {
                 fontFamily: 'stem-medium',
                 lineHeight: 20,
                 fontSize: 20,
+                height: 20,
                 color: 'rgb( 225, 199, 155)'
               }}>{this.state.count}</Text>
             </View>
@@ -192,7 +199,7 @@ class Profile extends React.Component {
           justifyContent: 'flex-start',
           paddingLeft: screen == 0 ? 16 : screen == 1 ? 19 : 20,
       }}>
-          <View style={{width: 25, height: 20}}><IconD name={icon} size={20} color='rgb( 225, 199, 155)'/></View>
+          <View style={{width: 25, height: 10}}><IconD name={icon} size={20} color='rgb( 225, 199, 155)'/></View>
           <Text style={{
               marginLeft: 10,
               fontFamily: 'open-sans',
