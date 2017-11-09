@@ -13,6 +13,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Recomendations from './Recomendations';
 import RestouransOfTheWeek from './RestouransOfTheWeek';
 import Collections from './Collections';
+import { connect } from 'react-redux';
+import Storage from '../Reducers';
 
 
 
@@ -21,7 +23,7 @@ import IconD from '../IconD';
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
 
-export default class Feed extends React.Component {
+class Feed extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -108,6 +110,11 @@ export default class Feed extends React.Component {
 	}
 
 	render() {
+		Storage.subscribe(() => {
+			this.forceUpdate();
+		});
+		const isAuth = Object.keys(this.props.userData).length != 0;
+		console.log('Текущая информация о пользователе', this.props.userData);
 		return (
 			<View style={styles.container}>
 				<View style={{
@@ -124,7 +131,10 @@ export default class Feed extends React.Component {
 				}}>
 					<TouchableOpacity onPress={() => {
 					if (this.state.canNav) {
+						if (!isAuth)
 							this.props.navigation.navigate('Login');
+						else
+							this.props.navigation.navigate('Profile');
      					this.state.canNav = false;
 						setTimeout(() => {
 							this.state.canNav = true;
@@ -142,7 +152,7 @@ export default class Feed extends React.Component {
 									flexDirection: 'row',
 									fontSize: 14
 								}}>
-									{'Личный кабинет'}
+									{!isAuth ? 'Личный кабинет' : (this.props.userData.user.firstName + ' ' + this.props.userData.user.lastName)}
 								</Text>
 								<Text style={{
 									color: 'rgb(119, 122, 136)',
@@ -150,7 +160,7 @@ export default class Feed extends React.Component {
 									flexDirection: 'row',
 									fontSize: 10
 								}}>
-									{'Войдите или зарегистрируйтесь'}
+									{isAuth ? 'Личный кабинет' : 'Войдите или зарегистрируйтесь'}
 								</Text>
 							</View>
 						</View>
@@ -162,8 +172,8 @@ export default class Feed extends React.Component {
 					{this.renderCardHeader('Рекомендуем', 'cutlery', 'Изменить\nсвои вкусы', 'SelectTags')}
 					<Recomendations data={this.state.plates} navigation={this.props.navigation} onNextButtonPress={() => { this.refs['scroll'].scrollTo({ y: 580, animated: true })}}/>
 
-					{this.renderCardHeader('Подборки', 'settings', 'Настроить\nподборки', 'SelectTastes')}
-					<Collections data={this.state.collections} onNextButtonPress={() => { this.refs['scroll'].scrollTo({ y: 1130, animated: true }) }}/>
+					{/*this.renderCardHeader('Подборки', 'settings', 'Настроить\nподборки', 'SelectTastes')
+					<Collections data={this.state.collections} onNextButtonPress={() => { this.refs['scroll'].scrollTo({ y: 1130, animated: true }) }}/>*/}
 
 					{this.renderCardHeader('Рестораны недели', 'look-all', 'Смотреть \nвсе', 'AllRestourans')}
 					<RestouransOfTheWeek data={this.state.restaurants} navigation={this.props.navigation} />
@@ -182,6 +192,14 @@ export default class Feed extends React.Component {
 		);
 	}
 };
+
+export default connect(
+	state => ({
+	  userData: state.user
+	}),
+	dispatch => ({
+	})
+  )(Feed);
 
 
 const styles = StyleSheet.create({

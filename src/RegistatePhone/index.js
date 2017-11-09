@@ -21,6 +21,7 @@ import {
 	LinearGradient,
 	Constants
 } from 'expo';
+import { connect } from 'react-redux';
 
 import IconD from '../IconD';
 
@@ -30,7 +31,7 @@ const hrShort = <View style={{ width: 290, alignSelf: 'center', margin: 0, heigh
 
 const screen = (viewportWidth >= 320 && viewportWidth < 375) ? 0 : (viewportWidth >= 375 && viewportWidth < 414) ? 1 : 2;
 
-export default class Registration extends React.Component {
+class Registration extends React.Component {
     navigationOptions = {
 		title: 'Авторизация',
 	};
@@ -201,7 +202,8 @@ export default class Registration extends React.Component {
                 }
                 else {
                     Alert.alert("Все ОК", JSON.stringify(data));
-                    this.props.navigation.goBack();
+                    this.props.auth(data);
+                    this.props.navigation.navigate('Feed');
                 }
                     
             })
@@ -209,10 +211,35 @@ export default class Registration extends React.Component {
             
     }
 
+    renderMenuItem = (icon, title, nav) => {
+        return 
+        <TouchableOpacity
+        style={{
+            flexDirection: 'row',
+            paddingLeft: screen == 0 ? 16 : screen == 1 ? 19 : 20,
+        }}>
+            <IconD name={icon} size={17} color='rgb( 225, 199, 155)'/>
+            <Text style={{
+                fontFamily: 'open-sans',
+                fontSize: 14,
+                letterSpacing: 0.4,
+                color: '#ffffff'
+            }}>{text}</Text>
+            </TouchableOpacity>
+    }
+
     isNext = () => {
         return  (this.state.phone);
     }
 }
+export default connect(
+	state => ({
+	  globalStore: state.user
+	}),
+	dispatch => ({
+        auth: (data) => dispatch({type: 'AUTH', payload: data})
+	})
+  )(Registration);
 
 const styles = StyleSheet.create({
 	text: {
