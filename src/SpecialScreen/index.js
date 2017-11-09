@@ -10,7 +10,6 @@ import {
   AsyncStorage
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Picker from "react-native-wheel-picker";
 import { LinearGradient, Font } from 'expo';
 
 var kitchenPhoto = require('../../assets/img/kitchen.jpeg');

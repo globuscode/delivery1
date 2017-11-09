@@ -19,7 +19,6 @@ import AllRestourans from '../AllRestourans';
 import SetAddress from '../SetAddress';
 import { StackNavigator, NavigationActions, TabNavigator, TabBarBottom } from 'react-navigation';
 import Drawer from 'react-native-drawer';
-import Picker from "react-native-wheel-picker";
 
 import Feed from './Feed';
 

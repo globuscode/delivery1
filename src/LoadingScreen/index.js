@@ -9,7 +9,6 @@ import {
   Image
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Picker from "react-native-wheel-picker";
 import { LinearGradient } from 'expo';
 import IconD from '../IconD';
 
