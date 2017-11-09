@@ -224,7 +224,7 @@ class Cart extends React.Component {
 	}
 
 	update = async () => {
-		this.forceUpdate();
+		this.setState({});
 	}
 
 	totalPrice = () => {
@@ -298,7 +298,7 @@ class Cart extends React.Component {
 
 	render() {
 		Storage.subscribe(() => {
-			this.forceUpdate();
+			this.setState({});
 		});
 		const screen = (viewportWidth >= 320 && viewportWidth < 375) ? 0 : (viewportWidth >= 375 && viewportWidth < 414) ? 1 : 2;
 		if (this.props.globalStore.cart.length != 0)

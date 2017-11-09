@@ -111,7 +111,7 @@ class Feed extends React.Component {
 
 	render() {
 		Storage.subscribe(() => {
-			this.forceUpdate();
+			this.setState({});
 		});
 		const isAuth = Object.keys(this.props.userData).length != 0;
 		console.log('Текущая информация о пользователе', this.props.userData);

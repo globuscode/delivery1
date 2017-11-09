@@ -313,7 +313,7 @@ class Recomendations extends React.Component {
 
   render() {
 		Storage.subscribe(() => {
-			this.forceUpdate();
+			this.setState({});
     });
     
     const screen = (viewportWidth >= 320 && viewportWidth < 375) ? 0 : (viewportWidth >= 375 && viewportWidth < 414) ? 1 : 2;
