@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Dimensions,
   ScrollView,
+  PlatformIOS,
   Platform,
   StatusBar,
   Image
@@ -226,7 +227,7 @@ export default TabNavigator({
         if (!IconD)
           return <View />;
         return (
-          <View style={{top: -15}}>
+          <View style={{top: Platform.OS === 'ios' ? -15 : 0}}>
             <IconD
               size={25}
               name={focused ? 'homeFill' : 'home'}
@@ -244,7 +245,7 @@ export default TabNavigator({
         if (!IconD)
           return <View />;
         return (
-          <View style={{top: -15}}>
+          <View style={{top: Platform.OS === 'ios' ? -15 : 0}}>
             <IconD
               size={25}
               name={focused ? 'book-fill' : 'book'}
@@ -262,7 +263,7 @@ export default TabNavigator({
         if (!IconD)
           return <View />;
         return (
-          <View style={{top: -15}}>
+          <View style={{top: Platform.OS === 'ios' ? -15 : 0}}>
             <IconD
               size={25}
               name={focused ? 'heart-fill' : 'heart'}
@@ -280,7 +281,7 @@ export default TabNavigator({
         if (!IconD)
           return <View />;
         return (
-          <View style={{top: -15}}>
+          <View style={{top: Platform.OS === 'ios' ? -15 : 0}}>
             <IconD
               size={25}
               name={focused ? 'cart-fill' : 'cart'}
