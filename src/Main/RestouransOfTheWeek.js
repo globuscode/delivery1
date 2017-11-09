@@ -127,22 +127,31 @@ export default class Recomendations extends React.Component {
 
     const screen = (viewportWidth >= 320 && viewportWidth < 375) ? 0 : (viewportWidth >= 375 && viewportWidth < 414) ? 1 : 2;
     const SLIDER_WIDTH = screen == 0 ? 280 : screen == 1 ? 328.1 : 362.3;
-    return <View style={{ height: 100 }}>
+
+    return <Image
+    style={{
+      width: (SLIDER_WIDTH) / 3,
+      height: (SLIDER_WIDTH) / 3,
+      backgroundColor: 'transparent',
+    }}
+     source={{uri: logo}}
+   />;/*
+    return <View style={{ height: SLIDER_WIDTH / 3 }}>
       <WebView
         bounces={false}
         scrollEnabled={false}
         source={{
           html: `<img 
-          src="` + logo + `"
+            src="` + logo + `"
             style="
             width:100%;">`
         }}
         style={{
-          width: SLIDER_WIDTH / 4,
-          height: SLIDER_WIDTH / 4,
+          width: SLIDER_WIDTH / 3,
+          height: SLIDER_WIDTH / 3,
           backgroundColor: 'transparent',
         }} />
-    </View>
+    </View>*/
   };
   
   navigate = () => {

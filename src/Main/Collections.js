@@ -64,6 +64,8 @@ export default class Recomendations extends React.Component {
 
   _renderItem = ({ item, index }) => {
     f = this.fav;
+    const screen = (viewportWidth >= 320 && viewportWidth < 375) ? 0 : (viewportWidth >= 375 && viewportWidth < 414) ? 1 : 2;
+    const SLIDER_WIDTH = screen == 0 ? 280 : screen == 1 ? 328.1 : 362.3;
     return (
       <View style={{
         flex: 1,
@@ -91,7 +93,7 @@ export default class Recomendations extends React.Component {
           borderRadius: 10,
         }} />
 
-        <View style={{ flexDirection: 'row', height: 100, justifyContent: 'space-between' }}>
+        <View style={{ flexDirection: 'row', height: (SLIDER_WIDTH)/2, justifyContent: 'space-between' }}>
           <View>
             <WebView
               bounces={false}
@@ -99,13 +101,12 @@ export default class Recomendations extends React.Component {
               source={{
                 html: 
                 `<img 
-                src="` + item.restourantLogo + `"
-                  style="
-                  width:100%;">`
+                  src="` + item.restourantLogo + `"
+                  style="width:100%; background-color: red;">`
               }}
               style={{
-                width: (viewportWidth-40)/2,
-                height: (viewportWidth - 40) / 2,
+                width: (SLIDER_WIDTH)/2, 
+                height: (SLIDER_WIDTH)/2,
                 backgroundColor: 'transparent',
               }} />
           </View>
@@ -248,25 +249,22 @@ export default class Recomendations extends React.Component {
     </View>;
 
     // Верхняя половина карточки
-    var topView = <View style={itemStyles.topViewStyle}>
+    var topView = <View style={[itemStyles.topViewStyle, {height: (SLIDER_WIDTH)/2}]}>
       <View>
-        <WebView
-          bounces={false}
-          scrollEnabled={false}
-          source={{
-            html: 
-            `<div
-              style="
-              width:100%;
-              height: 100%;
-              background: url(` + item.restourantLogo + `) left bottom no-repeat;
-              background-size: contain" />`
-          }}
-          style={{
-            width: screen == 0 ? 90 : screen == 1 ? 120 : 150,
-            height: screen == 0 ? 90 : screen == 1 ? 120 : 150,
-            backgroundColor: 'transparent',
-          }} />
+      <WebView
+      bounces={false}
+      scrollEnabled={false}
+      source={{
+        html: 
+        `<img 
+          src="` + item.restourantLogo + `"
+          style="width:100%; ">`
+      }}
+      style={{
+        width: (SLIDER_WIDTH)/2, 
+        height: (SLIDER_WIDTH)/2,
+        backgroundColor: 'transparent',
+      }} />
       </View>
 
       <View>

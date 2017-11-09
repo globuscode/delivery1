@@ -236,7 +236,7 @@ class Recomendations extends React.Component {
       {heartButton}
     </View>;
 
-    var logo = <WebView
+    var logo1 = <WebView
       bounces={false}
       scrollEnabled={false}
       source={{
@@ -246,16 +246,24 @@ class Recomendations extends React.Component {
           width:100%;">`
       }}
       style={{
-        width: (SLIDER_WIDTH) / 2,
-        height: (SLIDER_WIDTH) / 2,
+        width: (SLIDER_WIDTH) / 3,
+        height: (SLIDER_WIDTH) / 3,
         backgroundColor: 'transparent',
       }} />;
+      var logo = <Image
+      style={{
+        width: (SLIDER_WIDTH) / 3,
+        height: (SLIDER_WIDTH) / 3,
+        backgroundColor: 'transparent',
+      }}
+       source={{uri: item.restourantLogo}}
+     />;
     var itemCount = getCount(this.props.globalStore, item);
     var bottomView = <View style={{
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'flex-end',
-      height: (SLIDER_WIDTH) / 2,
+      height: (SLIDER_WIDTH) / 3,
     }}>
       <TouchableOpacity 
         activeOpacity={0.8} 
