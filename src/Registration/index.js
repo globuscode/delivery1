@@ -138,7 +138,7 @@ export default class Login extends React.Component {
                     onEndEditing={() => {
                         if (this.state.password)
                             if ( this.state.password.length <= 6 )
-                                this.setState({ passwordInputError: 'Ошибка. Пароль должен быть больше 6 символов.' });
+                                this.setState({ passwordInputError: 'Ошибка. Пароль должен состоять минимум 6 символов.' });
                             else
                                 this.setState({ passwordInputError: null });
                         else
