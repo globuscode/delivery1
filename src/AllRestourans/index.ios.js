@@ -6,11 +6,8 @@ import {
   TouchableOpacity,
   Dimensions,
   ScrollView,
-  Platform,
-  Image
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import IconFA from 'react-native-vector-icons/FontAwesome';
 import Drawer from 'react-native-drawer';
 import Picker from "react-native-wheel-picker";
 import { LinearGradient, Constants } from 'expo';
@@ -35,7 +32,7 @@ export default class AllRestourans extends React.Component {
         'Русская',
       ],
       selectedType: 0
-    }
+    };
   }
 
   componentDidMount() {
@@ -61,14 +58,14 @@ export default class AllRestourans extends React.Component {
           </TouchableOpacity>
           <TouchableOpacity onPress={() => {
             this.selectedType = 0;
-            this.setState({ selectedType: this.state.preSelectedType })
+            this.setState({ selectedType: this.state.preSelectedType });
             this._drawer.close();
           }} style={{ paddingVertical: 10 }}><Text style={{ color: '#dcc49c', fontSize: 18 }}>{'Далее'}</Text></TouchableOpacity>
         </View>
         <Picker style={{ width: 320, alignSelf: 'center' }}
           selectedValue={this.state.types[this.state.preSelectedType]}
           itemStyle={{ color: "#dcc49c", fontSize: 30 }}
-          onValueChange={(index) => { this.state.preSelectedType = index }}>
+          onValueChange={(index) => { this.state.preSelectedType = index; }}>
           {this.state.types.map((value, i) => (
             <Picker.Item label={value} value={i} key={i} />
           ))}
@@ -144,7 +141,7 @@ export default class AllRestourans extends React.Component {
       </View></Drawer>
     );
   }
-};
+}
 
 
 const styles = StyleSheet.create({

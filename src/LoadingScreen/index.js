@@ -3,14 +3,11 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
   Dimensions,
   Alert,
   AsyncStorage,
-  requireNativeComponent,
   Image
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
 import { LinearGradient } from 'expo';
 import IconD from '../IconD';
 
@@ -34,7 +31,7 @@ class Loading extends React.Component {
   componentDidMount() {
     this.props.auth();
     setTimeout(() => {
-       this.props.navigation.navigate('Main');
+      this.props.navigation.navigate('Main');
     }, 2000);
   }
 
@@ -57,7 +54,7 @@ class Loading extends React.Component {
             fontSize: 16,
             fontWeight: 'bold',
             backgroundColor: 'transparent'
-            }}>
+          }}>
             {'Загружаем рекомендации'}
           </Text>
           <View
@@ -66,10 +63,11 @@ class Loading extends React.Component {
               backgroundColor: '#292b37',
               top: viewportHeight / 2,
             }}>
-          <IconD
-            name='dostavka'
-            color='#dcc49c'
-            size={90} /></View>
+            <IconD
+              name='dostavka'
+              color='#dcc49c'
+              size={90} />
+          </View>
         </View>
       </Image>
     );
@@ -77,44 +75,41 @@ class Loading extends React.Component {
 }
 
 export default connect(
-	state => ({
-	  userData: state.user
-	}),
-	dispatch => ({
+  state => ({
+    userData: state.user
+  }),
+  dispatch => ({
     auth: ()=>{
 
       AsyncStorage.getItem('lastToken', (error, token) => {
         token = JSON.parse(token);
         var data = new FormData();
         data.append('token', token );
-        console.log('Последний токен: ', token);
         if (token != null)
-        fetch("http://dostavka1.com/v1/auth/auth/",
-        {
-            method: "POST",
-            headers: {  
+          fetch("http://dostavka1.com/v1/auth/auth/",
+            {
+              method: "POST",
+              headers: {  
                 "Content-type": "application/json; charset=UTF-8"  
-            },  
-            body: data
-        })
-        .then((res)=>{
-            return res.json();
-        })
-        .then((data) => {
-          console.log('Авторизация по токену', data);
-            if (data.errors) {
+              },  
+              body: data
+            })
+            .then((res)=>{
+              return res.json();
+            })
+            .then((data) => {
+              if (data.errors) {
                 if (data.errors.code != 200) {
-                    Alert.alert(data.errors.title, data.errors.detail);
+                  Alert.alert(data.errors.title, data.errors.detail);
                 }
-            }
-            else {
-              dispatch({type: 'AUTH', payload: data})
-            }
-                
-        });
+              }
+              else {
+                dispatch({type: 'AUTH', payload: data});
+              }    
+            });
       });
     }
-	})
+  })
 )(Loading);
 
 const styles = StyleSheet.create({
