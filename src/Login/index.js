@@ -18,6 +18,7 @@ import {
 	LinearGradient,
 	Constants
 } from 'expo';
+import { connect } from 'react-redux';
 
 import IconD from '../IconD';
 
@@ -27,7 +28,7 @@ const hrShort = <View style={{ width: 290, alignSelf: 'center', margin: 0, heigh
 
 const screen = (viewportWidth >= 320 && viewportWidth < 375) ? 0 : (viewportWidth >= 375 && viewportWidth < 414) ? 1 : 2;
 
-export default class Login extends React.Component {
+class Login extends React.Component {
     navigationOptions = {
 		title: 'Авторизация',
 	};
@@ -203,7 +204,58 @@ export default class Login extends React.Component {
             </View>
         </KeyboardAvoidingView>;
     }
+
+    next = () => {
+        if (validateEmail(this.state.email)) {
+            if (this.state.password.length > 6) {
+                this.props.login({
+                    userName: this.state.email,
+                    password: this.state.password 
+                });
+                console.log('Auth');
+                this.props.navigation.navigate('Feed');
+            }
+        }
+    }
 }
+
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
+
+export default connect(
+	state => ({
+	  userData: state.user
+	}),
+	dispatch => ({
+    login: ({ userName, password }) => {
+
+        var data = new FormData();
+        data.append('userName', userName );
+        data.append('password', password );
+        fetch("http://dostavka1.com/v1/auth/auth/",
+        {
+            method: "POST",
+            body: data
+        })
+        .then((res)=>{
+            return res.json();
+        })
+        .then((data) => {
+            if (data.errors) {
+                if (data.errors.code != 200) {
+                    Alert.alert(data.errors.title, data.errors.detail);
+                }
+            }
+            else {
+              dispatch({type: 'AUTH', payload: data});
+            }
+                
+        });
+    }
+  })
+)(Login);
 
 const styles = StyleSheet.create({
 	text: {
