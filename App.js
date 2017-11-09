@@ -23,6 +23,7 @@ import AllRestourans from   './src/AllRestourans';
 import Restaurant from      './src/Restaurant'; 
 import RestaurantMenu from  './src/RestaurantMenu';
 import Plate from           './src/Plate';
+import Profile from         './src/Profile';
 
 
 StatusBar.setBarStyle('light-content', true);
@@ -78,6 +79,25 @@ const A = StackNavigator({
     screen: RegistratePhone,
     navigationOptions: {
       title: 'Номер телефона',
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontFamily: 'stem-medium',
+        fontSize: 14,
+        letterSpacing: 0.8
+      },
+      headerBackTitleStyle: {
+        color: '#dcc49c'
+      },
+      headerStyle: {
+        marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
+        backgroundColor: '#292b37'
+      }
+    }
+  },
+  Profile: {
+    screen: Profile,
+    navigationOptions: {
+      title: 'Личный кабинет',
       headerTintColor: '#fff',
       headerTitleStyle: {
         fontFamily: 'stem-medium',
