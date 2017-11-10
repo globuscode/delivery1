@@ -63,6 +63,7 @@ class Profile extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+      <TouchableOpacity onPress={()=>this.props.logout()}><Text>{"Разлогиниться"}</Text></TouchableOpacity>
         <View style={{
             flexDirection: 'row',
             alignSelf: 'stretch',
@@ -78,7 +79,7 @@ class Profile extends React.Component {
             letterSpacing: 0.8,
             top: Platform.OS === 'ios' ? 4 : 0
         }}>
-            {this.props.userData.user.firstName+'\n'+this.props.userData.user.lastName}
+            {this.props.userData.user ? (this.props.userData.user.firstName+'\n'+this.props.userData.user.lastName) : null}
         </Text>
         </View>
         <View style={{
@@ -215,7 +216,11 @@ export default connect(
 	state => ({
 	  userData: state.user
 	}),
-	dispatch => ({})
+	dispatch => ({
+    logout: () => {
+      dispatch({type: 'LOGOUT'});
+    }
+  })
 )(Profile);
 
 const styles = StyleSheet.create({
