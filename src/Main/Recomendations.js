@@ -260,7 +260,7 @@ class Recomendations extends React.Component {
        source={{uri: item.restourantLogo}}
      />;
     var itemCount = getCount(this.props.globalStore, item);
-    var bottomView = <View pointerEvents='none' style={{
+    var bottomView = <View  style={{
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'flex-end',
@@ -274,7 +274,7 @@ class Recomendations extends React.Component {
       value={item.price} onPress={() => {
         this.addPlateToCart(item);
       }} />
-      {true ? null :
+      {itemCount == 0 ? null :
         <Badge
           wrapperStyle={{
             position: 'absolute',

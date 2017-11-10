@@ -235,7 +235,7 @@ export default TabNavigator({
           </View>)
       },
     }
-  },/*
+  },
   Third: {
     screen: ThirdScreen,
     navigationOptions: { 
@@ -271,7 +271,7 @@ export default TabNavigator({
           </View>)
       },
     }
-  },*/
+  },
 }, {
     tabBarComponent: TabBarBottom,
     tabBarPosition: 'bottom',
