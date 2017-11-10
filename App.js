@@ -24,6 +24,7 @@ import Restaurant from      './src/Restaurant';
 import RestaurantMenu from  './src/RestaurantMenu';
 import Plate from           './src/Plate';
 import Profile from         './src/Profile';
+import PersonalInformation from         './src/PersonalInformation';
 
 
 StatusBar.setBarStyle('light-content', true);
@@ -98,6 +99,25 @@ const A = StackNavigator({
     screen: Profile,
     navigationOptions: {
       title: 'Личный кабинет',
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontFamily: 'stem-medium',
+        fontSize: 14,
+        letterSpacing: 0.8
+      },
+      headerBackTitleStyle: {
+        color: '#dcc49c'
+      },
+      headerStyle: {
+        marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
+        backgroundColor: '#292b37'
+      }
+    }
+  },
+  PersonalInformation: {
+    screen: PersonalInformation,
+    navigationOptions: {
+      title: 'Мои данные',
       headerTintColor: '#fff',
       headerTitleStyle: {
         fontFamily: 'stem-medium',
