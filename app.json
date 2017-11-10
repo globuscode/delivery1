@@ -15,7 +15,10 @@
       "backgroundImage": "./assets/img/kitchen.png"
     },
     "packagerOpts": {
-      "assetExts": ["ttf", "mp4"]
+      "assetExts": [
+        "ttf",
+        "mp4"
+      ]
     },
     "ios": {
       "supportsTablet": true,
@@ -23,7 +26,6 @@
         "backgroundColor": "#292b37",
         "resizeMode": "cover"
       }
-
     },
     "android": {
       "splash": {
