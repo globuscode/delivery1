@@ -251,6 +251,7 @@ class Recomendations extends React.Component {
         backgroundColor: 'transparent',
       }} />;
       var logo = <Image
+      pointerEvents='none'
       style={{
         width: (SLIDER_WIDTH) / 3,
         height: (SLIDER_WIDTH) / 3,
@@ -259,7 +260,7 @@ class Recomendations extends React.Component {
        source={{uri: item.restourantLogo}}
      />;
     var itemCount = getCount(this.props.globalStore, item);
-    var bottomView = <View style={{
+    var bottomView = <View pointerEvents='none' style={{
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'flex-end',
