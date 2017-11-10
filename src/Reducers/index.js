@@ -1,17 +1,16 @@
-import { combineReducers, createStore } from 'redux';
+import { combineReducers, createStore } from "redux";
 
-import cart    from './cart';
-import user from './user';
+import cart from "./cart";
+import user from "./user";
 
-combineReducers
+combineReducers;
 const store = createStore(
-    combineReducers({
-        cart,
-        user
-    })
+  combineReducers({
+    cart,
+    user
+  })
 );
 
-store.subscribe(() => {
-});
+store.subscribe(() => {});
 
 export default store;
