@@ -192,6 +192,7 @@ class Profile extends React.Component {
   }
   
   renderMenuItem = (icon, title, nav) => {
+      const screen = (viewportWidth >= 320 && viewportWidth < 375) ? 0 : (viewportWidth >= 375 && viewportWidth < 414) ? 1 : 2;
       return <TouchableOpacity
       style={{
           flexDirection: 'row',
