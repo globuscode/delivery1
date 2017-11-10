@@ -22,5 +22,8 @@
   "name": "delivery1",
   "version": "0.0.0",
   "description": "Hello Expo!",
-  "author": null
+  "devDependencies": {
+    "eslint": "^4.10.0",
+    "eslint-plugin-react": "^7.4.0"
+  }
 }
