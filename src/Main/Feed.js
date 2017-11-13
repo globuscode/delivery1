@@ -38,16 +38,16 @@ class Feed extends React.Component {
 	componentWillMount = async () => {
 		kitchenPhoto = await require('../../assets/img/kitchen.jpeg');
 		err404 = await require('../../assets/img/404.jpg');
-
+		
 		fetch('http://dostavka1.com/v1/recommendations')
 			.then((response) => response.json())
 			.then((responseJson) => {
 				if (responseJson["data"]["plates"])
-					this.state.restourans = responseJson['data']['plates'];
+					this.state.plates = responseJson['data']['plates'];
 				if (responseJson["data"]["popular"])
-					this.state.restourans = responseJson['data']['popular'];
+					this.state.popular = responseJson['data']['popular'];
 				if (responseJson["data"]["collections"])
-					this.state.restourans = responseJson['data']['collections'];
+					this.state.collections = responseJson['data']['collections'];
 				if (responseJson["data"]["restaurants"])
 					this.state.restourans = responseJson['data']['restaurants'];
 
