@@ -25,6 +25,7 @@ import Storage from "../Reducers";
 
 import Recomendations from "../Main/Recomendations";
 import IconD from "../IconD";
+import ButtonD from "../ButtonD";
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
@@ -52,6 +53,9 @@ const hrShort = (
 );
 
 class Cart extends React.Component {
+  navigationOptions = {
+    tabBarVisible: false
+  };
   constructor(props) {
     super(props);
 
@@ -248,6 +252,7 @@ class Cart extends React.Component {
             style={{
               color: "#ffffff",
               fontSize: 14,
+              top: 2,
               fontFamily: "stem-medium"
             }}
           >
@@ -281,6 +286,7 @@ class Cart extends React.Component {
             style={{
               color: "#ffffff",
               fontSize: 14,
+              top: 2,
               fontFamily: "stem-medium"
             }}
           >
@@ -512,7 +518,7 @@ class Cart extends React.Component {
               }}
             />
 
-            {this.renderPromoCode()}
+            {/*this.renderPromoCode()*/}
             <View
               style={{
                 width: screen == 0 ? 290 : screen == 1 ? 346 : 376,
@@ -655,19 +661,38 @@ class Cart extends React.Component {
               </Text>
             </View>
             <View style={{ height: 60 }} />
+            <View style={{
+						position: 'absolute',
+						alignSelf: 'center',
+						width: viewportWidth - 30,
+						bottom: 0,
+						height: 49,
+						borderTopWidth: 2,
+						borderColor: this.totalPrice() >= this.state.restaurant.minBill ? '#dcc49c' : '#575862',
+						flexDirection: 'row',
+						justifyContent: 'center'
+					}}>
+						<TouchableOpacity onPress={this.next}
+							style={{
+								alignSelf: 'center',
+							}}>
+							<Text style={[
+								styles.nextButtonText,
+								{
+									color: this.totalPrice() >= this.state.restaurant.minBill ? '#dcc49c' : '#575862'
+								}
+							]}>{this.totalPrice() >= this.state.restaurant.minBill ? `Оформить заказ на ${this.totalPrice()} ₽` : `До покупки нехватает ${ -this.totalPrice() + this.state.restaurant.minBill} ₽` }</Text>
+						</TouchableOpacity>
+					</View>
           </ScrollView>
-          <LinearGradient
-            colors={["rgba(39, 40, 48, 0)", "rgba(39, 40, 48, 1)"]}
-            style={{
-              height: 60,
-              position: "absolute",
-              bottom: 0,
-              width: viewportWidth
-            }}
-          />
         </View>
       );
     return this.renderEmpty();
+  }
+
+  next = () => {
+    if (this.totalPrice() >= this.state.restaurant.minBill)
+      this.props.navigation.navigate('MakeOrder', {price: this.totalPrice()});
   }
 
   renderPromoCode() {
@@ -802,14 +827,49 @@ class Cart extends React.Component {
             style={{
               width: screen == 0 ? 290 : screen == 1 ? 346 : 376,
               height: 1,
-              borderWidth: 1,
-              borderColor: "rgb( 87, 88, 98)"
+              borderTopWidth: 1,
+              borderColor: "rgb(87, 88, 98)"
             }}
           />
-          <TouchableOpacity style={{ margin: 20 }} onPress={this.update}>
-            <Text>{"Обновить"}</Text>
-          </TouchableOpacity>
-          <View style={{ height: 60 }} />
+          <View style={{
+              width: screen == 0 ? 290 : screen == 1 ? 346 : 376,
+              borderBottomWidth: 1,
+              borderColor: "rgb(87, 88, 98)",
+              paddingHorizontal: 5,
+              paddingVertical: screen == 0 ? 22 : screen == 1 ? 26 : 39,
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              alignSelf: 'center'
+          }}>
+            <Text style={{
+              maxWidth: 140,
+              fontFamily: 'open-sans',
+              color: '#fff',
+              fontSize: 12,
+              letterSpacing: 0.8
+
+            }}>{'Выберите кол-во блюд для заказа'}</Text>
+            <Counter 
+              value={1}/>
+          </View>
+          <View style={{ height: screen == 0 ? 22 : screen == 1 ? 26 : 39 }} />
+
+          <View style={{
+            alignSelf: 'center'
+          }}>
+            <ButtonD onPress={() => this.props.navigation.navigate('Feed')} title='Добавить к заказу \n и перейти в ресторан' width={screen == 0 ? 260 : screen == 1 ? 315 : 354}/>
+          </View>
+
+          <View style={{ height: screen == 0 ? 22 : screen == 1 ? 26 : 39 }} />
+          <Text style={{
+            fontFamily: 'open-sans',
+            fontSize: 12,
+            marginHorizontal: 20,
+            letterSpacing: 0.8,
+            color: '#fff'
+          }}>
+            {'При добавлении первого блюда в корзину, вы перейдете в меню ресторана, где сможете дополнить заказ другими блюдами'}
+          </Text>
         </ScrollView>
         <View
           pointerEvents="none"
@@ -852,6 +912,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignSelf: "stretch"
   },
+	nextButtonText: {
+		fontSize: 16,
+		color: '#dcc49c',
+		marginTop: 17,
+		marginBottom: 17,
+		textAlign: 'center',
+		letterSpacing: 0.8,
+		fontFamily: 'stem-regular'
+	},
   column: {
     flexDirection: "column",
     alignSelf: "stretch"
@@ -859,7 +928,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     elevation: -10,
-    paddingTop: Constants.statusBarHeight,
     backgroundColor: "rgb( 39, 40, 51)"
   }
 });
