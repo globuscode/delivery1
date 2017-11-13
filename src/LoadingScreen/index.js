@@ -30,9 +30,7 @@ class Loading extends React.Component {
 
   componentDidMount() {
     this.props.auth();
-    setTimeout(() => {
-      this.props.navigation.navigate("Main");
-    }, 2000);
+    this.props.navigation.navigate("Main");
   }
 
   render() {
