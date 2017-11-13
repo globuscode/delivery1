@@ -1,8 +1,23 @@
 import { createStore } from 'redux';
+import { AsyncStorage } from 'react-native';
 
 const initialState = [];
 
 export default function cart(state = initialState, action) {
+    if (action.type === 'MAKE_ORDER') {
+        AsyncStorage.getItem('ORDERS_HISTORY', (err, value) => {
+            if (value != null) {
+                var history = JSON.parse(value);
+                history.push(state);
+            }
+            else {
+                var history = [JSON.parse.value];
+            }
+            AsyncStorage.setItem('ORDERS_HISTORY', JSON.stringify(history), () => {});
+        });
+        return initialState;
+    }
+
     if (action.type === 'ADD_PLATE') {
         var isNewPlate = true;
         var i = 0;
@@ -25,7 +40,6 @@ export default function cart(state = initialState, action) {
             state[i-1].count++;
             return state;
         }
-        console.log(state);
     }
     if (action.type === 'REMOVE_PLATE') {
         if (state[action.index].count <= 1)
