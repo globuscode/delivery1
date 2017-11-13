@@ -190,7 +190,12 @@ const FourthScreen = StackNavigator(
         title: "Корзина",
         headerLeft: (
           <TouchableOpacity
-            style={{ width: 25, justifyContent: "center", alignItems: 'center', alignSelf: 'center' }}
+            style={{
+              width: 25,
+              justifyContent: "center",
+              alignItems: "center",
+              alignSelf: "center"
+            }}
             onPress={() => {
               navigation.navigate("Feed");
             }}
