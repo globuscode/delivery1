@@ -4,6 +4,64 @@
     {
       "icon": {
         "paths": [
+          "M0 1019.635v-804.109h1065.822v804.109h-1065.822zM102.454 405.558h860.968v-87.579h-860.968v87.525zM102.454 917.181h860.968v-409.223h-860.968v409.223z",
+          "M162.762 683.924h337.058v-102.4h-337.058z",
+          "M269.474 53.895h970.105v700.632h-970.105z"
+        ],
+        "attrs": [
+          {
+            "fill": "rgb(225, 199, 155)"
+          },
+          {
+            "fill": "rgb(225, 199, 155)"
+          },
+          {
+            "fill": "none",
+            "stroke": "rgb(225, 199, 155)",
+            "strokeLinejoin": "miter",
+            "strokeLinecap": "butt",
+            "strokeMiterlimit": "4",
+            "strokeWidth": 107.78947368421052
+          }
+        ],
+        "width": 1293,
+        "isMulticolor": false,
+        "isMulticolor2": true,
+        "grid": 0,
+        "tags": [
+          "multy-credit-card"
+        ]
+      },
+      "attrs": [
+        {
+          "fill": "rgb(225, 199, 155)"
+        },
+        {
+          "fill": "rgb(225, 199, 155)"
+        },
+        {
+          "fill": "none",
+          "stroke": "rgb(225, 199, 155)",
+          "strokeLinejoin": "miter",
+          "strokeLinecap": "butt",
+          "strokeMiterlimit": "4",
+          "strokeWidth": 107.78947368421052
+        }
+      ],
+      "properties": {
+        "order": 38,
+        "id": 0,
+        "name": "multy-credit-card",
+        "prevSize": 32,
+        "code": 59676
+      },
+      "setIdx": 0,
+      "setId": 3,
+      "iconIdx": 0
+    },
+    {
+      "icon": {
+        "paths": [
           "M0 1018.47v-1018.539h1350.042v1018.539h-1350.042zM129.775 240.64h1090.56v-110.933h-1090.56v110.865zM129.775 888.695h1090.56v-518.349h-1090.56v518.349z",
           "M206.165 593.237h426.94v-129.707h-426.94z"
         ],
@@ -38,7 +96,7 @@
         "prevSize": 32,
         "code": 59672
       },
-      "setIdx": 0,
+      "setIdx": 1,
       "setId": 2,
       "iconIdx": 0
     },
@@ -79,7 +137,7 @@
         "prevSize": 32,
         "code": 59673
       },
-      "setIdx": 0,
+      "setIdx": 1,
       "setId": 2,
       "iconIdx": 1
     },
@@ -120,7 +178,7 @@
         "prevSize": 32,
         "code": 59674
       },
-      "setIdx": 0,
+      "setIdx": 1,
       "setId": 2,
       "iconIdx": 2
     },
@@ -161,7 +219,7 @@
         "prevSize": 32,
         "code": 59675
       },
-      "setIdx": 0,
+      "setIdx": 1,
       "setId": 2,
       "iconIdx": 3
     },
@@ -195,7 +253,7 @@
         "prevSize": 32,
         "code": 59648
       },
-      "setIdx": 1,
+      "setIdx": 2,
       "setId": 1,
       "iconIdx": 0
     },
@@ -229,7 +287,7 @@
         "prevSize": 32,
         "code": 59649
       },
-      "setIdx": 1,
+      "setIdx": 2,
       "setId": 1,
       "iconIdx": 1
     },
@@ -284,7 +342,7 @@
         "prevSize": 32,
         "code": 59650
       },
-      "setIdx": 1,
+      "setIdx": 2,
       "setId": 1,
       "iconIdx": 2
     },
@@ -311,7 +369,7 @@
         "code": 59651,
         "name": "coins"
       },
-      "setIdx": 2,
+      "setIdx": 3,
       "setId": 0,
       "iconIdx": 0
     },
@@ -338,7 +396,7 @@
         "code": 59652,
         "name": "clock"
       },
-      "setIdx": 2,
+      "setIdx": 3,
       "setId": 0,
       "iconIdx": 1
     },
@@ -365,7 +423,7 @@
         "code": 59653,
         "name": "truck"
       },
-      "setIdx": 2,
+      "setIdx": 3,
       "setId": 0,
       "iconIdx": 2
     },
@@ -392,7 +450,7 @@
         "code": 59654,
         "name": "dostavka"
       },
-      "setIdx": 2,
+      "setIdx": 3,
       "setId": 0,
       "iconIdx": 3
     },
@@ -419,7 +477,7 @@
         "code": 59655,
         "name": "food-feed"
       },
-      "setIdx": 2,
+      "setIdx": 3,
       "setId": 0,
       "iconIdx": 4
     },
@@ -446,7 +504,7 @@
         "code": 59656,
         "name": "settings"
       },
-      "setIdx": 2,
+      "setIdx": 3,
       "setId": 0,
       "iconIdx": 5
     },
@@ -473,7 +531,7 @@
         "code": 59657,
         "name": "look-all"
       },
-      "setIdx": 2,
+      "setIdx": 3,
       "setId": 0,
       "iconIdx": 6
     },
@@ -500,7 +558,7 @@
         "code": 59658,
         "name": "cutlery"
       },
-      "setIdx": 2,
+      "setIdx": 3,
       "setId": 0,
       "iconIdx": 7
     },
@@ -527,7 +585,7 @@
         "code": 59659,
         "name": "contact"
       },
-      "setIdx": 2,
+      "setIdx": 3,
       "setId": 0,
       "iconIdx": 8
     },
@@ -554,7 +612,7 @@
         "code": 59660,
         "name": "book-fill"
       },
-      "setIdx": 2,
+      "setIdx": 3,
       "setId": 0,
       "iconIdx": 9
     },
@@ -581,7 +639,7 @@
         "code": 59661,
         "name": "cart"
       },
-      "setIdx": 2,
+      "setIdx": 3,
       "setId": 0,
       "iconIdx": 10
     },
@@ -608,7 +666,7 @@
         "code": 59662,
         "name": "cart-fill"
       },
-      "setIdx": 2,
+      "setIdx": 3,
       "setId": 0,
       "iconIdx": 11
     },
@@ -635,7 +693,7 @@
         "code": 59663,
         "name": "heart"
       },
-      "setIdx": 2,
+      "setIdx": 3,
       "setId": 0,
       "iconIdx": 12
     },
@@ -662,7 +720,7 @@
         "code": 59664,
         "name": "heart-fill"
       },
-      "setIdx": 2,
+      "setIdx": 3,
       "setId": 0,
       "iconIdx": 13
     },
@@ -689,7 +747,7 @@
         "code": 59665,
         "name": "book"
       },
-      "setIdx": 2,
+      "setIdx": 3,
       "setId": 0,
       "iconIdx": 14
     },
@@ -716,7 +774,7 @@
         "code": 59666,
         "name": "homeFill"
       },
-      "setIdx": 2,
+      "setIdx": 3,
       "setId": 0,
       "iconIdx": 15
     },
@@ -743,7 +801,7 @@
         "code": 59667,
         "name": "home"
       },
-      "setIdx": 2,
+      "setIdx": 3,
       "setId": 0,
       "iconIdx": 16
     },
@@ -771,7 +829,7 @@
         "code": 59668,
         "name": "card"
       },
-      "setIdx": 2,
+      "setIdx": 3,
       "setId": 0,
       "iconIdx": 17
     },
@@ -799,7 +857,7 @@
         "code": 59669,
         "name": "heart_empty"
       },
-      "setIdx": 2,
+      "setIdx": 3,
       "setId": 0,
       "iconIdx": 18
     },
@@ -827,7 +885,7 @@
         "code": 59670,
         "name": "heart_full"
       },
-      "setIdx": 2,
+      "setIdx": 3,
       "setId": 0,
       "iconIdx": 19
     },
@@ -854,7 +912,7 @@
         "code": 59671,
         "name": "find"
       },
-      "setIdx": 2,
+      "setIdx": 3,
       "setId": 0,
       "iconIdx": 20
     }
