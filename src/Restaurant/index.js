@@ -130,7 +130,6 @@ export default class Restaurant extends React.Component {
 		fetch('http://dostavka1.com/v1/restaurant?restaurantId='+restaurantId)
 			.then((response) => response.json())
 			.then((responseJson) => {
-				console.log(responseJson['data']);
 				if (responseJson["data"] && responseJson["data"]["result"])
 					this.state.data = responseJson['data']["result"];
 				this.setState({});
@@ -318,7 +317,7 @@ export default class Restaurant extends React.Component {
 						size={30} /></View>
 					<View style={{flexDirection: 'column', justifyContent: 'flex-start', marginLeft: 15}}>
 						<Text style={{ color: '#dcc49c', fontSize: 11, height: 15 }}>{'Время работы\n'}</Text>
-						<Text style={{ color: '#ffffff', fontSize: 11, }}>{this.state.data.time}</Text>
+						<Text style={{ color: '#ffffff', fontSize: 11, maxWidth: 90 }}>{this.state.data.time}</Text>
 					</View>
 				</View>
 				<View style={{
