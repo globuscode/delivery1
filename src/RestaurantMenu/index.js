@@ -177,7 +177,6 @@ export default class RestaurantMenu extends React.Component {
 		fetch('http://dostavka1.com/v1/restaurant?restaurantId='+restaurantId)
 			.then((response) => response.json())
 			.then((responseJson) => {
-				console.log(responseJson['data']);
 				if (responseJson["data"] && responseJson["data"]["result"])
 					this.state.data = responseJson['data']["result"];
 				this.setState({});
