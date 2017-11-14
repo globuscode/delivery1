@@ -2,6 +2,7 @@ import React from 'react';
 import {
   StyleSheet,
   Text,
+  Alert,
   View,
   TouchableOpacity,
   Dimensions,
@@ -27,13 +28,21 @@ export default class SelectCity extends React.Component {
 
   async componentDidMount() {
     var city = await AsyncStorage.getItem('city');
-    if (1)
-      this.props.navigation.navigate('SelectCity'); 
-    else
-      if (city == 'null')
-        this.props.navigation.navigate('SelectCity');
+    fetch('http://dostavka1.com/v1/classificator/cities')
+    .then((response) => {
+      if (!response.ok) {
+        Alert.alert('Ошибка', 'Ошибка соединения с сервером.')
+      }
+      else 
+      if (1)
+        this.props.navigation.navigate('SelectCity'); 
       else
-        this.props.navigation.navigate('Main'); 
+        if (city == 'null')
+          this.props.navigation.navigate('SelectCity');
+        else
+          this.props.navigation.navigate('Main'); 
+        
+      });
   }
 
   render() {
