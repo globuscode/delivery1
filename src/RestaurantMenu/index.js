@@ -16,8 +16,10 @@ import {
 	Constants
 } from 'expo';
 import Accordion from 'react-native-collapsible/Accordion';
+import { connect } from 'react-redux';
 
 import PriceButton from '../PriceButton';
+import Storage from "../Reducers";
 
 import Recomendations from '../Main/Recomendations';
 import IconD from '../IconD';
@@ -28,7 +30,7 @@ const hrShort = <View style={{ alignSelf: 'stretch', margin: 10, marginHorizonta
 
 
 
-export default class RestaurantMenu extends React.Component {
+class RestaurantMenu extends React.Component {
 	navigationOptions = {
 		title: 'Home',
 	};
@@ -308,7 +310,7 @@ export default class RestaurantMenu extends React.Component {
 								color: 'rgb( 135, 136, 140)', fontSize: 12, lineHeight: 14, marginBottom: 5 }}>{e.description}
 							</Text>
 							<View style={{flexDirection: 'row'}}>
-							<PriceButton value={e.price} onPress={null} />
+							<PriceButton value={e.price} pressed={getCount(this.props.globalStore, e) != 0} count={getCount(this.props.globalStore, e)} onPress={()=>this.props.onAddPlate(e)} />
 							<Text style={{
 								color: 'rgb( 135, 136, 140)',
 								marginLeft: 10,
@@ -372,6 +374,10 @@ export default class RestaurantMenu extends React.Component {
 	}
 
 	render() {
+
+		Storage.subscribe(() => {
+			this.setState({});
+		  });
 		var restaurant = <View ><ScrollView ref='scroll' style={styles.container} contentContainerStyle={{
 			justifyContent: 'flex-start',
 			alignItems: 'center',
@@ -566,6 +572,35 @@ export default class RestaurantMenu extends React.Component {
 		</TouchableOpacity>);
 	}
 }
+
+/**
+ * Возвращает колличество блюд plate в корзине
+ * @param {Object} cart 
+ * @param {Object} plate 
+ */
+function getCount(cart, plate) {
+	var i = 0;
+	while (i < cart.length) {
+	  let equalTitle = plate.title == cart[i].plate.title;
+	  let equalRestaurant = plate.restourant == cart[i].plate.restourant;
+	  if (equalTitle && equalRestaurant) {
+		return cart[i].count;
+	  }
+	  i++;
+	}
+	return 0;
+  }
+
+export default connect(
+	state => ({
+	  globalStore: state.cart
+	}),
+	dispatch => ({
+	  onAddPlate: plate => {
+		dispatch({ type: "ADD_PLATE", payload: plate });
+	  }
+	})
+  )(RestaurantMenu);
 
 const styles = StyleSheet.create({
 	text: {

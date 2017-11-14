@@ -18,6 +18,8 @@ import {
 	Constants
 } from 'expo';
 import PriceButton from '../PriceButton';
+import Storage from "../Reducers";
+import { connect } from 'react-redux';
 
 import Recomendations from '../Main/Recomendations';
 import IconD from '../IconD';
@@ -26,7 +28,7 @@ const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window'
 const hr = <View style={{ alignSelf: 'stretch', marginHorizontal: 20, height: 1, backgroundColor: 'rgb(87, 88, 98)' }} />;
 const hrShort = <View style={{ width: 290, alignSelf: 'center', margin: 0, height: 1, backgroundColor: 'rgb(87, 88, 98)' }} />;
 
-export default class Plate extends React.Component{
+class Plate extends React.Component{
 	constructor(props) {
 		super(props);
 
@@ -276,6 +278,15 @@ export default class Plate extends React.Component{
 	}
 
 	render() {
+		Storage.subscribe(() => {
+			this.setState({});
+		  });
+		let inCart = false;
+		var i=0;
+		while (i<this.props.globalStore.length && !inCart) {
+			inCart = this.props.globalStore[i].plate.title == this.state.plate.title;
+			i++;
+		}
 		return <View ><ScrollView style={styles.container} contentContainerStyle={{
 			justifyContent: 'flex-start',
 			alignItems: 'center',
@@ -348,7 +359,7 @@ export default class Plate extends React.Component{
 				<Text style={{ color: '#dcc49c', fontFamily: 'open-sans-semibold', fontSize: 13, letterSpacing: 0.5, marginBottom: 14.4 }}>{this.state.plate.tagGroup.title}</Text>
 			</View>
 
-			<PriceButton value={this.state.plate.price} onPress={null}/>
+			<PriceButton value={this.state.plate.price} count={inCart ? this.props.globalStore[i-1].count : null} pressed={inCart} onPress={() => this.props.onAddPlate(this.state.plate)}/>
 
 
 			<View style={[styles.row, { justifyContent: 'flex-start' }]}>
@@ -483,6 +494,16 @@ export default class Plate extends React.Component{
 	}
 };
 
+export default connect(
+	state => ({
+	  globalStore: state.cart
+	}),
+	dispatch => ({
+	  onAddPlate: plate => {
+		dispatch({ type: "ADD_PLATE", payload: plate });
+	  }
+	})
+  )(Plate);
 
 const styles = StyleSheet.create({
 	text: {
