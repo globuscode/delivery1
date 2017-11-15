@@ -177,7 +177,7 @@ export default class Recomendations extends React.Component {
           this.state.restourans.map((item, index) => {
             return (
               <View key={index} style={[styles.itemContainer, {width: SLIDER_WIDTH, height: SLIDER_WIDTH}]}>
-                <TouchableOpacity activeOpacity={0.8} style={{ position: 'absolute' }} onPress={this.navigate}>
+                <TouchableOpacity activeOpacity={0.8} style={{ position: 'absolute',width: SLIDER_WIDTH, height: SLIDER_WIDTH }} onPress={this.navigate}>
                 <Image
                 style={[styles.itemBackgroundImage, { width: SLIDER_WIDTH, height: SLIDER_WIDTH}]}
                 source={{ uri: item.photo }}
