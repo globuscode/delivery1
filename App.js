@@ -25,6 +25,7 @@ import RestaurantMenu from  './src/RestaurantMenu';
 import Plate from           './src/Plate';
 import Profile from         './src/Profile';
 import MakeOrder from         './src/MakeOrder';
+import MyOrders from         './src/MyOrders';
 import PersonalInformation from         './src/PersonalInformation';
 
 
@@ -119,6 +120,25 @@ const A = StackNavigator({
     screen: MakeOrder,
     navigationOptions: {
       title: 'Оплатить заказ',
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontFamily: 'stem-medium',
+        fontSize: 14,
+        letterSpacing: 0.8
+      },
+      headerBackTitleStyle: {
+        color: '#dcc49c'
+      },
+      headerStyle: {
+        marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
+        backgroundColor: '#292b37'
+      }
+    }
+  },
+  MyOrders: {
+    screen: MyOrders,
+    navigationOptions: {
+      title: 'Мои заказы',
       headerTintColor: '#fff',
       headerTitleStyle: {
         fontFamily: 'stem-medium',
