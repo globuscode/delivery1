@@ -60,7 +60,7 @@ export default class Price extends React.Component {
 			<Text style={{
 				color: '#fff',
 				fontFamily: 'stem-medium',
-				top: 3,
+				top: Platform.OS === 'ios' ? 3 : 0,
 				fontSize: 14,
 				textAlign: 'center',
 			}}>{this.props.value}</Text>

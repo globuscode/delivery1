@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Text, Dimensions, TouchableOpacity, Platform } from 'react-native';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
@@ -28,10 +28,10 @@ export default class ButtonD extends React.Component {
               fontSize: 14,
               fontFamily: "stem-medium",
               textAlign: 'center',
-              top: 2
+              top: Platform.OS === 'ios' ? 2 : 0
             }}
           >
-          {'Добавить к заказу \n и перейти в ресторан'}
+          {this.props.title}
           </Text>
         </View>
 
@@ -57,10 +57,10 @@ export default class ButtonD extends React.Component {
               textAlign: 'center',
               fontSize: 14,
               fontFamily: "stem-medium",
-              top: 2
+              top: Platform.OS === 'ios' ? 2 : 0
             }}
           >
-            {'Добавить к заказу \n и перейти в ресторан'}
+            {this.props.title}
           </Text>
         </TouchableOpacity>
       </View>

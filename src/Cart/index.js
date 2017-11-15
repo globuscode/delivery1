@@ -480,8 +480,11 @@ class Cart extends React.Component {
             )}
 
             {/* Кнопка Открыть меню ресторана */}
-            {this.renderButton("Открыть меню ресторана", this.nav)}
-
+            <View style={{
+              alignSelf: 'center'
+            }}>
+            <ButtonD onPress={this.nav} title='Открыть меню ресторана' width={screen == 0 ? 260 : screen == 1 ? 315 : 354}/>
+            </View>
             <View
               style={{
                 width: screen == 0 ? 290 : screen == 1 ? 346 : 376,
