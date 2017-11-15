@@ -13,6 +13,7 @@
     "react-native-linear-gradient": "^2.3.0",
     "react-native-masked-text": "^1.6.3",
     "react-native-material-textfield": "^0.10.2",
+    "react-native-platform-touchable": "^1.1.1",
     "react-native-snap-carousel": "^3.4.0",
     "react-native-wheel-picker": "^1.1.1",
     "react-navigation": "^1.0.0-beta.19",
