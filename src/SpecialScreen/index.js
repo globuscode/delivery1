@@ -40,7 +40,7 @@ export default class SelectCity extends React.Component {
         if (city == 'null')
           this.props.navigation.navigate('SelectCity');
         else
-          this.props.navigation.navigate('Main'); 
+          this.props.navigation.navigate('Feed'); 
         
       });
   }

@@ -141,8 +141,8 @@ class Profile extends React.Component {
             marginTop: screen == 0 ? 22 : screen == 1 ? 27 : 31
           }}
         />
-        {this.renderMenuItem("cart-small", "Мои заказы", null)}
-        {this.renderMenuItem("contact", "Мои данные", null)}
+        {this.renderMenuItem("cart-small", "Мои заказы", "MyOrders")}
+        {this.renderMenuItem("contact", "Мои данные", "PersonalInformation")}
         {this.renderMenuItem("dostavka", "О программе лояльности", null)}
         {this.renderMenuItem("book-small", "Путеводитель по приложению", null)}
 
@@ -248,7 +248,7 @@ class Profile extends React.Component {
         : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
     return (
       <TouchableOpacity
-        onPress={() => this.props.navigation.navigate("PersonalInformation")}
+        onPress={() => this.props.navigation.navigate(nav)}
         style={{
           flexDirection: "row",
           marginTop: screen == 0 ? 22 : screen == 1 ? 28 : 33,
