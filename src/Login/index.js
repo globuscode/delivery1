@@ -17,6 +17,7 @@ import { TextField } from "react-native-material-textfield";
 import Button from "react-native-button";
 import { LinearGradient, Constants } from "expo";
 import { connect } from "react-redux";
+import Touchable from 'react-native-platform-touchable';
 
 import IconD from "../IconD";
 
@@ -281,10 +282,12 @@ class Login extends React.Component {
             justifyContent: "center"
           }}
         >
-          <TouchableOpacity
+          <Touchable
+            background={Touchable.Ripple('gray')} 
             onPress={this.next}
             style={{
-              alignSelf: "center"
+              alignSelf: "stretch",
+              width: viewportWidth
             }}
           >
             <Text
@@ -300,7 +303,7 @@ class Login extends React.Component {
             >
               Далее
             </Text>
-          </TouchableOpacity>
+          </Touchable>
         </View>
       </KeyboardAvoidingView>
     );

@@ -186,9 +186,12 @@ export default class SelectTags extends React.Component {
           flexDirection: 'row',
           justifyContent: 'center'
         }}>
-          <TouchableOpacity onPress={this.next}
+          <Touchable 
+            background={Touchable.Ripple('gray')} 
+            onPress={this.next}
             style={{
-              alignSelf: 'center',
+              alignSelf: 'stretch',
+              width: viewportWidth
             }}>
             <Text style={[
               styles.nextButtonText,
@@ -196,7 +199,7 @@ export default class SelectTags extends React.Component {
                 color: this.state.selected.length != 0 ? 'rgb(225, 199, 155)' : '#575862'
               }
             ]}>Далее</Text>
-          </TouchableOpacity>
+          </Touchable>
         </View>
       </View>
     );

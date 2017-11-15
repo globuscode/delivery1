@@ -17,6 +17,7 @@ import { TextField } from 'react-native-material-textfield';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { TextInputMask } from 'react-native-masked-text';
 import Button from 'react-native-button';
+import Touchable from 'react-native-platform-touchable';
 import {
 	LinearGradient,
 	Constants
@@ -155,9 +156,12 @@ class Registration extends React.Component {
             flexDirection: 'row',
             justifyContent: 'center'
             }}>
-            <TouchableOpacity onPress={this.next}
+            <Touchable 
+                background={Touchable.Ripple('gray')} 
+                onPress={this.next}
                 style={{
-                    alignSelf: 'center',
+                    alignSelf: 'stretch',
+                    width: viewportWidth
                 }}>
                 <Text style={[
                 styles.nextButtonText,
@@ -165,7 +169,7 @@ class Registration extends React.Component {
                     color: this.isNext() ? 'rgb(225, 199, 155)' : '#575862'
                 }
                 ]}>Далее</Text>
-            </TouchableOpacity>
+            </Touchable>
             </View>
         </KeyboardAwareScrollView>;
     }
@@ -251,6 +255,15 @@ const styles = StyleSheet.create({
 		flexDirection: 'column',
 		alignSelf: 'stretch'
 	},
+    nextButtonText: {
+      fontSize: 16,
+      color: "#dcc49c",
+      marginTop: 17,
+      marginBottom: 17,
+      textAlign: "center",
+      letterSpacing: 0.8,
+      fontFamily: "stem-regular"
+    },
 	container: {
         flex: 1,
         flexDirection: 'column',

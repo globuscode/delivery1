@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import Carousel, { Pagination } from "react-native-snap-carousel";
+import Touchable from 'react-native-platform-touchable';
 
 import IconD from "../IconD";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
@@ -210,14 +211,16 @@ export default class SelectCity extends React.Component {
               justifyContent: "center"
             }}
           >
-            <TouchableOpacity
+            <Touchable
+              background={Touchable.Ripple('gray')} 
               onPress={this.next}
               style={{
-                alignSelf: "center"
+                alignSelf: "stretch",
+                width: viewportWidth
               }}
             >
               <Text style={styles.nextButtonText}>Далее</Text>
-            </TouchableOpacity>
+            </Touchable>
           </View>
         </View>
       );

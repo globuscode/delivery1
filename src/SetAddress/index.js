@@ -11,6 +11,7 @@ import { LinearGradient } from 'expo';
 import { Header } from 'react-native-elements';
 import { TextField } from 'react-native-material-textfield';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Touchable from 'react-native-platform-touchable';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
@@ -150,9 +151,12 @@ export default class SelectCity extends React.Component {
 						flexDirection: 'row',
 						justifyContent: 'center'
 					}}>
-						<TouchableOpacity onPress={this.next}
+						<Touchable 
+							background={Touchable.Ripple('gray')} 
+							onPress={this.next}
 							style={{
-								alignSelf: 'center',
+								alignSelf: 'stretch',
+								width: viewportWidth
 							}}>
 							<Text style={[
 								styles.nextButtonText,
@@ -160,7 +164,7 @@ export default class SelectCity extends React.Component {
 									color: this.notDeliver(this.state.address) ? '#dcc49c' : '#575862'
 								}
 							]}>Далее</Text>
-						</TouchableOpacity>
+						</Touchable>
 					</View>
 				</View>
 		);
