@@ -92,9 +92,6 @@ export default connect(
         if (token != null)
           fetch("http://dostavka1.com/v1/auth/auth/", {
             method: "POST",
-            headers: {
-              "Content-type": "application/json; charset=UTF-8"
-            },
             body: data
           })
             .then(res => {

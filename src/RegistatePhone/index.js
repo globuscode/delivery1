@@ -185,9 +185,6 @@ class Registration extends React.Component {
             fetch("http://dostavka1.com/v1/auth/register/",
             {
                 method: "POST",
-                headers: {  
-                    "Content-type": "application/json; charset=UTF-8"  
-                },  
                 body: JSON.stringify( payload )
             })
             .then((res)=>{
