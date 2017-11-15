@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Picker from "react-native-wheel-picker";
+import Touchable from 'react-native-platform-touchable';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 export default class SelectCity extends React.Component {
@@ -196,12 +197,13 @@ export default class SelectCity extends React.Component {
           flexDirection: 'row',
           justifyContent: 'center'
         }}>
-          <TouchableOpacity onPress={this.next}
+          <Touchable onPress={this.next}
             style={{
-              alignSelf: 'center',
+              alignSelf: 'stretch',
+              width: viewportWidth
             }}>
             <Text style={styles.nextButtonText}>Далее</Text>
-          </TouchableOpacity>
+          </Touchable>
         </View>
       </View>
     );

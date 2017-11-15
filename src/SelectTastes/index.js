@@ -8,6 +8,7 @@ import {
   ScrollView,
   AsyncStorage,
 } from 'react-native';
+import Touchable from 'react-native-platform-touchable';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
@@ -56,7 +57,8 @@ export default class SelectTags extends React.Component {
     var result = [];
     for (let i=0; i<this.state.tastes.length; i+=1 ) {
       result.push((
-          <TouchableOpacity
+          <Touchable
+            background={Touchable.Ripple('gray')}
             key={i}
             onPress={() => {
               if (this.state.selected.indexOf(i) == -1) {
@@ -88,7 +90,7 @@ export default class SelectTags extends React.Component {
             }}>
               {this.state.tastes[i].title.toUpperCase()}
             </Text>
-          </TouchableOpacity>));
+          </Touchable>));
     }
     return result;
   };

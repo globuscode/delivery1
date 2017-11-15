@@ -16,6 +16,7 @@ import Carousel, { Pagination } from "react-native-snap-carousel";
 import { LinearGradient } from "expo";
 import { Badge } from "react-native-elements";
 import { connect } from "react-redux";
+import Touchable from 'react-native-platform-touchable';
 
 import Storage from "../Reducers";
 import PriceButton from "../PriceButton";
@@ -84,6 +85,10 @@ class Recomendations extends React.Component {
   fav(index) {
     this.state.entries[index].favourite = !this.state.entries[index].favourite;
     this.setState({});
+  }
+
+  componentWillMount = () => {
+
   }
 
   addPlateToCart = async plate => {
@@ -211,7 +216,7 @@ class Recomendations extends React.Component {
     // Компонент с кнопкой добавить в избранное
     var heartButton = (
       <View>
-        <TouchableOpacity onPress={() => this.fav(index)}>
+        <Touchable onPress={() => this.fav(index)}>
           <View style={{ backgroundColor: "transparent" }}>
             <IconD
               name={item.favourite ? "heart_full" : "heart_empty"}
@@ -219,7 +224,7 @@ class Recomendations extends React.Component {
               color="#dcc49c"
             />
           </View>
-        </TouchableOpacity>
+        </Touchable>
       </View>
     );
 
@@ -227,7 +232,8 @@ class Recomendations extends React.Component {
     var topView = (
       <View style={itemStyles.topViewStyle}>
         <View>
-          <TouchableOpacity activeOpacity={0.8} onPress={this.nav}>
+          <Touchable activeOpacity={0.8} onPress={this.nav}>
+          <View>
             {/* Название блюда */}
             {titleText}
 
@@ -236,7 +242,8 @@ class Recomendations extends React.Component {
 
             {/* Вес блюда */}
             {weightText}
-          </TouchableOpacity>
+          </View>
+          </Touchable>
         </View>
 
         {heartButton}
@@ -265,10 +272,10 @@ class Recomendations extends React.Component {
     );
     var logo = (
       <Image
+        onLoadEnd={()=>{this.setState({}); console.log('Картинка загружена')}}
         style={{
           width: SLIDER_WIDTH / 3,
           height: SLIDER_WIDTH / 3,
-          backgroundColor: "transparent"
         }}
         source={{ uri: item.restourantLogo }}
       />
@@ -284,9 +291,9 @@ class Recomendations extends React.Component {
           height: SLIDER_WIDTH / 3
         }}
       >
-        <TouchableOpacity activeOpacity={0.8} onPress={this.nav}>
+        <Touchable activeOpacity={0.8} onPress={this.nav}>
           {logo}
-        </TouchableOpacity>
+        </Touchable>
         <PriceButton
           count={itemCount}
           pressed={itemCount != 0}
@@ -302,11 +309,13 @@ class Recomendations extends React.Component {
       <View style={itemStyles.containerSlider}>
         <View style={itemStyles.viewSlider}>
           {/* Задний фон карточки */}
-          <TouchableOpacity
+          <Touchable
             activeOpacity={0.8}
-            style={{ position: "absolute" }}
+            background={Touchable.Ripple('gray')}
+            style={{ position: "absolute", height: SLIDER_HEIGHT, width: SLIDER_WIDTH }}
             onPress={this.nav}
           >
+          <View>
             <Image style={itemStyles.BG_IMAGE} source={{ uri: item.image }} />
 
             {/* Градиент */}
@@ -314,7 +323,8 @@ class Recomendations extends React.Component {
               colors={GRADIENT_COLORS}
               style={itemStyles.GRADIENT_STYLE}
             />
-          </TouchableOpacity>
+          </View>
+          </Touchable>
 
           {topView}
 

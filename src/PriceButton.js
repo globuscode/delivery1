@@ -15,6 +15,7 @@ import { Badge } from "react-native-elements";
 import Icon from "react-native-vector-icons/Ionicons";
 import { LinearGradient, Constants } from "expo";
 import Accordion from "react-native-collapsible/Accordion";
+import Touchable from 'react-native-platform-touchable';
 
 import IconD from "./IconD";
 
@@ -67,7 +68,7 @@ export default class Price extends React.Component {
         ? 0
         : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
     return (
-      <TouchableOpacity
+      <Touchable
         onPress={this.props.onPress}
         onPressOut={() => this.setState({ pressed: true })}
       >
@@ -137,7 +138,7 @@ export default class Price extends React.Component {
           </Text>
           
         </View>
-      </TouchableOpacity>
+      </Touchable>
     );
   };
 }
