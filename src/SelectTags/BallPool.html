@@ -1334,6 +1334,8 @@ document.addEventListener("message", function (message) {
 			var clickedId = i;
 			bubble = document.getElementById(clickedId);
 			document.getElementById('s' + clickedId.toString()).style.color = !data.tags[clickedId].selected ? theme[3] : theme[4];
+			if (data.tags[clickedId].icon != '')
+				document.getElementById('i' + clickedId.toString()).style.backgroundColor = !data.tags[clickedId].selected ? theme[3] : theme[4];
 			bubbleContext = bubble.getContext('2d');
 			tags[clickedId].selected = !data.tags[clickedId].selected;
 			bubbleContext.fillStyle = tags[clickedId].selected ? theme[4]: theme[3];
@@ -1533,7 +1535,13 @@ document.addEventListener("message", function (message) {
 		text = document.createElement('div');
 		text.onSelectStart = null;
 		var font = tags.selected ? theme[3] : theme[4];
-		text.innerHTML = '<span id="s' + i + '" style="color:' + font + ';font-size: 11pt; text-align: center; line-height: 11px; letter-spacing: 0.6; font-family: Open Sans">' + tag.title + '</span>';
+		var bubbleIcon = '<div id="i'+i+'" style=" height: 100px; width: 100px; background-color: '+theme[4]+';-webkit-mask: url(http:'+tag.icon+') no-repeat; mask: url('+tag.icon+') no-repeat; mask-position: center; -webkit-mask-size: cover;" />';
+		//bubbleIcon = '<img id="i'+i+'" src="http:'+tag.icon+'" /><br>';
+		if (tag.icon == '') 
+			text.innerHTML = '<span id="s' + i + '" style="color:' + font + ';font-size: 11pt; text-align: center; line-height: 11px; letter-spacing: 0.6; font-family: Open Sans">' + tag.title + '</span>';
+		else {
+			text.innerHTML = '<div><div>' + bubbleIcon + '</div><span id="s' + i + '" style="color:' + font + ';font-size: 11pt; text-align: center; line-height: 11px; letter-spacing: 0.6; font-family: Open Sans">' + tag.title + '</span></div>';
+		}
 		text.style.color = font;
 		text.style.position = 'absolute';
 		text.style.left = '0px';
@@ -1732,6 +1740,8 @@ document.addEventListener("message", function (message) {
 			var clickedId = body.m_userData.index;
 			bubble = document.getElementById(clickedId);
 			document.getElementById('s' + clickedId.toString()).style.color = !tags[clickedId].selected ? theme[3] : theme[4];
+			if (tags[clickedId].icon != '')
+				document.getElementById('i' + clickedId.toString()).style.backgroundColor = !tags[clickedId].selected ? theme[3] : theme[4];
 			bubbleContext = bubble.getContext('2d');
 			tags[clickedId].selected = !tags[clickedId].selected;
 			bubbleContext.fillStyle = tags[clickedId].selected ? theme[4] : theme[3];
