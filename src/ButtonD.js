@@ -14,7 +14,7 @@ export default class ButtonD extends React.Component {
               position: "absolute",
               width: this.props.width ? this.props.width : viewportWidth,
               borderWidth: 1,
-              padding: 5,
+              padding: 10,
               alignItems: "center",
               alignContent: "center",
               borderRadius: 4,
@@ -42,7 +42,7 @@ export default class ButtonD extends React.Component {
             {
               justifyContent: "center",
               width: this.props.width ? this.props.width : viewportWidth,
-              padding: 5,
+              padding: 10,
               borderWidth: 1,
               alignItems: "center",
               alignContent: "center",
