@@ -221,7 +221,7 @@ export default class Restaurant extends React.Component {
 
 
 
-			{/* Ранг пользователя */}
+			{/* Ранг пользователя
 			<View style={[styles.row, {justifyContent: 'center'}]}>
 				<Text style={{ color: '#dcc49c', fontFamily: 'open-sans-semibold', fontSize: 11 }}>{'Новичок'}</Text>
 			</View>
@@ -235,12 +235,12 @@ export default class Restaurant extends React.Component {
 								color={e <= this.state.rang ? '#dcc49c' : 'rgb(87, 88, 98)'}
 								size={16}/>
 					</View>)}
-			</View>
+			</View> */}
 
 
 
 
-			{/* Кнопка Хочу скидку */}
+			{/* Кнопка Хочу скидку 
 			<View style={[styles.row, { justifyContent: 'center' }]}>
 				<TouchableOpacity>
 					<View style={{
@@ -250,7 +250,7 @@ export default class Restaurant extends React.Component {
 							color: 'white', fontFamily: 'open-sans-semibold', fontSize: 11 
 					}}>{'Хочу скидку в этом ресторане'}</Text></View>
 				</TouchableOpacity>
-			</View>
+			</View>*/}
 
 
 

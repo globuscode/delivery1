@@ -100,7 +100,7 @@ class Profile extends React.Component {
             paddingLeft: 20
           }}
         >
-          <View
+          {/*<View
             style={{
               marginLeft: 63,
               flexDirection: "column"
@@ -128,7 +128,7 @@ class Profile extends React.Component {
                 {"Бывалый"}
               </Text>
             </View>
-          </View>
+              </View>*/}
         </View>
 
         <View
