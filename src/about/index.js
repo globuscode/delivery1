@@ -216,6 +216,8 @@ export default class SelectCity extends React.Component {
               onPress={this.next}
               style={{
                 alignSelf: "stretch",
+                flexDirection: 'column',
+                justifyContent: "center",
                 width: viewportWidth
               }}
             >
@@ -252,8 +254,7 @@ const styles = StyleSheet.create({
   nextButtonText: {
     fontSize: 16,
     color: "#dcc49c",
-    marginTop: 17,
-    marginBottom: 17,
+    alignSelf: 'center',
     textAlign: "center",
     letterSpacing: 0.8,
     fontFamily: "stem-regular"
@@ -263,15 +264,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 25,
     fontFamily: "open-sans-semibold"
-  },
-  nextButtonText: {
-    fontSize: 16,
-    color: "#dcc49c",
-    marginTop: 17,
-    marginBottom: 17,
-    textAlign: "center",
-    letterSpacing: 0.8,
-    fontFamily: "stem-regular"
   },
   checkingInfo: {
     fontFamily: "open-sans",

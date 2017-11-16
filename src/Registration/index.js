@@ -168,6 +168,8 @@ export default class Login extends React.Component {
                 onPress={this.next}
                 style={{
                     alignSelf: 'stretch',
+                    flexDirection: 'column',
+                    justifyContent: "center",
                     width: viewportWidth
                 }}>
                 <Text style={[
@@ -221,8 +223,7 @@ const styles = StyleSheet.create({
     nextButtonText: {
       fontSize: 16,
       color: "#dcc49c",
-      marginTop: 17,
-      marginBottom: 17,
+      alignSelf: 'center',
       textAlign: "center",
       letterSpacing: 0.8,
       fontFamily: "stem-regular"
