@@ -79,9 +79,9 @@ class Registration extends React.Component {
 						alignItems: 'center',
 						alignContent: 'center',
 						borderRadius: 8,
-						borderColor: 'rgb( 87, 88, 98)'
+						borderColor: 'rgb(87, 88, 98)'
 					}]}>
-				<Text style={{ color: 'rgb( 225, 199, 155)', fontSize: 14, fontFamily: 'stem-medium', top: 3}}>{title}</Text>
+				<Text style={{ color: this.state.phone ? 'rgb(225, 199, 155)' : 'rgb(87, 88, 98)', fontSize: 14, fontFamily: 'stem-medium', top: 3}}>{title}</Text>
 			</TouchableOpacity></View>;
 	}
 
@@ -125,15 +125,15 @@ class Registration extends React.Component {
                 />
                 <View style={{height: (screen == 0 ? 30 : screen == 1 ? 39 : 45)-25}}/>
             </View>
-            {this.renderButton('Получить код', ()=>{})}
+            {this.renderButton('Выслать код подтверждения', ()=>{})}
             <View style={{
                 flexDirection: 'column',
                 alignSelf: 'center',
                 width: screen==0 ? 136 : screen == 1 ? 160 : 177,
             }}>
             <TextField
-                tintColor={'#dcc49c'}
-                baseColor={'rgb( 87, 88, 98)'}
+                tintColor={this.state.phone ? '#dcc49c' : 'rgb(87, 88, 98)'}
+                baseColor={this.state.phone ? '#dcc49c' : 'rgb(87, 88, 98)'}
                 textColor={'white'}
                 returnKeyType={'send'}
                 keyboardType={'phone-pad'}
@@ -144,6 +144,22 @@ class Registration extends React.Component {
                 inputContainerStyle={{ flexDirection: 'column' , alignItems: 'center', justifyContent: 'center' }}
                 label={'Код подтверждения'}
             />
+            </View>
+            <View style={{
+                position: 'absolute',
+                width: viewportWidth - 30,
+                alignSelf: 'center',
+                bottom: 70,
+                flexDirection: 'row'
+            }}>
+                <View style={{top: 5}}><IconD name='alert' size={20} color='#dcc49c'/></View>
+                <Text style={{
+                    fontFamily: 'open-sans',
+                    marginLeft: 5,
+                    maxWidth: viewportWidth - 60,
+                    fontSize: 10,
+                    color: 'rgb(119, 122, 136)'
+                }}>{'Если код подтверждения не приходит обратитесь в службу поддержки по телефону: 495-995-1-995'}</Text>
             </View>
             <View style={{
             position: 'absolute',
@@ -161,6 +177,8 @@ class Registration extends React.Component {
                 onPress={this.next}
                 style={{
                     alignSelf: 'stretch',
+                    flexDirection: 'column',
+                    justifyContent: "center",
                     width: viewportWidth
                 }}>
                 <Text style={[
@@ -258,8 +276,7 @@ const styles = StyleSheet.create({
     nextButtonText: {
       fontSize: 16,
       color: "#dcc49c",
-      marginTop: 17,
-      marginBottom: 17,
+      alignSelf: 'center',
       textAlign: "center",
       letterSpacing: 0.8,
       fontFamily: "stem-regular"
