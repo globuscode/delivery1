@@ -1535,12 +1535,12 @@ document.addEventListener("message", function (message) {
 		text = document.createElement('div');
 		text.onSelectStart = null;
 		var font = tags.selected ? theme[3] : theme[4];
-		var bubbleIcon = '<div id="i'+i+'" style=" height: 100px; width: 100px; background-color: '+theme[4]+';-webkit-mask: url(http:'+tag.icon+') no-repeat; mask: url('+tag.icon+') no-repeat; mask-position: center; -webkit-mask-size: cover;" />';
-		//bubbleIcon = '<img id="i'+i+'" src="http:'+tag.icon+'" /><br>';
+		var bubbleIcon = '<div id="i'+i+'" style=" height: '+size*3/4+'px; width: '+size*3/4+'px; background-color: '+theme[4]+';-webkit-mask: url(http://www.'+tag.icon.slice(2)+') no-repeat; mask: url(http://www.'+tag.icon.slice(2)+') no-repeat center; mask-position: center; -webkit-mask-position: center; justify-content: center; align-self: center; align-items: center" />';
+		//bubbleIcon = '<img id="i'+i+'" src="http://www.dostavka1.com/upload/iblock/ec2/ec2745ca87c4ff28be441729b74fbc13.svg"" /><br>';
 		if (tag.icon == '') 
 			text.innerHTML = '<span id="s' + i + '" style="color:' + font + ';font-size: 11pt; text-align: center; line-height: 11px; letter-spacing: 0.6; font-family: Open Sans">' + tag.title + '</span>';
 		else {
-			text.innerHTML = '<div><div>' + bubbleIcon + '</div><span id="s' + i + '" style="color:' + font + ';font-size: 11pt; text-align: center; line-height: 11px; letter-spacing: 0.6; font-family: Open Sans">' + tag.title + '</span></div>';
+			text.innerHTML = '<div style="justify-content: center; align-items: center;"><div style="justify-content: center; align-items: center;">' + bubbleIcon + '</div><span id="s' + i + '" style=" bottom: 25px; color:' + font + ';font-size: 11pt; text-align: center; line-height: 11px; letter-spacing: 0.6; position: relative; font-family: Open Sans">' + tag.title + '</span></div>';
 		}
 		text.style.color = font;
 		text.style.position = 'absolute';
