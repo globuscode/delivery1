@@ -481,7 +481,8 @@ class Cart extends React.Component {
 
             {/* Кнопка Открыть меню ресторана */}
             <View style={{
-              alignSelf: 'center'
+              alignSelf: 'center',
+              marginVertical: 20
             }}>
             <ButtonD onPress={this.nav} title='Открыть меню ресторана' width={screen == 0 ? 260 : screen == 1 ? 315 : 354}/>
             </View>
@@ -520,7 +521,7 @@ class Cart extends React.Component {
                 borderColor: "rgb( 87, 88, 98)"
               }}
             />
-
+              <View style={{height: 20}}/>
             {/*this.renderPromoCode()*/}
             <View
               style={{
