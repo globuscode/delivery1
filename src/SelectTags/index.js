@@ -233,7 +233,8 @@ export default class SelectTags extends React.Component {
           }}>
             <WebView
               ref={(c) => { this.webview = c; }}
-
+              mixedContentMode='always'
+              domStorageEnabled={true}
               injectedJavaScript={'tags = JSON.parse(' + JSON.stringify(this.state.tags) + ');'}
               source={webapp}
               scalesPageToFit={true}
