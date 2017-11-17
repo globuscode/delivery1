@@ -16,7 +16,7 @@ import Carousel, { Pagination } from "react-native-snap-carousel";
 import { LinearGradient } from "expo";
 import { Badge } from "react-native-elements";
 import { connect } from "react-redux";
-import Touchable from 'react-native-platform-touchable';
+import Touchable from "react-native-platform-touchable";
 
 import Storage from "../Reducers";
 import PriceButton from "../PriceButton";
@@ -87,9 +87,7 @@ class Recomendations extends React.Component {
     this.setState({});
   }
 
-  componentWillMount = () => {
-
-  }
+  componentWillMount = () => {};
 
   addPlateToCart = async plate => {
     //await AsyncStorage.removeItem('cart');
@@ -233,16 +231,16 @@ class Recomendations extends React.Component {
       <View style={itemStyles.topViewStyle}>
         <View>
           <Touchable activeOpacity={0.8} onPress={this.nav}>
-          <View>
-            {/* Название блюда */}
-            {titleText}
+            <View>
+              {/* Название блюда */}
+              {titleText}
 
-            {/* Название ресторана */}
-            {restourantText}
+              {/* Название ресторана */}
+              {restourantText}
 
-            {/* Вес блюда */}
-            {weightText}
-          </View>
+              {/* Вес блюда */}
+              {weightText}
+            </View>
           </Touchable>
         </View>
 
@@ -272,10 +270,13 @@ class Recomendations extends React.Component {
     );
     var logo = (
       <Image
-        onLoadEnd={()=>{this.setState({}); console.log('Картинка загружена')}}
+        onLoadEnd={() => {
+          this.setState({});
+          console.log("Картинка загружена");
+        }}
         style={{
           width: SLIDER_WIDTH / 3,
-          height: SLIDER_WIDTH / 3,
+          height: SLIDER_WIDTH / 3
         }}
         source={{ uri: item.restourantLogo }}
       />
@@ -311,19 +312,23 @@ class Recomendations extends React.Component {
           {/* Задний фон карточки */}
           <Touchable
             activeOpacity={0.8}
-            background={Touchable.Ripple('gray')}
-            style={{ position: "absolute", height: SLIDER_HEIGHT, width: SLIDER_WIDTH }}
+            background={Touchable.Ripple("gray")}
+            style={{
+              position: "absolute",
+              height: SLIDER_HEIGHT,
+              width: SLIDER_WIDTH
+            }}
             onPress={this.nav}
           >
-          <View>
-            <Image style={itemStyles.BG_IMAGE} source={{ uri: item.image }} />
+            <View>
+              <Image style={itemStyles.BG_IMAGE} source={{ uri: item.image }} />
 
-            {/* Градиент */}
-            <LinearGradient
-              colors={GRADIENT_COLORS}
-              style={itemStyles.GRADIENT_STYLE}
-            />
-          </View>
+              {/* Градиент */}
+              <LinearGradient
+                colors={GRADIENT_COLORS}
+                style={itemStyles.GRADIENT_STYLE}
+              />
+            </View>
           </Touchable>
 
           {topView}
