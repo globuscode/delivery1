@@ -58,7 +58,7 @@ export default class SelectTags extends React.Component {
     for (let i=0; i<this.state.tastes.length; i+=1 ) {
       result.push((
           <Touchable
-            background={Touchable.Ripple('gray')}
+            background={Touchable.SelectableBackground()}
             key={i}
             onPress={() => {
               if (this.state.selected.indexOf(i) == -1) {
@@ -187,7 +187,7 @@ export default class SelectTags extends React.Component {
           justifyContent: 'center'
         }}>
           <Touchable 
-            background={Touchable.Ripple('gray')} 
+            background={Touchable.SelectableBackgroundBorderless()} 
             onPress={this.next}
             style={{
               alignSelf: 'stretch',
