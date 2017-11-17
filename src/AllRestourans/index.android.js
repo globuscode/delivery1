@@ -54,7 +54,6 @@ export default class AllRestourans extends React.Component {
   componentDidMount() {}
 
   render() {
-    //ios - contact - outline
     return (
       <Drawer
         ref={ref => (this._drawer = ref)}
@@ -143,7 +142,7 @@ export default class AllRestourans extends React.Component {
           </View>
 
           <ScrollView contentContainerStyle={{ width: viewportWidth }}>
-            <Text
+            {/*<Text
               style={{
                 fontSize: 10,
                 color: "#dcc49c",
@@ -174,7 +173,7 @@ export default class AllRestourans extends React.Component {
                 </Text>
                 <Icon name="ios-arrow-down" color="#ffffff" size={18} />
               </TouchableOpacity>
-            </View>
+            </View>*/}
 
             <RestouransOfTheWeek navigation={this.props.navigation} />
             <View style={{ height: 20 }} />
