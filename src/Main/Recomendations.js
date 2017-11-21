@@ -31,6 +31,7 @@ class Recomendations extends React.Component {
     this.state = {
       canNav: true,
       activeSlide: 0,
+      restourans: [],
       entries: [
         {
           id: 1,
@@ -87,7 +88,15 @@ class Recomendations extends React.Component {
     this.setState({});
   }
 
-  componentWillMount = () => {};
+  componentWillMount = () => {
+    this.state.entries.forEach(async (element) => {
+      let restaurant = await fetch(`http://dostavka1.com/v1/restaurant?restaurantId=${element.restourant}`);
+      let restaurantJson = await restaurant.json();
+      this.state.restourans.push(restaurantJson.data.result);
+      this.setState({});
+    })
+    
+  };
 
   addPlateToCart = async plate => {
     //await AsyncStorage.removeItem('cart');
@@ -104,9 +113,12 @@ class Recomendations extends React.Component {
     }*/
   };
 
-  nav = () => {
+  nav = (i) => {
     if (this.state.canNav) {
-      this.props.navigation.navigate("Plate");
+      this.props.navigation.navigate("Plate", {
+        plate: this.state.entries[i],
+        restaurant: this.state.restourans[i]
+      });
       this.state.canNav = false;
       setTimeout(() => {
         this.state.canNav = true;
@@ -230,7 +242,7 @@ class Recomendations extends React.Component {
     var topView = (
       <View style={itemStyles.topViewStyle}>
         <View>
-          <Touchable activeOpacity={0.8} onPress={this.nav}>
+          <Touchable activeOpacity={0.8} onPress={() => { console.log(index, element.id); this.nav(index); }}>
             <View>
               {/* Название блюда */}
               {titleText}
@@ -272,13 +284,12 @@ class Recomendations extends React.Component {
       <Image
         onLoadEnd={() => {
           this.setState({});
-          console.log("Картинка загружена");
         }}
         style={{
           width: SLIDER_WIDTH / 3,
           height: SLIDER_WIDTH / 3
         }}
-        source={{ uri: item.restourantLogo }}
+        source={{ uri: this.state.restourans[index] ? this.state.restourans[index].logoImage : '' }}
       />
     );
     var itemCount = getCount(this.props.globalStore, item);
@@ -292,7 +303,7 @@ class Recomendations extends React.Component {
           height: SLIDER_WIDTH / 3
         }}
       >
-        <Touchable activeOpacity={0.8} onPress={this.nav}>
+        <Touchable activeOpacity={0.8} onPress={() => { this.nav(index); }}>
           {logo}
         </Touchable>
         <PriceButton
@@ -318,10 +329,10 @@ class Recomendations extends React.Component {
               height: SLIDER_HEIGHT,
               width: SLIDER_WIDTH
             }}
-            onPress={this.nav}
+            onPress={() => { this.nav(index); }}
           >
             <View>
-              <Image style={itemStyles.BG_IMAGE} source={{ uri: item.image }} />
+              <Image style={itemStyles.BG_IMAGE} source={{ uri: 'http:'+item.image }} />
 
               {/* Градиент */}
               <LinearGradient

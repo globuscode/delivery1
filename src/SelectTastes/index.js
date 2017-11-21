@@ -96,13 +96,15 @@ export default class SelectTags extends React.Component {
   };
 
   getSelectedTastes() {
+
     return this.state.selected.map((element, index) => {
+      //if (element.selected === true)
       return this.state.tastes[element];
     });
   };
 
   setTastes = async () => {
-    await AsyncStorage.setItem('tags', JSON.stringify(this.getSelectedTastes()));
+    await AsyncStorage.setItem('tastes', JSON.stringify(this.getSelectedTastes()));
     return 0;
   };
 

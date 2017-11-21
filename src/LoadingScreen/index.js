@@ -28,9 +28,32 @@ class Loading extends React.Component {
     kitchenPhoto = require("../../assets/img/kitchen.jpeg");
   }
 
-  componentDidMount() {
-    this.props.auth();
-    this.props.navigation.navigate("Main");
+  async componentDidMount() {
+    const cityId = await AsyncStorage.getItem('city');
+		const cityIdJson = JSON.parse(cityId);
+
+		const tags = await AsyncStorage.getItem('tags');
+		const tagsJson = JSON.parse(tags);
+		let tagsIds = '';
+		tagsJson.forEach((element) => {
+			tagsIds += element.id.toString() + ',';	
+		});
+
+		const tastes = await AsyncStorage.getItem('tastes');
+		const tastesJson = JSON.parse(tastes);
+    let tastesIds = '';
+		tastesJson.forEach((element) => {
+			tastesIds += element.id.toString() + ',';	
+		});
+    
+		fetch(`http://dostavka1.com/v1/recommendations/?cityid=${cityIdJson.id}&tagId=${tastesIds}&tagGroup=${tagsIds}`)
+			.then((response) => response.json())
+			.then((responseJson) => {
+        this.props.auth();
+        this.props.loadRecomendations(responseJson.data);
+        this.props.navigation.navigate("Feed");
+				return responseJson;
+			});
   }
 
   render() {
@@ -79,11 +102,14 @@ class Loading extends React.Component {
   }
 }
 
+
 export default connect(
   state => ({
-    userData: state.user
+    userData: state.user,
+	  recomendations: state.recomendations
   }),
   dispatch => ({
+    loadRecomendations: (data) => dispatch({type: 'SET_RECOMENDATIONS', payload: data}),
     auth: () => {
       AsyncStorage.getItem("lastToken", (error, token) => {
         token = JSON.parse(token);

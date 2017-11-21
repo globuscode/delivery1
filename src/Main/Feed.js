@@ -4,6 +4,7 @@ import {
 	Text,
 	View,
 	TouchableOpacity,
+	AsyncStorage,
 	Dimensions,
 	ScrollView,
 	Image
@@ -35,25 +36,18 @@ class Feed extends React.Component {
 		}
 	}
 
-	componentWillMount = async () => {
-		kitchenPhoto = await require('../../assets/img/kitchen.jpeg');
-		err404 = await require('../../assets/img/404.jpg');
-		
-		fetch('http://dostavka1.com/v1/recommendations')
-			.then((response) => response.json())
-			.then((responseJson) => {
-				if (responseJson["data"]["plates"])
-					this.state.plates = responseJson['data']['plates'];
-				if (responseJson["data"]["popular"])
-					this.state.popular = responseJson['data']['popular'];
-				if (responseJson["data"]["collections"])
-					this.state.collections = responseJson['data']['collections'];
-				if (responseJson["data"]["restaurants"])
-					this.state.restourans = responseJson['data']['restaurants'];
-
-				this.setState({});
-				return responseJson;
-			});
+	componentWillMount = () => {
+		if (this.props.recomendations) {
+			if (this.props.recomendations.plates != [])
+				this.state.plates = this.props.recomendations.plates;
+			if (this.props.recomendations.popular != [])
+				this.state.popular = this.props.recomendations.popular;
+			if (this.props.recomendations.collections != [])
+				this.state.collections = this.props.recomendations.collections;
+			if (this.props.recomendations.restaurants != [])
+				this.state.restaurants = this.props.recomendations.restaurants;
+			this.setState({});
+		}
 	}
 
 	componentDidMount() {
@@ -194,7 +188,8 @@ class Feed extends React.Component {
 
 export default connect(
 	state => ({
-	  userData: state.user
+	  userData: state.user,
+	  recomendations: state.recomendations
 	}),
 	dispatch => ({
 	})

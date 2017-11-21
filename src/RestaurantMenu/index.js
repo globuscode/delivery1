@@ -362,7 +362,7 @@ class RestaurantMenu extends React.Component {
               key={i}
               onPress={() => {
                 if (this.state.canNav) {
-                  this.props.navigation.navigate("Plate");
+                  this.props.navigation.navigate("Plate", {plate: e, restaurant: this.state.data});
                   this.state.canNav = false;
                   setTimeout(() => {
                     this.state.canNav = true;

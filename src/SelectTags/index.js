@@ -141,10 +141,12 @@ export default class SelectTags extends React.Component {
   };
 
   getSelectedTags() {
+    let result = [];
     selectedKitchens = this.state.kitchens.map((element, index) => {
-      return this.state.kitchens[element];
+      if (element.selected === true)
+        result.push(element);
     });
-    return selectedKitchens;
+    return result;
   };
 
   setTags = async () => {
@@ -153,7 +155,7 @@ export default class SelectTags extends React.Component {
   };
 
   next = () => {
-    //this.setTags();
+    this.setTags();
     if (this.isNext())
     if (this.state.canNav) {
       this.props.navigation.navigate('SelectTastes');

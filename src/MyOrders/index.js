@@ -66,7 +66,7 @@ export default class MyOrders extends React.Component {
       return (
         <Touchable
           key={index}
-          onPress={() => this.props.navigation.navigate("MyOrderDetail")}
+          onPress={() => this.props.navigation.navigate("MyOrderDetail", {order: element})}
         >
           <View
             style={{

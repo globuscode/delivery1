@@ -155,6 +155,14 @@ class Plate extends React.Component{
 		};
 	}
 
+	componentWillMount = () => {
+		this.setState({
+			plate: this.props.navigation.state.params.plate,
+			restaurant: this.props.navigation.state.params.restaurant
+		});
+
+	}
+
 
 	/**
 	 * Возвращает кнопку с ценой
@@ -293,7 +301,7 @@ class Plate extends React.Component{
 		}}>
 			{/* Фото ресторана */}
 			<Image source={{
-				uri: this.state.plate.image
+				uri: 'http:'+this.state.plate.image
 			}}
 				style={{
 					width: viewportWidth,
@@ -394,7 +402,7 @@ class Plate extends React.Component{
 				flexWrap: 'wrap',
 				alignItems: 'center',
 			}}>
-			{this.state.plate.tags.map((e,i) => {
+			{/*this.state.plate.tags.map((e,i) => {
 				return <TouchableOpacity
 					key={i}
 					onPress={() => {
@@ -404,7 +412,7 @@ class Plate extends React.Component{
 						} else {
 							this.state.selected.splice(this.state.selected.indexOf(i), 1);
 							this.setState({});
-						}*/
+						}
 					}}
 					style={{
 						height: 36,
@@ -428,7 +436,7 @@ class Plate extends React.Component{
 						{e.title.toUpperCase()}
 					</Text>
 				</TouchableOpacity>
-			})}
+			})*/}
 			</View>
 
 			<Text style={{ 
@@ -440,7 +448,7 @@ class Plate extends React.Component{
 				fontFamily: 'open-sans', 
 				lineHeight: 17, 
 				letterSpacing: 0.6,
-				top: 4 }}>{'Блюдо входит в меню ресторана '+ this.state.restaurant.title +'. Чтобы попробовать это чудесное блюдо: длбавьте его в заказ, и дополните заказ другими блюдами из меню ресторана. Как только сумма превысит 2000 ₽, вы сможете оформить доставку из ресторана. '}</Text>
+				top: 4 }}>{'Блюдо входит в меню ресторана '+ this.state.restaurant.title +'. Чтобы попробовать это чудесное блюдо: длбавьте его в заказ, и дополните заказ другими блюдами из меню ресторана. Как только сумма превысит '+this.state.restaurant.minOrder+' ₽, вы сможете оформить доставку из ресторана. '}</Text>
 
 			<View style={[styles.row, { justifyContent: 'center', marginTop: 30 }]}>
 			<WebView
@@ -465,15 +473,15 @@ class Plate extends React.Component{
 				{/* Минимальная сумма заказа и бесплатная доставка */}
 				<View style={[{ justifyContent: 'center', flexDirection: 'row', left: -15 }]}>
 					<View style={{ width: 40, top: -2 }}><IconD color='rgb( 231, 208, 172)' size={30} name='truck' /></View>
-					<Text style={{ color: 'rgb(225, 199, 155)', fontSize: 11, fontFamily: 'open-sans', lineHeight: 13, top: 2, marginLeft: 15, minWidth: 150 }}>{`Минимальная сумма \nзаказа ` + this.state.restaurant.minBill + ` ₽`}</Text>
+					<Text style={{ color: 'rgb(225, 199, 155)', fontSize: 11, fontFamily: 'open-sans', lineHeight: 13, top: 2, marginLeft: 15, minWidth: 190 }}>{`Минимальная сумма \nзаказа ` + this.state.restaurant.minBill + ` ₽`}</Text>
 				</View>
 				<View style={[{ justifyContent: 'center', flexDirection: 'row', left: -15 }]}>
 					<View style={{ width: 40, top: -2 }}><IconD color='rgb( 231, 208, 172)' size={35} name='clock' /></View>
-					<Text style={{ color: 'rgb(225, 199, 155)', fontSize: 11, fontFamily: 'open-sans', lineHeight: 13, top: 2, marginLeft: 18, minWidth: 150 }}>{`Ресторан принимает заказы \nсегодня с 10:00 до 22:35`}</Text>
+					<Text style={{ color: 'rgb(225, 199, 155)', fontSize: 11, fontFamily: 'open-sans', lineHeight: 13, top: 2, marginLeft: 18, minWidth: 190 }}>{`Ресторан принимает заказы \n${this.state.restaurant.time}`}</Text>
 				</View>
-				<View style={[{ justifyContent: 'center', flexDirection: 'row', left: -15 }]}>
+				<View style={[{ justifyContent: 'center', flexDirection: 'row', left: -15 }]}> 
 					<View style={{ width: 40 }}><IconD color='rgb( 231, 208, 172)' size={26} name='card' /></View>
-					<Text style={{ color: 'rgb(225, 199, 155)', fontSize: 11, fontFamily: 'open-sans', lineHeight: 13, top: 2, marginLeft: 15, minWidth: 150 }}>{`Мы принимаем все типы \nбанковских карт`}</Text>
+					<Text style={{ color: 'rgb(225, 199, 155)', fontSize: 11, fontFamily: 'open-sans', lineHeight: 13, top: 2, marginLeft: 15, minWidth: 190 }}>{`Мы принимаем все типы \nбанковских карт`}</Text>
 				</View>
 
 				</View>

@@ -333,7 +333,7 @@ class Cart extends React.Component {
       >
         <Image
           source={{
-            uri: e.plate.image
+            uri: 'http:'+e.plate.image
           }}
           style={{
             width: imageHeight,

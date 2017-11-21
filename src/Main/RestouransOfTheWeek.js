@@ -33,50 +33,24 @@ export default class Recomendations extends React.Component {
     this.state = {
       canNav: true,
       activeSlide: 0,
-      restourans: [
-        {
-          photo: 'http://shop.web01.widgets.vigbo.com/storage/shops/7776/products/313707/images/2-8606f84da77c5a05532ee2d3f1d9e351.jpg',
-          restourantLogo: 'https://image.ibb.co/fPo4vm/meatless_logo.png',
-          restourantName: 'Джон Джоли',
-          restourantTags: [
-            'Американская',
-            'Итальянская',
-            'Русская',
-          ],
-          favourite: false,
-          discount: '-25%',
-          level: 1
-        },
-        {
-          photo: 'http://shop.web01.widgets.vigbo.com/storage/shops/7776/products/313707/images/2-8606f84da77c5a05532ee2d3f1d9e351.jpg',
-          restourantLogo: 'https://image.ibb.co/fPo4vm/meatless_logo.png',
-          restourantName: 'Джон Джоли',
-          restourantTags: [
-            'Американская',
-            'Итальянская',
-            'Русская',
-          ],
-          favourite: false,
-          discount: 'Бесплатная пицца при заказе от 9000',
-          level: 2
-        },
-      ]
+      restourans: []
     };
-    if (this.props.data)
-      this.state.restourans = this.props.data;
+    if (props.data) {
+      this.state.restourans = props.data;
+    }
     this.fav = this.fav.bind(this);
 
   };
 
-  componentWillMount = async () => {
-    if (!this.props.data)
+  componentWillMount = () => {
+    /*if (!this.props.data)
       fetch('http://dostavka1.com/v1/restaurants')
         .then((response) => response.json())
         .then((responseJson) => {
           if (responseJson["data"]["restaurants"])
             this.state.restourans = responseJson['data']['restaurants'];
           return responseJson;
-        });
+        });*/
   }
 
   _renderItem = ({ item, index }) => {
@@ -134,7 +108,7 @@ export default class Recomendations extends React.Component {
       height: (SLIDER_WIDTH) / 3,
       backgroundColor: 'transparent',
     }}
-     source={{uri: logo}}
+     source={{uri: 'http:'+logo}}
    />;/*
     return <View style={{ height: SLIDER_WIDTH / 3 }}>
       <WebView
@@ -170,7 +144,6 @@ export default class Recomendations extends React.Component {
     const SLIDER_WIDTH = screen == 0 ? 280 : screen == 1 ? 328.1 : 362.3;
     const SLIDER_MARGIN = screen == 0 ? 10 / 2 : screen == 1 ? 11.7 / 2 : 13.2 / 2;
     const SLIDER_HEIGHT = SLIDER_WIDTH * 1.32;
-    
     return (
       <View style={{ elevation: 0, flexDirection: 'column', alignItems: 'center' }}>
         {
@@ -179,8 +152,9 @@ export default class Recomendations extends React.Component {
               <View key={index} style={[styles.itemContainer, {width: SLIDER_WIDTH, height: SLIDER_WIDTH}]}>
                 <TouchableOpacity activeOpacity={0.8} style={{ position: 'absolute',width: SLIDER_WIDTH, height: SLIDER_WIDTH }} onPress={this.navigate}>
                 <Image
+                onLoadEnd={() => this.setState({})}
                 style={[styles.itemBackgroundImage, { width: SLIDER_WIDTH, height: SLIDER_WIDTH}]}
-                source={{ uri: item.photo }}
+                source={{ uri: 'http:'+item.photo }}
                 />
                 <LinearGradient
                 colors={[
