@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableOpacity, Dimensions } from "react-native";
+import { View, Text, TouchableOpacity, Dimensions, Alert } from "react-native";
 import IconD from "../IconD";
 import { connect } from 'react-redux';
 
@@ -107,7 +107,20 @@ class MakeOrder extends React.Component {
             }}
           >
             <TouchableOpacity
-              onPress={() => {this.props.makeOrder(); this.props.navigation.goBack(null)}}
+              onPress={async () => {
+                const cart = this.props.globalStore.map((element) => { 
+                  return {
+                    "plateId": element.plate.id,
+                    "qty": element.count,
+                    "token": this.props.userStore.token
+                  }
+                }) ;
+                const response = await fetch(`http://dostavka1.com/v1/cart/create/index.php?token=${this.props.userStore.token}`, { method: 'post', body: JSON.stringify({"items": cart}) });
+                const responseJson = await response.json();
+                Alert.alert(JSON.stringify(responseJson));
+                this.props.makeOrder(); 
+                this.props.navigation.goBack(null)
+              }}
               style={{
                 alignSelf: "center"
               }}
@@ -136,7 +149,8 @@ class MakeOrder extends React.Component {
 
 export default connect(
     state => ({
-      globalStore: state
+      globalStore: state.cart,
+      userStore: state.user
     }),
     dispatch => ({
       makeOrder: () => dispatch({ type: "MAKE_ORDER" }),
