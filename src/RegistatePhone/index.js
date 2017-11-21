@@ -32,6 +32,12 @@ const hrShort = <View style={{ width: 290, alignSelf: 'center', margin: 0, heigh
 
 const screen = (viewportWidth >= 320 && viewportWidth < 375) ? 0 : (viewportWidth >= 375 && viewportWidth < 414) ? 1 : 2;
 
+async function sendPhone(phone) {
+    const result = await fetch(`http://dostavka1.com/v1/sms/?action=send_code&phone=${phone}`);
+    const resultJson = await result.json();
+    return resultJson.status;
+}
+
 class Registration extends React.Component {
     navigationOptions = {
 		title: 'Авторизация',
@@ -100,7 +106,7 @@ class Registration extends React.Component {
             <View style={{flexDirection: 'column', paddingHorizontal: screen == 0 ? 20 : screen == 1 ? 27 : 30}}>
 
                 <TextInputMask
-                    ref={'myDateText'}
+                    ref={'phone'}
                     type={'custom'}
                     customTextInputProps={{
                         tintColor: '#dcc49c',
@@ -115,28 +121,31 @@ class Registration extends React.Component {
                         inputContainerStyle: { flexDirection: 'column' , alignItems: 'center', justifyContent: 'center' },
                         label: 'Введите новый номер телефона',
                     }}
-                    options={{
-	                    mask: '+7 999 999 99-99',
-                    }}
-                    customTextInput={TextField} 
                     value={this.state.phone}
+                    options={{
+                        mask: '+7 999 999 99-99',
+                    }}
+                    customTextInput={TextField}
                     onChangeText={(phone) => {this.state.phone = phone; }}
                     onBlur={() => this.setState({hidePrevious: true})}
                 />
                 <View style={{height: (screen == 0 ? 30 : screen == 1 ? 39 : 45)-25}}/>
             </View>
-            {this.renderButton('Выслать код подтверждения', ()=>{})}
+            {this.renderButton('Выслать код подтверждения', ()=>{ sendPhone(this.state.phone.replace(/\D+/g, '')) })}
             <View style={{
                 flexDirection: 'column',
                 alignSelf: 'center',
                 width: screen==0 ? 136 : screen == 1 ? 160 : 177,
             }}>
             <TextField
+                ref='codeInput'
                 tintColor={this.state.phone ? '#dcc49c' : 'rgb(87, 88, 98)'}
                 baseColor={this.state.phone ? '#dcc49c' : 'rgb(87, 88, 98)'}
                 textColor={'white'}
                 returnKeyType={'send'}
                 keyboardType={'phone-pad'}
+                value={this.state.code}
+                onChangeText={(code) => {this.state.code = code; }}
                 style={{
                     alignItems: 'center',
                     textAlign: 'center',
@@ -192,27 +201,30 @@ class Registration extends React.Component {
         </KeyboardAwareScrollView>;
     }
 
-    next = () => {
+    next = async () => {
         if (this.isNext()) {
-            var payload = {
-                "userName": this.props.navigation.state.params.userName ? this.props.navigation.state.params.userName : 'null',
-                "firstName": this.props.navigation.state.params.firstName ? this.props.navigation.state.params.firstName : 'null',
-                "middleName": this.props.navigation.state.params.middleName ? this.props.navigation.state.params.middleName : 'null',
-                "lastName": this.props.navigation.state.params.lastName ? this.props.navigation.state.params.lastName : 'null',
-                "email": this.props.navigation.state.params.email ? this.props.navigation.state.params.email : 'null',
-                "phone": this.state.phone ? this.state.phone : 'null',
-                "password": this.props.navigation.state.params.password
-            };
-            
-            fetch("http://dostavka1.com/v1/auth/register/",
-            {
-                method: "POST",
-                body: JSON.stringify( payload )
-            })
-            .then((res)=>{
-                return res.json();
-            })
-            .then((data) => {
+            console.log(this.state.phone, this.state.code);
+            const validationResponse = await fetch(`http://dostavka1.com/v1/sms/?action=check_code&phone=${this.state.phone.replace(/\D+/g, '')}&code=${this.state.code}`, {method: 'get'});
+            console.log(validationResponse);
+            const validationResponseJson = await validationResponse.json();
+            console.log(validationResponseJson);
+
+            if (validationResponseJson.status === true) {
+                var payload = {
+                    "userName": this.props.navigation.state.params.userName ? this.props.navigation.state.params.userName : 'null',
+                    "firstName": this.props.navigation.state.params.firstName ? this.props.navigation.state.params.firstName : 'null',
+                    "middleName": this.props.navigation.state.params.middleName ? this.props.navigation.state.params.middleName : 'null',
+                    "lastName": this.props.navigation.state.params.lastName ? this.props.navigation.state.params.lastName : 'null',
+                    "email": this.props.navigation.state.params.email ? this.props.navigation.state.params.email : 'null',
+                    "phone": this.state.phone ? this.state.phone : 'null',
+                    "password": this.props.navigation.state.params.password
+                };
+                const response = await fetch("http://dostavka1.com/v1/auth/register/",
+                {
+                    method: "POST",
+                    body: JSON.stringify( payload )
+                });
+                const data = await response.json();
                 if (data.errors) {
                     if (data.errors.code != 200) {
                         Alert.alert(data.errors.title, data.errors.detail);
@@ -224,10 +236,13 @@ class Registration extends React.Component {
                     this.props.auth(data);
                     this.props.navigation.navigate('Feed');
                 }
-                    
-            })
+            }
+            else {
+                console.log(this.refs['codeInput']);
+                this.refs['codeInput'].props.error = validationResponseJson.errors.title;
+                this.setState({});
+            }
         }
-            
     }
 
     renderMenuItem = (icon, title, nav) => {
