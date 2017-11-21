@@ -230,6 +230,7 @@ class Login extends React.Component {
             label="E-mail адрес"
             value={this.state.email}
             onChangeText={address => {
+              this.setState({ emailInputError: null });
               this.state.email = address;
             }}
             onBlur={() => this.setState({ hidePrevious: true })}
@@ -259,6 +260,7 @@ class Login extends React.Component {
             label="Пароль"
             value={this.state.password}
             onChangeText={password => {
+              this.setState({ passwordInputError: null});
               this.state.password = password;
             }}
             onBlur={() => this.setState({ hidePrevious: true })}
