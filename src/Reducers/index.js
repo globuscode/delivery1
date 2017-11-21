@@ -2,15 +2,15 @@ import { combineReducers, createStore } from "redux";
 
 import cart from "./cart";
 import user from "./user";
+import recomendations from "./recomendations";
 
 combineReducers;
 const store = createStore(
   combineReducers({
     cart,
-    user
+    user,
+    recomendations
   })
 );
-
-store.subscribe(() => {});
 
 export default store;
