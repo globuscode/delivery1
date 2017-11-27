@@ -92,132 +92,19 @@ class Cart extends React.Component {
           description:
             "Хлебосольная, щедрая, сказочная, гостеприимная Грузия! Удивительная страна, которая известна своими застольями, подарила Москве частичку своей души."
         },
-        bestPlates: [
-          {
-            photo:
-              "https://img02.rl0.ru/afisha/o/s1.afisha.net/MediaStorage/d5/12/535a1080132c4530a7a4446612d5.jpg",
-            name: "Дабл роял бургер",
-            restourant: "Джон Джоли",
-            weight: "400 гр",
-            price: "8888",
-            restourantLogo: "https://image.ibb.co/fPo4vm/meatless_logo.png",
-            favourite: false
-          },
-          {
-            photo:
-              "http://shop.web01.widgets.vigbo.com/storage/shops/7776/products/313707/images/2-8606f84da77c5a05532ee2d3f1d9e351.jpg",
-            name: "Стейк",
-            restourant: "Стейк Хаус",
-            weight: "200 гр",
-            price: "30",
-            restourantLogo: "https://image.ibb.co/fPo4vm/meatless_logo.png",
-            favourite: false
-          },
-          {
-            photo:
-              "http://img.povar.ru/uploads/a0/99/e9/31/molochnii_kokteil_s_shokoladom-318319.jpg",
-            name: "Шоколадный милкшейк",
-            restourant: "Джон Джоли",
-            weight: "150 гр",
-            price: "1000",
-            restourantLogo: "https://image.ibb.co/fPo4vm/meatless_logo.png",
-            favourite: false
-          },
-          {
-            photo:
-              "https://img02.rl0.ru/afisha/o/s1.afisha.net/MediaStorage/d5/12/535a1080132c4530a7a4446612d5.jpg",
-            name: "Бургер",
-            restourant: "КБ",
-            weight: "200 гр",
-            price: "30",
-            restourantLogo: "https://image.ibb.co/fPo4vm/meatless_logo.png",
-            favourite: false
-          }
-        ],
-        /*promo: {
-						id: <int>,
-						title: <string>,
-						description: <html>
-				},*/
-        menu: {
-          "Мясные блюда": [
-            {
-              title: "Мясной хлеб",
-              favorite: false,
-              image:
-                "http://img.povar.ru/uploads/a0/99/e9/31/molochnii_kokteil_s_shokoladom-318319.jpg",
-              weight: "200/25/40/ 15/5/2 гр.",
-              price: 8888,
-              description:
-                "С хрустящими шариками из сулугуни и кукурузной муки с домашними соусами"
-            },
-            {
-              title: "Мясной хлеб",
-              favorite: false,
-              image:
-                "http://img.povar.ru/uploads/a0/99/e9/31/molochnii_kokteil_s_shokoladom-318319.jpg",
-              weight: "200/25/40/ 15/5/2 гр.",
-              price: 8888,
-              description:
-                "С хрустящими шариками из сулугуни и кукурузной муки с домашними соусами"
-            }
-          ],
-          Салаты: [
-            {
-              title: "Мясной хлеб",
-              favorite: false,
-              image:
-                "http://img.povar.ru/uploads/a0/99/e9/31/molochnii_kokteil_s_shokoladom-318319.jpg",
-              weight: "200/25/40/ 15/5/2 гр.",
-              price: 8888,
-              description:
-                "С хрустящими шариками из сулугуни и кукурузной муки с домашними соусами"
-            },
-            {
-              title: "Мясной хлеб",
-              favorite: false,
-              image:
-                "http://img.povar.ru/uploads/a0/99/e9/31/molochnii_kokteil_s_shokoladom-318319.jpg",
-              weight: "200/25/40/ 15/5/2 гр.",
-              price: 8888,
-              description:
-                "С хрустящими шариками из сулугуни и кукурузной муки с домашними соусами"
-            }
-          ],
-          Супы: [
-            {
-              title: "Борщ",
-              favorite: false,
-              image:
-                "http://img.povar.ru/uploads/a0/99/e9/31/molochnii_kokteil_s_shokoladom-318319.jpg",
-              weight: "200/25/40/ 15/5/2 гр.",
-              price: 8888,
-              description:
-                "С хрустящими шариками из сулугуни и кукурузной муки с домашними соусами"
-            },
-            {
-              title: "Уха",
-              favorite: false,
-              image:
-                "http://img.povar.ru/uploads/a0/99/e9/31/molochnii_kokteil_s_shokoladom-318319.jpg",
-              weight: "200/25/40/ 15/5/2 гр.",
-              price: 8888,
-              description:
-                "С хрустящими шариками из сулугуни и кукурузной муки с домашними соусами"
-            }
-          ]
-        },
-        time:
-          "с 11:00 до 22:30 пт, сб до 05:15 \nдоставим за 90 мин или ко времени",
-        averageBill: 9000,
-        minBill: 1000,
-        web: "www.google.com",
-        discount: 25
       }
     };
   }
 
-  componentWillMount = async () => {};
+  componentWillMount = async () => {
+    if (this.props.globalStore.cart.length != 0) {
+      const rest = await fetch('http://dostavka1.com/v1/restaurant?restaurantId='+props.globalStore.cart[0].plate.restaurant);
+      const restJson = await rest.json();
+      this.setState({restaurant: restJson["data"]["result"]});
+      console.log(this.state.restaurant.logoImage);
+    }
+      
+  };
 
   addPlate = async plate => {};
 
@@ -382,15 +269,17 @@ class Cart extends React.Component {
               alignItems: "center"
             }}
           >
-            <Counter
+            <View style={{top: -5}}><Counter
               value={e.count}
               onRemovePress={async () => {
                 this.props.removePlate(index);
+                this.setState({});
               }}
               onAddPress={() => {
                 this.props.addPlate(e.plate);
+                this.setState({});
               }}
-            />
+            /></View>
 
             <Text
               style={{
@@ -417,10 +306,20 @@ class Cart extends React.Component {
     }
   };
 
+  componentWillReceiveProps = async (newProps) => {
+    if (newProps.globalStore.cart.length != 0) {
+      const rest = await fetch('http://dostavka1.com/v1/restaurant?restaurantId='+newProps.globalStore.cart[0].plate.restaurant);
+      const restJson = await rest.json();
+      this.setState({restaurant: restJson["data"]["result"]});
+    }
+    this.props = newProps;
+    this.setState({});
+  }
+
   render() {
-    Storage.subscribe(() => {
+    /*Storage.subscribe(() => {
       this.setState({});
-    });
+    });*/
     const screen =
       viewportWidth >= 320 && viewportWidth < 375
         ? 0
@@ -447,7 +346,7 @@ class Cart extends React.Component {
 							style="
 							width: 100%;
 							height: 100%;
-							background: url('` +
+							background: url(http:'` +
                     this.state.restaurant.logoImage +
                     `') center center no-repeat; 
 							background-size: contain" />`
@@ -484,7 +383,7 @@ class Cart extends React.Component {
               alignSelf: 'center',
               marginVertical: 20
             }}>
-            <ButtonD onPress={this.nav} title='Открыть меню ресторана' width={screen == 0 ? 260 : screen == 1 ? 315 : 354}/>
+            <ButtonD onPress={this.nav} title={['Открыть меню ресторана']} width={screen == 0 ? 260 : screen == 1 ? 315 : 354}/>
             </View>
             <View
               style={{
@@ -517,7 +416,7 @@ class Cart extends React.Component {
               style={{
                 width: screen == 0 ? 290 : screen == 1 ? 346 : 376,
                 height: 1,
-                borderWidth: 1,
+                borderWidth: 0,
                 borderColor: "rgb( 87, 88, 98)"
               }}
             />
@@ -695,8 +594,13 @@ class Cart extends React.Component {
   }
 
   next = () => {
-    if (this.totalPrice() >= this.state.restaurant.minBill)
-      this.props.navigation.navigate('MakeOrder', {price: this.totalPrice()});
+    if (this.totalPrice() >= this.state.restaurant.minBill) {
+      if (this.props.globalStore.user.token)
+        this.props.navigation.navigate('SetFullAddress', {price: this.totalPrice()});
+      else
+        this.props.navigation.navigate('Login', {nextScreen: 'SetFullAddress'});
+    }
+      
   }
 
   renderPromoCode() {
@@ -821,7 +725,7 @@ class Cart extends React.Component {
               }
             </Text>
             <View>
-              <IconD name="cart" size={30} color="rgb( 225, 199, 155)" />
+              <IconD name="cart" size={40} color="rgb( 225, 199, 155)" />
             </View>
           </View>
           <View
@@ -861,7 +765,7 @@ class Cart extends React.Component {
           <View style={{
             alignSelf: 'center'
           }}>
-            <ButtonD onPress={() => this.props.navigation.navigate('Feed')} title='Добавить к заказу \n и перейти в ресторан' width={screen == 0 ? 260 : screen == 1 ? 315 : 354}/>
+            <ButtonD onPress={() => this.props.navigation.navigate('Main')} title={['Добавить к заказу',  'и перейти в ресторан']} width={screen == 0 ? 260 : screen == 1 ? 315 : 354}/>
           </View>
 
           <View style={{ height: screen == 0 ? 22 : screen == 1 ? 26 : 39 }} />
