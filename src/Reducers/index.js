@@ -3,13 +3,20 @@ import { combineReducers, createStore } from "redux";
 import cart from "./cart";
 import user from "./user";
 import recomendations from "./recomendations";
+import modalController from "./modalController";
+
+function lastAction(state = null, action) {
+  return action;
+}
 
 combineReducers;
 const store = createStore(
   combineReducers({
     cart,
     user,
-    recomendations
+    recomendations,
+    modalController,
+    lastAction
   })
 );
 
