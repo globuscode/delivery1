@@ -31,7 +31,7 @@ class Recomendations extends React.Component {
     this.state = {
       canNav: true,
       activeSlide: 0,
-      restourans: [],
+      restaurans: [],
       entries: [
         {
           id: 1,
@@ -90,34 +90,23 @@ class Recomendations extends React.Component {
 
   componentWillMount = () => {
     this.state.entries.forEach(async (element) => {
-      let restaurant = await fetch(`http://dostavka1.com/v1/restaurant?restaurantId=${element.restourant}`);
+      if (element.restaurant == undefined) return -1;
+      let restaurant = await fetch(`http://dostavka1.com/v1/restaurant?restaurantId=${element.restaurant}`);
       let restaurantJson = await restaurant.json();
-      this.state.restourans.push(restaurantJson.data.result);
-      this.setState({});
-    })
-    
+      this.state.restaurans.push(restaurantJson.data.result);
+    });
+    this.setState({});
   };
 
-  addPlateToCart = async plate => {
-    //await AsyncStorage.removeItem('cart');
-    //let cart = await AsyncStorage.getItem('cart');
+  addPlateToCart = plate => {
     this.props.onAddPlate(plate);
-    /*cart = JSON.parse(cart);
-    if (cart) {
-      cart.push(plate);
-      await AsyncStorage.setItem('cart', JSON.stringify(cart));
-    } else {
-      cart = [];
-      cart.push(plate);
-      await AsyncStorage.setItem('cart', JSON.stringify(cart));
-    }*/
   };
 
   nav = (i) => {
     if (this.state.canNav) {
       this.props.navigation.navigate("Plate", {
         plate: this.state.entries[i],
-        restaurant: this.state.restourans[i]
+        restaurant: this.state.restaurans[i]
       });
       this.state.canNav = false;
       setTimeout(() => {
@@ -237,12 +226,12 @@ class Recomendations extends React.Component {
         </Touchable>
       </View>
     );
-
+    heartButton = null;
     // Верхняя половина карточки
     var topView = (
       <View style={itemStyles.topViewStyle}>
         <View>
-          <Touchable activeOpacity={0.8} onPress={() => { console.log(index, element.id); this.nav(index); }}>
+          <Touchable activeOpacity={0.8} onPress={() => { this.nav(index); }}>
             <View>
               {/* Название блюда */}
               {titleText}
@@ -289,7 +278,7 @@ class Recomendations extends React.Component {
           width: SLIDER_WIDTH / 3,
           height: SLIDER_WIDTH / 3
         }}
-        source={{ uri: this.state.restourans[index] ? this.state.restourans[index].logoImage : '' }}
+        source={{ uri: this.state.restaurans[index] ? this.state.restaurans[index].logoImage : "http://dostavka1.com/img/app-icon.png" }}
       />
     );
     var itemCount = getCount(this.props.globalStore, item);
@@ -312,6 +301,9 @@ class Recomendations extends React.Component {
           value={item.price}
           onPress={() => {
             this.addPlateToCart(item);
+            //this.props.changeModal(item);
+            this.props.open(item);
+            
           }}
         />
       </View>
@@ -350,9 +342,17 @@ class Recomendations extends React.Component {
     );
   };
 
+  componentWillReceiveProps = (newProps) => {
+    this.props = newProps;
+    this.setState({});
+  }
+
   render() {
     Storage.subscribe(() => {
-      this.setState({});
+      if (Storage.getState().lastAction.type === 'CLOSE_MODAL') {
+        Storage.dispatch({type: null});
+        this.props.navigation.navigate('RestaurantMenu', {id: Storage.getState().modalController.plate.restaurant});
+      }
     });
 
     const screen =
@@ -438,12 +438,17 @@ function getCount(cart, plate) {
 
 export default connect(
   state => ({
-    globalStore: state.cart
+    globalStore: state.cart,
+    modal: state.modalController
   }),
   dispatch => ({
     onAddPlate: plate => {
       dispatch({ type: "ADD_PLATE", payload: plate });
-    }
+    },
+    open: (data) => dispatch({ type: "OPEN_MODAL", payload: data}),
+    changeModal: (data) => {
+      dispatch({ type: "CHANGE_CONTENT", payload: data })
+    },
   })
 )(Recomendations);
 
