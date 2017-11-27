@@ -84,7 +84,7 @@ export default class Price extends React.Component {
                 : viewportWidth >= 375 && viewportWidth < 414 ? 30 : 34,
             borderRadius: 5,
             alignItems: "center",
-            justifyContent: "center",
+            justifyContent: "flex-start",
             alignContent: "center",
             borderColor: "#dcc49c",
             flexDirection: "row",
@@ -95,7 +95,7 @@ export default class Price extends React.Component {
             backgroundColor: this.state.pressed ? "#dcc49c" : "transparent"
           }}
         >
-          <View style={{}}>
+          <View style={{marginLeft: 5}}>
             <IconD
               name="cart"
               size={
@@ -106,17 +106,24 @@ export default class Price extends React.Component {
               color={!this.state.pressed ? "#dcc49c" : "#292b37"}
             />
             {this.props.count == 0 || this.props.count == null ? null : (
-              <Badge
-                value={this.props.count}
-                containerStyle={{
-                  bottom: 5,
-                  right: 2,
-                  width: 3,
-                  position: "absolute",
-                  backgroundColor: "white"
-                }}
-                textStyle={{ color: "black", fontSize: 8 }}
-              />
+              <View style={{
+                backgroundColor: '#fff',
+                width: 10,
+                height: 10,
+                borderRadius: 5,
+                top: -4,
+                right: -4,
+                position: "absolute",
+              }}><Text style={{
+                color: "black",
+                fontSize: 8,
+                textAlign: 'center',
+                position: "absolute",
+                width: 10,
+                top: 1,
+                fontFamily: 'stem-medium',
+                backgroundColor: 'transparent'
+              }}>{this.props.count}</Text></View>
             )}
           </View>
           <Text
@@ -126,9 +133,11 @@ export default class Price extends React.Component {
                 viewportWidth >= 320 && viewportWidth < 375
                   ? 14
                   : viewportWidth >= 375 && viewportWidth < 414 ? 14 : 16,
-              marginLeft: 5,
+              flex: 1, 
+              textAlign: 'center',
               justifyContent: "center",
               alignItems: "center",
+              backgroundColor: 'transparent',
               alignSelf: "center",
               fontFamily: "stem-medium",
               color: !this.state.pressed ? "#fff" : "#292b37"
