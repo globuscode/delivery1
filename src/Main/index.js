@@ -97,7 +97,6 @@ const FirstScreen = StackNavigator(
     RestaurantMenu: {
       screen: RestaurantMenu,
       navigationOptions: {
-        title: "Джон Джоли",
         headerTintColor: "#fff",
         headerTitleStyle: {
           fontFamily: "stem-medium",
@@ -158,7 +157,6 @@ const SecondScreen = StackNavigator(
     RestaurantMenu: {
       screen: RestaurantMenu,
       navigationOptions: {
-        title: "Джон Джоли",
         headerTintColor: "#fff",
         headerTitleStyle: {
           fontFamily: "stem-medium",
@@ -253,7 +251,7 @@ export default TabNavigator(
         tabBarIcon: ({ tintColor, focused }) => {
           if (!IconD) return <View />;
           return (
-            <View style={{ top: Platform.OS === "ios" ? -15 : 0 }}>
+            <View >
               <IconD
                 size={25}
                 name={focused ? "homeFill" : "home"}
@@ -274,7 +272,7 @@ export default TabNavigator(
         tabBarIcon: ({ tintColor, focused }) => {
           if (!IconD) return <View />;
           return (
-            <View style={{ top: Platform.OS === "ios" ? -15 : 0 }}>
+            <View >
               <IconD
                 size={25}
                 name={focused ? "book-fill" : "book"}
@@ -285,14 +283,14 @@ export default TabNavigator(
         }
       }
     },
-    Third: {
+    /*Third: {
       screen: ThirdScreen,
       navigationOptions: {
         tabBarLabel: "Избранное",
         tabBarIcon: ({ tintColor, focused }) => {
           if (!IconD) return <View />;
           return (
-            <View style={{ top: Platform.OS === "ios" ? -15 : 0 }}>
+            <View >
               <IconD
                 size={25}
                 name={focused ? "heart-fill" : "heart"}
@@ -302,7 +300,7 @@ export default TabNavigator(
           );
         }
       }
-    },
+    },*/
     Fourth: {
       screen: FourthScreen,
       navigationOptions: {
@@ -311,7 +309,7 @@ export default TabNavigator(
         tabBarIcon: ({ tintColor, focused }) => {
           if (!IconD) return <View />;
           return (
-            <View style={{ top: Platform.OS === "ios" ? -15 : 0 }}>
+            <View >
               <IconD
                 size={25}
                 name={focused ? "cart-fill" : "cart"}
@@ -326,15 +324,21 @@ export default TabNavigator(
   {
     tabBarComponent: TabBarBottom,
     tabBarPosition: "bottom",
-    animationEnabled: true,
+    animationEnabled: false,
 
     tabBarOptions: {
       style: {
-        //paddingHorizontal: 20,
+        justifyContent: 'space-between',
+        alignSelf: 'stretch',
         padding: 0,
         paddingTop: 1,
-        backgroundColor: "rgb( 87, 88, 98)",
+        backgroundColor: "rgb(87, 88, 98)",
         marginHorizontal: 20
+      },
+      tabStyle: {
+        flex: 1,
+        paddingTop: 3,
+        justifyContent: 'space-between',
       },
       pressColor: "red",
       inactiveBackgroundColor: "rgba(39, 40, 48, 1)",
