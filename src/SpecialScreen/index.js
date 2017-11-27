@@ -34,13 +34,15 @@ export default class SelectCity extends React.Component {
         Alert.alert('Ошибка', 'Ошибка соединения с сервером.')
       }
       else 
-      if (1)
+      if (0)
         this.props.navigation.navigate('SelectCity'); 
-      else
-        if (city == 'null')
+      else {
+        if (city == null)
           this.props.navigation.navigate('SelectCity');
         else
-          this.props.navigation.navigate('Feed'); 
+          this.props.navigation.navigate('LoadingScreen'); 
+      }
+        
         
       });
   }
@@ -49,7 +51,7 @@ export default class SelectCity extends React.Component {
     kitchenPhoto = require('../../assets/img/kitchen.jpeg');
     return (
       <Image style={styles.backgroundImage}
-        source={{ uri: 'https://cdn-images-1.medium.com/max/1920/1*tLe0R9zkEI19qvaCQDGxdA.jpeg'}}
+        source={kitchenPhoto}
       >
         <View style={styles.container}>
           <LinearGradient colors={['rgba(0, 0, 0, 0.9)', 'transparent']} style={{
