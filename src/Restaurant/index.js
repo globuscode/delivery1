@@ -34,15 +34,15 @@ export default class Restaurant extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			rang: 2,
+			rang: 0,
 			canNav: true,
 			data: {
 				id: 0,
-				title: "Джон Джоли",
-				image: "http://lamcdn.net/the-village.ru/post_image-image/stUDrX37wGq1g-9mFWRl4A-article.jpg",
-				logoImage: 'https://image.ibb.co/fPo4vm/meatless_logo.png',
+				title: "",
+				image: "//dostavka1.com/img/app-icon.png",
+				logoImage: '//dostavka1.com/img/app-icon.png',
 				favorite: false,
-				type: 'Grill ресторан',
+				type: '',
 				/*
 				tagGroups: [
 						{
@@ -53,80 +53,32 @@ export default class Restaurant extends React.Component {
 						},
 						<tag_grou_id>,
 				],*/
-				minOrder: 8888,
+				minOrder: 0,
 				description: {
-					title: 'Настоящее грузинское гостеприимство в ресторанах «Джон Джоли»',
-					description: 'Хлебосольная, щедрая, сказочная, гостеприимная Грузия! Удивительная страна, которая известна своими застольями, подарила Москве частичку своей души.'
+					title: '',
+					description: ''
 				},
-				/*bestPlates: [
-						<plate>,
-						<plate>,
-						…
-				],
+				bestPlates: [
+				],/*
 				promo: {
 						id: <int>,
 						title: <string>,
 						description: <html>
 				},*/
 				menu: {
-					'Мясные блюда': [
-						{
-							title: 'Мясной хлеб',
-							"favorite": false,
-							"image": 'http://img.povar.ru/uploads/a0/99/e9/31/molochnii_kokteil_s_shokoladom-318319.jpg',
-							"price": 8888,
-							"description": 'С хрустящими шариками из сулугуни и кукурузной муки с домашними соусами',
-						}, {
-							title: 'Мясной хлеб',
-							"favorite": false,
-							"image": 'http://img.povar.ru/uploads/a0/99/e9/31/molochnii_kokteil_s_shokoladom-318319.jpg',
-							"price": 8888,
-							"description": 'С хрустящими шариками из сулугуни и кукурузной муки с домашними соусами',
-						},
-					],
-					'Салаты': [
-						{
-							title: 'Мясной хлеб',
-							"favorite": false,
-							"image": 'http://img.povar.ru/uploads/a0/99/e9/31/molochnii_kokteil_s_shokoladom-318319.jpg',
-							"price": 8888,
-							"description": 'С хрустящими шариками из сулугуни и кукурузной муки с домашними соусами',
-						}, {
-							title: 'Мясной хлеб',
-							"favorite": false,
-							"image": 'http://img.povar.ru/uploads/a0/99/e9/31/molochnii_kokteil_s_shokoladom-318319.jpg',
-							"price": 8888,
-							"description": 'С хрустящими шариками из сулугуни и кукурузной муки с домашними соусами',
-						},
-					],
-					'Супы': [
-						{
-							title: 'Борщ',
-							"favorite": false,
-							"image": 'http://img.povar.ru/uploads/a0/99/e9/31/molochnii_kokteil_s_shokoladom-318319.jpg',
-							"price": 8888,
-							"description": 'С хрустящими шариками из сулугуни и кукурузной муки с домашними соусами',
-						}, {
-							title: 'Уха',
-							"favorite": false,
-							"image": 'http://img.povar.ru/uploads/a0/99/e9/31/molochnii_kokteil_s_shokoladom-318319.jpg',
-							"price": 8888,
-							"description": 'С хрустящими шариками из сулугуни и кукурузной муки с домашними соусами',
-						},
-					]
 				},
-				time: 'с 11:00 до 22:30 \nпт, сб до 05:15',
-				averageBill: 9000,
-				minBill: 1000,
-				web: 'www.google.com',
+				time: '',
+				averageBill: 0,
+				minBill: 0,
+				web: '',
 				/*discount: <float>*/
 			}
 		};
 		this.navigationOptions.title = this.state.data.title;
 	};
 
-	componentWillMount = async () => {
-		const restaurantId = this.props.navigation.state ? this.props.navigation.state.restaurantId : (0).toString();
+	componentDidMount = async () => {
+		const restaurantId = this.props.navigation.state ? this.props.navigation.state.params.id : (-1).toString();
 		fetch('http://dostavka1.com/v1/restaurant?restaurantId='+restaurantId)
 			.then((response) => response.json())
 			.then((responseJson) => {
@@ -185,7 +137,7 @@ export default class Restaurant extends React.Component {
 		}}>
 			{/* Фото ресторана */}
 			<Image source={{
-				uri: this.state.data.image 
+				uri: "http:"+this.state.data.image 
 			}}
 			style={{
 				width: viewportWidth,
@@ -208,7 +160,7 @@ export default class Restaurant extends React.Component {
 					bounces={false}
 					scrollEnabled={false}
 					source={{
-						html: '<div style="width:100%; height: 100%; background: url(' + this.state.data.logoImage + ') center center no-repeat; background-size: contain" />'
+						html: '<div style="width:100%; height: 100%; background: url(http:' + this.state.data.logoImage + ') center center no-repeat; background-size: contain" />'
 					}}
 					style={{
 						width: viewportWidth,
@@ -265,8 +217,8 @@ export default class Restaurant extends React.Component {
 
 			{/* Кнопка Открыть меню ресторана */}
 			{this.renderButton('Открыть меню ресторана', () => {
-				if (this.state.canNav) {
-					this.props.navigation.navigate('SetAddress');
+				if (this.state.canNav && this.state.data.id != 0) {
+					this.props.navigation.navigate('SetAddress', {id: this.state.data.id });
 					this.state.canNav = false;
 					setTimeout(() => {
 						this.state.canNav = true;
