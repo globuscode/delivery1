@@ -11,9 +11,11 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import Picker from "react-native-wheel-picker";
 import Touchable from 'react-native-platform-touchable';
+import { connect } from "react-redux";
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
-export default class SelectCity extends React.Component {
+
+class SelectCity extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -122,7 +124,6 @@ export default class SelectCity extends React.Component {
 
   next = () => {
     this.setCity(JSON.stringify(this.state.selectedCity));
-
     if (this.state.canNav) {
       this.props.navigation.navigate('About');
       this.state.canNav = false;
@@ -211,6 +212,14 @@ export default class SelectCity extends React.Component {
     );
   }
 }
+
+export default connect(
+  state => ({
+  }),
+  dispatch => ({
+    open: () => dispatch({ type: "OPEN_MODAL"}),
+  })
+)(SelectCity);
 
 const styles = StyleSheet.create({
   text: {
