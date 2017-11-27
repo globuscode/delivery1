@@ -24,20 +24,62 @@ export default class AllRestourans extends React.Component {
     this.state = {
       types: [
         "Все кухни",
-        "Армянская",
-        "Американская",
-        "Итальянская",
-        "Русская",
-        "Армянская",
-        "Американская",
-        "Итальянская",
-        "Русская"
       ],
+      maxIndex: 5,
+      restaurans: [],
+      restauransShort: [],
       selectedType: 0
     };
   }
 
-  componentDidMount() {}
+  componentWillMount = async () => {
+    const response = await fetch(`http://dostavka1.com/v1/classificator/tag-groups?cityId=36`);
+    const responseJson = await response.json();
+
+    responseJson.data.forEach((element) => {
+      this.state.types.push(element.title);
+    });
+    this.setState({});
+  }
+
+  componentDidMount = async () => {
+    const response = await fetch(`http://dostavka1.com/v1/restaurants?cityId=36`);
+    const responseJson = await response.json();
+
+    this.setState({ 
+      restaurants: responseJson.data.restaurants
+    });
+
+    let rests = [];
+    
+    for (let i=0; i<this.state.maxIndex; i++)
+      rests.push(this.state.restaurants[i]);
+
+    this.setState({ 
+      restauransShort: rests
+    });
+  }
+
+  updateResults = async () => {
+    //const response = await fetch(`http://dostavka1.com/v1/restaurants?cityId=36&tag=${this.state.types[this.state.selectedType]}`);
+    //const responseJson = await response.json();
+    //console.log("Update");
+    let rests = [];
+    let i = 0;
+    while (i < this.state.maxIndex) {
+      this.state.restaurants[i].restourantTags.forEach((e) => {
+        console.log(e, this.state.types[this.state.selectedType], e == this.state.types[this.state.selectedType]);
+        if (e == this.state.types[this.state.selectedType]) {
+          rests.push(this.state.restaurants[i]);
+        }
+      });
+      i += 1;
+    }
+
+    this.setState({ 
+      restauransShort: rests
+    });
+  }
 
   render() {
     //ios - contact - outline
@@ -63,7 +105,7 @@ export default class AllRestourans extends React.Component {
             >
               <TouchableOpacity
                 onPress={() => {
-                  this.selectedType = 0;
+                  //this.selectedType = 0;
                   this._drawer.close();
                 }}
                 style={{ paddingVertical: 10 }}
@@ -74,8 +116,10 @@ export default class AllRestourans extends React.Component {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  this.selectedType = 0;
-                  this.setState({ selectedType: this.state.preSelectedType });
+                  //this.selectedType = 0;
+                  this.state.selectedType = this.state.preSelectedType;
+                  console.log(this.state.types[this.state.selectedType]);
+                  this.updateResults();
                   this._drawer.close();
                 }}
                 style={{ paddingVertical: 10 }}
@@ -87,15 +131,15 @@ export default class AllRestourans extends React.Component {
             </View>
             <Picker
               style={{ width: 320, alignSelf: "center" }}
-              selectedValue={this.state.types[this.state.preSelectedType]}
+              selectedValue={this.state.preSelectedType}
               itemStyle={{ color: "#dcc49c", fontSize: 30 }}
               onValueChange={index => {
-                this.state.preSelectedType = index;
+                this.setState({preSelectedType: index});
               }}
             >
-              {this.state.types.map((value, i) => (
-                <Picker.Item label={value} value={i} key={i} />
-              ))}
+              {this.state.types.map((value, i) => {
+                return (<Picker.Item label={value} value={i} key={i} />);
+              })}
             </Picker>
           </View>
         }
@@ -175,8 +219,7 @@ export default class AllRestourans extends React.Component {
                 />
               </TouchableOpacity>
             </View>
-
-            <RestouransOfTheWeek navigation={this.props.navigation} />
+            <RestouransOfTheWeek data={this.state.restauransShort} navigation={this.props.navigation} />
             <View style={{ height: 20 }} />
           </ScrollView>
 
