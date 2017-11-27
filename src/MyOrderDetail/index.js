@@ -359,7 +359,7 @@ class MyOrderDetail extends React.Component {
           >
             <ButtonD
               onPress={this.addAll}
-              title="Вернуться в приложение"
+              title={["Вернуться в приложение"]}
               width={screen === 0 ? 260 : screen === 1 ? 315 : 354}
             />
           </View>
@@ -446,7 +446,7 @@ class MyOrderDetail extends React.Component {
         >
           <ButtonD
             onPress={this.addAll}
-            title={`Добавить заказ в корзину за ${this.state.order.total} ₽`}
+            title={[`Добавить заказ в корзину за ${this.state.order.total} ₽`]}
             width={screen === 0 ? 260 : screen === 1 ? 315 : 354}
           />
         </View>
