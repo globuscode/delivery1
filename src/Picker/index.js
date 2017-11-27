@@ -50,7 +50,6 @@ export default class GLExample extends React.Component {
 },
 	],*/
 	_renderItem = ({ item, index }) => {
-		//console.log(this._carousel.currentScrollPosition);
 		var angle = (Math.abs(index - this.state.selected) > 3) ? 90 : (-(index - this.state.selected) * 30);
 		this.state.angles[index] = angle;
 		return <Animated.View >
