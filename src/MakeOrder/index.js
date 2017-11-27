@@ -13,13 +13,25 @@ const screen =
     : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
 
 class MakeOrder extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            price: this.props.navigation.state.params.price ? this.props.navigation.state.params.price : 0,
-            selected: "Наличными курьеру",
-        }
+  constructor(props) {
+      super(props);
+      this.state = {
+          price: this.totalPrice(),
+          selected: "Наличными курьеру",
+      }
+  }
+
+  totalPrice = () => {
+    let result = 0;
+    for (var i = 0; i < this.props.globalStore.length; i++) {
+      result +=
+        parseFloat(this.props.globalStore[i].plate.price) *
+        parseFloat(this.props.globalStore[i].count);
     }
+
+    return result;
+  };
+
   renderMenuItem = (icon, title, nav) => {
     return (
       <TouchableOpacity
