@@ -277,7 +277,7 @@ class Plate extends React.Component{
 
 	nav = () => {
 		if (this.state.canNav) {
-			this.props.navigation.navigate('Restaurant');
+			this.props.navigation.navigate('Restaurant', {id: this.state.restaurant.id});
 			this.state.canNav = false;
 			setTimeout(() => {
 				this.state.canNav = true;
@@ -285,10 +285,15 @@ class Plate extends React.Component{
 		}
 	}
 
+	componentWillReceiveProps = (newProps) => {
+		this.props = newProps;
+		this.setState({});
+	  }
+
 	render() {
-		Storage.subscribe(() => {
+		/*Storage.subscribe(() => {
 			this.setState({});
-		  });
+		  });*/
 		let inCart = false;
 		var i=0;
 		while (i<this.props.globalStore.length && !inCart) {
