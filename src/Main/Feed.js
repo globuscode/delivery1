@@ -74,7 +74,7 @@ class Feed extends React.Component {
 
 				<TouchableOpacity onPress={() => {
 					if (this.state.canNav) {
-						this.props.navigation.navigate(nav);
+						this.props.navigation.navigate(nav, {next: 'LoadingScreen'});
      				this.state.canNav = false;
 						setTimeout(() => {
 							this.state.canNav = true;
@@ -102,11 +102,15 @@ class Feed extends React.Component {
 	changeTab = (tab) => {
 		this.props.changeTab(tab);
 	}
+	componentWillReceiveProps = (newProps) => {
+		this.props = newProps;
+		this.setState({});
+	  }
 
 	render() {
-		Storage.subscribe(() => {
+		/*Storage.subscribe(() => {
 			this.setState({});
-		});
+		});*/
 		const isAuth = Object.keys(this.props.userData).length != 0;
 		return (
 			<View style={styles.container}>
@@ -158,7 +162,7 @@ class Feed extends React.Component {
 							</View>
 						</View>
 					</TouchableOpacity>
-					<TouchableOpacity style={{width: 30, justifyContent: 'center'}}><IconD name='find' color='#dcc49c' size={15} /></TouchableOpacity>
+					{/*<TouchableOpacity style={{width: 30, justifyContent: 'center'}}><IconD name='find' color='#dcc49c' size={15} /></TouchableOpacity>*/}
 				</View>
 				<ScrollView ref='scroll'  horizontal={false}>
 
