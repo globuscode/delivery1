@@ -1,274 +1,56 @@
 import React from "react";
 import { Font } from "expo";
 import Expo from "expo";
-import { StatusBar, Platform } from "react-native";
+import { StatusBar, Platform, View } from "react-native";
 import { StackNavigator } from "react-navigation";
-import { Provider } from "react-redux";
+import { Provider, connect } from "react-redux";
 
 import IconD from "./src/IconD";
 import Reducer from "./src/Reducers";
+import A from "./ScreenReducer";
+import PopupCart from "./src/PopupCart";
 
-import Login from "./src/Login";
-import Registration from "./src/Registration";
-import RegistratePhone from "./src/RegistatePhone";
-import SelectCity from "./src/SelectCity";
-import SelectTags from "./src/SelectTags";
-import SetAddress from "./src/SetAddress";
-import SelectTastes from "./src/SelectTastes";
-import About from "./src/about";
-import SpecialScreen from "./src/SpecialScreen";
-import LoadingScreen from "./src/LoadingScreen";
-import Main from "./src/Main";
-import AllRestourans from "./src/AllRestourans";
-import Restaurant from "./src/Restaurant";
-import RestaurantMenu from "./src/RestaurantMenu";
-import Plate from "./src/Plate";
-import Profile from "./src/Profile";
-import MakeOrder from "./src/MakeOrder";
-import MyOrders from "./src/MyOrders";
-import MyOrderDetail from "./src/MyOrderDetail";
-import PersonalInformation from "./src/PersonalInformation";
+import PopupDialog, {
+  SlideAnimation
+} from 'react-native-popup-dialog';
 
 StatusBar.setBarStyle("light-content", true);
 
-const tabs = StackNavigator(
-  {
-    Main: {
-      screen: Main,
-      navigationOptions: {
-        header: null,
-        gesturesEnabled: false
-      }
-    },
-    Restaurant: {
-      screen: Restaurant,
-      navigationOptions: {
-        header: null
-      }
-    },
-    SetAddress: {
-      screen: SetAddress,
-      navigationOptions: {
-        header: null
-      }
-    }
-  },
-  {
-    cardStyle: {
-      backgroundColor: "rgba(39, 40, 48, 1)"
-    }
-  }
-);
+const slide = new SlideAnimation({
+  slideFrom: 'bottom',
+});
 
-const A = StackNavigator(
-  {
-    SpecialScreen: {
-      screen: SpecialScreen,
-      navigationOptions: {
-        header: null,
-        gesturesEnabled: false
-      }
-    },
-    SelectCity: {
-      screen: SelectCity,
-      navigationOptions: {
-        header: null,
-        gesturesEnabled: false
-      }
-    },
-    About: {
-      screen: About,
-      navigationOptions: {
-        header: null,
-        gesturesEnabled: false
-      }
-    },
-    RegistratePhone: {
-      screen: RegistratePhone,
-      navigationOptions: {
-        title: "Номер телефона",
-        headerTintColor: "#fff",
-        headerTitleStyle: {
-          fontFamily: "stem-medium",
-          fontSize: 14,
-          letterSpacing: 0.8
-        },
-        headerBackTitleStyle: {
-          color: "#dcc49c"
-        },
-        headerStyle: {
-          marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
-          backgroundColor: "#292b37"
-        }
-      }
-    },
-    Profile: {
-      screen: Profile,
-      navigationOptions: {
-        title: "Личный кабинет",
-        headerTintColor: "#fff",
-        headerTitleStyle: {
-          fontFamily: "stem-medium",
-          fontSize: 14,
-          letterSpacing: 0.8
-        },
-        headerBackTitleStyle: {
-          color: "#dcc49c"
-        },
-        headerStyle: {
-          marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
-          backgroundColor: "#292b37"
-        }
-      }
-    },
-    MakeOrder: {
-      screen: MakeOrder,
-      navigationOptions: {
-        title: "Оплатить заказ",
-        headerTintColor: "#fff",
-        headerTitleStyle: {
-          fontFamily: "stem-medium",
-          fontSize: 14,
-          letterSpacing: 0.8
-        },
-        headerBackTitleStyle: {
-          color: "#dcc49c"
-        },
-        headerStyle: {
-          marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
-          backgroundColor: "#292b37"
-        }
-      }
-    },
-    MyOrders: {
-      screen: MyOrders,
-      navigationOptions: {
-        title: "Мои заказы",
-        headerTintColor: "#fff",
-        headerTitleStyle: {
-          fontFamily: "stem-medium",
-          fontSize: 14,
-          letterSpacing: 0.8
-        },
-        headerBackTitleStyle: {
-          color: "#dcc49c"
-        },
-        headerStyle: {
-          marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
-          backgroundColor: "#292b37"
-        }
-      }
-    },
-    MyOrderDetail: {
-      screen: MyOrderDetail,
-      navigationOptions: {
-        title: "Заказ",
-        headerTintColor: "#fff",
-        headerTitleStyle: {
-          fontFamily: "stem-medium",
-          fontSize: 14,
-          letterSpacing: 0.8
-        },
-        headerBackTitleStyle: {
-          color: "#dcc49c"
-        },
-        headerStyle: {
-          marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
-          backgroundColor: "#292b37"
-        }
-      }
-    },
-    PersonalInformation: {
-      screen: PersonalInformation,
-      navigationOptions: {
-        title: "Мои данные",
-        headerTintColor: "#fff",
-        headerTitleStyle: {
-          fontFamily: "stem-medium",
-          fontSize: 14,
-          letterSpacing: 0.8
-        },
-        headerBackTitleStyle: {
-          color: "#dcc49c"
-        },
-        headerStyle: {
-          marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
-          backgroundColor: "#292b37"
-        }
-      }
-    },
-    Login: {
-      screen: Login,
-      navigationOptions: {
-        title: "Авторизация",
-        headerTintColor: "#fff",
-        headerTitleStyle: {
-          fontFamily: "stem-medium",
-          fontSize: 14,
-          letterSpacing: 0.8
-        },
-        headerBackTitleStyle: {
-          color: "#dcc49c"
-        },
-        headerStyle: {
-          marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
-          backgroundColor: "#292b37"
-        }
-      }
-    },
-    Registration: {
-      screen: Registration,
-      navigationOptions: {
-        title: "Регистрация",
-        headerTintColor: "#fff",
-        headerTitleStyle: {
-          fontFamily: "stem-medium",
-          fontSize: 14,
-          letterSpacing: 0.8
-        },
-        headerBackTitleStyle: {
-          color: "#dcc49c"
-        },
-        headerStyle: {
-          marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
-          backgroundColor: "#292b37"
-        }
-      }
-    },
-    SelectTags: {
-      screen: SelectTags,
-      navigationOptions: {
-        header: null,
-        gesturesEnabled: false
-      }
-    },
-    SelectTastes: {
-      screen: SelectTastes,
-      navigationOptions: {
-        header: null,
-        gesturesEnabled: false
-      }
-    },
-    LoadingScreen: {
-      screen: LoadingScreen,
-      navigationOptions: {
-        header: null,
-        gesturesEnabled: false
-      }
-    },
-    TabNav: {
-      screen: tabs
-    }
-  },
-  {
-    headerStyle: {
-      backcroundColor: "#292b37"
-    },
-    cardStyle: {
-      backgroundColor: "#292b37"
-    }
-  }
-);
+class ModalComponent extends React.Component {
+  componentWillReceiveProps = (nextProps) => {this.setState({})}
+  render = () => <View style={{flex: 1}}>
+    <A />
+    <PopupDialog
+      ref={(popupDialog) => { this.popupDialog = popupDialog; }}
+      dialogStyle={{
+        backgroundColor: 'transparent',
+        flexDirection: 'column',
+        justifyContent: 'flex-end'
+      }}
+      containerStyle={{
+        justifyContent: 'flex-end'
+      }}
+      show={Reducer.getState().modalController.opened}
+      dialogAnimation={slide}
+    >
+    <PopupCart />
+  </PopupDialog>
+</View>
+}
+
+const M = connect(
+  state => ({
+    modal: state.modalController
+  }),
+  dispatch => ({
+    open: () => dispatch({ type: "OPEN_MODAL"}),
+    close: () => dispatch({ type: "CLOSE_MODAL"}),
+  })
+)(ModalComponent);
 
 export default class App extends React.Component {
   constructor(props) {
@@ -287,10 +69,11 @@ export default class App extends React.Component {
   }
 
   render() {
+
     if (this.state.canRender)
       return (
         <Provider store={Reducer}>
-          <A />
+          <M/>
         </Provider>
       );
     else return null;
