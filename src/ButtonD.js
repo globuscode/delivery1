@@ -22,6 +22,7 @@ export default class ButtonD extends React.Component {
             }
           ]}
         >
+          {this.props.title.map((element, index) => 
           <Text
             style={{
               color: "#ffffff",
@@ -30,9 +31,10 @@ export default class ButtonD extends React.Component {
               textAlign: 'center',
               top: Platform.OS === 'ios' ? 2 : 0
             }}
+            key={index}
           >
-          {this.props.title}
-          </Text>
+          {element}
+          </Text>)}
         </View>
 
         <TouchableOpacity
@@ -51,6 +53,7 @@ export default class ButtonD extends React.Component {
             }
           ]}
         >
+          {this.props.title.map((element, index) => 
           <Text
             style={{
               color: "#ffffff",
@@ -59,9 +62,10 @@ export default class ButtonD extends React.Component {
               fontFamily: "stem-medium",
               top: Platform.OS === 'ios' ? 2 : 0
             }}
+            key={index}
           >
-            {this.props.title}
-          </Text>
+            {element}
+          </Text>)}
         </TouchableOpacity>
       </View>
     );
