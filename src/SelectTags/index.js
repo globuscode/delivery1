@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   Dimensions,
+  ActivityIndicator,
   ScrollView,
   AsyncStorage,
   WebView
@@ -69,6 +70,7 @@ export default class SelectTags extends React.Component {
     super(props);
     this.state = {
       canNav: true,
+      spinner: true,
       kitchens: [
         {
           title: 'Россия',
@@ -158,7 +160,12 @@ export default class SelectTags extends React.Component {
     this.setTags();
     if (this.isNext())
     if (this.state.canNav) {
-      this.props.navigation.navigate('SelectTastes');
+      if (this.props.navigation.state.params) {
+        if (this.props.navigation.state.params.next === 'LoadingScreen')
+          this.props.navigation.navigate('LoadingScreen');
+      }
+      else
+        this.props.navigation.navigate('SelectTastes');
       this.state.canNav = false;
       setTimeout(() => {
         this.state.canNav = true;
@@ -233,6 +240,7 @@ export default class SelectTags extends React.Component {
             height: viewportHeight - 193,
             backgroundColor: '#292b37',
           }}>
+            <ActivityIndicator size='large' style={{position: 'absolute', top: 100, alignSelf: 'center', display: this.state.spinner ? 'flex' : 'none'}} />
             <WebView
               ref={(c) => { this.webview = c; }}
               mixedContentMode='always'
@@ -243,6 +251,9 @@ export default class SelectTags extends React.Component {
               onMessage={this.onMessage}
               onLoadEnd={() => {
                 this.webview.postMessage(JSON.stringify({ update: false, tags: this.state.kitchens }))
+                setTimeout(() => {
+                  this.setState({spinner: false});
+                }, 1500);
               }}
               javaScriptEnabled={true}
               domStorageEnabled={true}
