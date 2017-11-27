@@ -143,8 +143,8 @@ class Profile extends React.Component {
         />
         {this.renderMenuItem("cart-small", "Мои заказы", "MyOrders")}
         {this.renderMenuItem("contact", "Мои данные", "PersonalInformation")}
-        {this.renderMenuItem("dostavka", "О программе лояльности", null)}
-        {this.renderMenuItem("book-small", "Путеводитель по приложению", null)}
+        {/*this.renderMenuItem("dostavka", "О программе лояльности", null)}
+        {this.renderMenuItem("book-small", "Путеводитель по приложению", null)*/}
 
         <View
           style={{
@@ -192,8 +192,6 @@ class Profile extends React.Component {
                 style={{
                   fontFamily: "stem-medium",
                   fontSize: 20,
-                  height: 20,
-                  lineHeight: 20,
                   color: "rgb( 225, 199, 155)"
                 }}
               >
@@ -227,9 +225,7 @@ class Profile extends React.Component {
             <Text
               style={{
                 fontFamily: "stem-medium",
-                lineHeight: 20,
                 fontSize: 20,
-                height: 20,
                 color: "rgb( 225, 199, 155)"
               }}
             >
