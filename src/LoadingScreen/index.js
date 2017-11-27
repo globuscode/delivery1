@@ -13,7 +13,7 @@ import IconD from "../IconD";
 
 import { connect } from "react-redux";
 
-var kitchenPhoto = require("../../assets/img/kitchen.jpeg");
+var kitchenPhoto = require("../../assets/img/kitchen.jpg");
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
@@ -25,7 +25,7 @@ class Loading extends React.Component {
   }
 
   componentWillMount() {
-    kitchenPhoto = require("../../assets/img/kitchen.jpeg");
+    kitchenPhoto = require("../../assets/img/kitchen.jpg");
   }
 
   async componentDidMount() {
@@ -57,14 +57,11 @@ class Loading extends React.Component {
   }
 
   render() {
-    kitchenPhoto = require("../../assets/img/kitchen.jpeg");
+    kitchenPhoto = require("../../assets/img/kitchen.jpg");
     return (
       <Image
         style={styles.backgroundImage}
-        source={{
-          uri:
-            "https://cdn-images-1.medium.com/max/1920/1*tLe0R9zkEI19qvaCQDGxdA.jpeg"
-        }}
+        source={kitchenPhoto}
       >
         <View style={styles.container}>
           <LinearGradient
