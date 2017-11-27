@@ -25,6 +25,7 @@ import {
   TabBarBottom
 } from "react-navigation";
 import Drawer from "react-native-drawer";
+import Touchable from 'react-native-platform-touchable';
 
 import Feed from "./Feed";
 
@@ -187,7 +188,8 @@ const FourthScreen = StackNavigator(
       navigationOptions: ({ navigation }) => ({
         title: "Корзина",
         headerLeft: (
-          <TouchableOpacity
+          <Touchable
+            background={Touchable.SelectableBackgroundBorderless()} 
             style={{
               width: 25,
               justifyContent: "center",
@@ -195,11 +197,11 @@ const FourthScreen = StackNavigator(
               alignSelf: "center"
             }}
             onPress={() => {
-              navigation.navigate("Feed");
+              navigation.navigate("Main");
             }}
           >
             <Icon name="ios-arrow-back-outline" size={20} color="#fff" />
-          </TouchableOpacity>
+          </Touchable>
         ),
         headerTintColor: "#fff",
         headerTitleStyle: {
