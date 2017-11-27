@@ -112,7 +112,12 @@ export default class SelectTags extends React.Component {
     this.setTastes();
     if (this.state.selected.length != 0)
       if (this.state.canNav) {
-        this.props.navigation.navigate('LoadingScreen');
+        if (this.props.navigation.state.params) {
+          if (this.props.navigation.state.params.next === 'LoadingScreen')
+            this.props.navigation.navigate('LoadingScreen');
+        }
+        else
+          this.props.navigation.navigate('LoadingScreen');
         this.state.canNav = false;
         setTimeout(() => {
           this.state.canNav = true;
