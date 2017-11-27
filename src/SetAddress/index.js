@@ -71,7 +71,7 @@ export default class SelectCity extends React.Component {
 	next = () => {
 		if (this.notDeliver(this.state.address))
 			if (this.state.canNav) {
-				this.props.navigation.navigate('RestaurantMenu');
+				this.props.navigation.navigate('RestaurantMenu', {id: this.props.navigation.state.params.id});
 				this.state.canNav = false;
 				setTimeout(() => {
 					this.state.canNav = true;
