@@ -31,7 +31,8 @@
       "splash": {
         "backgroundColor": "#292b37",
         "resizeMode": "cover"
-      }
+      },
+      "package": "com.creograf.delivery1"
     }
   }
 }
