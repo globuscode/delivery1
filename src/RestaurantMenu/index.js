@@ -47,192 +47,78 @@ const hrShort = (
 );
 
 class RestaurantMenu extends React.Component {
-  navigationOptions = {
-    title: "Home"
-  };
+  static navigationOptions = ({ navigation }) => {
+    return {
+    title: navigation.state.params.title
+}}
 
   constructor(props) {
     super(props);
     this.state = {
-      rang: 2,
+      rang: 0,
       hideInfo: false,
       canNav: true,
       data: {
-        id: 0,
-        title: "Джон Джоли",
-        image:
-          "http://lamcdn.net/the-village.ru/post_image-image/stUDrX37wGq1g-9mFWRl4A-article.jpg",
-        logoImage: "https://image.ibb.co/fPo4vm/meatless_logo.png",
-        favorite: false,
-        tagGroups: [
-          {
-            title: "Россия",
-            icon: "ios-person",
-            size: 15,
-            icon: "http://gg.svg"
-          },
-          {
-            id: 12,
-            title: "Италия",
-            size: 15,
-            icon: "http://gg.svg"
-          }
-        ],
-        minOrder: 8888,
-        description: {
-          title:
-            "Настоящее грузинское гостеприимство в ресторанах «Джон Джоли»",
-          description:
-            "Хлебосольная, щедрая, сказочная, гостеприимная Грузия! Удивительная страна, которая известна своими застольями, подарила Москве частичку своей души."
-        },
-        bestPlates: [
-          {
-            photo:
-              "https://img02.rl0.ru/afisha/o/s1.afisha.net/MediaStorage/d5/12/535a1080132c4530a7a4446612d5.jpg",
-            name: "Дабл роял бургер",
-            restourant: "Джон Джоли",
-            weight: "400 гр",
-            price: "8888",
-            restourantLogo: "https://image.ibb.co/fPo4vm/meatless_logo.png",
-            favourite: false
-          },
-          {
-            photo:
-              "http://shop.web01.widgets.vigbo.com/storage/shops/7776/products/313707/images/2-8606f84da77c5a05532ee2d3f1d9e351.jpg",
-            name: "Стейк",
-            restourant: "Стейк Хаус",
-            weight: "200 гр",
-            price: "30",
-            restourantLogo: "https://image.ibb.co/fPo4vm/meatless_logo.png",
-            favourite: false
-          },
-          {
-            photo:
-              "http://img.povar.ru/uploads/a0/99/e9/31/molochnii_kokteil_s_shokoladom-318319.jpg",
-            name: "Шоколадный милкшейк",
-            restourant: "Джон Джоли",
-            weight: "150 гр",
-            price: "1000",
-            restourantLogo: "https://image.ibb.co/fPo4vm/meatless_logo.png",
-            favourite: false
-          },
-          {
-            photo:
-              "https://img02.rl0.ru/afisha/o/s1.afisha.net/MediaStorage/d5/12/535a1080132c4530a7a4446612d5.jpg",
-            name: "Бургер",
-            restourant: "КБ",
-            weight: "200 гр",
-            price: "30",
-            restourantLogo: "https://image.ibb.co/fPo4vm/meatless_logo.png",
-            favourite: false
-          }
-        ],
-        /*promo: {
-						id: <int>,
-						title: <string>,
-						description: <html>
-				},*/
-        menu: {
-          "Мясные блюда": [
-            {
-              title: "Мясной хлеб",
-              favorite: false,
-              image:
-                "http://img.povar.ru/uploads/a0/99/e9/31/molochnii_kokteil_s_shokoladom-318319.jpg",
-              weight: "200/25/40/ 15/5/2 гр.",
-              price: 8888,
-              description:
-                "С хрустящими шариками из сулугуни и кукурузной муки с домашними соусами"
-            },
-            {
-              title: "Мясной хлеб",
-              favorite: false,
-              image:
-                "http://img.povar.ru/uploads/a0/99/e9/31/molochnii_kokteil_s_shokoladom-318319.jpg",
-              weight: "200/25/40/ 15/5/2 гр.",
-              price: 8888,
-              description:
-                "С хрустящими шариками из сулугуни и кукурузной муки с домашними соусами"
-            }
-          ],
-          Салаты: [
-            {
-              title: "Мясной хлеб",
-              favorite: false,
-              image:
-                "http://img.povar.ru/uploads/a0/99/e9/31/molochnii_kokteil_s_shokoladom-318319.jpg",
-              weight: "200/25/40/ 15/5/2 гр.",
-              price: 8888,
-              description:
-                "С хрустящими шариками из сулугуни и кукурузной муки с домашними соусами"
-            },
-            {
-              title: "Мясной хлеб",
-              favorite: false,
-              image:
-                "http://img.povar.ru/uploads/a0/99/e9/31/molochnii_kokteil_s_shokoladom-318319.jpg",
-              weight: "200/25/40/ 15/5/2 гр.",
-              price: 8888,
-              description:
-                "С хрустящими шариками из сулугуни и кукурузной муки с домашними соусами"
-            }
-          ],
-          Супы: [
-            {
-              title: "Борщ",
-              favorite: false,
-              image:
-                "http://img.povar.ru/uploads/a0/99/e9/31/molochnii_kokteil_s_shokoladom-318319.jpg",
-              weight: "200/25/40/ 15/5/2 гр.",
-              price: 8888,
-              description:
-                "С хрустящими шариками из сулугуни и кукурузной муки с домашними соусами"
-            },
-            {
-              title: "Уха",
-              favorite: false,
-              image:
-                "http://img.povar.ru/uploads/a0/99/e9/31/molochnii_kokteil_s_shokoladom-318319.jpg",
-              weight: "200/25/40/ 15/5/2 гр.",
-              price: 8888,
-              description:
-                "С хрустящими шариками из сулугуни и кукурузной муки с домашними соусами"
-            }
-          ]
-        },
-        time:
-          "с 11:00 до 22:30 пт, сб до 05:15 \nдоставим за 90 мин или ко времени",
-        averageBill: 9000,
-        minBill: 1000,
-        web: "www.google.com",
-        discount: 25
-      }
+				id: 0,
+				title: "",
+				image: "//dostavka1.com/img/app-icon.png",
+				logoImage: '//dostavka1.com/img/app-icon.png',
+				favorite: false,
+				type: '',
+				tagGroups: [
+				],
+				minOrder: 0,
+				description: {
+					title: '',
+					description: ''
+				},
+				bestPlates: [
+				],
+				promo: {
+						id: 0,
+						title: '',
+						description: ''
+				},
+				time: '',
+				averageBill: 0,
+				minBill: 0,
+				web: '',
+				discount: 0
+			},
+      menu: [],
     };
-    this.navigationOptions.title = this.state.data.title;
   }
 
-  componentWillMount = async () => {
-    const restaurantId = this.props.navigation.state
-      ? this.props.navigation.state.restaurantId
-      : (0).toString();
-    fetch("http://dostavka1.com/v1/restaurant?restaurantId=" + restaurantId)
-      .then(response => response.json())
-      .then(responseJson => {
-        if (responseJson["data"] && responseJson["data"]["result"])
-          this.state.data = responseJson["data"]["result"];
-        this.setState({});
-        return responseJson;
-      });
-  };
+  componentDidMount = async () => {
+    
+		const restaurantId = this.props.navigation.state ? this.props.navigation.state.params.id : (-1).toString();
+    const response = await fetch('http://dostavka1.com/v1/restaurant?restaurantId='+restaurantId);
+    const responseJson = await response.json();
+    if (responseJson["data"] && responseJson["data"]["result"]) {
+      responseJson["data"]["result"]["menu"] = [];
+      this.setState({ data: responseJson['data']["result"] });
+      this.setState({});
+    }
+    this.props.navigation.setParams({
+      title: this.state.data.title,
+    });
+    const menuResponse = await fetch('http://dostavka1.com/v1/restaurantMenu?restaurantId='+restaurantId);
+    const menuResponseJson = await menuResponse.json();
+    if (menuResponseJson["data"] && menuResponseJson["data"]["result"]) {
+      this.state.menu = this.toArrayMenu(menuResponseJson["data"]["result"]);
+      this.setState({  });
+      //console.log("Ok", menuResponseJson["data"]["result"]["menu"]);
+    }
+	}
 
   /**
 	 * Возвращает меню в формате массива объектов
 	 */
-  toArrayMenu() {
+  toArrayMenu(menu) {
     var result = [];
-    for (type in this.state.data.menu) {
+    for (type in menu) {
       result.push({
-        plates: this.state.data.menu[type],
+        plates: menu[type],
         type: type
       });
     }
@@ -381,7 +267,7 @@ class RestaurantMenu extends React.Component {
               >
                 <Image
                   source={{
-                    uri: e.image
+                    uri: 'http:'+e.image
                   }}
                   style={{
                     width: imageHeight,
@@ -393,9 +279,15 @@ class RestaurantMenu extends React.Component {
                   style={{
                     flexDirection: "column",
                     marginLeft: 10,
+                    marginVertical: 5,
+                    flex: 1,
+                    justifyContent: 'space-between',
                     width: viewportWidth - 20 - 20 - imageHeight
                   }}
                 >
+                  <View style={{
+                    flexDirection: 'column',
+                  }}>
                   <Text
                     style={{
                       color: "#fff",
@@ -418,6 +310,7 @@ class RestaurantMenu extends React.Component {
                   >
                     {e.description}
                   </Text>
+                  </View>
                   <View style={{ flexDirection: "row" }}>
                     <PriceButton
                       value={e.price}
@@ -523,8 +416,9 @@ class RestaurantMenu extends React.Component {
   };
 
   render() {
+    //this.navigationOptions.title = this.state.data.title;
     Storage.subscribe(() => {
-      this.setState({});
+    //  this.setState({});
     });
     var restaurant = (
       <View>
@@ -539,7 +433,7 @@ class RestaurantMenu extends React.Component {
           {/* Фото ресторана */}
           <Image
             source={{
-              uri: this.state.data.image
+              uri: 'http:'+this.state.data.image
             }}
             style={{
               width: viewportWidth,
@@ -580,7 +474,7 @@ class RestaurantMenu extends React.Component {
               scrollEnabled={false}
               source={{
                 html:
-                  '<div style="width:100%; height: 100%; background: url(' +
+                  '<div style="width:100%; height: 100%; background: url(http:' +
                   this.state.data.logoImage +
                   ') center center no-repeat; background-size: contain" />'
               }}
@@ -747,7 +641,8 @@ class RestaurantMenu extends React.Component {
             </Text>
           </View>
           <View style={{ height: (viewportWidth - 40) * 1.32 + 130 }}>
-            <Recomendations navigation={this.props.navigation} />
+            {this.state.data.bestPlates == [] ? null : 
+            <Recomendations data={this.state.data.bestPlates} navigation={this.props.navigation} />}
           </View>
 
           {/* Меню ресторана */}
@@ -790,7 +685,7 @@ class RestaurantMenu extends React.Component {
             }}
             underlayColor="#292b37"
             style={{ alignSelf: "flex-start", width: viewportWidth }}
-            sections={this.toArrayMenu()}
+            sections={this.state.menu}
             renderHeader={this._renderHeader}
             renderContent={this._renderContent}
           />
