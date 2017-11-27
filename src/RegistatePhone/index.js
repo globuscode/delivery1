@@ -203,11 +203,8 @@ class Registration extends React.Component {
 
     next = async () => {
         if (this.isNext()) {
-            console.log(this.state.phone, this.state.code);
             const validationResponse = await fetch(`http://dostavka1.com/v1/sms/?action=check_code&phone=${this.state.phone.replace(/\D+/g, '')}&code=${this.state.code}`, {method: 'get'});
-            console.log(validationResponse);
             const validationResponseJson = await validationResponse.json();
-            console.log(validationResponseJson);
 
             if (validationResponseJson.status === true) {
                 var payload = {
@@ -238,7 +235,6 @@ class Registration extends React.Component {
                 }
             }
             else {
-                console.log(this.refs['codeInput']);
                 this.refs['codeInput'].props.error = validationResponseJson.errors.title;
                 this.setState({});
             }
