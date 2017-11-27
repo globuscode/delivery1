@@ -42,6 +42,10 @@ export default class Recomendations extends React.Component {
 
   };
 
+  componentWillReceiveProps = (newProps) => {
+    this.setState({});
+  }
+
   componentWillMount = () => {
     /*if (!this.props.data)
       fetch('http://dostavka1.com/v1/restaurants')
@@ -128,15 +132,22 @@ export default class Recomendations extends React.Component {
     </View>*/
   };
   
-  navigate = () => {
+  navigate = (index) => {
     if (this.state.canNav) {
-      this.props.navigation.navigate('Restaurant');
+      this.props.navigation.navigate('Restaurant', {id: this.state.restourans[index].id});
       this.state.canNav = false;
       setTimeout(() => {
         this.state.canNav = true;
       }, 1500);
     }
   };
+
+  componentWillReceiveProps = (props) => {
+    if (props.data) {
+      this.state.restourans = props.data;
+      this.setState({});
+    }
+  }
 
   render() {
     /* Разметка */
@@ -150,7 +161,7 @@ export default class Recomendations extends React.Component {
           this.state.restourans.map((item, index) => {
             return (
               <View key={index} style={[styles.itemContainer, {width: SLIDER_WIDTH, height: SLIDER_WIDTH}]}>
-                <TouchableOpacity activeOpacity={0.8} style={{ position: 'absolute',width: SLIDER_WIDTH, height: SLIDER_WIDTH }} onPress={this.navigate}>
+                <TouchableOpacity activeOpacity={0.8} style={{ position: 'absolute',width: SLIDER_WIDTH, height: SLIDER_WIDTH }} onPress={() => this.navigate(index)}>
                 <Image
                 onLoadEnd={() => this.setState({})}
                 style={[styles.itemBackgroundImage, { width: SLIDER_WIDTH, height: SLIDER_WIDTH}]}
@@ -165,7 +176,7 @@ export default class Recomendations extends React.Component {
                   style={[styles.itemGradientStyle, { width: SLIDER_WIDTH + 1, height: SLIDER_WIDTH + 1 }]}
                 /></TouchableOpacity>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between'}}>
-                <View style={{ flexDirection: 'row', alignSelf: 'flex-start'  }}>
+                {/*<View style={{ flexDirection: 'row', alignSelf: 'flex-start'  }}>
                   {this.renderLevel(item.level)}                
                   <Text style={{
                     paddingHorizontal: 5,
@@ -179,7 +190,7 @@ export default class Recomendations extends React.Component {
                 </View>
                 <View>
                     {this.renderHeart(index)}
-                </View>
+                  </View>*/}
               </View>
                 <View pointerEvents='none' style={{ flexDirection: 'column', justifyContent: 'flex-end', backgroundColor: 'transparent' }}>
                 {this.renderLogo(item.restourantLogo)}
