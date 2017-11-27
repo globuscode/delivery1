@@ -1,14 +1,22 @@
 import React from 'react';
-import { View, Text, Dimensions } from 'react-native';
+import { View, Text, Dimensions, DatePickerIOS, Platform } from 'react-native';
 import { TextField } from "react-native-material-textfield";
 import { TextInputMask } from 'react-native-masked-text';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Touchable from "react-native-platform-touchable";
-import { connect } from "react-redux";
+import { connect } from "react-redux"
+import PopupDialog, {
+  SlideAnimation
+} from 'react-native-popup-dialog';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
     "window"
 );
+
+
+const slide = new SlideAnimation({
+    slideFrom: 'bottom',
+  });
 
 const screen =
 viewportWidth >= 320 && viewportWidth < 375
@@ -30,7 +38,11 @@ class Forms extends React.Component{
                 entrance: "",
                 floor: "",
                 commentary: "",
-            }
+            },
+            time: "11111",
+            showModal: false,
+            date: new Date(),
+            timeZoneOffsetInHours: (-1) * (new Date()).getTimezoneOffset() / 60,
         };
     }
 
@@ -61,7 +73,7 @@ class Forms extends React.Component{
             });
     }
 
-    render = () => <KeyboardAwareScrollView behavior='position'>
+    render = () => <View><KeyboardAwareScrollView behavior='position'>
         <Text style={{
             fontFamily: 'stem-medium',
             fontSize: 16,
@@ -354,6 +366,23 @@ class Forms extends React.Component{
                 </View>
             </Touchable>
 
+            <Touchable onPress={() => this.setState({showModal: true})}>
+                <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignSelf: 'stretch',
+                    borderColor: 'rgb(87, 88, 98)',
+                    borderBottomWidth: 1.5,
+                    marginBottom: screen == 0 ? 18 : screen == 1 ? 24 : 29, }}>
+                    <Text style={{
+                        fontFamily: 'open-sans',
+                        color: 'rgb(225, 199, 155)',
+                        marginLeft: 10,
+                        fontSize: 14
+                    }}>{this.state.time}</Text>
+                </View>
+            </Touchable>
+
             
         </View>
         <View style={{height: 50}}/>
@@ -390,6 +419,33 @@ class Forms extends React.Component{
             </Touchable>
           </View>
     </KeyboardAwareScrollView>
+    <PopupDialog
+        ref={(popupDialog) => { this.popupDialog = popupDialog; }}
+        dialogStyle={{
+            backgroundColor: 'transparent',
+            flexDirection: 'column',
+            justifyContent: 'flex-end'
+        }}
+        containerStyle={{
+            justifyContent: 'flex-end'
+        }}
+        onDismissed={() => this.setState({showModal: false})}
+        show={this.state.showModal}
+        dialogAnimation={slide}
+        >
+        <View style={{backgroundColor: 'rgb(45, 46, 58)'}}>
+        {Platform.OS === 'ios' ? <View>
+        <DatePickerIOS
+          date={this.state.date}
+          mode="datetime"
+          itemStyle={{ color: "#dcc49c", fontSize: 30 }}
+          timeZoneOffsetInMinutes={this.state.timeZoneOffsetInHours * 60}
+          onDateChange={(date) => this.setState({date: date})}
+        />
+        <View style={{height: 50}}/>
+        </View> : null}
+        </View>
+    </PopupDialog></View>
 }
 
 export default connect(
