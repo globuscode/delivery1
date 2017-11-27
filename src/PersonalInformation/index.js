@@ -77,11 +77,11 @@ class PersonalInfo extends React.Component {
 
         <View style={{ height: screen == 0 ? 37 : screen == 1 ? 50 : 60 }} />
 
-        <TouchableOpacity>
+        {/*<TouchableOpacity>
           <Text style={[styles.email, { opacity: 0.5 }]}>
             {"Изменить данные аккаунта"}
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity>*/}
 
         <View style={{ height: screen == 0 ? 17 : screen == 1 ? 21 : 24 }} />
 
@@ -100,7 +100,7 @@ class PersonalInfo extends React.Component {
             </Text>
           </View>
 
-          <View
+          {/*<View
             style={{
               flexDirection: "column"
             }}
@@ -111,21 +111,21 @@ class PersonalInfo extends React.Component {
                 ? this.props.userData.user.cart
                 : "**** **** **** 0000"}
             </Text>
-          </View>
+              </View>*/}
         </View>
-        {this.renderMenuItem("phone", "Изменить номер телефона", null)}
+        {/*this.renderMenuItem("phone", "Изменить номер телефона", null)}
         {this.renderMenuItem("credit-card", "Привязать другую карту оплаты", null)}
         {this.renderMenuItem("geotag", "Редактировать адреса доставки", null)}
-        {this.renderMenuItem("lock", "Изменить пароль", null)}
+            {this.renderMenuItem("lock", "Изменить пароль", null)*/}
 
-        <View
+        {/*<View
           style={{
             height: 1,
             borderTopWidth: 1,
             borderColor: "rgb(87, 88, 98)",
             marginTop: screen == 0 ? 22 : screen == 1 ? 28 : 33
           }}
-        />
+        />*/}
       </ScrollView>
     );
   }
