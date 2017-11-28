@@ -6,6 +6,7 @@ import {
 	StyleSheet,
 	ScrollView,
 	Image,
+	AsyncStorage,
 	WebView,
 	Linking,
 	Text
@@ -34,6 +35,7 @@ class Plate extends React.Component{
 
 		this.state = {
 			canNav: true,
+			userTastes: [],
 			plate: {
 				"id": 101,
 				"shortTitle": 'Шоколадный милкшейк',
@@ -155,12 +157,23 @@ class Plate extends React.Component{
 		};
 	}
 
-	componentWillMount = () => {
+	componentWillMount = async () => {
+		const tastes = await AsyncStorage.getItem('tastes');
+		const tastesJson = JSON.parse(tastes);
 		this.setState({
 			plate: this.props.navigation.state.params.plate,
-			restaurant: this.props.navigation.state.params.restaurant
+			restaurant: this.props.navigation.state.params.restaurant,
+			userTastes: tastesJson
 		});
 
+	}
+
+	checkTaste(taste) {
+		for (let i=0; i<this.state.userTastes.length; i++) {
+			if (this.state.userTastes[i].title === taste.title)
+				return true;
+		}
+		return false;
 	}
 
 
@@ -407,7 +420,8 @@ class Plate extends React.Component{
 				flexWrap: 'wrap',
 				alignItems: 'center',
 			}}>
-			{/*this.state.plate.tags.map((e,i) => {
+			{this.state.plate.tags.map((e,i) => {
+				const checked = this.checkTaste(e);
 				return <TouchableOpacity
 					key={i}
 					onPress={() => {
@@ -417,7 +431,7 @@ class Plate extends React.Component{
 						} else {
 							this.state.selected.splice(this.state.selected.indexOf(i), 1);
 							this.setState({});
-						}
+						}*/
 					}}
 					style={{
 						height: 36,
@@ -429,19 +443,19 @@ class Plate extends React.Component{
 						margin: 5,
 						borderColor: '#dcc49c',
 						borderWidth: 1.5,
-						backgroundColor: 0 ? '#dcc49c' : 'transparent',
+						backgroundColor: checked ? '#dcc49c' : 'transparent',
 					}}
 					pressed={0}
 				>
 					<Text style={{
 						fontFamily: 'open-sans-semibold',
 						fontSize: 11,
-						color: 0 ? '#292b37' : '#dcc49c'
+						color: checked ? '#292b37' : '#dcc49c'
 					}}>
 						{e.title.toUpperCase()}
 					</Text>
 				</TouchableOpacity>
-			})*/}
+			})}
 			</View>
 
 			<Text style={{ 
