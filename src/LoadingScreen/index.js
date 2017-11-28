@@ -22,6 +22,9 @@ const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
 class Loading extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      text: 'Опрашиваем кулинарных экспертов со всей страны'
+    }
   }
 
   componentWillMount() {
@@ -44,11 +47,14 @@ class Loading extends React.Component {
     let tastesIds = '';
 		tastesJson.forEach((element) => {
 			tastesIds += element.id.toString() + ',';	
-		});
+    });
+    
+    this.setState({ text: "Собираем идеи для семейного ужина" });
     
 		fetch(`http://dostavka1.com/v1/recommendations/?cityid=${cityIdJson.id}&tagId=${tastesIds}&tagGroup=${tagsIds}`)
 			.then((response) => response.json())
 			.then((responseJson) => {
+        this.setState({ text: "Изучаем манускрипты в поисках крутых рецептов" });
         this.props.auth();
         this.props.loadRecomendations(responseJson.data);
         this.props.navigation.navigate("Feed");
@@ -82,7 +88,7 @@ class Loading extends React.Component {
               backgroundColor: "transparent"
             }}
           >
-            {"Загружаем рекомендации"}
+            {this.state.text}
           </Text>
           <View
             style={{
