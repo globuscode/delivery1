@@ -22,10 +22,7 @@ export default class SelectCity extends React.Component {
 			canNav: true,
 			hidePrevious: false,
 			restaurantName: '',
-			history: [
-				'Ул. Северная, Д. 19',
-				'Ул. Ленина, Д. 103',
-			],
+			history: [],
 			recomededAddresses: [
 				'Ул. Северная, Д. 19',
 				'Ул. Северная, Д. 20',
