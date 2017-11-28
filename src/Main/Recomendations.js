@@ -351,7 +351,7 @@ class Recomendations extends React.Component {
     Storage.subscribe(() => {
       if (Storage.getState().lastAction.type === 'CLOSE_MODAL') {
         Storage.dispatch({type: null});
-        this.props.navigation.navigate('RestaurantMenu', {id: Storage.getState().modalController.plate.restaurant});
+        this.props.navigation.navigate('SetAddress', {id: Storage.getState().modalController.plate.restaurant});
       }
     });
 
