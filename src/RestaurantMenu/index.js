@@ -107,7 +107,7 @@ class RestaurantMenu extends React.Component {
     const menuResponse = await fetch('http://dostavka1.com/v1/restaurantMenu?restaurantId='+restaurantId);
     const menuResponseJson = await menuResponse.json();
     if (menuResponseJson["data"] && menuResponseJson["data"]["result"]) {
-      this.state.menu = this.toArrayMenu(menuResponseJson["data"]["result"]);
+      this.state.menu = menuResponseJson["data"]["result"];
       this.setState({  });
       //console.log("Ok", menuResponseJson["data"]["result"]["menu"]);
     }
