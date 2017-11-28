@@ -3,6 +3,7 @@ import {
   View,
   TouchableOpacity,
   Dimensions,
+  ActivityIndicator,
   StyleSheet,
   ScrollView,
   Image,
@@ -97,6 +98,7 @@ class RestaurantMenu extends React.Component {
     if (responseJson["data"] && responseJson["data"]["result"]) {
       responseJson["data"]["result"]["menu"] = [];
       this.setState({ data: responseJson['data']["result"] });
+      console.log(this.state.bestPlates);
       this.setState({});
     }
     this.props.navigation.setParams({
@@ -630,6 +632,7 @@ class RestaurantMenu extends React.Component {
 
           {/* Лучшие блюда */}
           {hr}
+          {this.state.data.bestPlates == undefined? null : 
           <View
             style={[
               styles.row,
@@ -639,11 +642,12 @@ class RestaurantMenu extends React.Component {
             <Text style={{ color: "#FFF", fontSize: 20, marginLeft: 20 }}>
               {"Лучшие блюда"}
             </Text>
-          </View>
+          </View>}
+          {this.state.data.bestPlates == undefined? null : 
           <View style={{ height: (viewportWidth - 40) * 1.32 + 130 }}>
-            {this.state.data.bestPlates == [] ? null : 
-            <Recomendations data={this.state.data.bestPlates} navigation={this.props.navigation} />}
-          </View>
+            
+            <Recomendations data={this.state.data.bestPlates} navigation={this.props.navigation} />
+          </View>}
 
           {/* Меню ресторана */}
           <View
@@ -679,6 +683,8 @@ class RestaurantMenu extends React.Component {
               backgroundColor: "rgb(87, 88, 98)"
             }}
           />
+          {this.state.menu.length < 1 ?
+            <ActivityIndicator size='large' style={{alignSelf: 'center'}} /> : null}
           <Accordion
             touchableProps={{
               activeOpacity: 0.2
