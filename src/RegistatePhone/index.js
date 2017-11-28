@@ -222,16 +222,22 @@ class Registration extends React.Component {
                     body: JSON.stringify( payload )
                 });
                 const data = await response.json();
-                if (data.errors) {
-                    if (data.errors.code != 200) {
-                        Alert.alert(data.errors.title, data.errors.detail);
+                if (data) {
+                    if (data.errors) {
+                        if (data.errors.code != 200) {
+                            Alert.alert(data.errors.title, data.errors.detail);
+                        }
+                        this.props.navigation.goBack();
                     }
-                    this.props.navigation.goBack();
+                    else {
+                        Alert.alert("Все ОК", JSON.stringify(data));
+                        this.props.auth(data);
+                        this.props.navigation.navigate('Feed');
+                    }
                 }
                 else {
-                    Alert.alert("Все ОК", JSON.stringify(data));
-                    this.props.auth(data);
-                    this.props.navigation.navigate('Feed');
+                    this.refs['codeInput'].props.error = validationResponseJson.errors.title;
+                    this.setState({});
                 }
             }
             else {
