@@ -18,6 +18,12 @@ const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
 
+const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
+  const paddingToBottom = 10;
+  return layoutMeasurement.height + contentOffset.y >=
+    contentSize.height - paddingToBottom;
+};
+
 export default class AllRestourans extends React.Component {
   constructor(props) {
     super(props);
@@ -37,18 +43,16 @@ export default class AllRestourans extends React.Component {
     const responseJson = await response.json();
 
     responseJson.data.forEach((element) => {
-      this.state.types.push(element.title);
+      this.state.types.push(element.titleTag);
     });
     this.setState({});
   }
 
   componentDidMount = async () => {
-    const response = await fetch(`http://dostavka1.com/v1/restaurants?cityId=36`);
+    const response = await fetch(`http://dostavka1.com/v1/restaurants?cityId=36&startIndex=${this.state.maxIndex}`);
     const responseJson = await response.json();
 
-    this.setState({ 
-      restaurants: responseJson.data.restaurants
-    });
+    this.state.restaurants = responseJson.data.restaurants;
 
     let rests = [];
     
@@ -61,18 +65,20 @@ export default class AllRestourans extends React.Component {
   }
 
   updateResults = async () => {
-    //const response = await fetch(`http://dostavka1.com/v1/restaurants?cityId=36&tag=${this.state.types[this.state.selectedType]}`);
-    //const responseJson = await response.json();
-    //console.log("Update");
+    const response = await fetch(`http://dostavka1.com/v1/restaurants?cityId=36&tag=${this.state.types[this.state.selectedType]}&startIndex=${this.state.maxIndex}`);
+    const responseJson = await response.json();
+    this.state.restaurans = this.state.restaurans.concat(responseJson["data"]["results"]);
     let rests = [];
     let i = 0;
     while (i < this.state.maxIndex) {
-      this.state.restaurants[i].restourantTags.forEach((e) => {
-        console.log(e, this.state.types[this.state.selectedType], e == this.state.types[this.state.selectedType]);
-        if (e == this.state.types[this.state.selectedType]) {
-          rests.push(this.state.restaurants[i]);
-        }
-      });
+      if (this.state.restaurants[i] != undefined)
+        this.state.restaurants[i].restourantTags.forEach((e) => {
+          if (e == this.state.types[this.state.selectedType] || this.state.selectedType === 0) {
+            rests.push(this.state.restaurants[i]);
+          }
+        });
+      else
+        break;
       i += 1;
     }
 
@@ -141,6 +147,7 @@ export default class AllRestourans extends React.Component {
                 return (<Picker.Item label={value} value={i} key={i} />);
               })}
             </Picker>
+            <View style={{ height: 20 }} />
           </View>
         }
         side="bottom"
@@ -179,7 +186,15 @@ export default class AllRestourans extends React.Component {
               </View>
             </TouchableOpacity>
           </View>
-          <ScrollView contentContainerStyle={{ width: viewportWidth }}>
+          <ScrollView
+            onScroll={({nativeEvent}) => {
+              if (isCloseToBottom(nativeEvent)) {
+                this.state.maxIndex = this.state.maxIndex + 5;
+                this.updateResults();
+              }
+            }}
+            scrollEventThrottle={400}
+          contentContainerStyle={{ width: viewportWidth }}>
             <Text
               style={{
                 fontSize: 10,
