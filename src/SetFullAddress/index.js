@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Dimensions, DatePickerIOS, Platform } from 'react-native';
+import { View, Text, Dimensions, DatePickerIOS, Platform, DatePickerAndroid, TimePickerAndroid } from 'react-native';
 import { TextField } from "react-native-material-textfield";
 import { TextInputMask } from 'react-native-masked-text';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -366,20 +366,46 @@ class Forms extends React.Component{
                 </View>
             </Touchable>
 
-            <Touchable onPress={() => this.setState({showModal: true})}>
+            <Touchable onPress={async () => {
+                if (Platform.OS !== 'ios') {
+                    const {action, year, month, day} = await DatePickerAndroid.open({
+                        date: new Date(),
+                        mode: 'spinner'
+                      });
+                    if (action !== DatePickerAndroid.dismissedAction) {
+                        const {action, hour, minute} = await TimePickerAndroid.open({
+                            hour: 14,
+                            minute: 0,
+                            is24Hour: false, // Will display '2 PM'
+                        });
+                        if (action !== TimePickerAndroid.dismissedAction) {
+                            // Selected hour (0-23), minute (0-59)
+                        }
+                    };
+                }
+                else
+                    this.state.selected == 1 ? this.setState({showModal: true}) : null;
+            }}>
                 <View style={{
-                    flexDirection: 'row',
+                    flexDirection: 'column',
                     justifyContent: 'center',
+                    alignItems: 'center',
                     alignSelf: 'stretch',
                     borderColor: 'rgb(87, 88, 98)',
                     borderBottomWidth: 1.5,
                     marginBottom: screen == 0 ? 18 : screen == 1 ? 24 : 29, }}>
                     <Text style={{
                         fontFamily: 'open-sans',
-                        color: 'rgb(225, 199, 155)',
+                        color: this.state.selected == 1 ? 'rgb(225, 199, 155)' : 'rgb(87, 88, 98)',
+                        marginLeft: 10,
+                        fontSize: 11
+                    }}>{'Введите время'}</Text>
+                    <Text style={{
+                        fontFamily: 'open-sans',
+                        color: this.state.selected == 1 ? 'rgb(255, 255, 255)' : 'rgb(87, 88, 98)',
                         marginLeft: 10,
                         fontSize: 14
-                    }}>{this.state.time}</Text>
+                    }}>{this.state.date.toDateString()}</Text>
                 </View>
             </Touchable>
 
@@ -433,7 +459,23 @@ class Forms extends React.Component{
         show={this.state.showModal}
         dialogAnimation={slide}
         >
-        <View style={{backgroundColor: 'rgb(45, 46, 58)'}}>
+        <View style={{
+            backgroundColor: 'rgb(45, 46, 58)',
+            flexDirection: 'column',
+            borderTopWidth: 1,
+            borderColor: '#dcc49c'
+        }}>
+        <View style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+        }}>
+            <Touchable onPress={() => { this.setState({ showModal: false }); }}>
+                <Text style={{ color: '#dcc49c', paddingHorizontal: 11, paddingVertical: 15 }}>{'Отмена'}</Text>
+            </Touchable>
+            <Touchable onPress={() => { this.setState({ showModal: false }); }}>
+                <Text style={{ color: '#dcc49c', paddingHorizontal: 11, paddingVertical: 15 }}>{'Далее'}</Text>
+            </Touchable>
+        </View>
         {Platform.OS === 'ios' ? <View>
         <DatePickerIOS
           date={this.state.date}
@@ -442,6 +484,20 @@ class Forms extends React.Component{
           timeZoneOffsetInMinutes={this.state.timeZoneOffsetInHours * 60}
           onDateChange={(date) => this.setState({date: date})}
         />
+        <View style={{
+                height: 1,
+                width: viewportWidth,
+                backgroundColor: '#dcc49c',
+                position: 'absolute',
+                top: 90
+            }}/>
+            <View style={{
+                height: 1,
+                width: viewportWidth,
+                backgroundColor: '#dcc49c',
+                position: 'absolute',
+                top: 125
+            }}/>
         <View style={{height: 50}}/>
         </View> : null}
         </View>
