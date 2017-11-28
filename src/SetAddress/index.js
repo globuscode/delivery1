@@ -21,7 +21,7 @@ export default class SelectCity extends React.Component {
 		this.state = {
 			canNav: true,
 			hidePrevious: false,
-			restouran: 'Джон Джоли',
+			restaurantName: '',
 			history: [
 				'Ул. Северная, Д. 19',
 				'Ул. Ленина, Д. 103',
@@ -32,12 +32,20 @@ export default class SelectCity extends React.Component {
 				'Ул. Северная, Д. 21',
 				'Ул. Северная, Д. 22',
 			],
+			deliver: false,
 			address: ''
 		};
 	};
 
+	componentWillMount = async () => {
+		const response = await fetch(`http://dostavka1.com/v1/restaurant?restaurantId=${this.props.navigation.state.params.id}`)
+		const responseJson = await response.json();
+
+		this.setState({ restaurantName: responseJson["data"]["result"]["title"] });
+	}
+
 	notDeliver(address) {
-		return address == 'Ул. Северная, Д. 19' || address == 'Ул. Ленина, Д. 103';
+		return this.state.deliver;
 	}
 
 	renderAutocomplete(address) {
@@ -48,10 +56,17 @@ export default class SelectCity extends React.Component {
 		}
 	}
 
-	checkForAviability() {
+	checkForAviability = () => {
 		if (!this.notDeliver(this.state.address))
 			return <View style={{ padding: 20 }}>
-				<Text style={{ fontFamily: 'open-sans', lineHeight: 13, fontSize: 12, top: 1, color: '#fff', textAlign: 'center' }}>{'К сожалению ресторан Джон Джоли не осуществляет доставку по данному адресу. Но вы можете выбрать другой ресторан который привезет вам все что вы ни пожелаете'}</Text>
+				<Text style={{
+					fontFamily: 'open-sans',
+					lineHeight: 13,
+					fontSize: 12,
+					top: 1,
+					color: '#fff',
+					textAlign: 'center'
+				}}>{`К сожалению ресторан ${this.state.restaurantName} не осуществляет доставку по данному адресу. Но вы можете выбрать другой ресторан который привезет вам все что вы ни пожелаете`}</Text>
 				<TouchableOpacity style={{
 					borderRadius: 5,
 					borderWidth: 1,
@@ -59,14 +74,35 @@ export default class SelectCity extends React.Component {
 					padding: 8,
 					marginVertical: 15,
 				}}>
-					<Text style={{ fontFamily: 'stem-medium', lineHeight: 13, fontSize: 12, top: 1, color: '#fff', textAlign: 'center' }}>{'Смотреть все рестораны \nдоступные по этому адресу' }</Text>
+					<Text style={{
+						fontFamily: 'stem-medium',
+						lineHeight: 13,
+						fontSize: 12,
+						top: 1,
+						color: '#fff',
+						textAlign: 'center'
+					}}>{'Смотреть все рестораны \nдоступные по этому адресу' }</Text>
 				</TouchableOpacity>
 				</View>;
 		else
 			return <View style={{ padding: 20 }}>
-				<Text style={{ fontFamily: 'open-sans', lineHeight: 13, fontSize: 12, top: 1, color: '#fff', textAlign: 'center' }}>{'Отлично, мы будем у вас на пороге не позже сорока минут'}</Text>
+				<Text style={{
+					fontFamily: 'open-sans',
+					lineHeight: 13,
+					fontSize: 12,
+					top: 1,
+					color: '#fff',
+					textAlign: 'center'
+				}}>{'Отлично, мы будем у вас на пороге не позже сорока минут'}</Text>
 			</View>;
 	};
+
+	validateAddress = async (address) => {
+		const response = await fetch(`http://dostavka1.com/v1/address?cityId=36&street=${address}&restaurantId=${this.props.navigation.state.params.id}`)
+		const responseJson = await response.json();
+		this.state.address = address; 
+		this.setState({ deliver: responseJson["data"]["result"] == 0 });
+	}
 
 	next = () => {
 		if (this.notDeliver(this.state.address))
@@ -79,7 +115,7 @@ export default class SelectCity extends React.Component {
 			}
 	}
 
-	render() {
+	render = () => {
 		return (
 				<View style={styles.container}>
 				{/*<Header
@@ -102,7 +138,7 @@ export default class SelectCity extends React.Component {
 						textAlign: 'center',
 						color: '#fff',
 						top: 4
-					}}>{'Ресторан ' + this.state.restouran + '\nограничил зону доставки'}</Text>
+					}}>{'Ресторан ' + this.state.restaurantName + '\nограничил зону доставки'}</Text>
 					<Text style={{ 
 						fontFamily: 'open-sans', 
 						fontSize: 12, 
@@ -134,7 +170,7 @@ export default class SelectCity extends React.Component {
 							inputContainerStyle={{ flexDirection: 'column' , alignItems: 'center', justifyContent: 'center' }}
 							label='Адрес доставки'
 							value={this.state.address}
-							onChangeText={(address) => {this.state.address = address; }}
+							onChangeText={this.validateAddress}
 							onBlur={() => this.setState({hidePrevious: true})}
 						/>
 					</View>
