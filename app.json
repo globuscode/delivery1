@@ -25,14 +25,15 @@
       "splash": {
         "backgroundColor": "#292b37",
         "resizeMode": "cover"
-      }
+      },
+      "bundleIdentifier": "com.globeltd.delivery1"
     },
     "android": {
       "splash": {
         "backgroundColor": "#292b37",
         "resizeMode": "cover"
       },
-      "package": "com.creograf.delivery1"
+      "package": "com.globeltd.delivery1"
     }
   }
 }
