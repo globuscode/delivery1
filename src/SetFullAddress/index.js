@@ -67,10 +67,33 @@ class Forms extends React.Component{
     }
 
     next = () => {
-        if (this.isNext())
-            this.props.navigation.navigate('MakeOrder', {
+        if (this.isNext()) {
+            const date = this.state.date.getDate();
+            const month = this.state.date.getMonth();
+            const year = this.state.date.getFullYear();
 
+            const hours = this.state.date.getHours();
+            const minutes = this.state.date.getMinutes();
+            const seconds = this.state.date.getSeconds();
+
+            const dateString = `${date}.${month}.${year} ${hours}:${minutes}:${seconds}`;
+            this.props.navigation.navigate('MakeOrder', {
+                address: {
+                    "commentary": this.state.address.commentary,
+                    "street": this.state.address.street,
+                    "house": this.state.address.house,
+                    "flat": this.state.address.flat,
+                    "entrance": this.state.address.entrance,
+                    "floor": this.state.address.floor,
+                },
+                client: {
+                    firstName: this.state.firstName,
+                    secondName: this.state.secondName,
+                    phone: this.state.phone,
+                    deliveryDate: this.state.selected == 1 ? dateString : null
+                }
             });
+        }
     }
 
     render = () => <View><KeyboardAwareScrollView behavior='position'>
@@ -182,7 +205,10 @@ class Forms extends React.Component{
                     alignItems: "center",
                     justifyContent: "center"
                 }}
-                onChangeText={(text) => this.setState({address: {street: text}})}
+                onChangeText={(text) => {
+                    this.state.address.street = text;
+                    this.setState({});
+                }}
                 value={this.state.address.street}
                 label="Улица"
             />
@@ -202,7 +228,10 @@ class Forms extends React.Component{
                         alignItems: "center",
                         justifyContent: "center"
                     }}
-                    onChangeText={(text) => this.setState({address: {house: text}})}
+                    onChangeText={(text) => {
+                        this.state.address.house = text;
+                        this.setState({});
+                    }}
                     value={this.state.address.house}
                     label="Дом"
                 />
@@ -224,7 +253,10 @@ class Forms extends React.Component{
                         justifyContent: "center"
                     }}
                     keyboardType='numeric'
-                    onChangeText={(text) => this.setState({address: {flat: text}})}
+                    onChangeText={(text) => {
+                        this.state.address.flat = text;
+                        this.setState({});
+                    }}
                     value={this.state.address.flat}
                     label="Квартира"
                 />
@@ -248,7 +280,10 @@ class Forms extends React.Component{
                         justifyContent: "center"
                     }}
                     keyboardType='numeric'
-                    onChangeText={(text) => this.setState({address: {entrance: text}})}
+                    onChangeText={(text) => {
+                        this.state.address.entrance = text;
+                        this.setState({});
+                    }}
                     value={this.state.address.entrance}
                     label="Подъезд"
                 />
@@ -270,7 +305,10 @@ class Forms extends React.Component{
                         alignItems: "center",
                         justifyContent: "center"
                     }}
-                    onChangeText={(text) => this.setState({address: {floor: text}})}
+                    onChangeText={(text) => {
+                        this.state.address.floor = text;
+                        this.setState({});
+                    }}
                     value={this.state.address.floor}
                     label="Этаж"
                 />
@@ -291,7 +329,10 @@ class Forms extends React.Component{
                     alignItems: "center",
                     justifyContent: "center"
                 }}
-                onChangeText={(text) => this.setState({address: {commentary: text}})}
+                onChangeText={(text) => {
+                    this.state.address.commentary = text;
+                    this.setState({});
+                }}
                 value={this.state.address.commentary}
                 label="Код домофона или комментарий"
             />

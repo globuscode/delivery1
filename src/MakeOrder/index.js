@@ -124,10 +124,22 @@ class MakeOrder extends React.Component {
                   return {
                     "plateId": element.plate.id,
                     "qty": element.count,
-                    "token": this.props.userStore.token
                   }
-                }) ;
-                const response = await fetch(`http://dostavka1.com/v1/cart/create/index.php?token=${this.props.userStore.token}`, { method: 'post', body: JSON.stringify({"items": cart}) });
+                });
+                let body = {
+                  "token": this.props.userStore.token,
+                  "items": cart,
+                  "address": this.props.navigation.state.params.address,
+                  "client": this.props.navigation.state.params.client,
+                  "deliveryDate": this.props.navigation.deliveryDate
+                };
+                const response = await fetch(`http://dostavka1.com/v1/cart/create/index.php?token=${this.props.userStore.token}`, {
+                  method: 'post',
+                  body: JSON.stringify(body)
+                });
+
+                console.log(body);
+                
                 const responseJson = await response.json();
                 Alert.alert(JSON.stringify(responseJson));
                 this.props.makeOrder(); 
