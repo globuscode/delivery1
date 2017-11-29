@@ -131,7 +131,9 @@ class MakeOrder extends React.Component {
                   "items": cart,
                   "address": this.props.navigation.state.params.address,
                   "client": this.props.navigation.state.params.client,
-                  "deliveryDate": this.props.navigation.deliveryDate
+                  "deliveryDate": this.props.navigation.state.params.deliveryDate,
+                  "restaurantId": this.props.globalStore[0].plate.restaurant,
+                  "persons": this.props.navigation.state.params.persons,
                 };
                 const response = await fetch(`http://dostavka1.com/v1/cart/create/index.php?token=${this.props.userStore.token}`, {
                   method: 'post',
