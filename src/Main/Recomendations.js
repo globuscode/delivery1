@@ -150,7 +150,8 @@ class Recomendations extends React.Component {
       },
       BG_IMAGE: {
         width: SLIDER_WIDTH,
-        height: SLIDER_HEIGHT,
+        top: item.image.indexOf('.png') > 0 ? SLIDER_HEIGHT / 3 : 0,
+        height: item.image.indexOf('.png') > 0 ? SLIDER_HEIGHT / 3 : SLIDER_HEIGHT,
         borderRadius: 10,
         position: "absolute",
         backgroundColor: "transparent"
@@ -324,7 +325,7 @@ class Recomendations extends React.Component {
             onPress={() => { this.nav(index); }}
           >
             <View>
-              <Image style={itemStyles.BG_IMAGE} source={{ uri: 'http:'+item.image }} />
+              <Image resizeMode={item.image.indexOf('.png') < 0 ? 'cover' : 'contain'} style={itemStyles.BG_IMAGE} source={{ uri: 'http:'+item.image }} />
 
               {/* Градиент */}
               <LinearGradient
