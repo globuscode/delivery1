@@ -61,6 +61,8 @@ class Cart extends React.Component {
 
     this.state = {
       promocode: "",
+      withSales: 0,
+      persons: 1,
       cart: [],
       canNav: true,
       cartSet: [],
@@ -96,12 +98,15 @@ class Cart extends React.Component {
     };
   }
 
-  componentWillMount = async () => {
+  componentDidMount = async () => {
     if (this.props.globalStore.cart.length != 0) {
       const rest = await fetch('http://dostavka1.com/v1/restaurant?restaurantId='+props.globalStore.cart[0].plate.restaurant);
       const restJson = await rest.json();
       this.setState({restaurant: restJson["data"]["result"]});
     }
+
+    const priceWithSales = await this.getSalesPrice();
+    this.setState({withSales: priceWithSales});
       
   };
 
@@ -295,6 +300,13 @@ class Cart extends React.Component {
     );
   };
 
+  isFreeDelivery = () => {
+    if (this.state.freeDelivery != undefined)
+      return this.totalPrice() > this.state.restaurant.freeDelivery;
+    else
+      return false;
+  }
+
   nav = () => {
     if (this.state.canNav) {
       this.props.navigation.navigate("SetAddress");
@@ -305,6 +317,26 @@ class Cart extends React.Component {
     }
   };
 
+  getSalesPrice = async () => {
+    if (this.props.globalStore.cart.length == 0)
+      return 0;
+    const cart = this.props.globalStore.cart.map((element) => { 
+      return {
+        "plateId": element.plate.id,
+        "qty": element.count,
+      }
+    });
+    const rest = await fetch(`http://dostavka1.com/v1/cart/create/`, {
+      method: 'post',
+      body: JSON.stringify({"items": cart})
+    });
+    const restJson = await rest.json();
+    let result = 0;
+    restJson["data"]["items"].map(({ price }) => { result += price; });
+
+    return result;
+  }
+
   componentWillReceiveProps = async (newProps) => {
     if (newProps.globalStore.cart.length != 0) {
       const rest = await fetch('http://dostavka1.com/v1/restaurant?restaurantId='+newProps.globalStore.cart[0].plate.restaurant);
@@ -312,6 +344,10 @@ class Cart extends React.Component {
       this.setState({restaurant: restJson["data"]["result"]});
     }
     this.props = newProps;
+
+    const priceWithSales = await this.getSalesPrice();
+    this.state.withSales = priceWithSales;
+
     this.setState({});
   }
 
@@ -336,19 +372,10 @@ class Cart extends React.Component {
             <View
               style={[styles.row, { justifyContent: "center", marginTop: 30 }]}
             >
-              <WebView
-                bounces={false}
-                scrollEnabled={false}
+              <Image
+                resizeMode='contain'
                 source={{
-                  html:
-                    `<div 
-							style="
-							width: 100%;
-							height: 100%;
-							background: url(http:'` +
-                    this.state.restaurant.logoImage +
-                    `') center center no-repeat; 
-							background-size: contain" />`
+                  uri: "http:"+this.state.restaurant.logoImage
                 }}
                 style={{
                   width: viewportWidth - 40,
@@ -416,10 +443,36 @@ class Cart extends React.Component {
                 width: screen == 0 ? 290 : screen == 1 ? 346 : 376,
                 height: 1,
                 borderWidth: 0,
-                borderColor: "rgb( 87, 88, 98)"
+                borderColor: "rgb(87, 88, 98)"
               }}
             />
               <View style={{height: 20}}/>
+              <View style={{
+                  height: 40, 
+                  borderTopWidth: 1.5,
+                  borderColor: "rgb(87, 88, 98)",
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginHorizontal: 20,
+                  alignSelf: 'stretch'
+                }}>
+                <Text style={{
+                  fontFamily: 'stem-medium',
+                  fontSize: 16,
+                  color: 'rgb(225, 199, 155)'
+                }}>{'Количество персон: '}</Text>
+                <Counter
+                  value={this.state.persons}
+                  onRemovePress={() => {
+                    if (this.state.persons > 1)
+                      this.setState({ persons: this.state.persons - 1 });
+                  }}
+                  onAddPress={() => {
+                    this.setState({ persons: this.state.persons + 1 });
+                  }}
+                />
+              </View>
             {/*this.renderPromoCode()*/}
             <View
               style={{
@@ -499,6 +552,53 @@ class Cart extends React.Component {
                   color: "rgb( 225, 199, 155)"
                 }}
               >
+                {"Скидка"}
+              </Text>
+              <Text
+                style={{
+                  fontFamily: "stem-medium",
+                  fontSize: 16,
+                  textAlignVertical: "center",
+                  top: 3,
+                  lineHeight: 16,
+                  letterSpacing: 1.1,
+                  color: "rgb( 255, 255, 255)"
+                }}
+              >
+                {(this.state.withSales - this.totalPrice()).toString()+' ₽'}
+              </Text>
+            </View>
+            <View
+              style={{
+                width: screen == 0 ? 290 : screen == 1 ? 346 : 376,
+                height: 1,
+                borderWidth: 1,
+                borderColor: "rgb( 87, 88, 98)"
+              }}
+            />
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                height: screen == 0 ? 39 : screen == 1 ? 45 : 50,
+                alignItems: "center",
+                alignContent: "center",
+                alignSelf: "stretch",
+                marginHorizontal: 20
+                //paddingTop: screen == 0 ? 10 : screen == 1 ? 13 : 15,
+                //paddingBottom: screen == 0 ? 15 : screen == 1 ? 18 : 21,
+              }}
+            >
+              <Text
+                style={{
+                  fontFamily: "stem-medium",
+                  fontSize: 16,
+                  lineHeight: 16,
+                  top: 3,
+                  letterSpacing: 1.1,
+                  color: "rgb( 225, 199, 155)"
+                }}
+              >
                 {"Доставка"}
               </Text>
               <Text
@@ -512,7 +612,7 @@ class Cart extends React.Component {
                   color: "rgb( 255, 255, 255)"
                 }}
               >
-                {"бесплатно"}
+                {!this.isFreeDelivery() ? "бесплатно" : this.state.restaurant.delivery}
               </Text>
             </View>
             <View
@@ -595,7 +695,7 @@ class Cart extends React.Component {
   next = () => {
     if (this.totalPrice() >= this.state.restaurant.minBill) {
       if (this.props.globalStore.user.token)
-        this.props.navigation.navigate('SetFullAddress', {price: this.totalPrice()});
+        this.props.navigation.navigate('SetFullAddress', {price: this.totalPrice(), persons: this.state.persons});
       else
         this.props.navigation.navigate('Login', {nextScreen: 'SetFullAddress'});
     }
