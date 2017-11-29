@@ -86,6 +86,7 @@ class Forms extends React.Component{
                     "entrance": this.state.address.entrance,
                     "floor": this.state.address.floor,
                 },
+                "persons": this.props.navigation.state.params.persons,
                 client: {
                     firstName: this.state.firstName,
                     secondName: this.state.secondName,
