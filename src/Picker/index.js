@@ -38,7 +38,7 @@ export default class GLExample extends React.Component {
 		super(props);
 		this.state = {
 			data: this.props.data,
-			itemHeight: 40,
+			itemHeight: 70,
 			angles: [],
 		};
 		this.state.angles = this.state.data.map((e, i) => 0);
