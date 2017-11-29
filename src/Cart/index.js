@@ -101,7 +101,6 @@ class Cart extends React.Component {
       const rest = await fetch('http://dostavka1.com/v1/restaurant?restaurantId='+props.globalStore.cart[0].plate.restaurant);
       const restJson = await rest.json();
       this.setState({restaurant: restJson["data"]["result"]});
-      console.log(this.state.restaurant.logoImage);
     }
       
   };

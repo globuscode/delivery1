@@ -124,7 +124,6 @@ export default class AllRestourans extends React.Component {
                 onPress={() => {
                   //this.selectedType = 0;
                   this.state.selectedType = this.state.preSelectedType;
-                  console.log(this.state.types[this.state.selectedType]);
                   this.updateResults();
                   this._drawer.close();
                 }}
