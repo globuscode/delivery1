@@ -5,32 +5,24 @@ import {
   View,
   TouchableOpacity,
   Dimensions,
-  ScrollView,
-  Platform,
-  Image
+  ScrollView
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import IconFA from "react-native-vector-icons/FontAwesome";
 import Drawer from "react-native-drawer";
 import Picker from "../Picker";
-import { LinearGradient } from "expo";
+import { LinearGradient, Constants } from "expo";
 
 import RestouransOfTheWeek from "../Main/RestouransOfTheWeek";
 
-const shadowOpt = {
-  width: 180,
-  height: 170,
-  color: "#000",
-  border: 10,
-  radius: 10,
-  opacity: 0.2,
-  x: 0,
-  y: 3,
-  style: { marginVertical: 5 }
-};
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
+
+const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
+  const paddingToBottom = 10;
+  return layoutMeasurement.height + contentOffset.y >=
+    contentSize.height - paddingToBottom;
+};
 
 export default class AllRestourans extends React.Component {
   constructor(props) {
@@ -38,29 +30,72 @@ export default class AllRestourans extends React.Component {
     this.state = {
       types: [
         "Все кухни",
-        "Армянская",
-        "Американская",
-        "Итальянская",
-        "Русская",
-        "Армянская",
-        "Американская",
-        "Итальянская",
-        "Русская"
       ],
+      maxIndex: 5,
+      restaurans: [],
+      restauransShort: [],
       selectedType: 0
     };
   }
 
-  componentDidMount() {}
+  componentWillMount = async () => {
+    const response = await fetch(`http://dostavka1.com/v1/classificator/tag-groups?cityId=36`);
+    const responseJson = await response.json();
+
+    responseJson.data.forEach((element) => {
+      this.state.types.push(element.titleTag);
+    });
+    this.setState({});
+  }
+
+  componentDidMount = async () => {
+    const response = await fetch(`http://dostavka1.com/v1/restaurants?cityId=36&startIndex=${this.state.maxIndex}`);
+    const responseJson = await response.json();
+
+    this.state.restaurants = responseJson.data.restaurants;
+
+    let rests = [];
+    
+    for (let i=0; i<this.state.maxIndex; i++)
+      rests.push(this.state.restaurants[i]);
+
+    this.setState({ 
+      restauransShort: rests
+    });
+  }
+
+  updateResults = async () => {
+    const response = await fetch(`http://dostavka1.com/v1/restaurants?cityId=36&tag=${this.state.types[this.state.selectedType]}&startIndex=${this.state.maxIndex}`);
+    const responseJson = await response.json();
+    this.state.restaurans = this.state.restaurans.concat(responseJson["data"]["results"]);
+    let rests = [];
+    let i = 0;
+    while (i < this.state.maxIndex) {
+      if (this.state.restaurants[i] != undefined)
+        this.state.restaurants[i].restourantTags.forEach((e) => {
+          if (e == this.state.types[this.state.selectedType] || this.state.selectedType === 0) {
+            rests.push(this.state.restaurants[i]);
+          }
+        });
+      else
+        break;
+      i += 1;
+    }
+
+    this.setState({ 
+      restauransShort: rests
+    });
+  }
 
   render() {
+    //ios - contact - outline
     return (
       <Drawer
         ref={ref => (this._drawer = ref)}
         content={
           <View
             style={{
-              height: 330,
+              height: 300,
               backgroundColor: "rgb(39, 40, 48)",
               width: viewportWidth,
               borderTopWidth: 1,
@@ -68,14 +103,18 @@ export default class AllRestourans extends React.Component {
             }}
           >
             <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                paddingHorizontal: 12
+              }}
             >
               <TouchableOpacity
                 onPress={() => {
-                  this.selectedType = 0;
+                  //this.selectedType = 0;
                   this._drawer.close();
                 }}
-                style={{ padding: 10 }}
+                style={{ paddingVertical: 10 }}
               >
                 <Text style={{ color: "#dcc49c", fontSize: 18 }}>
                   {"Отмена"}
@@ -83,11 +122,12 @@ export default class AllRestourans extends React.Component {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  this.selectedType = 0;
-                  this.setState({ selectedType: this.state.preSelectedType });
+                  //this.selectedType = 0;
+                  this.state.selectedType = this.state.preSelectedType;
+                  this.updateResults();
                   this._drawer.close();
                 }}
-                style={{ padding: 10 }}
+                style={{ paddingVertical: 10 }}
               >
                 <Text style={{ color: "#dcc49c", fontSize: 18 }}>
                   {"Далее"}
@@ -100,13 +140,14 @@ export default class AllRestourans extends React.Component {
               itemStyle={{ color: "#dcc49c", fontSize: 30 }}
               data={this.state.types}
               onValueChange={index => {
-                this.state.preSelectedType = index;
+                this.setState({ preSelectedType: index });
               }}
             />
+            <View style={{ height: 20 }} />
           </View>
         }
         side="bottom"
-        openDrawerOffset={viewportHeight - 340}
+        openDrawerOffset={viewportHeight - 280}
         type="overlay"
         captureGestures={false}
       >
@@ -115,14 +156,14 @@ export default class AllRestourans extends React.Component {
             style={{
               flexDirection: "row",
               alignSelf: "center",
-              alignItems: "center",
+              alignContent: "center",
               justifyContent: "center",
-              margin: 20,
-              marginBottom: 0,
+              paddingBottom: 13,
+              paddingTop: 18,
+              marginHorizontal: 15,
               width: viewportWidth - 40,
-              paddingVertical: 20,
               borderBottomWidth: 1,
-              borderColor: "rgb(119, 122, 136)"
+              borderColor: "rgb(54, 55, 58)"
             }}
           >
             <TouchableOpacity>
@@ -130,9 +171,10 @@ export default class AllRestourans extends React.Component {
                 <Text
                   style={{
                     color: "white",
-                    fontWeight: "bold",
                     flexDirection: "row",
-                    fontSize: 18
+                    fontSize: 14,
+                    letterSpacing: 0.8,
+                    fontFamily: "stem-medium"
                   }}
                 >
                   {"Рестораны города Москва"}
@@ -140,14 +182,23 @@ export default class AllRestourans extends React.Component {
               </View>
             </TouchableOpacity>
           </View>
-
-          <ScrollView contentContainerStyle={{ width: viewportWidth }}>
-            {/*<Text
+          <ScrollView
+            onScroll={({nativeEvent}) => {
+              if (isCloseToBottom(nativeEvent)) {
+                this.state.maxIndex = this.state.maxIndex + 5;
+                this.updateResults();
+              }
+            }}
+            scrollEventThrottle={400}
+          contentContainerStyle={{ width: viewportWidth }}>
+            <Text
               style={{
                 fontSize: 10,
                 color: "#dcc49c",
                 textAlign: "center",
-                marginTop: 10
+                marginTop: 5,
+                marginBottom: 2,
+                fontFamily: "open-sans"
               }}
             >
               {"Тип кухни"}
@@ -156,7 +207,7 @@ export default class AllRestourans extends React.Component {
               style={{
                 width: viewportWidth - 40,
                 marginBottom: 20,
-                padding: 5,
+                padding: 6,
                 alignSelf: "center",
                 flexDirection: "row",
                 justifyContent: "center",
@@ -171,11 +222,15 @@ export default class AllRestourans extends React.Component {
                 <Text style={{ fontSize: 18, color: "#ffffff" }}>
                   {this.state.types[this.state.selectedType] + " "}
                 </Text>
-                <Icon name="ios-arrow-down" color="#ffffff" size={18} />
+                <Icon
+                  name="ios-arrow-down"
+                  color="#ffffff"
+                  style={{ top: 3 }}
+                  size={18}
+                />
               </TouchableOpacity>
-            </View>*/}
-
-            <RestouransOfTheWeek navigation={this.props.navigation} />
+            </View>
+            <RestouransOfTheWeek data={this.state.restauransShort} navigation={this.props.navigation} />
             <View style={{ height: 20 }} />
           </ScrollView>
 
@@ -215,7 +270,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     elevation: -10,
-    paddingTop: 0,
+    paddingTop: Constants.statusBarHeight,
     backgroundColor: "#292b37",
     paddingBottom: 0,
     justifyContent: "space-between",
