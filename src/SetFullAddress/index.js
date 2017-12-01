@@ -32,8 +32,8 @@ class Forms extends React.Component{
             secondName: props.user.token ? props.user.user.secondName : "",
             phone: props.user.token ? props.user.user.phone : "",
             address: {
-                street: "",
-                house: "",
+                street: props.address.street,
+                house: props.address.house,
                 flat: "",
                 entrance: "",
                 floor: "",
@@ -549,6 +549,7 @@ class Forms extends React.Component{
 export default connect(
     state => ({
       user: state.user,
+      address: state.address
     }),
     dispatch => ({
       onAddPlate: plate => {
