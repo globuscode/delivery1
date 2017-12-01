@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, Dimensions } from 'react-native';
+import { View, Text, Image, Dimensions, ScrollView } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 import { connect } from 'react-redux';
 
@@ -38,7 +38,7 @@ class MyOrderDetail extends React.Component {
         ? this.props.navigation.state.params.order
         : {
           id: 1,
-          restaurantId: 0, // id ресторана
+          restaurantId: -1, // id ресторана
           status: 'Активный', // статус заказа (доставлен, оплачен, отменен)
           address: 'Ул. Пушкина, д. 3, кв. 2', // адрес заказа
           orderTime: new Date(2017, 9, 3, 10, 15), // время в которое был выполнен заказ
@@ -80,8 +80,17 @@ class MyOrderDetail extends React.Component {
     const responseJson = await response.json();
     if (responseJson.data && responseJson.data.result) {
       this.state.restaurantLogo = responseJson.data.result.logoImage;
-      this.setState({});
     }
+    else this.state.restaurantLogo = "//dostavka1.com/img/app-icon.png";
+
+    const cartId = this.state.order.cartId;
+    const cartResponse = await fetch(
+      `http://dostavka1.com/v1/cart/${cartId}`
+    );
+    const cartRespJson = await cartResponse.json();
+    this.state.cart = cartRespJson["data"]["result"];
+
+    this.setState({});
   };
 
   addAll = () => {
@@ -95,7 +104,7 @@ class MyOrderDetail extends React.Component {
         : viewportWidth >= 375 && viewportWidth < 414 ? 117 : 130;
     return (
       <View style={{ flexDirection: 'column', width: viewportWidth }}>
-        {section.map(e => (
+        {section.map((e, i) => (
           <Touchable
             key={i}
             onPress={() => {
@@ -222,8 +231,7 @@ class MyOrderDetail extends React.Component {
                 marginTop: screen === 0 ? 9 : screen === 1 ? 16 : 22
               }}
             >
-              {`Оплаченная сумма заказа с учетом акций и скидок ${this.state
-                .order.total} ₽`}
+              {`Оплаченная сумма заказа с учетом акций и скидок ${this.state.order.total} ₽`}
             </Text>
           </View>
           <View>
@@ -232,7 +240,7 @@ class MyOrderDetail extends React.Component {
                 height: screen === 0 ? 85 : screen === 1 ? 100 : 117,
                 width: screen === 0 ? 85 : screen === 1 ? 100 : 117
               }}
-              source={{ uri: this.state.restaurantLogo }}
+              source={{ uri: 'http:' + this.state.restaurantLogo }}
             />
           </View>
         </View>
@@ -244,9 +252,12 @@ class MyOrderDetail extends React.Component {
   render = () => {
     const info = this.renderInfo();
     const cart = this.renderContent(this.state.cart);
-    if (this.state.order.status === 'Активный') {
+    console.log(this.state.order)
+    if (this.state.order.status === 'Активный' || this.state.order.status === 'Принят') {
+      var re = new RegExp(/([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]/g);
+      const deliveryTime = this.state.order.deliveryTime.match(re)[0];
       return (
-        <View style={{ flex: 1, flexDirection: 'column' }}>
+        < ScrollView style={{ flex: 1, flexDirection: 'column' }}>
           <Image
             style={{
               height: screen === 0 ? 85 : screen === 1 ? 100 : 117,
@@ -324,7 +335,7 @@ class MyOrderDetail extends React.Component {
                   color: 'rgb(225, 199, 155)'
                 }}
               >
-                {`${this.state.order.orderTime.getHours()}:${this.state.order.orderTime.getMinutes()}`}
+                {`00:00`}
               </Text>
               <Text
                 style={{
@@ -344,7 +355,7 @@ class MyOrderDetail extends React.Component {
                   color: 'rgb(225, 199, 155)'
                 }}
               >
-                {`${this.state.order.deliveryTime.getHours()}:${this.state.order.deliveryTime.getMinutes()}`}
+                {`${deliveryTime}`}
               </Text>
             </View>
           </View>
@@ -416,7 +427,7 @@ class MyOrderDetail extends React.Component {
               {'Заказ оплачен'}
             </Text>
           </View>
-        </View>
+        </ ScrollView>
       );
     }
     return (
@@ -426,7 +437,6 @@ class MyOrderDetail extends React.Component {
           paddingTop: screen === 0 ? 12 : screen === 1 ? 25 : 32
         }}
       >
-        {info}
 
         <View style={{ height: 14 }} />
         <View
@@ -437,7 +447,7 @@ class MyOrderDetail extends React.Component {
             backgroundColor: 'rgb(87, 88, 98)'
           }}
         />
-        {cart}
+        {this.renderContent(this.state.cart)}
         <View
           style={{
             alignSelf: 'center',
