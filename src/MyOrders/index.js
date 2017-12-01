@@ -1,54 +1,31 @@
 import React, { Component } from "react";
-import { View, Dimensions, AsyncStorage, Text, Image } from "react-native";
+import { View, Dimensions, AsyncStorage, Text, Image, ScrollView, ActivityIndicator} from "react-native";
 import Touchable from "react-native-platform-touchable";
+import { connect } from "react-redux";
 
-export default class MyOrders extends React.Component {
+class MyOrders extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      history: [
-        {
-          id: 1,
-          restaurantId: 0, //id ресторана
-          status: "Доставлен", //статус заказа (доставлен, оплачен, отменен)
-          address: "ул. Пушкина", //адрес заказа
-          orderTime: new Date(2017, 11, 22, 13, 30), //время в которое был выполнен заказ
-          deliveryTime: new Date(2017, 11, 22, 15, 30), //время в которое был выполнен заказ
-          payment: "Наличные", //способ оплаты
-          total: 500
-        },
-        {
-          id: 1,
-          restaurantId: 0, //id ресторана
-          status: "Активный", //статус заказа (доставлен, оплачен, отменен)
-          address: "ул. Пушкина", //адрес заказа
-          orderTime: new Date(2017, 11, 20, 3, 30), //время в которое был выполнен заказ
-          deliveryTime: new Date(2017, 11, 20, 5, 30), //время в которое был выполнен заказ
-          payment: "Наличные", //способ оплаты
-          total: 1500
-        },
-        {
-          id: 1,
-          restaurantId: 0, //id ресторана
-          status: "Доставлен", //статус заказа (доставлен, оплачен, отменен)
-          address: "ул. Пушкина", //адрес заказа
-          orderTime: new Date(2017, 11, 22, 13, 30), //время в которое был выполнен заказ
-          deliveryTime: new Date(2017, 11, 22, 15, 30), //время в которое был выполнен заказ
-          payment: "Наличные", //способ оплаты
-          total: 590
-        }
-      ],
+      history: [],
       logos: []
     };
   }
-  componentWillMount = async () => {
+  componentDidMount = async () => {
+    console.log(`Отправляю запрос на http://dostavka1.com/v1/cart/orders?token=${this.props.user.token}`);
+    const response = await fetch(`http://dostavka1.com/v1/cart/orders?token=${this.props.user.token}`);
+    console.log('Ответ пришел');
+    const responseJson = await response.json();
+    this.state.history = responseJson["data"];
     for (var i = 0; i < this.state.history.length; i++) {
-      var restRaw = await fetch(
-        "http://dostavka1.com/v1/restaurant?restaurantId=" +
-          this.state.history[i]
-      );
-      var restaurant = await restRaw.json();
-      this.state.logos.push(restaurant.data.result.logoImage);
+      if (this.state.history[i].restaurantId != '') {
+        var restRaw = await fetch(
+          "http://dostavka1.com/v1/restaurant?restaurantId=" + this.state.history[i].restaurantId
+        );
+        var restaurant = await restRaw.json();
+        this.state.logos.push(restaurant.data.result.logoImage);
+      }
+      else this.state.logos.push("//dostavka1.com/img/app-icon.png");
     }
     this.setState({});
     /*var h = JSON.parse(await AsyncStorage.getItem('ORDERS_HISTORY'));
@@ -58,8 +35,8 @@ export default class MyOrders extends React.Component {
   render = () => {
     if (this.state.history.length == 0)
       return (
-        <View>
-          <Text>{"Вы еще ничего не заказали"}</Text>
+        <View style={{flex: 1, justifyContent: 'center'}}>
+          <ActivityIndicator size='large' style={{alignSelf: 'center'}} />
         </View>
       );
     var history = this.state.history.map((element, index) => {
@@ -85,7 +62,7 @@ export default class MyOrders extends React.Component {
                   fontSize: 14,
                   color: "#fff"
                 }}
-              >{`Заказ на ${element.deliveryTime.getDate()}.${element.deliveryTime.getMonth()} к ${element.deliveryTime.getHours()}:${element.deliveryTime.getMinutes()}\nСумма заказа ${element.total} ₽`}</Text>
+              >{`Заказ на ${element.deliveryTime}\nСумма заказа ${element.total} ₽`}</Text>
               <Text
                 style={{
                   fontFamily: "open-sans-semibold",
@@ -101,7 +78,7 @@ export default class MyOrders extends React.Component {
             <Image
               resizeMode="contain"
               source={{
-                uri: this.state.logos[index]
+                uri: 'http:' + this.state.logos[index]
               }}
               style={{
                 height: 50,
@@ -112,6 +89,12 @@ export default class MyOrders extends React.Component {
         </Touchable>
       );
     });
-    return <View>{history}</View>;
+    return <ScrollView>{history}</ScrollView>;
   };
 }
+
+export default connect(
+  state => ({
+    user: state.user
+  }),
+)(MyOrders);
