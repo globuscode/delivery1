@@ -100,7 +100,7 @@ class Cart extends React.Component {
 
   componentDidMount = async () => {
     if (this.props.globalStore.cart.length != 0) {
-      const rest = await fetch('http://dostavka1.com/v1/restaurant?restaurantId='+props.globalStore.cart[0].plate.restaurant);
+      const rest = await fetch('http://dostavka1.com/v1/restaurant?restaurantId='+this.props.globalStore.cart[0].plate.restaurant);
       const restJson = await rest.json();
       this.setState({restaurant: restJson["data"]["result"]});
     }
