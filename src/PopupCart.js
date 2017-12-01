@@ -208,7 +208,7 @@ class Popup extends React.Component{
                         paddingBottom: 4,
                         maxWidth: 56
                     }}>{`${this.state.freeDelivery} ₽`}</Text>
-                    <IconD color='rgb(231, 208, 172)' size={35} name='truck' />
+                    <IconD color={freeDelivery ? 'rgb(231, 208, 172)' : 'rgb(119, 122, 136)'} size={35} name='truck' />
                 </View>
                 
                 {!freeDelivery ? null :
