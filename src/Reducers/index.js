@@ -4,6 +4,7 @@ import cart from "./cart";
 import user from "./user";
 import recomendations from "./recomendations";
 import modalController from "./modalController";
+import address from "./address";
 
 function lastAction(state = null, action) {
   return action;
@@ -16,7 +17,8 @@ const store = createStore(
     user,
     recomendations,
     modalController,
-    lastAction
+    lastAction,
+    address
   })
 );
 
