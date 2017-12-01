@@ -12,10 +12,11 @@ import { Header } from 'react-native-elements';
 import { TextField } from 'react-native-material-textfield';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Touchable from 'react-native-platform-touchable';
+import { connect } from 'react-redux';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
-export default class SelectCity extends React.Component {
+class SelectAddress extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -30,7 +31,8 @@ export default class SelectCity extends React.Component {
 				'Ул. Северная, Д. 22',
 			],
 			deliver: false,
-			address: ''
+			address: '',
+			house: ''
 		};
 	};
 
@@ -90,20 +92,23 @@ export default class SelectCity extends React.Component {
 					top: 1,
 					color: '#fff',
 					textAlign: 'center'
-				}}>{'Отлично, мы будем у вас на пороге не позже сорока минут'}</Text>
+				}}>{'Отлично'}</Text>
 			</View>;
 	};
 
 	validateAddress = async (address) => {
-		const response = await fetch(`http://dostavka1.com/v1/address?cityId=36&street=${address}&restaurantId=${this.props.navigation.state.params.id}`)
+		const response = await fetch(`http://dostavka1.com/v1/address?cityId=36&street=${this.state.address}&house=${this.state.house}&restaurantId=${this.props.navigation.state.params.id}`)
 		const responseJson = await response.json();
-		this.state.address = address; 
 		this.setState({ deliver: responseJson["data"]["result"] == 0 });
 	}
 
 	next = () => {
 		if (this.notDeliver(this.state.address))
 			if (this.state.canNav) {
+				this.props.saveAddress({
+					street: this.state.address,
+					house: this.state.house
+				});
 				this.props.navigation.navigate('RestaurantMenu', {id: this.props.navigation.state.params.id});
 				this.state.canNav = false;
 				setTimeout(() => {
@@ -165,10 +170,33 @@ export default class SelectCity extends React.Component {
 								textAlign: 'center',
 							}}
 							inputContainerStyle={{ flexDirection: 'column' , alignItems: 'center', justifyContent: 'center' }}
-							label='Адрес доставки'
+							label='Улица доставки'
 							value={this.state.address}
-							onChangeText={this.validateAddress}
-							onBlur={() => this.setState({hidePrevious: true})}
+							onChangeText={(address) => { this.state.address = address; }}
+							onBlur={() => {
+								this.validateAddress();
+								this.setState({hidePrevious: true})
+							}}
+						/>
+					</View>
+					<View style={{alignSelf: 'stretch', paddingHorizontal: 20}}>
+						<TextField 
+							tintColor='#dcc49c'
+							baseColor='rgb( 87, 88, 98)'
+							textColor='white'
+							returnKeyType='send'
+							style={{
+								alignItems: 'center',
+								textAlign: 'center',
+							}}
+							inputContainerStyle={{ flexDirection: 'column' , alignItems: 'center', justifyContent: 'center' }}
+							label='Дом доставки'
+							value={this.state.house}
+							onChangeText={(address) => { this.state.house = address; }}
+							onBlur={() => {
+								this.validateAddress();
+								this.setState({hidePrevious: true})
+							}}
 						/>
 					</View>
 					{this.state.address != '' ? this.renderAutocomplete(this.state.address) : null}
@@ -205,6 +233,13 @@ export default class SelectCity extends React.Component {
 		);
 	}
 }
+
+export default connect(
+	state => ({}),
+	dispatch => ({
+		saveAddress: address => dispatch({ type: "SAVE_ADDRESS", payload: address })
+	})
+)(SelectAddress);
 
 const styles = StyleSheet.create({
 	text: {
