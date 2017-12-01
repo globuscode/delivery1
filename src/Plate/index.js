@@ -47,7 +47,7 @@ class Plate extends React.Component{
 					selected: false,
 				},
 				"image": "https://asideofsweet.com/wp-content/uploads/2016/08/Extreme-Freakshake-Smores-Milkshakes-Recipe2.jpg",
-				"price": 9999,
+				"price": 1,
 				"description": 'Казалось бы, что делать в ресторане высокой кухни такому банальному блюду, как бургер? Однако он есть в здешнем меню – сделанный из говядины Черный Ангус, с выдержанным чеддером, обжаренными луковыми кольцами (их печально мало) и соусом барбекю, чей рецепт хранится в секрете.',
 				"tags": [{
 					title: 'Итальянская кухн]',
@@ -90,63 +90,6 @@ class Plate extends React.Component{
 				description: {
 					title: 'Настоящее грузинское гостеприимство в ресторанах «Джон Джоли»',
 					description: 'Хлебосольная, щедрая, сказочная, гостеприимная Грузия! Удивительная страна, которая известна своими застольями, подарила Москве частичку своей души.'
-				},
-				/*bestPlates: [
-						<plate>,
-						<plate>,
-						…
-				],
-				promo: {
-						id: <int>,
-						title: <string>,
-						description: <html>
-				},*/
-				menu: {
-					'Мясные блюда': [
-						{
-							title: 'Мясной хлеб',
-							"favorite": false,
-							"image": 'http://img.povar.ru/uploads/a0/99/e9/31/molochnii_kokteil_s_shokoladom-318319.jpg',
-							"price": 8888,
-							"description": 'С хрустящими шариками из сулугуни и кукурузной муки с домашними соусами',
-						}, {
-							title: 'Мясной хлеб',
-							"favorite": false,
-							"image": 'http://img.povar.ru/uploads/a0/99/e9/31/molochnii_kokteil_s_shokoladom-318319.jpg',
-							"price": 8888,
-							"description": 'С хрустящими шариками из сулугуни и кукурузной муки с домашними соусами',
-						},
-					],
-					'Салаты': [
-						{
-							title: 'Мясной хлеб',
-							"favorite": false,
-							"image": 'http://img.povar.ru/uploads/a0/99/e9/31/molochnii_kokteil_s_shokoladom-318319.jpg',
-							"price": 8888,
-							"description": 'С хрустящими шариками из сулугуни и кукурузной муки с домашними соусами',
-						}, {
-							title: 'Мясной хлеб',
-							"favorite": false,
-							"image": 'http://img.povar.ru/uploads/a0/99/e9/31/molochnii_kokteil_s_shokoladom-318319.jpg',
-							"price": 8888,
-							"description": 'С хрустящими шариками из сулугуни и кукурузной муки с домашними соусами',
-						},
-					],
-					'Супы': [
-						{
-							title: 'Борщ',
-							"favorite": false,
-							"image": 'http://img.povar.ru/uploads/a0/99/e9/31/molochnii_kokteil_s_shokoladom-318319.jpg',
-							"price": 8888,
-							"description": 'С хрустящими шариками из сулугуни и кукурузной муки с домашними соусами',
-						}, {
-							title: 'Уха',
-							"favorite": false,
-							"image": 'http://img.povar.ru/uploads/a0/99/e9/31/molochnii_kokteil_s_shokoladom-318319.jpg',
-							"price": 8888,
-							"description": 'С хрустящими шариками из сулугуни и кукурузной муки с домашними соусами',
-						},
-					]
 				},
 				time: 'с 11:00 до 22:30 \nпт, сб до 05:15',
 				averageBill: 9000,
@@ -385,7 +328,7 @@ class Plate extends React.Component{
 				<Text style={{ color: '#dcc49c', fontFamily: 'open-sans-semibold', fontSize: 13, letterSpacing: 0.5, marginBottom: 14.4 }}>{this.state.plate.tagGroup.title}</Text>
 			</View>
 
-			<PriceButton value={this.state.plate.price} count={inCart ? this.props.globalStore[i-1].count : null} pressed={inCart} onPress={() => this.props.onAddPlate(this.state.plate)}/>
+			<PriceButton value={this.props.navigation.state.params.plate.price} count={inCart ? this.props.globalStore[i-1].count : null} pressed={inCart} onPress={() => this.props.onAddPlate(this.state.plate)}/>
 
 
 			<View style={[styles.row, { justifyContent: 'flex-start' }]}>
