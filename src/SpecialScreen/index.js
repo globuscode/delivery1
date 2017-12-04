@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { LinearGradient, Font } from 'expo';
+import IconD from "../IconD";
 
 var kitchenPhoto = require('../../assets/img/kitchen.jpeg');
 
@@ -28,23 +29,23 @@ export default class SelectCity extends React.Component {
 
   async componentDidMount() {
     var city = await AsyncStorage.getItem('city');
-    fetch('http://dostavka1.com/v1/classificator/cities')
-    .then((response) => {
-      if (!response.ok) {
-        Alert.alert('Ошибка', 'Ошибка соединения с сервером.')
-      }
-      else 
-      if (0)
-        this.props.navigation.navigate('SelectCity'); 
-      else {
-        if (city == null)
-          this.props.navigation.navigate('SelectCity');
-        else
-          this.props.navigation.navigate('LoadingScreen'); 
-      }
-        
-        
-      });
+    setTimeout(() => {
+      fetch('http://dostavka1.com/v1/classificator/cities')
+      .then((response) => {
+        if (response.ok == undefined) {
+          Alert.alert('Ошибка', 'Ошибка соединения с сервером.')
+        }
+        else 
+        if (0)
+          this.props.navigation.navigate('SelectCity'); 
+        else {
+          if (city == null)
+            this.props.navigation.navigate('SelectCity');
+          else
+            this.props.navigation.navigate('LoadingScreen'); 
+        }
+        });
+    }, 2000);
   }
 
   render() {
@@ -75,13 +76,10 @@ export default class SelectCity extends React.Component {
             }}>
             {'Первый рекомендательный сервис еды'}
           </Text>
-          <Icon
-            name='ios-grid'
+          <IconD
+            name='dostavka'
             color='#dcc49c'
-            size={90}
-            style={{
-              backgroundColor: 'transparent'
-            }} />
+            size={90}/>
           <Text style={{
             color: '#ffffff',
             width: viewportWidth * 0.8,
@@ -89,7 +87,7 @@ export default class SelectCity extends React.Component {
             fontSize: 12,
             backgroundColor: 'transparent'
           }}>
-            {'Москва, Санкт-Петербург, Екатеренбург, Казань, Краснодар, Нижний Новгород'}
+            {'Москва'/*, Санкт-Петербург, Екатеренбург, Казань, Краснодар, Нижний Новгород'*/}
           </Text>
         </View>
       </Image>
