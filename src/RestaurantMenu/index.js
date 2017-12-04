@@ -273,6 +273,8 @@ class RestaurantMenu extends React.Component {
                   style={{
                     width: imageHeight,
                     height: imageHeight,
+                    borderWidth: e.image.indexOf('.png') > 0 ? 1.5 : 0,
+                    borderColor: 'rgb(225, 199, 155)',
                     borderRadius: 10
                   }}
                 />
