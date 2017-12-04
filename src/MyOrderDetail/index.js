@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, Dimensions, ScrollView } from 'react-native';
+import { View, Text, Image, Dimensions, ScrollView, StyleSheet } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 import { connect } from 'react-redux';
 
@@ -155,7 +155,7 @@ class MyOrderDetail extends React.Component {
                 >
                   {e.title}
                 </Text>
-                <Text
+                {/*<Text
                   style={{
                     color: 'rgb( 135, 136, 140)',
                     fontSize: 12,
@@ -164,7 +164,15 @@ class MyOrderDetail extends React.Component {
                   }}
                 >
                   {e.description}
-                </Text>
+                </Text>*/}
+                <View style={{
+                    marginBottom: 5
+                }}>
+                  <HTMLView
+                    value={`<p>${e.description}</p>`}
+                    stylesheet={styles}
+                  />
+                </View>
                 <View style={{ flexDirection: 'row' }}>
                   <PriceButton
                     value={e.price}
@@ -465,6 +473,14 @@ class MyOrderDetail extends React.Component {
   };
 }
 
+
+const styles = StyleSheet.create({
+  p: {
+    color: 'rgb( 135, 136, 140)',
+    fontSize: 12,
+    lineHeight: 14,
+  },
+});
 export default connect(
   state => ({
     globalStore: state.cart

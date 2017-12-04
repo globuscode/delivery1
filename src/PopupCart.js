@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Dimensions, Text, Image } from 'react-native';
+import { View, Dimensions, Text, Image, StyleSheet } from 'react-native';
 import { connect } from "react-redux";
 import Counter from "./Counter";
 import ButtonD from "./ButtonD";
 import { NavigationActions } from 'react-navigation';
 import { Bar } from 'react-native-progress';
 import IconD from "./IconD";
+import HTMLView from 'react-native-htmlview';
 
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
@@ -126,7 +127,7 @@ class Popup extends React.Component{
                 marginTop: 34,
                 color: '#fff'
             }}>{this.state.plate.title}</Text>
-            <Text style={{
+            {/*<Text style={{
                 fontFamily: 'open-sans',
                 fontSize: 10,
                 alignSelf: 'stretch',
@@ -135,8 +136,18 @@ class Popup extends React.Component{
                 marginTop: 10,
                 marginBottom: screen == 0 ? 31 : screen == 1 ? 66 : 79,
                 color: 'rgb(135, 136, 140)'
-            }}>{this.state.plate.description}</Text>
-
+            }}>{this.state.plate.description}</Text>*/}
+            <View style={{
+                marginTop: 34,
+                marginTop: 10,
+                marginBottom: screen == 0 ? 31 : screen == 1 ? 66 : 79,
+                alignSelf: 'stretch',
+            }}>
+                <HTMLView
+                    value={`<p>${this.state.plate.description}</p>`}
+                    stylesheet={styles}
+                />
+            </View>
             <View style={{flexDirection: 'row', }}>
                 <View style={{ flex: 2, flexDirection: 'column', marginBottom: screen == 0 ? 15 : screen == 1 ? 20 : 25,}}>
                     <Text style={{
@@ -241,6 +252,14 @@ class Popup extends React.Component{
     }
 }
 
+const styles = StyleSheet.create({
+    p: {
+        fontFamily: 'open-sans',
+        fontSize: 10,
+        textAlign: 'left',
+        color: 'rgb(135, 136, 140)'
+    }
+  });
 
 
 export default connect(
