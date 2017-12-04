@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import { Header } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
+import HTMLView from 'react-native-htmlview';
 import Button from 'react-native-button';
 import {
 	LinearGradient,
@@ -332,14 +333,23 @@ class Plate extends React.Component{
 
 
 			<View style={[styles.row, { justifyContent: 'flex-start' }]}>
-				<Text style={{ 
+				{/*<Text style={{ 
 					color: 'rgb( 225, 199, 155)', 
 					fontSize: 13, 
 					lineHeight: 17, 
 					top: 4, 
 					paddingHorizontal: 23.4,
 					marginTop: (viewportWidth >= 320 && viewportWidth < 375) ? 22 : (viewportWidth >= 375 && viewportWidth < 414) ? 39 : 29
-				}}>{this.state.plate.description}</Text>
+				}}>{this.state.plate.description}</Text>*/}
+				<View style={{ 
+						paddingHorizontal: 23.4,
+						marginTop: (viewportWidth >= 320 && viewportWidth < 375) ? 22 : (viewportWidth >= 375 && viewportWidth < 414) ? 39 : 29
+				}}>
+				<HTMLView
+					value={`<p>${this.state.plate.description}</p>`}
+					stylesheet={styles}
+				/>
+				</View>
 			</View>
 
 
@@ -491,5 +501,10 @@ const styles = StyleSheet.create({
 	container: {
 		elevation: -10,
 		backgroundColor: 'rgb( 34, 35, 39)',
+	},
+	p: {
+		color: 'rgb( 225, 199, 155)', 
+		fontSize: 13, 
+		lineHeight: 17, 
 	},
 });
