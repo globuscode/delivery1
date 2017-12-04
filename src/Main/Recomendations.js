@@ -150,8 +150,8 @@ class Recomendations extends React.Component {
       },
       BG_IMAGE: {
         width: SLIDER_WIDTH,
-        top: item.image.indexOf('.png') > 0 ? SLIDER_HEIGHT / 3 : 0,
-        height: item.image.indexOf('.png') > 0 ? SLIDER_HEIGHT / 3 : SLIDER_HEIGHT,
+        top: item.image.indexOf('.png') > 0 ? SLIDER_HEIGHT * 0.5 / 3 : 0,
+        height: item.image.indexOf('.png') > 0 ? SLIDER_HEIGHT * 2 / 3 : SLIDER_HEIGHT,
         borderRadius: 10,
         position: "absolute",
         backgroundColor: "transparent"
