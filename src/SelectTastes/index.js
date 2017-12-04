@@ -29,12 +29,21 @@ export default class SelectTags extends React.Component {
     }
   };
 
-  componentWillMount() {
+  async componentWillMount() {
+    let tastes = JSON.parse(await AsyncStorage.getItem('tastes'));
+
     fetch('http://dostavka1.com/v1/classificator/tags')
       .then((response) => response.json())
       .then((responseJson) => {
         this.state.tastes = [];
         for (name in responseJson.data) {
+          
+          for (let j=0; j<tastes.length; j++) {
+            if (responseJson.data[name].title === tastes[j].title) {
+              this.state.selected.push(this.state.tastes.length);
+              break;
+            }
+          }
           this.state.tastes.push(responseJson.data[name]);
         }
         this.setState({});
