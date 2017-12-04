@@ -1333,7 +1333,7 @@ document.addEventListener("message", function (message) {
 		for (var i=0; i<data.tags.length; i++) {
 			var clickedId = i;
 			bubble = document.getElementById(clickedId);
-			document.getElementById('s' + clickedId.toString()).style.color = !data.tags[clickedId].selected ? theme[3] : theme[4];
+			document.getElementById('s' + clickedId.toString()).style.color = !data.tags[clickedId].selected ? theme[4] : theme[3];
 			if (data.tags[clickedId].icon != '')
 				document.getElementById('i' + clickedId.toString()).style.backgroundColor = !data.tags[clickedId].selected ? theme[3] : theme[4];
 			bubbleContext = bubble.getContext('2d');
