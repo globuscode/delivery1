@@ -74,7 +74,7 @@ class Feed extends React.Component {
 
 				<TouchableOpacity onPress={() => {
 					if (this.state.canNav) {
-						this.props.navigation.navigate(nav, {next: 'LoadingScreen'});
+						this.props.navigation.navigate(nav);
      				this.state.canNav = false;
 						setTimeout(() => {
 							this.state.canNav = true;
