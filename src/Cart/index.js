@@ -311,7 +311,7 @@ class Cart extends React.Component {
 
   nav = () => {
     if (this.state.canNav) {
-      this.props.navigation.navigate("SetAddress");
+      this.props.navigation.navigate("SetAddress", {id: this.state.restaurant.id});
       this.state.canNav = false;
       setTimeout(() => {
         this.state.canNav = true;
@@ -361,6 +361,7 @@ class Cart extends React.Component {
       viewportWidth >= 320 && viewportWidth < 375
         ? 0
         : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
+    const change = this.totalPrice() - this.state.restaurant.minOrder;
     if (this.props.globalStore.cart.length != 0)
       return (
         <View style={styles.container}>
@@ -387,7 +388,7 @@ class Cart extends React.Component {
                 }}
               />
             </View>
-            {-this.totalPrice() + this.state.restaurant.minBill <= 0 ? null : (
+            {change > 0 ? null : (
               <Text
                 style={{
                   fontFamily: "open-sans",
@@ -398,9 +399,9 @@ class Cart extends React.Component {
                 }}
               >
                 {"Ресторан установил ограничение \nна минимальную сумму заказа " +
-                  this.state.restaurant.minBill +
+                  this.state.restaurant.minOrder +
                   ".\nВам осталось выбрать еще на " +
-                  (-this.totalPrice() + this.state.restaurant.minBill
+                  (-change
                   ).toString() +
                   " ₽"}
               </Text>
@@ -672,7 +673,7 @@ class Cart extends React.Component {
 						bottom: 0,
 						height: 49,
 						borderTopWidth: 2,
-						borderColor: this.totalPrice() >= this.state.restaurant.minBill ? '#dcc49c' : '#575862',
+						borderColor: change >= 0 ? '#dcc49c' : '#575862',
 						flexDirection: 'row',
 						justifyContent: 'center'
 					}}>
@@ -683,9 +684,9 @@ class Cart extends React.Component {
 							<Text style={[
 								styles.nextButtonText,
 								{
-									color: this.totalPrice() >= this.state.restaurant.minBill ? '#dcc49c' : '#575862'
+									color: change >= 0 ? '#dcc49c' : '#575862'
 								}
-							]}>{this.totalPrice() >= this.state.restaurant.minBill ? `Оформить заказ на ${this.totalPrice()} ₽` : `До покупки нехватает ${ -this.totalPrice() + this.state.restaurant.minBill} ₽` }</Text>
+							]}>{change >= 0 ? `Оформить заказ на ${this.totalPrice()} ₽` : `До покупки не хватает ${ -change } ₽` }</Text>
 						</TouchableOpacity>
 					</View>
           </ScrollView>

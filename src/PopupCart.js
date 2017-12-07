@@ -75,7 +75,7 @@ class Popup extends React.Component{
         const response = await fetch(`http://dostavka1.com/v1/restaurant?restaurantId=${this.state.plate.restaurant}`);
         const responseJson = await response.json();
         if (responseJson.data && responseJson.data)
-            this.setState({ restaurant: responseJson.data.result, freeDelivery: responseJson.data.result.minOrder});
+            this.setState({ restaurant: responseJson.data.result, freeDelivery: responseJson.data.result.freeDelivery});
     }
 
 
