@@ -26,6 +26,10 @@ import { connect } from 'react-redux';
 import Recomendations from '../Main/Recomendations';
 import IconD from '../IconD';
 
+function onlyUnique(value, index, self) { 
+    return self.indexOf(value) === index;
+}
+
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 const hr = <View style={{ alignSelf: 'stretch', marginHorizontal: 20, height: 1, backgroundColor: 'rgb(87, 88, 98)' }} />;
 const hrShort = <View style={{ width: 290, alignSelf: 'center', margin: 0, height: 1, backgroundColor: 'rgb(87, 88, 98)' }} />;
@@ -109,7 +113,8 @@ class Plate extends React.Component{
 			restaurant: this.props.navigation.state.params.restaurant,
 			userTastes: tastesJson
 		});
-
+		this.state.plate.tags = this.state.plate.tags.filter( onlyUnique );
+		this.setState({});
 	}
 
 	checkTaste(taste) {
@@ -261,6 +266,7 @@ class Plate extends React.Component{
 			justifyContent: 'flex-start',
 			alignItems: 'center',
 		}}>
+			
 			{/* Фото ресторана */}
 			<Image source={{
 				uri: 'http:'+this.state.plate.image
@@ -270,9 +276,14 @@ class Plate extends React.Component{
 					height: (viewportWidth >= 320 && viewportWidth < 375) ? 415 : (viewportWidth >= 375 && viewportWidth < 414) ? 485 : 540
 				}}
 			/>
+			<LinearGradient colors={['rgba(0,0,0, 1)', 'rgba(34, 35, 39, 0)']} style={{
+				height: 200,
+				position: 'absolute',
+				width: viewportWidth
+			}} />
 
 			<View style={{ position: 'absolute', justifyContent: 'space-between', flexDirection: 'row', alignSelf: 'stretch', marginTop: Constants.statusBarHeight,  width: viewportWidth, paddingHorizontal: 21, paddingVertical: 10 }}>
-				<TouchableOpacity onPress={() => this.props.navigation.goBack()}><Icon name='md-arrow-round-back' size={20} color='rgb( 39, 40, 51)' style={{ backgroundColor: 'transparent' }} /></TouchableOpacity>
+				<TouchableOpacity onPress={() => this.props.navigation.goBack()}><Icon name='md-arrow-round-back' size={20} color='rgb(255, 255, 255)' style={{ backgroundColor: 'transparent' }} /></TouchableOpacity>
 
 				<View style={{ flexDirection: 'column', justifyContent: 'center' }}>
 					<Text style={{
@@ -281,6 +292,7 @@ class Plate extends React.Component{
 						textAlign: 'center',
 						fontFamily: 'stem-medium',
 						fontSize: 13,
+						color: '#fff',
 						letterSpacing: 0.8
 					}}>{this.state.plate.shortTitle}</Text>
 					<TouchableOpacity onPress={this.nav}><Text style={{
@@ -289,11 +301,12 @@ class Plate extends React.Component{
 						textAlign: 'center',
 						fontFamily: 'open-sans',
 						fontSize: 10,
+						color: '#fff',
 						letterSpacing: 0.8
 					}}>{this.state.restaurant.title}</Text></TouchableOpacity>
 				</View>
 
-				<TouchableOpacity onPress={() => this.props.navigation.goBack()}><Icon name='md-heart-outline' size={20} color='rgb( 39, 40, 51)' style={{ backgroundColor: 'transparent' }} /></TouchableOpacity>
+				<TouchableOpacity onPress={() => this.props.navigation.goBack()}><Icon name='md-heart-outline' size={20} color='rgb(255, 255, 255)' style={{ backgroundColor: 'transparent' }} /></TouchableOpacity>
 			</View>
 			<LinearGradient colors={['rgba(41,43,55, 0)', 'rgba(34, 35, 39, 1)']} style={{
 				height: 100,
@@ -373,7 +386,7 @@ class Plate extends React.Component{
 				flexWrap: 'wrap',
 				alignItems: 'center',
 			}}>
-			{this.state.plate.tags.map((e,i) => {
+			{/*this.state.plate.tags.filter( onlyUnique ).map((e,i) => {
 				const checked = this.checkTaste(e);
 				return <TouchableOpacity
 					key={i}
@@ -384,7 +397,7 @@ class Plate extends React.Component{
 						} else {
 							this.state.selected.splice(this.state.selected.indexOf(i), 1);
 							this.setState({});
-						}*/
+						}
 					}}
 					style={{
 						height: 36,
@@ -408,7 +421,7 @@ class Plate extends React.Component{
 						{e.title.toUpperCase()}
 					</Text>
 				</TouchableOpacity>
-			})}
+			})*/}
 			</View>
 
 			<Text style={{ 

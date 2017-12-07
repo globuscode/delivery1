@@ -234,7 +234,8 @@ export default class Restaurant extends React.Component {
 			</View>
 
 			{/* Описание ресторана */}
-			{hr}{/* Описание ресторана */}
+			{this.state.data.description.description == '' && this.state.data.description.title == '' ? null :
+			<View>{hr}{/* Описание ресторана */}
 			{<View
 				style={{ alignItems: 'flex-start', alignSelf: 'stretch', marginTop: 15, marginBottom: 27, marginHorizontal: 20 }}
 			>
@@ -246,15 +247,17 @@ export default class Restaurant extends React.Component {
 					<Text style={{ color: '#ffffff', fontSize: 13, lineHeight: 17, top: 4 }}>{this.state.data.description.description}</Text>
 				</View>
 			</View>}
-			{hr}
-
+			{hr}</View>
+			}
 
 			{/* Лучшие блюда */}
+			{this.state.data.bestPlates == undefined? null :
+			<View>
 			<View style={[styles.row, { justifyContent: 'flex-start', marginTop: 12 }]}>
 				<Text style={{ color: '#FFF', fontSize: 20, marginLeft: 20, }}>{'Лучшие блюда'}</Text>
 			</View>
 			<View style={{height: (viewportWidth - 40)*1.32+130}}><Recomendations data={this.state.data.bestPlates} navigation={this.props.navigation}/></View>
-
+			</View>}
 			{/* Дополнительная информация */}
 			{hrShort}
 			{this.renderHeader('Дополнительная информация')}
@@ -280,10 +283,11 @@ export default class Restaurant extends React.Component {
 							name='coins'
 							color={'#dcc49c'}
 							size={30} /></View>
+					{this.state.data.averageBill == undefined ? null : 
 					<View style={{ flexDirection: 'column', justifyContent: 'flex-start', }}>
 						<Text style={{ color: '#dcc49c', fontSize: 11, height: 15 }}>{'Средний счет\n'}</Text>
 						<Text style={{ color: '#ffffff', fontSize: 11, }}>{this.state.data.averageBill.toString() + ' ₽'}</Text>
-					</View>
+					</View>}
 				</View>
 			</View>
 			{hrShort}
