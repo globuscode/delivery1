@@ -1,11 +1,38 @@
 import React from "react";
-import { View, Text, TouchableOpacity, Dimensions, Alert } from "react-native";
+import { View, Text, TouchableOpacity, Dimensions, Alert, ActivityIndicator } from "react-native";
 import IconD from "../IconD";
 import { connect } from 'react-redux';
+
+import { NavigationActions } from 'react-navigation'
+
+const resetAction = NavigationActions.reset({
+  index: 0,
+  actions: [
+    NavigationActions.navigate({ routeName: 'Tabs'}),
+    NavigationActions.navigate({ routeName: 'MyOrders'}),
+  ]
+});
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
+
+function getOrderDate(date) {
+  if (date == undefined) {
+    date = new Date();
+  }
+
+  const dateOfMonth = date.getDate();
+  const month = date.getMonth();
+  const year = date.getFullYear();
+
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const seconds = date.getSeconds();
+  
+
+  return `${dateOfMonth}.${month}.${year} ${hours}:${minutes}:${seconds}`;
+}
 
 const screen =
   viewportWidth >= 320 && viewportWidth < 375
@@ -17,6 +44,7 @@ class MakeOrder extends React.Component {
       super(props);
       this.state = {
         canNav: true,
+        fetching: false,
         price: this.totalPrice(),
         selected: "Наличными курьеру",
       }
@@ -79,7 +107,7 @@ class MakeOrder extends React.Component {
 
   render = () => {
     return (
-      <View style={{flex: 1}}>
+      <View style={{flex: 1}}>        
         <View
           style={{
             flexDirection: "column"
@@ -106,6 +134,7 @@ class MakeOrder extends React.Component {
 
           
         </View>
+        {!this.state.fetching ? null : <ActivityIndicator style={{position: 'absolute', alignSelf: 'center', top: viewportHeight /2}}/>}
         <View
             style={{
               position: "absolute",
@@ -134,18 +163,23 @@ class MakeOrder extends React.Component {
                     "items": cart,
                     "address": this.props.navigation.state.params.address,
                     "client": this.props.navigation.state.params.client,
-                    "deliveryDate": this.props.navigation.state.params.deliveryDate,
+                    "deliveryDate": this.props.navigation.state.params.deliveryDate == null ? getOrderDate() : this.props.navigation.state.params.deliveryDate,
                     "restaurantId": this.props.globalStore[0].plate.restaurant,
                     "persons": this.props.navigation.state.params.persons,
+                    "orderStart": getOrderDate(),
                   };
+                  console.log(body);
+                  this.setState({fetching: true});
                   const response = await fetch(`http://dostavka1.com/v1/order/create/index.php?token=${this.props.userStore.token}`, {
                     method: 'post',
                     body: JSON.stringify(body)
                   });
                   
                   const responseJson = await response.json();
-                  Alert.alert(JSON.stringify(responseJson));
+                  //Alert.alert(JSON.stringify(responseJson));
+                  this.setState({fetching: false});
                   this.props.makeOrder(); 
+                  this.props.navigation.dispatch(resetAction);
                   this.props.navigation.goBack(null);
                   this.state.canNav = true;
                 }
