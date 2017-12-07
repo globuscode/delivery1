@@ -260,7 +260,6 @@ class MyOrderDetail extends React.Component {
   render = () => {
     const info = this.renderInfo();
     const cart = this.renderContent(this.state.cart);
-    console.log(this.state.order)
     if (this.state.order.status === 'Активный' || this.state.order.status === 'Принят') {
       var re = new RegExp(/([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]/g);
       const deliveryTime = this.state.order.deliveryTime.match(re)[0];

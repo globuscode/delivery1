@@ -55,11 +55,8 @@ export default function cart(state = initialState, action) {
     }
 
     if (action.type === 'REMOVE_PLATE_BY_OBJECT') {
-        //console.log("Цикл начат");
         for (let index = 0; index < state.length; index++) {
-            //console.log(state[index].plate.id, action.payload.id);
             if (action.payload.id == state[index].plate.id) {
-                console.log(state[index]);
                 if (state[index].count <= 1)
                     state.splice(action.index, 1);
                 else
@@ -67,7 +64,6 @@ export default function cart(state = initialState, action) {
                 break;
             }
         }
-        //console.log("Цикл закончен");
         return state;
     }
     return state;

@@ -12,9 +12,7 @@ class MyOrders extends React.Component {
     };
   }
   componentDidMount = async () => {
-    console.log(`Отправляю запрос на http://dostavka1.com/v1/cart/orders?token=${this.props.user.token}`);
     const response = await fetch(`http://dostavka1.com/v1/cart/orders?token=${this.props.user.token}`);
-    console.log('Ответ пришел');
     const responseJson = await response.json();
     this.state.history = responseJson["data"];
     for (var i = 0; i < this.state.history.length; i++) {

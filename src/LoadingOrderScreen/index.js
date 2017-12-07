@@ -187,7 +187,8 @@ export default connect(
             .then(data => {
               if (data.errors) {
                 if (data.errors.code != 200) {
-                  Alert.alert(data.errors.title, "Авторизируйтесь повторно");
+
+                  //Alert.alert(data.errors.title, "Авторизируйтесь повторно");
                 }
               } else {
                 dispatch({ type: "AUTH", payload: data });
