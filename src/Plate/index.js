@@ -168,7 +168,7 @@ class Plate extends React.Component{
 					position: 'absolute',
 					paddingHorizontal: (screen == 0 ? 6 : screen == 1 ? 7 : 8),
 					paddingTop: screen == 0 ? 8 : screen == 1 ? 9 : 10,
-					paddingBottom: (screen == 0 ? 6 : screen == 1 ? 7 : 8)-2,
+					paddingBottom: (screen == 0 ? 6 : screen == 1 ? 7 : 8),
 					borderWidth: 1.5,
 					marginBottom: 10,
 					marginHorizontal: 15,
@@ -196,7 +196,7 @@ class Plate extends React.Component{
 						borderWidth: 1.5,
 						paddingHorizontal: screen == 0 ? 6 : screen == 1 ? 7 : 8,
 						paddingTop: screen == 0 ? 8 : screen == 1 ? 9 : 10,
-						paddingBottom: (screen == 0 ? 6 : screen == 1 ? 7 : 8)-2,
+						paddingBottom: (screen == 0 ? 6 : screen == 1 ? 7 : 8),
 						marginBottom: 10,
 						marginHorizontal: 15,
 						alignItems: 'center',
@@ -342,7 +342,14 @@ class Plate extends React.Component{
 				<Text style={{ color: '#dcc49c', fontFamily: 'open-sans-semibold', fontSize: 13, letterSpacing: 0.5, marginBottom: 14.4 }}>{this.state.plate.tagGroup.title}</Text>
 			</View>
 
-			<PriceButton value={this.props.navigation.state.params.plate.price} count={inCart ? this.props.globalStore[i-1].count : null} pressed={inCart} onPress={() => this.props.onAddPlate(this.state.plate)}/>
+			<PriceButton
+				value={this.props.navigation.state.params.plate.price}
+				count={inCart ? this.props.globalStore[i-1].count : null}
+				pressed={inCart}
+				onPress={() => {
+					this.props.onAddPlate(this.state.plate);
+					this.props.openModal(this.state.plate);
+				}}/>
 
 
 			<View style={[styles.row, { justifyContent: 'flex-start' }]}>
@@ -440,7 +447,7 @@ class Plate extends React.Component{
 				bounces={false}
 				scrollEnabled={false}
 				source={{
-					html: '<div style="width:100%; height: 100%; background: url(' + this.state.restaurant.logoImage + ') center center no-repeat; background-size: contain" />'
+					html: '<div style="width:100%; height: 100%; background: url(http:' + this.state.restaurant.logoImage + ') center center no-repeat; background-size: contain" />'
 				}}
 				style={{
 					width: viewportWidth - 40,
@@ -489,12 +496,17 @@ class Plate extends React.Component{
 
 export default connect(
 	state => ({
-	  globalStore: state.cart
+	  globalStore: state.cart,
+	  modal: state.modalController
 	}),
 	dispatch => ({
 	  onAddPlate: plate => {
 		dispatch({ type: "ADD_PLATE", payload: plate });
-	  }
+	  },
+	  openModal: (data) => dispatch({ type: "OPEN_MODAL", payload: data}),
+	  changeModal: (data) => {
+		dispatch({ type: "CHANGE_CONTENT", payload: data })
+	  },
 	})
   )(Plate);
 
