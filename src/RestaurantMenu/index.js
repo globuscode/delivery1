@@ -15,6 +15,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { LinearGradient, Constants } from "expo";
 import Accordion from "react-native-collapsible/Accordion";
 import { connect } from "react-redux";
+import HTMLView from 'react-native-htmlview';
 
 import PriceButton from "../PriceButton";
 import Storage from "../Reducers";
@@ -88,6 +89,10 @@ class RestaurantMenu extends React.Component {
 			},
       menu: [],
     };
+  }
+
+  componentWillReceiveProps = (newProps) => {
+    this.setState({});
   }
 
   componentDidMount = async () => {
@@ -303,16 +308,14 @@ class RestaurantMenu extends React.Component {
                   >
                     {e.title}
                   </Text>
-                  <Text
-                    style={{
-                      color: "rgb( 135, 136, 140)",
-                      fontSize: 12,
-                      lineHeight: 14,
-                      marginBottom: 5
-                    }}
-                  >
-                    {e.description}
-                  </Text>
+                  <View style={{
+                    marginBottom: 5
+                }}>
+                  <HTMLView
+                    value={`<p>${e.description}</p>`}
+                    stylesheet={styles}
+                  />
+                </View>
                   </View>
                   <View style={{ flexDirection: "row" }}>
                     <PriceButton
@@ -778,5 +781,11 @@ const styles = StyleSheet.create({
   container: {
     elevation: -10,
     backgroundColor: "rgba(41,43,55, 1)"
+  },
+  p: {
+    color: "rgb( 135, 136, 140)",
+    fontSize: 12,
+    lineHeight: 14,
+    marginBottom: 5
   }
 });
