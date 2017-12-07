@@ -5,7 +5,8 @@ import {
   View,
   TouchableOpacity,
   Dimensions,
-  ScrollView
+  ScrollView,
+  ActivityIndicator
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import Drawer from "react-native-drawer";
@@ -31,10 +32,11 @@ export default class AllRestourans extends React.Component {
       types: [
         "Все кухни",
       ],
-      maxIndex: 5,
+      maxIndex: 0,
       restaurans: [],
       restauransShort: [],
-      selectedType: 0
+      selectedType: 0,
+      updating: false,
     };
   }
 
@@ -49,41 +51,51 @@ export default class AllRestourans extends React.Component {
   }
 
   componentDidMount = async () => {
-    const response = await fetch(`http://dostavka1.com/v1/restaurants?cityId=36&startIndex=${this.state.maxIndex}`);
+    const response = await fetch(`http://dostavka1.com/v1/restaurants?cityId=36&startIndex=${this.state.maxIndex === 0 ? '' : this.state.maxIndex}`);
     const responseJson = await response.json();
 
     this.state.restaurants = responseJson.data.restaurants;
 
     let rests = [];
     
-    for (let i=0; i<this.state.maxIndex; i++)
+    for (let i=0; i<this.state.maxIndex + 5; i++) {
       rests.push(this.state.restaurants[i]);
-
+    }
     this.setState({ 
       restauransShort: rests
     });
   }
 
   updateResults = async () => {
-    const response = await fetch(`http://dostavka1.com/v1/restaurants?cityId=36&tag=${this.state.types[this.state.selectedType]}&startIndex=${this.state.maxIndex}`);
+    this.setState({updating: true});
+    const response = await fetch(`http://dostavka1.com/v1/restaurants?cityId=36&tag=${this.state.types[this.state.selectedType]}`);
     const responseJson = await response.json();
-    this.state.restaurans = this.state.restaurans.concat(responseJson["data"]["results"]);
+
+    this.state.restaurans = responseJson.data.restaurants;
+    
     let rests = [];
     let i = 0;
     while (i < this.state.maxIndex) {
-      if (this.state.restaurants[i] != undefined)
-        this.state.restaurants[i].restourantTags.forEach((e) => {
-          if (e == this.state.types[this.state.selectedType] || this.state.selectedType === 0) {
-            rests.push(this.state.restaurants[i]);
-          }
-        });
+      if (this.state.restaurants[i] != undefined) {
+        if (this.state.selectedType === 0) {
+          rests.push(this.state.restaurants[i]);
+        }
+        else {
+          this.state.restaurants[i].restourantTags.forEach((e) => {
+            if (e == this.state.types[this.state.selectedType]) {
+              rests.push(this.state.restaurants[i]);
+            }
+          });
+        }
+      }
       else
         break;
       i += 1;
     }
 
     this.setState({ 
-      restauransShort: rests
+      restauransShort: rests,
+      updating: false
     });
   }
 
@@ -188,7 +200,7 @@ export default class AllRestourans extends React.Component {
           <ScrollView
             onScroll={({nativeEvent}) => {
               if (isCloseToBottom(nativeEvent)) {
-                this.state.maxIndex = this.state.maxIndex + 5;
+                this.state.maxIndex = this.state.maxIndex + 1;
                 this.updateResults();
               }
             }}
@@ -235,6 +247,8 @@ export default class AllRestourans extends React.Component {
             </View>
             <RestouransOfTheWeek data={this.state.restauransShort} navigation={this.props.navigation} />
             <View style={{ height: 20 }} />
+            {this.state.updating ? 
+            <ActivityIndicator size='large' style={{alignSelf: 'center'}} /> : null }
           </ScrollView>
 
           <View
