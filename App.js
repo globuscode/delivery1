@@ -25,6 +25,7 @@ class ModalComponent extends React.Component {
   render = () => <View style={{flex: 1}}>
     <A />
     <PopupDialog
+      dismissOnHardwareBackPress={false}
       ref={(popupDialog) => { this.popupDialog = popupDialog; }}
       dismissOnTouchOutside={false}
       dialogStyle={{
