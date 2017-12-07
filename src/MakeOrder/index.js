@@ -142,8 +142,6 @@ class MakeOrder extends React.Component {
                     method: 'post',
                     body: JSON.stringify(body)
                   });
-  
-                  console.log(body);
                   
                   const responseJson = await response.json();
                   Alert.alert(JSON.stringify(responseJson));
