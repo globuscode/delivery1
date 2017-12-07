@@ -23,7 +23,7 @@ export default function cart(state = initialState, action) {
         var i = 0;
         while (isNewPlate && i < state.length) {
             let equalTitle = action.payload.title === state[i].plate.title;
-            let equalRestaurant = action.payload.restourant === state[i].plate.restourant;
+            let equalRestaurant = action.payload.restaurant === state[i].plate.restaurant;
             isNewPlate = !(equalTitle && equalRestaurant);
             i++;
             if (!equalRestaurant)
