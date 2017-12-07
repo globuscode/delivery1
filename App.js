@@ -26,13 +26,15 @@ class ModalComponent extends React.Component {
     <A />
     <PopupDialog
       ref={(popupDialog) => { this.popupDialog = popupDialog; }}
+      dismissOnTouchOutside={false}
       dialogStyle={{
         backgroundColor: 'transparent',
         flexDirection: 'column',
+        flex: 1,
         justifyContent: 'flex-end'
       }}
       containerStyle={{
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
       }}
       show={Reducer.getState().modalController.opened}
       dialogAnimation={slide}
