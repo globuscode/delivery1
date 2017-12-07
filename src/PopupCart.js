@@ -35,7 +35,7 @@ class Popup extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            freeDelivery: 1500,
+            freeDelivery: 4400,
             plate: {
                 "id": 0,
                 "title": "Салат с клецками и хрустящими шариками из сулугуни",
@@ -69,23 +69,29 @@ class Popup extends React.Component{
 
     componentWillMount = async () => {
         /*const responsePlate = await fetch(`http://dostavka1.com/v1/plate?plateId=${this.props.modal.cartId}`);
-        const responsePlateJson = await responsePlate.json();
+        const responsePlateJson = await responsePlate.json();*/
 
 
         const response = await fetch(`http://dostavka1.com/v1/restaurant?restaurantId=${this.state.plate.restaurant}`);
         const responseJson = await response.json();
-        if (responseJson.data && responsePlateJson.data)
-            this.setState({ restaurant: responseJson.data.result, plate: responsePlateJson });*/
+        if (responseJson.data && responseJson.data)
+            this.setState({ restaurant: responseJson.data.result, freeDelivery: responseJson.data.result.minOrder});
     }
 
 
-    componentWillReceiveProps = (newProps) => {
+    componentWillReceiveProps = async (newProps) => {
         this.setState({ plate: newProps.modal.plate });
+
+        const response = await fetch(`http://dostavka1.com/v1/restaurant?restaurantId=${newProps.modal.plate.restaurant}`);
+        const responseJson = await response.json();
+        if (responseJson.data != undefined) {
+            this.setState({ restaurant: responseJson.data.result, freeDelivery: responseJson.data.result.minOrder});
+        }
     }
 
     render = () => {
         var itemCount = getCount(this.props.cart, this.state.plate);
-        const freeDelivery = (itemCount*this.state.plate.price) < this.state.freeDelivery;
+        let freeDelivery = (itemCount*this.state.plate.price) < this.state.freeDelivery;
         
         const popupWidth = screen == 0 ? 290 : screen == 1 ? 340 : 375;
         return <View style={{
@@ -111,7 +117,7 @@ class Popup extends React.Component{
             <Image
             resizeMode='contain'
             source={{
-                uri: 'http:'+this.state.restaurant.image
+                uri: 'http:'+this.state.restaurant.logoImage
             }}
             style={{
                 width: 150,
