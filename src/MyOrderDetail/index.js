@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, Image, Dimensions, ScrollView, StyleSheet } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 import { connect } from 'react-redux';
+import HTMLView from 'react-native-htmlview';
 
 import PriceButton from '../PriceButton';
 import ButtonD from '../ButtonD';
@@ -68,11 +69,11 @@ class MyOrderDetail extends React.Component {
             'С хрустящими шариками из сулугуни и кукурузной муки с домашними соусами'
         }
       ],
-      restaurantLogo: 'https://image.ibb.co/fPo4vm/meatless_logo.png'
+      restaurantLogo: '//dostavka1.com/img/app-icon.png'
     };
   }
 
-  componentWillMount = async () => {
+  componentDidlMount = async () => {
     const restId = this.state.order.restaurantId;
     const response = await fetch(
       `http://dostavka1.com/v1/restaurant?restaurantId=${restId}`
@@ -81,7 +82,6 @@ class MyOrderDetail extends React.Component {
     if (responseJson.data && responseJson.data.result) {
       this.state.restaurantLogo = responseJson.data.result.logoImage;
     }
-    else this.state.restaurantLogo = "//dostavka1.com/img/app-icon.png";
 
     const cartId = this.state.order.cartId;
     const cartResponse = await fetch(
@@ -262,7 +262,8 @@ class MyOrderDetail extends React.Component {
     const cart = this.renderContent(this.state.cart);
     if (this.state.order.status === 'Активный' || this.state.order.status === 'Принят') {
       var re = new RegExp(/([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]/g);
-      const deliveryTime = this.state.order.deliveryTime.match(re)[0];
+      const deliveryTime = this.state.order.deliveryTime ? this.state.order.deliveryTime.match(re)[0] : '00:00';
+      const orderTime = this.state.order.orderTime ? this.state.order.orderTime.match(re)[0] : '00:00';
       return (
         < ScrollView style={{ flex: 1, flexDirection: 'column' }}>
           <Image
@@ -273,7 +274,7 @@ class MyOrderDetail extends React.Component {
               marginBottom: 30,
               alignSelf: 'center'
             }}
-            source={{ uri: this.state.restaurantLogo }}
+            source={{ uri: "http:"+this.state.restaurantLogo }}
           />
           <View
             style={{
@@ -342,7 +343,7 @@ class MyOrderDetail extends React.Component {
                   color: 'rgb(225, 199, 155)'
                 }}
               >
-                {`00:00`}
+                {orderTime}
               </Text>
               <Text
                 style={{
@@ -376,7 +377,7 @@ class MyOrderDetail extends React.Component {
             }}
           >
             <ButtonD
-              onPress={this.addAll}
+              onPress={() => this.props.navigation.navigate('Feed')}
               title={["Вернуться в приложение"]}
               width={screen === 0 ? 260 : screen === 1 ? 315 : 354}
             />
