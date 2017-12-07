@@ -230,7 +230,7 @@ export default class Restaurant extends React.Component {
 			{/* Минимальная сумма заказа и бесплатная доставка */}
 			<View style={[{ justifyContent: 'center', flexDirection: 'row', left: -15, marginBottom: 38 }]}>
 				<View style={{width: 35, top: -2}}><IconD color='#dcc49c' size={35} name='truck'/></View>
-				<Text style={{ color: '#ffffff', fontSize: 11, fontFamily: 'open-sans', lineHeight: 13, top: 2, marginLeft: 15}}>{`Минимальная сумма заказа ${this.state.data.minBill} ₽ \nБесплатная доставка от ${this.state.data.minOrder} ₽`}</Text>
+				<Text style={{ color: '#ffffff', fontSize: 11, fontFamily: 'open-sans', lineHeight: 13, top: 2, marginLeft: 15}}>{`Минимальная сумма заказа ${this.state.data.minBill} ₽ \nБесплатная доставка от ${this.state.data.freeDelivery} ₽`}</Text>
 			</View>
 
 			{/* Описание ресторана */}
