@@ -118,8 +118,11 @@ export default class SelectTags extends React.Component {
   };
 
   async componentWillMount() {
-    let tags = JSON.parse(await AsyncStorage.getItem('tags'));
-    console.log(tags);
+    let tagsStr = await AsyncStorage.getItem('tags');
+    let f = await AsyncStorage.getItem('f');
+    
+    let tags = f != tagsStr ? JSON.parse(tagsStr) : [];
+
     fetch('http://dostavka1.com/v1/classificator/tag-groups?cityId=36')
       .then((response) => response.json())
       .then((responseJson) => {

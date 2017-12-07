@@ -29,20 +29,20 @@ export default class SelectCity extends React.Component {
 
   async componentDidMount() {
     var city = await AsyncStorage.getItem('city');
+    var cit = await AsyncStorage.getItem('cit');
     setTimeout(() => {
       fetch('http://dostavka1.com/v1/classificator/cities')
       .then((response) => {
         if (response.ok == undefined) {
           Alert.alert('Ошибка', 'Ошибка соединения с сервером.')
         }
-        else 
-        if (0)
-          this.props.navigation.navigate('SelectCity'); 
         else {
-          if (city == null)
-            this.props.navigation.navigate('SelectCity');
-          else
-            this.props.navigation.navigate('LoadingScreen'); 
+          if (city == cit) {
+            this.props.navigation.navigate('SelectCity'); 
+          }
+          else {
+            this.props.navigation.navigate('LoadingScreen');
+          }
         }
         });
     }, 2000);

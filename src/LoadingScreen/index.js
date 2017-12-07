@@ -32,22 +32,48 @@ class Loading extends React.Component {
   }
 
   async componentDidMount() {
+    const nan = await AsyncStorage.getItem('nan');
+
     const cityId = await AsyncStorage.getItem('city');
-		const cityIdJson = JSON.parse(cityId);
-
-		const tags = await AsyncStorage.getItem('tags');
-		const tagsJson = JSON.parse(tags);
-		let tagsIds = '';
-		tagsJson.forEach((element) => {
-			tagsIds += element.id.toString() + ',';	
-		});
-
-		const tastes = await AsyncStorage.getItem('tastes');
-		const tastesJson = JSON.parse(tastes);
-    let tastesIds = '';
-		tastesJson.forEach((element) => {
-			tastesIds += element.id.toString() + ',';	
+    let cityIdJson;
+    if (cityId != nan) {
+      cityIdJson = JSON.parse(cityId);
+    }
+    else {
+      this.props.navigation.navigate('SelectCity');
+      return 0;
+    }
+    
+    
+    const tags = await AsyncStorage.getItem('tags');
+    let tagsJson;
+    if (tags != nan) {
+      tagsJson = JSON.parse(tags);
+    }
+    else {
+      this.props.navigation.navigate('SelectTags');
+      return 0;
+    }
+    
+    let tagsIds = '';
+    tagsJson.forEach((element) => {
+      tagsIds += element.id.toString() + ',';	
     });
+
+    const tastes = await AsyncStorage.getItem('tastes');
+    let tastesJson;
+    let tastesIds = '';
+
+    if (tastes != nan) {
+      tastesJson = JSON.parse(tastes);
+      tastesJson.forEach((element) => {
+        tastesIds += element.id.toString() + ',';	
+      });
+    }
+    else {
+      this.props.navigation.navigate('SelectTastes');
+      return 0;
+    }
     
     this.setState({ text: "Собираем идеи для семейного ужина" });
     
@@ -129,7 +155,7 @@ export default connect(
             .then(data => {
               if (data.errors) {
                 if (data.errors.code != 200) {
-                  Alert.alert(data.errors.title, "Авторизируйтесь повторно");
+                  //Alert.alert(data.errors.title, "Авторизируйтесь повторно");
                 }
               } else {
                 dispatch({ type: "AUTH", payload: data });
