@@ -1271,7 +1271,7 @@ var b2RevoluteJointDef=Class.create();Object.extend(b2RevoluteJointDef.prototype
 	
 	getBrowserDimensions();
 
-	var themes = [["#292b37", "#95AB63", "#BDD684", "#292b37", "rgb( 225, 199, 155)"]];
+	var themes = [["#292b37", "#95AB63", "#BDD684", "#292b37", "rgb(225, 199, 155)"]];
 	var theme;
 	const grav_x = stage[2] / 2;
 	const grav_y = stage[3] / 2;
@@ -1335,7 +1335,7 @@ document.addEventListener("message", function (message) {
 			bubble = document.getElementById(clickedId);
 			document.getElementById('s' + clickedId.toString()).style.color = !data.tags[clickedId].selected ? theme[4] : theme[3];
 			if (data.tags[clickedId].icon != '')
-				document.getElementById('i' + clickedId.toString()).style.backgroundColor = !data.tags[clickedId].selected ? theme[3] : theme[4];
+				document.getElementById('i' + clickedId.toString()).style.backgroundColor = !data.tags[clickedId].selected ? theme[4] : theme[3];
 			bubbleContext = bubble.getContext('2d');
 			tags[clickedId].selected = !data.tags[clickedId].selected;
 			bubbleContext.fillStyle = tags[clickedId].selected ? theme[4]: theme[3];
@@ -1534,8 +1534,8 @@ document.addEventListener("message", function (message) {
 
 		text = document.createElement('div');
 		text.onSelectStart = null;
-		var font = tags.selected ? theme[3] : theme[4];
-		var bubbleIcon = '<div id="i'+i+'" style=" height: '+size*3/4+'px; width: '+size*3/4+'px; background-color: '+theme[4]+';-webkit-mask: url(http://www.'+tag.icon.slice(2)+') no-repeat; mask: url(http://www.'+tag.icon.slice(2)+') no-repeat center; mask-position: center; -webkit-mask-position: center; justify-content: center; align-self: center; align-items: center" />';
+		var font = tag.selected ? theme[3] : theme[4];
+		var bubbleIcon = '<div id="i'+i+'" style=" height: '+size*3/4+'px; width: '+size*3/4+'px; background-color: '+font+';-webkit-mask: url(http://www.'+tag.icon.slice(2)+') no-repeat; mask: url(http://www.'+tag.icon.slice(2)+') no-repeat center; mask-position: center; -webkit-mask-position: center; justify-content: center; align-self: center; align-items: center" />';
 		//bubbleIcon = '<img id="i'+i+'" src="http://www.dostavka1.com/upload/iblock/ec2/ec2745ca87c4ff28be441729b74fbc13.svg"" /><br>';
 		if (tag.icon == '') 
 			text.innerHTML = '<span id="s' + i + '" style="color:' + font + ';font-size: 11pt; text-align: center; line-height: 11px; letter-spacing: 0.6; font-family: Open Sans">' + tag.title + '</span>';
