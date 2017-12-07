@@ -64,9 +64,9 @@ class Profile extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={() => this.props.logout()}>
+        {/*<TouchableOpacity onPress={() => this.props.logout()}>
           <Text>{"Разлогиниться"}</Text>
-        </TouchableOpacity>
+        </TouchableOpacity>*/}
         <View
           style={{
             flexDirection: "row",
