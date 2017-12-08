@@ -58,6 +58,13 @@ export default class Price extends React.Component {
     };
   }
 
+  componentWillReceiveProps = (newProps) => {
+    this.setState({
+      pressed: this.props.pressed ? this.props.pressed : false,
+      count: this.props.count ? this.props.count : 0
+    });
+  }
+
   /**
 	 * Возвращает кнопку с ценой
 	 * @param {Number} price 
@@ -68,9 +75,13 @@ export default class Price extends React.Component {
         ? 0
         : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
     return (
+      <View styl={{ borderRadius: 5,}}>
       <Touchable
         onPress={this.props.onPress}
-        onPressOut={() => this.setState({ pressed: true })}
+        background={Touchable.SelectableBackground()} 
+        style={{
+          borderRadius: 5
+        }}
       >
         <View
           style={{
@@ -120,7 +131,7 @@ export default class Price extends React.Component {
                 textAlign: 'center',
                 position: "absolute",
                 width: 10,
-                top: 1,
+                top: Platform.OS === "ios" ? 1 : 0,
                 fontFamily: 'stem-medium',
                 backgroundColor: 'transparent'
               }}>{this.props.count}</Text></View>
@@ -147,7 +158,7 @@ export default class Price extends React.Component {
           </Text>
           
         </View>
-      </Touchable>
+      </Touchable></View>
     );
   };
 }
