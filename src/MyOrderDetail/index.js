@@ -31,6 +31,25 @@ function getCount(cart, plate) {
   return 0;
 }
 
+/**
+ * Добавляет 2.5 часа с строке времени str
+ * @param {String} str 
+ */
+function addTimeToTimestring(str) {
+  let timeArr = str.match(/^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/);
+  if (timeArr === null) return null;
+  let deliveryHours = (parseInt(timeArr[1]) + 2);
+  if (parseInt(timeArr[2]) + 30 >= 60) {
+    deliveryHours += 1;
+  }
+  deliveryHours %= 24;
+  let deliveryMinutes = (parseInt(timeArr[2]) + 30) % 60;
+
+  let deliveryHoursStr = deliveryHours.toString().length == 1 ? `0${deliveryHours.toString()}` : deliveryHours.toString();
+  let deliveryMinutesStr = deliveryMinutes.toString().length == 1 ? `0${deliveryMinutes.toString()}` : deliveryMinutes.toString();
+  return deliveryHours.toString()+':'+deliveryMinutes.toString();
+}
+
 class MyOrderDetail extends React.Component {
   constructor(props) {
     super(props);
@@ -262,8 +281,8 @@ class MyOrderDetail extends React.Component {
     const cart = this.renderContent(this.state.cart);
     if (this.state.order.status === 'Активный' || this.state.order.status === 'Принят') {
       var re = new RegExp(/([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]/g);
-      const deliveryTime = this.state.order.deliveryTime ? this.state.order.deliveryTime.match(re)[0] : '00:00';
       const orderTime = this.state.order.orderTime ? this.state.order.orderTime.match(re)[0] : '00:00';
+      const deliveryTime = this.state.order.deliveryTime ? this.state.order.deliveryTime.match(re)[0] : addTimeToTimestring(orderTime);
       return (
         < ScrollView style={{ flex: 1, flexDirection: 'column' }}>
           <Image
