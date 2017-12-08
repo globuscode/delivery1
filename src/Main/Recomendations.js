@@ -88,13 +88,18 @@ class Recomendations extends React.Component {
     this.setState({});
   }
 
-  componentWillMount = () => {
-    this.state.entries.forEach(async (element) => {
-      if (element.restaurant == undefined) return -1;
-      let restaurant = await fetch(`http://dostavka1.com/v1/restaurant?restaurantId=${element.restaurant}`);
-      let restaurantJson = await restaurant.json();
-      this.state.restaurans.push(restaurantJson.data.result);
-    });
+  componentWillMount = async () => {
+    for (let i=0; i<this.state.entries.length; i++) {
+      let element = this.state.entries[i];
+      if (element.restaurant == undefined) {
+        this.state.restaurans.push('');
+      }
+      else {
+        let restaurant = await fetch(`http://dostavka1.com/v1/restaurant?restaurantId=${element.restaurant}`);
+        let restaurantJson = await restaurant.json();
+        this.state.restaurans.push(restaurantJson.data.result);
+      }
+    }
     this.setState({});
   };
 
@@ -279,7 +284,7 @@ class Recomendations extends React.Component {
           width: SLIDER_WIDTH / 3,
           height: SLIDER_WIDTH / 3
         }}
-        source={{ uri: this.state.restaurans[index] ? this.state.restaurans[index].logoImage : "http://dostavka1.com/img/app-icon.png" }}
+        source={{ uri: this.state.restaurans[index] ? ('http:'+this.state.restaurans[index].logoImage) : "http://dostavka1.com/img/app-icon.png" }}
       />
     );
     var itemCount = getCount(this.props.globalStore, item);
@@ -316,11 +321,12 @@ class Recomendations extends React.Component {
           {/* Задний фон карточки */}
           <Touchable
             activeOpacity={0.8}
-            background={Touchable.Ripple("gray")}
+            foreground={Touchable.SelectableBackgroundBorderless()}
             style={{
               position: "absolute",
               height: SLIDER_HEIGHT,
-              width: SLIDER_WIDTH
+              width: SLIDER_WIDTH,
+              borderRadius: 10,
             }}
             onPress={() => { this.nav(index); }}
           >
