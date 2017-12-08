@@ -4,6 +4,7 @@ import {
 	TouchableOpacity,
 	Dimensions,
 	StyleSheet,
+	Platform,
 	ScrollView,
 	Image,
 	WebView,
@@ -107,7 +108,7 @@ export default class Restaurant extends React.Component {
 					borderRadius: 4,
 					borderColor: 'white'
 				}]}>
-				<Text style={{ color: '#ffffff', fontSize: 14, fontFamily: 'stem-medium', top: 2}}>{title}</Text></View>
+				<Text style={{ color: '#ffffff', fontSize: 14, fontFamily: 'stem-medium', top: Platform.OS === 'ios' ? 2 : 0}}>{title}</Text></View>
 		
 			<TouchableOpacity
 				activeOpacity={0}
@@ -126,7 +127,7 @@ export default class Restaurant extends React.Component {
 						borderRadius: 4,
 						borderColor: '#dcc49c'
 					}]}>
-				<Text style={{ color: '#ffffff', fontSize: 14, fontFamily: 'stem-medium', top: 2}}>{'Открыть меню ресторана'}</Text>
+				<Text style={{ color: '#ffffff', fontSize: 14, fontFamily: 'stem-medium', top: Platform.OS === 'ios' ? 2 : 0}}>{'Открыть меню ресторана'}</Text>
 			</TouchableOpacity></View>;
 	}
 
@@ -228,10 +229,19 @@ export default class Restaurant extends React.Component {
 
 
 			{/* Минимальная сумма заказа и бесплатная доставка */}
+			{this.state.data.freeDelivery == null ? null : 
 			<View style={[{ justifyContent: 'center', flexDirection: 'row', left: -15, marginBottom: 38 }]}>
 				<View style={{width: 35, top: -2}}><IconD color='#dcc49c' size={35} name='truck'/></View>
-				<Text style={{ color: '#ffffff', fontSize: 11, fontFamily: 'open-sans', lineHeight: 13, top: 2, marginLeft: 15}}>{`Минимальная сумма заказа ${this.state.data.minBill} ₽ \nБесплатная доставка от ${this.state.data.freeDelivery} ₽`}</Text>
-			</View>
+				<Text 
+				style={{
+					color: '#ffffff',
+					fontSize: 11,
+					fontFamily: 'open-sans',
+					lineHeight: 13,
+					top: 2,
+					marginLeft: 15
+				}}>{`Минимальная сумма заказа ${this.state.data.minBill} ₽ \nБесплатная доставка от ${this.state.data.freeDelivery} ₽`}</Text>
+			</View>}
 
 			{/* Описание ресторана */}
 			{this.state.data.description.description == '' && this.state.data.description.title == '' ? null :
@@ -294,8 +304,9 @@ export default class Restaurant extends React.Component {
 			
 
 			{/* Сайт ресторана */}
-			{this.renderHeader('Сайт ресторана')}
+			{this.state.data.web == undefined ? null : this.renderHeader('Сайт ресторана')}
 
+			{this.state.data.web == undefined ? null : 
 			<View style={[styles.row, { justifyContent: 'flex-start', marginHorizontal: 20, marginBottom: 25 }]}>
 				<View style={{
 					flexDirection: 'row'
@@ -333,7 +344,7 @@ export default class Restaurant extends React.Component {
 						</View>
 					</TouchableOpacity>
 				</View>
-			</View>
+			</View>}
 			<View style={{height: 60}}/>
 		</ScrollView>
 			<View pointerEvents='none' style={{
