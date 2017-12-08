@@ -3,6 +3,7 @@ import {
   View,
   TouchableOpacity,
   Dimensions,
+  Platform,
   ActivityIndicator,
   StyleSheet,
   ScrollView,
@@ -15,6 +16,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { LinearGradient, Constants } from "expo";
 import Accordion from "react-native-collapsible/Accordion";
 import { connect } from "react-redux";
+import Touchable from 'react-native-platform-touchable';
 import HTMLView from 'react-native-htmlview';
 
 import PriceButton from "../PriceButton";
@@ -190,11 +192,14 @@ class RestaurantMenu extends React.Component {
         >
           {section.type}
         </Text>
+        <Touchable
+        background={Touchable.SelectableBackgroundBorderless()} >
         <Icon
           name="ios-arrow-down-outline"
           size={16}
           color="rgb( 111, 111, 111)"
         />
+        </Touchable>
       </View>
     );
   }
@@ -249,9 +254,11 @@ class RestaurantMenu extends React.Component {
     return (
       <View style={{ flexDirection: "column", width: viewportWidth }}>
         {section.plates.map((e, i) => {
+          const itemCount = getCount(this.props.globalStore, e);
           return (
-            <TouchableOpacity
+            <Touchable
               key={i}
+              background={Touchable.Ripple('gray')} 
               onPress={() => {
                 if (this.state.canNav) {
                   this.props.navigation.navigate("Plate", {plate: e, restaurant: this.state.data});
@@ -320,9 +327,9 @@ class RestaurantMenu extends React.Component {
                   <View style={{ flexDirection: "row" }}>
                     <PriceButton
                       value={e.price}
-                      pressed={getCount(this.props.globalStore, e) != 0}
-                      count={getCount(this.props.globalStore, e)}
-                      onPress={() => this.props.onAddPlate(e)}
+                      pressed={itemCount > 0}
+                      count={itemCount}
+                      onPress={() => {this.props.onAddPlate(e); this.setState({})}}
                     />
                     <Text
                       style={{
@@ -340,7 +347,7 @@ class RestaurantMenu extends React.Component {
                   </View>
                 </View>
               </View>
-            </TouchableOpacity>
+            </Touchable>
           );
         })}
       </View>
@@ -377,7 +384,7 @@ class RestaurantMenu extends React.Component {
               color: "#ffffff",
               fontSize: 14,
               fontFamily: "stem-medium",
-              top: 2
+              top: Platform.OS === 'ios' ? 2 : 0
             }}
           >
             {title}
@@ -411,7 +418,7 @@ class RestaurantMenu extends React.Component {
               color: "#ffffff",
               fontSize: 14,
               fontFamily: "stem-medium",
-              top: 2
+              top: Platform.OS === 'ios' ? 2 : 0
             }}
           >
             {title}
@@ -688,7 +695,7 @@ class RestaurantMenu extends React.Component {
             }}
           />
           {this.state.menu.length < 1 ?
-            <ActivityIndicator size='large' style={{alignSelf: 'center'}} /> : null}
+            <ActivityIndicator size='large' style={{alignSelf: 'center', marginTop: 60}} /> : null}
           <Accordion
             touchableProps={{
               activeOpacity: 0.2
