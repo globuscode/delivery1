@@ -327,7 +327,7 @@ class RestaurantMenu extends React.Component {
                   <View style={{ flexDirection: "row" }}>
                     <PriceButton
                       value={e.price}
-                      pressed={itemCount > 0}
+                      pressed={itemCount >= 1}
                       count={itemCount}
                       onPress={() => {this.props.onAddPlate(e); this.setState({})}}
                     />
