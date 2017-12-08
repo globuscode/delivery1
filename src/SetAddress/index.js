@@ -6,6 +6,7 @@ import {
 	TouchableOpacity,
 	Dimensions,
 	PixelRatio,
+	AsyncStorage
 } from 'react-native';
 import { LinearGradient } from 'expo';
 import { Header } from 'react-native-elements';
@@ -40,7 +41,17 @@ class SelectAddress extends React.Component {
 		const response = await fetch(`http://dostavka1.com/v1/restaurant?restaurantId=${this.props.navigation.state.params.id}`)
 		const responseJson = await response.json();
 
-		this.setState({ restaurantName: responseJson["data"]["result"]["title"] });
+		let prevAddress = await AsyncStorage.getItem('Addresses');
+		let nan = await AsyncStorage.getItem('nan');
+		if (prevAddress != nan)
+			prevAddressJson = JSON.parse(prevAddress);
+		else
+			prevAddressJson = [];
+
+		this.setState({
+			restaurantName: responseJson["data"]["result"]["title"],
+			history: prevAddressJson
+		});
 	}
 
 	notDeliver(address) {
@@ -105,6 +116,23 @@ class SelectAddress extends React.Component {
 	next = () => {
 		if (this.notDeliver(this.state.address))
 			if (this.state.canNav) {
+				this.state.history.push({
+					street: this.state.address,
+					house: this.state.house
+				});
+				if (this.state.history.length <= 2)
+					AsyncStorage.setItem(
+						'Addresses',
+						JSON.stringify(this.state.history)
+					);
+				else
+					AsyncStorage.setItem(
+						'Addresses',
+						JSON.stringify([
+							this.state.history[this.state.history.length-1],
+							this.state.history[this.state.history.length-2]
+						])
+					);
 				this.props.saveAddress({
 					street: this.state.address,
 					house: this.state.house
@@ -152,12 +180,12 @@ class SelectAddress extends React.Component {
 						color: 'rgb(119, 122, 136)'
 					}}>{'Пожалуйста убедитесь что ваш адрес\nвходит в зону доставки ресторана'}</Text>
 					{ this.state.address != ''? null : this.state.history.map((e, i) => {
-					return <TouchableOpacity key={i} onPress={() => this.setState({address: e})}><Text style={[styles.text, {
+					return <TouchableOpacity key={i} onPress={() => this.setState({address: e.street, house: e.house})}><Text style={[styles.text, {
 						color: '#dcc49c',
 						fontFamily: 'open-sans',
 						fontSize: 14,
 						marginTop: (viewportWidth >= 320 && viewportWidth < 375) ? 12 : (viewportWidth >= 375 && viewportWidth < 414) ? 17 : 21,
-					}]}>{e}</Text></TouchableOpacity>
+					}]}>{`Ул. ${e.street}, д. ${e.house}`}</Text></TouchableOpacity>
 					})}
 					<View style={{alignSelf: 'stretch', paddingHorizontal: 20}}>
 						<TextField 
