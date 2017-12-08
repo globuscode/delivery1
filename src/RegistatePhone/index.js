@@ -230,7 +230,7 @@ class Registration extends React.Component {
                         this.props.navigation.goBack();
                     }
                     else {
-                        Alert.alert("Все ОК", JSON.stringify(data));
+                        Alert.alert("Все ОК");
                         this.props.auth(data);
                         this.props.navigation.navigate('Feed');
                     }
