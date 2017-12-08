@@ -178,7 +178,7 @@ class MakeOrder extends React.Component {
                   //Alert.alert(JSON.stringify(responseJson));
                   this.setState({fetching: false});
                   this.props.makeOrder(); 
-                  this.props.navigation.dispatch(resetAction);
+                  //this.props.navigation.dispatch(resetAction);
                   this.props.navigation.goBack(null);
                   this.state.canNav = true;
                 }
