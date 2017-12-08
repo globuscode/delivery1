@@ -134,7 +134,7 @@ class MakeOrder extends React.Component {
 
           
         </View>
-        {!this.state.fetching ? null : <ActivityIndicator style={{position: 'absolute', alignSelf: 'center', top: viewportHeight /2}}/>}
+        {!this.state.fetching ? null : <ActivityIndicator size='large' style={{position: 'absolute', alignSelf: 'center', top: viewportHeight /2}}/>}
         <View
             style={{
               position: "absolute",
@@ -168,7 +168,6 @@ class MakeOrder extends React.Component {
                     "persons": this.props.navigation.state.params.persons,
                     "orderStart": getOrderDate(),
                   };
-                  console.log(body);
                   this.setState({fetching: true});
                   const response = await fetch(`http://dostavka1.com/v1/order/create/index.php?token=${this.props.userStore.token}`, {
                     method: 'post',
