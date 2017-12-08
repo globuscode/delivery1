@@ -60,7 +60,7 @@ class MyOrders extends React.Component {
                   fontSize: 14,
                   color: "#fff"
                 }}
-              >{`Заказ на ${element.deliveryTime}\nСумма заказа ${element.total} ₽`}</Text>
+              >{`Заказ на ${element.deliveryTime ? element.deliveryTime : element.orderTime}\nСумма заказа ${element.total} ₽`}</Text>
               <Text
                 style={{
                   fontFamily: "open-sans-semibold",
