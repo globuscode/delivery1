@@ -12,6 +12,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { LinearGradient, Font } from 'expo';
+import Touchable from "react-native-platform-touchable";
 
 import IconD from '../IconD';
 
@@ -161,7 +162,7 @@ export default class Recomendations extends React.Component {
           this.state.restourans.map((item, index) => {
             return (
               <View key={index} style={[styles.itemContainer, {width: SLIDER_WIDTH, height: SLIDER_WIDTH}]}>
-                <TouchableOpacity activeOpacity={0.8} style={{ position: 'absolute',width: SLIDER_WIDTH, height: SLIDER_WIDTH }} onPress={() => this.navigate(index)}>
+                <Touchable foreground={Touchable.SelectableBackgroundBorderless()} activeOpacity={0.8} style={{ position: 'absolute',width: SLIDER_WIDTH, height: SLIDER_WIDTH }} onPress={() => this.navigate(index)}><View>
                 <Image
                 onLoadEnd={() => this.setState({})}
                 style={[styles.itemBackgroundImage, { width: SLIDER_WIDTH, height: SLIDER_WIDTH}]}
@@ -174,7 +175,7 @@ export default class Recomendations extends React.Component {
                   'rgba(0,0,0, 0.8)'
                   ]}
                   style={[styles.itemGradientStyle, { width: SLIDER_WIDTH + 1, height: SLIDER_WIDTH + 1 }]}
-                /></TouchableOpacity>
+                /></View></Touchable>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between'}}>
                 {/*<View style={{ flexDirection: 'row', alignSelf: 'flex-start'  }}>
                   {this.renderLevel(item.level)}                
