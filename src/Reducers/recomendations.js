@@ -15,23 +15,37 @@ function compare(a,b) {
   return 0;
 }
 
+/**
+ * Сортирует массив с объектами в случайном порядке
+ * @param {Array<Object>} array 
+ */
 function shuffle(array) {
-  var currentIndex = array.length, temporaryValue, randomIndex;
+  const LENGTH = array.length;
 
-  // While there remain elements to shuffle...
-  while (0 !== currentIndex) {
-
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
-
-    // And swap it with the current element.
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
+  // генерирует массив с индексами
+  let randIndexes = [];
+  for (let i = 0; i < LENGTH; i += 1) {
+    let randIndex = parseInt(Math.random()*LENGTH);
+    let isNew = true;
+    for (let j=0; j<randIndexes.length; j++) {
+      isNew = randIndexes[j] !== randIndex;
+      if (!isNew)
+        break;
+    }
+    if (isNew)
+      randIndexes.push(randIndex);
+    else
+      i -= 1;
   }
 
-  return array;
+  let result = [];
+  for (let i = 0; i < LENGTH; i += 1) {
+    result.push(array[randIndexes[i]]);
+  }
+  if (result.length == LENGTH)
+    return result;
+  else
+    return array;
 }
 
 export default function recomendations(state = initialState, action) {
