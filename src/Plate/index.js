@@ -393,12 +393,12 @@ class Plate extends React.Component{
 				flexWrap: 'wrap',
 				alignItems: 'center',
 			}}>
-			{/*this.state.plate.tags.filter( onlyUnique ).map((e,i) => {
+			{this.state.plate.tags.filter( onlyUnique ).map((e,i) => {
 				const checked = this.checkTaste(e);
 				return <TouchableOpacity
 					key={i}
 					onPress={() => {
-					/*	if (this.state.selected.indexOf(i) == -1) {
+						if (this.state.selected.indexOf(i) == -1) {
 							this.state.selected.push(i);
 							this.setState({});
 						} else {
@@ -428,7 +428,7 @@ class Plate extends React.Component{
 						{e.title.toUpperCase()}
 					</Text>
 				</TouchableOpacity>
-			})*/}
+			})}
 			</View>
 
 			<Text style={{ 
