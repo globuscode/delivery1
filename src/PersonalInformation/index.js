@@ -31,7 +31,7 @@ class PersonalInfo extends React.Component {
   renderMenuItem = (icon, title, nav) => {
     return (
       <TouchableOpacity
-        onPress={() => this.props.navigation.navigate("PersonalInformation")}
+        onPress={() => this.props.navigation.navigate(nav)}
         style={{
           flexDirection: "row",
           marginTop: screen == 0 ? 22 : screen == 1 ? 28 : 33,
@@ -113,9 +113,9 @@ class PersonalInfo extends React.Component {
             </Text>
               </View>*/}
         </View>
-        {/*this.renderMenuItem("phone", "Изменить номер телефона", null)}
-        {this.renderMenuItem("credit-card", "Привязать другую карту оплаты", null)}
-        {this.renderMenuItem("geotag", "Редактировать адреса доставки", null)}
+        {/*this.renderMenuItem("phone", "Изменить номер телефона", null)*/}
+        {this.renderMenuItem("credit-card", "Привязать другую карту оплаты", "SetCard")}
+        {/*this.renderMenuItem("geotag", "Редактировать адреса доставки", null)}
             {this.renderMenuItem("lock", "Изменить пароль", null)*/}
 
         {/*<View

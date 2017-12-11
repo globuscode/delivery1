@@ -24,6 +24,7 @@ import MyOrders from "./src/MyOrders";
 import MyOrderDetail from "./src/MyOrderDetail";
 import PersonalInformation from "./src/PersonalInformation";
 import SetFullAddress from "./src/SetFullAddress";
+import SetCard from "./src/SetCard";
 
 const tabs = StackNavigator(
   {
@@ -169,6 +170,26 @@ export default StackNavigator(
       screen: MyOrders,
       navigationOptions: {
         title: "Мои заказы",
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontFamily: "stem-medium",
+          fontSize: 14,
+          letterSpacing: 0.8
+        },
+        headerTintColor: "#dcc49c",
+        headerBackTitleStyle: {
+          color: "#dcc49c"
+        },
+        headerStyle: {
+          marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
+          backgroundColor: "#292b37"
+        }
+      }
+    },
+    SetCard: {
+      screen: SetCard,
+      navigationOptions: {
+        title: "Привязка карты",
         headerTintColor: "#fff",
         headerTitleStyle: {
           fontFamily: "stem-medium",
