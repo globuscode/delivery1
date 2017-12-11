@@ -12,7 +12,14 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import Picker from "../Picker";
 import Touchable from 'react-native-platform-touchable';
+import { NavigationActions } from 'react-navigation';
 
+const resetAction = NavigationActions.reset({
+  index: 0,
+  actions: [
+    NavigationActions.navigate({ routeName: 'About'}),
+  ]
+});
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 export default class SelectCity extends React.Component {
   constructor(props) {
@@ -71,7 +78,7 @@ export default class SelectCity extends React.Component {
     this.setCity(JSON.stringify(this.state.selectedCity));
 
     if (this.state.canNav) {
-      this.props.navigation.navigate('About');
+      this.props.navigation.dispatch(resetAction);
       this.state.canNav = false;
       setTimeout(() => {
         this.state.canNav = true;

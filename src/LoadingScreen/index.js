@@ -10,10 +10,17 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo";
 import IconD from "../IconD";
-
+import { NavigationActions } from 'react-navigation';
 import { connect } from "react-redux";
 
 var kitchenPhoto = require("../../assets/img/kitchen.jpg");
+
+const resetAction = NavigationActions.reset({
+  index: 0,
+  actions: [
+    NavigationActions.navigate({ routeName: 'Tabs'})
+  ]
+});
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
@@ -83,7 +90,7 @@ class Loading extends React.Component {
         this.setState({ text: "Изучаем манускрипты в поисках крутых рецептов" });
         this.props.auth();
         this.props.loadRecomendations(responseJson.data);
-        this.props.navigation.navigate("Feed");
+        this.props.navigation.dispatch(resetAction);
 				return responseJson;
 			});
   }

@@ -3,12 +3,11 @@ import { View, Text, TouchableOpacity, Dimensions, Alert, ActivityIndicator } fr
 import IconD from "../IconD";
 import { connect } from 'react-redux';
 
-import { NavigationActions } from 'react-navigation'
+import { NavigationActions } from 'react-navigation';
 
 const resetAction = NavigationActions.reset({
   index: 0,
   actions: [
-    NavigationActions.navigate({ routeName: 'Tabs'}),
     NavigationActions.navigate({ routeName: 'MyOrders'}),
   ]
 });
@@ -178,8 +177,8 @@ class MakeOrder extends React.Component {
                   //Alert.alert(JSON.stringify(responseJson));
                   this.setState({fetching: false});
                   this.props.makeOrder(); 
-                  //this.props.navigation.dispatch(resetAction);
-                  this.props.navigation.goBack(null);
+                  this.props.navigation.dispatch(resetAction);
+                  //this.props.navigation.goBack(null);
                   this.state.canNav = true;
                 }
               }}
