@@ -51,16 +51,16 @@ export default class AllRestourans extends React.Component {
   }
 
   componentDidMount = async () => {
-    const response = await fetch(`http://dostavka1.com/v1/restaurants?cityId=36&startIndex=${this.state.maxIndex}`);
+    const response = await fetch(`http://dostavka1.com/v1/restaurants?cityId=36&startIndex=${this.state.maxIndex === 0 ? '' : this.state.maxIndex}`);
     const responseJson = await response.json();
 
     this.state.restaurants = responseJson.data.restaurants;
 
     let rests = [];
     
-    for (let i=0; i<this.state.maxIndex + 5; i++)
+    for (let i=0; i<this.state.maxIndex + 5; i++) {
       rests.push(this.state.restaurants[i]);
-
+    }
     this.setState({ 
       restauransShort: rests
     });
@@ -197,7 +197,7 @@ export default class AllRestourans extends React.Component {
           <ScrollView
             onScroll={({nativeEvent}) => {
               if (isCloseToBottom(nativeEvent)) {
-                this.state.maxIndex = this.state.maxIndex + 5;
+                this.state.maxIndex = this.state.maxIndex + 1;
                 this.updateResults();
               }
             }}
