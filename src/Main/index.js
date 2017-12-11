@@ -191,7 +191,8 @@ const FourthScreen = StackNavigator(
           <Touchable
             background={Touchable.SelectableBackgroundBorderless()} 
             style={{
-              width: 25,
+              width: 50,
+              height: 50,
               justifyContent: "center",
               alignItems: "center",
               alignSelf: "center"
@@ -200,7 +201,7 @@ const FourthScreen = StackNavigator(
               navigation.navigate("Main");
             }}
           >
-            <Icon name="ios-arrow-back-outline" size={20} color="#fff" />
+            <Icon name={Platform.OS === "ios" ? "ios-arrow-back-outline" : 'md-arrow-back'} size={30} color="#dcc49c" />
           </Touchable>
         ),
         headerTintColor: "#fff",
@@ -214,13 +215,17 @@ const FourthScreen = StackNavigator(
         },
         headerStyle: {
           marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
-          backgroundColor: "#292b37"
+          backgroundColor: "transparent",
+          borderBottomWidth: Platform.OS === "ios" ? 1 : 0,
+          marginHorizontal: Platform.OS === "ios" ? 20 : -3,
+          borderBottomColor: 'rgb(87, 88, 98)'
         },
         gesturesEnabled: false
       })
     }
   },
   {
+    headerMode: 'screen',
     cardStyle: {
       backgroundColor: "#292b37"
     }

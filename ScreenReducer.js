@@ -26,6 +26,28 @@ import PersonalInformation from "./src/PersonalInformation";
 import SetFullAddress from "./src/SetFullAddress";
 import SetCard from "./src/SetCard";
 
+const headerStyleIOS = (title) => ({
+  title: title,
+  headerTintColor: "#fff",
+  headerTitleStyle: {
+    fontFamily: "stem-medium",
+    fontSize: 14,
+    letterSpacing: 0.8,
+    color: '#fff'
+  },
+  headerTintColor: "#dcc49c",
+  headerBackTitleStyle: {
+    color: "#dcc49c"
+  },
+  headerStyle: {
+    marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
+    backgroundColor: "transparent",
+    borderBottomWidth: Platform.OS === "ios" ? 1 : 0,
+    marginHorizontal: Platform.OS === "ios" ? 20 : -3,
+    borderBottomColor: 'rgb(87, 88, 98)'
+  }
+});
+
 const tabs = StackNavigator(
   {
     Main: {
@@ -54,23 +76,7 @@ export default StackNavigator(
     },
     SetFullAddress: {
       screen: SetFullAddress,
-      navigationOptions: {
-        title: "Адрес доставки",
-        headerTintColor: "#fff",
-        headerTitleStyle: {
-          fontFamily: "stem-medium",
-          fontSize: 14,
-          letterSpacing: 0.8
-        },
-        headerTintColor: "#dcc49c",
-        headerBackTitleStyle: {
-          color: "#dcc49c"
-        },
-        headerStyle: {
-          marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
-          backgroundColor: "#292b37"
-        }
-      }
+      navigationOptions: headerStyleIOS('Адрес доставки')
     },
     SelectCity: {
       screen: SelectCity,
@@ -88,204 +94,43 @@ export default StackNavigator(
     },
     RegistratePhone: {
       screen: RegistratePhone,
-      navigationOptions: {
-        title: "Номер телефона",
-        headerTintColor: "#fff",
-        headerTitleStyle: {
-          fontFamily: "stem-medium",
-          fontSize: 14,
-          letterSpacing: 0.8
-        },
-        headerTintColor: "#dcc49c",
-        headerBackTitleStyle: {
-          color: "#dcc49c"
-        },
-        headerStyle: {
-          marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
-          backgroundColor: "#292b37"
-        }
-      }
+      navigationOptions: headerStyleIOS('Номер телефона')
     },
     SetAddress: {
       screen: SetAddress,
-      navigationOptions: {
-        title: "Адрес доставки",
-        headerTintColor: "#fff",
-        headerTitleStyle: {
-          fontFamily: "stem-medium",
-          fontSize: 14,
-          letterSpacing: 0.8
-        },
-        headerTintColor: "#dcc49c",
-        headerBackTitleStyle: {
-          color: "#dcc49c"
-        },
-        headerStyle: {
-          marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
-          backgroundColor: "#292b37"
-        }
-      }
+      navigationOptions: headerStyleIOS('Адрес доставки')
     },
     Profile: {
       screen: Profile,
-      navigationOptions: {
-        title: "Личный кабинет",
-        headerTintColor: "#fff",
-        headerTitleStyle: {
-          fontFamily: "stem-medium",
-          fontSize: 14,
-          letterSpacing: 0.8
-        },
-        headerTintColor: "#dcc49c",
-        headerBackTitleStyle: {
-          color: "#dcc49c"
-        },
-        headerStyle: {
-          marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
-          backgroundColor: "#292b37"
-        }
-      }
+      navigationOptions: headerStyleIOS('Личный кабинет')
     },
     MakeOrder: {
       screen: MakeOrder,
-      navigationOptions: {
-        title: "Оплатить заказ",
-        headerTintColor: "#fff",
-        headerTitleStyle: {
-          fontFamily: "stem-medium",
-          fontSize: 14,
-          letterSpacing: 0.8
-        },
-        headerTintColor: "#dcc49c",
-        headerBackTitleStyle: {
-          color: "#dcc49c"
-        },
-        headerStyle: {
-          marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
-          backgroundColor: "#292b37"
-        }
-      }
+      navigationOptions: headerStyleIOS('Оплатить заказ')
     },
     MyOrders: {
       screen: MyOrders,
-      navigationOptions: {
-        title: "Мои заказы",
-        headerTintColor: "#fff",
-        headerTitleStyle: {
-          fontFamily: "stem-medium",
-          fontSize: 14,
-          letterSpacing: 0.8
-        },
-        headerTintColor: "#dcc49c",
-        headerBackTitleStyle: {
-          color: "#dcc49c"
-        },
-        headerStyle: {
-          marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
-          backgroundColor: "#292b37"
-        }
-      }
+      navigationOptions: headerStyleIOS('Мои заказы')
     },
     SetCard: {
       screen: SetCard,
-      navigationOptions: {
-        title: "Привязка карты",
-        headerTintColor: "#fff",
-        headerTitleStyle: {
-          fontFamily: "stem-medium",
-          fontSize: 14,
-          letterSpacing: 0.8
-        },
-        headerTintColor: "#dcc49c",
-        headerBackTitleStyle: {
-          color: "#dcc49c"
-        },
-        headerStyle: {
-          marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
-          backgroundColor: "#292b37"
-        }
-      }
+      navigationOptions: headerStyleIOS('Прикрепить карту')
     },
     MyOrderDetail: {
       screen: MyOrderDetail,
-      navigationOptions: {
-        title: "Заказ",
-        headerTintColor: "#fff",
-        headerTitleStyle: {
-          fontFamily: "stem-medium",
-          fontSize: 14,
-          letterSpacing: 0.8
-        },
-        headerTintColor: "#dcc49c",
-        headerBackTitleStyle: {
-          color: "#dcc49c",
-          tintColor: "#dcc49c",
-        },
-        headerStyle: {
-          marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
-          backgroundColor: "#292b37"
-        }
-      }
+      navigationOptions: headerStyleIOS('Заказ')
     },
     PersonalInformation: {
       screen: PersonalInformation,
-      navigationOptions: {
-        title: "Мои данные",
-        headerTintColor: "#fff",
-        headerTitleStyle: {
-          fontFamily: "stem-medium",
-          fontSize: 14,
-          letterSpacing: 0.8
-        },
-        headerTintColor: "#dcc49c",
-        headerBackTitleStyle: {
-          color: "#dcc49c"
-        },
-        headerStyle: {
-          marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
-          backgroundColor: "#292b37"
-        }
-      }
+      navigationOptions: headerStyleIOS('Мои данные')
     },
     Login: {
       screen: Login,
-      navigationOptions: {
-        title: "Авторизация",
-        headerTintColor: "#fff",
-        headerTitleStyle: {
-          fontFamily: "stem-medium",
-          fontSize: 14,
-          letterSpacing: 0.8
-        },
-        headerBackTitleStyle: {
-          color: "#dcc49c"
-        },
-        headerTintColor: "#dcc49c",
-        headerStyle: {
-          marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
-          backgroundColor: "#292b37"
-        }
-      }
+      navigationOptions: headerStyleIOS('Авторизация')
     },
     Registration: {
       screen: Registration,
-      navigationOptions: {
-        title: "Регистрация",
-        headerTintColor: "#fff",
-        headerTitleStyle: {
-          fontFamily: "stem-medium",
-          fontSize: 14,
-          letterSpacing: 0.8
-        },
-        headerTintColor: "#dcc49c",
-        headerBackTitleStyle: {
-          color: "#dcc49c"
-        },
-        headerStyle: {
-          marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
-          backgroundColor: "#292b37"
-        }
-      }
+      navigationOptions: headerStyleIOS('Регистрация')
     },
     SelectTags: {
       screen: SelectTags,
@@ -317,6 +162,7 @@ export default StackNavigator(
     },
   },
   {
+    headerMode: 'screen',
     headerStyle: {
       backcroundColor: "#292b37"
     },

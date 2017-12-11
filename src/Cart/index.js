@@ -938,6 +938,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     elevation: -10,
-    backgroundColor: "rgb( 39, 40, 51)"
   }
 });

@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: screen == 0 ? 15 : screen == 1 ? 35 : 48,
     paddingHorizontal: 15,
-    backgroundColor: "rgb(45, 46, 58)"
+    backgroundColor: "transparent"
   },
   email: {
     fontFamily: "open-sans",
