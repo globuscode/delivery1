@@ -14,7 +14,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { LinearGradient, Font } from 'expo';
 import IconD from "../IconD";
 
-var kitchenPhoto = require('../../assets/img/a1c4acc9df75b99b59daeb657c5b89ff.jpg');
+var kitchenPhoto = require('../../assets/img/kitchen.jpg');
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 export default class SelectCity extends React.Component {
@@ -23,7 +23,9 @@ export default class SelectCity extends React.Component {
   }
 
   async componentWillMount() {
-    kitchenPhoto = await require('../../assets/img/a1c4acc9df75b99b59daeb657c5b89ff.jpg');
+    let image = parseInt(Math.random() * 13).toString();
+    let imageUrl = `../../assets/img/0.jpg`;
+    kitchenPhoto = await require(`../../assets/img/kitchen.jpg`);
 
   }
 
