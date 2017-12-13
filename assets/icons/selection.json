@@ -4,6 +4,47 @@
     {
       "icon": {
         "paths": [
+          "M90.648 994.548v-632.149h636.148v632.149h-636.148zM185.003 900.437h447.342v-443.88h-447.342v443.88z",
+          "M271.799 539.112h90.6v274.237h-90.6zM453.047 539.112h90.6v274.237h-90.6zM275.602 181.199v-90.6h267.995v90.6h-267.995zM543.646 0h-268.044c-49.97 0.166-90.434 40.63-90.6 90.584l-0 0.016v90.6h-185.003v90.6h817.347v-90.6h-183.101v-90.6c-0.138-49.981-40.619-90.461-90.586-90.6l-0.013-0z"
+        ],
+        "attrs": [
+          {
+            "fill": "rgb(225, 199, 155)"
+          },
+          {
+            "fill": "rgb(225, 199, 155)"
+          }
+        ],
+        "width": 829,
+        "isMulticolor": false,
+        "isMulticolor2": false,
+        "grid": 0,
+        "tags": [
+          "page-1"
+        ]
+      },
+      "attrs": [
+        {
+          "fill": "rgb(225, 199, 155)"
+        },
+        {
+          "fill": "rgb(225, 199, 155)"
+        }
+      ],
+      "properties": {
+        "order": 42,
+        "id": 0,
+        "name": "trash",
+        "prevSize": 32,
+        "code": 59677
+      },
+      "setIdx": 0,
+      "setId": 5,
+      "iconIdx": 0
+    },
+    {
+      "icon": {
+        "paths": [
           "M566.45 0l-566.45 981.126h1132.9l-566.45-981.126zM566.45 178.087l412.271 714.040h-824.543l412.316-714.040z",
           "M521.928 680.203h89.043v-278.261h-89.043zM521.928 813.857h89.043v-89.043h-89.043z"
         ],
@@ -38,7 +79,7 @@
         "prevSize": 32,
         "code": 59650
       },
-      "setIdx": 0,
+      "setIdx": 1,
       "setId": 4,
       "iconIdx": 0
     },
@@ -96,7 +137,7 @@
         "prevSize": 32,
         "code": 59676
       },
-      "setIdx": 1,
+      "setIdx": 2,
       "setId": 3,
       "iconIdx": 0
     },
@@ -137,7 +178,7 @@
         "prevSize": 32,
         "code": 59672
       },
-      "setIdx": 2,
+      "setIdx": 3,
       "setId": 2,
       "iconIdx": 0
     },
@@ -178,7 +219,7 @@
         "prevSize": 32,
         "code": 59673
       },
-      "setIdx": 2,
+      "setIdx": 3,
       "setId": 2,
       "iconIdx": 1
     },
@@ -219,7 +260,7 @@
         "prevSize": 32,
         "code": 59674
       },
-      "setIdx": 2,
+      "setIdx": 3,
       "setId": 2,
       "iconIdx": 2
     },
@@ -260,7 +301,7 @@
         "prevSize": 32,
         "code": 59675
       },
-      "setIdx": 2,
+      "setIdx": 3,
       "setId": 2,
       "iconIdx": 3
     },
@@ -294,7 +335,7 @@
         "prevSize": 32,
         "code": 59648
       },
-      "setIdx": 3,
+      "setIdx": 4,
       "setId": 1,
       "iconIdx": 0
     },
@@ -328,7 +369,7 @@
         "prevSize": 32,
         "code": 59649
       },
-      "setIdx": 3,
+      "setIdx": 4,
       "setId": 1,
       "iconIdx": 1
     },
@@ -355,7 +396,7 @@
         "code": 59651,
         "name": "coins"
       },
-      "setIdx": 4,
+      "setIdx": 5,
       "setId": 0,
       "iconIdx": 0
     },
@@ -382,7 +423,7 @@
         "code": 59652,
         "name": "clock"
       },
-      "setIdx": 4,
+      "setIdx": 5,
       "setId": 0,
       "iconIdx": 1
     },
@@ -409,7 +450,7 @@
         "code": 59653,
         "name": "truck"
       },
-      "setIdx": 4,
+      "setIdx": 5,
       "setId": 0,
       "iconIdx": 2
     },
@@ -436,7 +477,7 @@
         "code": 59654,
         "name": "dostavka"
       },
-      "setIdx": 4,
+      "setIdx": 5,
       "setId": 0,
       "iconIdx": 3
     },
@@ -463,7 +504,7 @@
         "code": 59655,
         "name": "food-feed"
       },
-      "setIdx": 4,
+      "setIdx": 5,
       "setId": 0,
       "iconIdx": 4
     },
@@ -490,7 +531,7 @@
         "code": 59656,
         "name": "settings"
       },
-      "setIdx": 4,
+      "setIdx": 5,
       "setId": 0,
       "iconIdx": 5
     },
@@ -517,7 +558,7 @@
         "code": 59657,
         "name": "look-all"
       },
-      "setIdx": 4,
+      "setIdx": 5,
       "setId": 0,
       "iconIdx": 6
     },
@@ -544,7 +585,7 @@
         "code": 59658,
         "name": "cutlery"
       },
-      "setIdx": 4,
+      "setIdx": 5,
       "setId": 0,
       "iconIdx": 7
     },
@@ -571,7 +612,7 @@
         "code": 59659,
         "name": "contact"
       },
-      "setIdx": 4,
+      "setIdx": 5,
       "setId": 0,
       "iconIdx": 8
     },
@@ -598,7 +639,7 @@
         "code": 59660,
         "name": "book-fill"
       },
-      "setIdx": 4,
+      "setIdx": 5,
       "setId": 0,
       "iconIdx": 9
     },
@@ -625,7 +666,7 @@
         "code": 59661,
         "name": "cart"
       },
-      "setIdx": 4,
+      "setIdx": 5,
       "setId": 0,
       "iconIdx": 10
     },
@@ -652,7 +693,7 @@
         "code": 59662,
         "name": "cart-fill"
       },
-      "setIdx": 4,
+      "setIdx": 5,
       "setId": 0,
       "iconIdx": 11
     },
@@ -679,7 +720,7 @@
         "code": 59663,
         "name": "heart"
       },
-      "setIdx": 4,
+      "setIdx": 5,
       "setId": 0,
       "iconIdx": 12
     },
@@ -706,7 +747,7 @@
         "code": 59664,
         "name": "heart-fill"
       },
-      "setIdx": 4,
+      "setIdx": 5,
       "setId": 0,
       "iconIdx": 13
     },
@@ -733,7 +774,7 @@
         "code": 59665,
         "name": "book"
       },
-      "setIdx": 4,
+      "setIdx": 5,
       "setId": 0,
       "iconIdx": 14
     },
@@ -760,7 +801,7 @@
         "code": 59666,
         "name": "homeFill"
       },
-      "setIdx": 4,
+      "setIdx": 5,
       "setId": 0,
       "iconIdx": 15
     },
@@ -787,7 +828,7 @@
         "code": 59667,
         "name": "home"
       },
-      "setIdx": 4,
+      "setIdx": 5,
       "setId": 0,
       "iconIdx": 16
     },
@@ -815,7 +856,7 @@
         "code": 59668,
         "name": "card"
       },
-      "setIdx": 4,
+      "setIdx": 5,
       "setId": 0,
       "iconIdx": 17
     },
@@ -843,7 +884,7 @@
         "code": 59669,
         "name": "heart_empty"
       },
-      "setIdx": 4,
+      "setIdx": 5,
       "setId": 0,
       "iconIdx": 18
     },
@@ -871,7 +912,7 @@
         "code": 59670,
         "name": "heart_full"
       },
-      "setIdx": 4,
+      "setIdx": 5,
       "setId": 0,
       "iconIdx": 19
     },
@@ -898,7 +939,7 @@
         "code": 59671,
         "name": "find"
       },
-      "setIdx": 4,
+      "setIdx": 5,
       "setId": 0,
       "iconIdx": 20
     }
