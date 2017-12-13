@@ -221,7 +221,13 @@ class Recomendations extends React.Component {
     // Компонент с кнопкой добавить в избранное
     var heartButton = (
       <View>
-        <Touchable onPress={() => this.fav(index)}>
+        <Touchable
+          hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}
+          background={Touchable.SelectableBackgroundBorderless()}
+          onPress={() => {
+            this.fav(index);
+            this.props.addToFav(item);
+          }}>
           <View style={{ backgroundColor: "transparent" }}>
             <IconD
               name={item.favourite ? "heart_full" : "heart_empty"}
@@ -232,7 +238,6 @@ class Recomendations extends React.Component {
         </Touchable>
       </View>
     );
-    heartButton = null;
     // Верхняя половина карточки
     var topView = (
       <View style={itemStyles.topViewStyle}>
@@ -455,6 +460,9 @@ export default connect(
     open: (data) => dispatch({ type: "OPEN_MODAL", payload: data}),
     changeModal: (data) => {
       dispatch({ type: "CHANGE_CONTENT", payload: data })
+    },
+    addToFav: (data) => {
+      dispatch({ type: "ADD_PLATE_TO_FAV", payload: data })
     },
   })
 )(Recomendations);

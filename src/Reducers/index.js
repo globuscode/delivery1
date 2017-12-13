@@ -5,6 +5,7 @@ import user from "./user";
 import recomendations from "./recomendations";
 import modalController from "./modalController";
 import address from "./address";
+import favourite from "./favourite";
 
 function lastAction(state = null, action) {
   return action;
@@ -18,7 +19,8 @@ const store = createStore(
     recomendations,
     modalController,
     lastAction,
-    address
+    address,
+    favourite
   })
 );
 

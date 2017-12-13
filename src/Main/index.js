@@ -41,6 +41,7 @@ import LoadingScreen from "../LoadingScreen";
 
 import Restaurant from "../Restaurant";
 import RestaurantMenu from "../RestaurantMenu";
+import Favoutite from "../Favourite";
 import Cart from "../Cart";
 
 import IconD from "../IconD";
@@ -234,8 +235,8 @@ const FourthScreen = StackNavigator(
 
 const ThirdScreen = StackNavigator(
   {
-    Cart: {
-      screen: Cart,
+    Favoutite: {
+      screen: Favoutite,
       navigationOptions: {
         header: null,
         gesturesEnabled: false
@@ -290,7 +291,7 @@ export default TabNavigator(
         }
       }
     },
-    /*Third: {
+    Third: {
       screen: ThirdScreen,
       navigationOptions: {
         tabBarLabel: "Избранное",
@@ -307,7 +308,7 @@ export default TabNavigator(
           );
         }
       }
-    },*/
+    },
     Fourth: {
       screen: FourthScreen,
       navigationOptions: {
