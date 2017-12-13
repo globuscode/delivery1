@@ -17,6 +17,7 @@
     "react-native-platform-touchable": "^1.1.1",
     "react-native-popup-dialog": "^0.9.39",
     "react-native-progress": "^3.4.0",
+    "react-native-segmented-control-tab": "^3.2.1",
     "react-native-snap-carousel": "^3.4.0",
     "react-native-wheel-picker": "^1.1.1",
     "react-navigation": "^1.0.0-beta.19",
