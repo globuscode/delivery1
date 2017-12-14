@@ -259,9 +259,9 @@ export default TabNavigator(
         tabBarIcon: ({ tintColor, focused }) => {
           if (!IconD) return <View />;
           return (
-            <View >
+            <View style={{bottom: 12}}>
               <IconD
-                size={25}
+                size={24}
                 name={focused ? "homeFill" : "home"}
                 color={"rgb( 225, 199, 155)"}
               />
@@ -280,9 +280,9 @@ export default TabNavigator(
         tabBarIcon: ({ tintColor, focused }) => {
           if (!IconD) return <View />;
           return (
-            <View >
+            <View style={{bottom: 12}}>
               <IconD
-                size={25}
+                size={24}
                 name={focused ? "book-fill" : "book"}
                 color={"rgb( 225, 199, 155)"}
               />
@@ -298,9 +298,9 @@ export default TabNavigator(
         tabBarIcon: ({ tintColor, focused }) => {
           if (!IconD) return <View />;
           return (
-            <View >
+            <View style={{bottom: 12}}>
               <IconD
-                size={25}
+                size={24}
                 name={focused ? "heart-fill" : "heart"}
                 color={"rgb( 225, 199, 155)"}
               />
@@ -317,9 +317,9 @@ export default TabNavigator(
         tabBarIcon: ({ tintColor, focused }) => {
           if (!IconD) return <View />;
           return (
-            <View >
+            <View style={{bottom: 12}}>
               <IconD
-                size={25}
+                size={24}
                 name={focused ? "cart-fill" : "cart"}
                 color={"rgb( 225, 199, 155)"}
               />
@@ -336,7 +336,7 @@ export default TabNavigator(
 
     tabBarOptions: {
       style: {
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
         alignSelf: 'stretch',
         padding: 0,
         paddingTop: 1,
@@ -346,7 +346,7 @@ export default TabNavigator(
       tabStyle: {
         flex: 1,
         paddingTop: 3,
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
       },
       pressColor: "red",
       inactiveBackgroundColor: "rgba(39, 40, 48, 1)",
