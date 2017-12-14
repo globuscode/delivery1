@@ -86,6 +86,7 @@ export default class SelectTags extends React.Component {
               padding: 10,
               paddingHorizontal: 20,
               justifyContent: 'center',
+              alignItems: 'center',
               borderRadius: 5,
               flexDirection: 'column-reverse',
               margin: 5,
@@ -100,7 +101,7 @@ export default class SelectTags extends React.Component {
               fontSize: 11,
               color: this.state.selected.indexOf(i) != -1 ? '#292b37' : 'rgb(225, 199, 155)'
             }}>
-              {this.state.tastes[i].title.toUpperCase()}
+              {this.state.tastes[i].title.toUpperCase().replace('\r','')}
             </Text>
           </Touchable>));
     }
