@@ -33,7 +33,7 @@ export default class SelectCity extends React.Component {
 
   async componentDidMount() {
     var city = await AsyncStorage.getItem('city');
-    var cit = await AsyncStorage.getItem('cit');
+    var nan = await AsyncStorage.getItem('nan');
     setTimeout(() => {
       fetch(`${host}/classificator/cities`)
       .then((response) => {
@@ -41,14 +41,18 @@ export default class SelectCity extends React.Component {
           Alert.alert('Ошибка', 'Ошибка соединения с сервером.')
         }
         else {
-          if (city == cit) {
+          if (city == nan) {
             this.props.navigation.navigate('SelectCity'); 
           }
           else {
             this.props.navigation.navigate('LoadingScreen');
           }
         }
-        });
+        })
+      .catch(error => {
+        Alert.alert('Ошибка', 'Ошибка соединения с сервером.');
+        this.props.navigation.goBack();
+      });
     }, 2000);
   }
 
