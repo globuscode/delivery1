@@ -12,10 +12,8 @@ import Icon from "react-native-vector-icons/Ionicons";
 import Drawer from "react-native-drawer";
 import Picker from "../Picker";
 import { LinearGradient, Constants } from "expo";
-
+import { host } from '../etc';
 import RestouransOfTheWeek from "../Main/RestouransOfTheWeek";
-
-import { host } from "../etc";
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
@@ -152,9 +150,10 @@ export default class AllRestourans extends React.Component {
               height={200}
               backgroundColor="rgb(39, 40, 48)"
               itemStyle={{ color: "#dcc49c", fontSize: 30 }}
+              selectedValue={this.state.preSelectedType}
               data={this.state.types}
               onValueChange={index => {
-                this.setState({ preSelectedType: index });
+                this.setState({preSelectedType: index});
               }}
             />
             <View style={{ height: 20 }} />
