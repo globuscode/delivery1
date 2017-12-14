@@ -202,7 +202,7 @@ export default class Login extends React.Component {
     }
 
     isNext = () => {
-        return  (this.state.firstName && this.state.secondName && this.state.passwordInputError == null && this.state.emailInputError == null);
+        return  (this.state.password && this.state.firstName && this.state.secondName && this.state.passwordInputError == null && this.state.emailInputError == null);
     }
 }
 
