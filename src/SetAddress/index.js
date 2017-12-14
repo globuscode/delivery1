@@ -119,11 +119,19 @@ class SelectAddress extends React.Component {
 		if (this.notDeliver(this.state.address))
 			if (this.state.canNav) {
 				const lastAddress = this.state.history[this.state.history.length - 1];
-				if (lastAddress.street != this.state.address && lastAddress.house != this.state.house)
+				const isInit = this.state.history.length == 0;
+				if (isInit && this.state.deliver)
 					this.state.history.push({
 						street: this.state.address,
 						house: this.state.house
 					});
+				else
+				if (lastAddress.street != this.state.address || lastAddress.house != this.state.house)
+					if (this.state.deliver)
+						this.state.history.push({
+							street: this.state.address,
+							house: this.state.house
+						});
 				if (this.state.history.length <= 2)
 					AsyncStorage.setItem(
 						'Addresses',
@@ -184,7 +192,7 @@ class SelectAddress extends React.Component {
 						color: 'rgb(119, 122, 136)'
 					}}>{'Пожалуйста убедитесь что ваш адрес\nвходит в зону доставки ресторана'}</Text>
 					{ this.state.address != ''? null : this.state.history.map((e, i) => {
-					return <TouchableOpacity key={i} onPress={() => this.setState({address: e.street, house: e.house})}><Text style={[styles.text, {
+					return <TouchableOpacity key={i} onPress={() => this.setState({address: e.street, house: e.house, deliver: true})}><Text style={[styles.text, {
 						color: '#dcc49c',
 						fontFamily: 'open-sans',
 						fontSize: 14,
