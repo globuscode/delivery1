@@ -421,7 +421,13 @@ class Favourite extends React.Component {
         return null;
     }
 
-    componentWillReceiveProps = (newProps) => {
+    componentWillMount = () => {
+      this.componentWillReceiveProps(this.props);
+    }
+
+    componentWillReceiveProps = async (newProps) => {
+      await AsyncStorage.setItem('fav', JSON.stringify(newProps.favourite));
+
       let needToUpdate = false;
       if (this.state.favouriteIds.plates.length != newProps.favourite.plates.length) {
         needToUpdate = true;
@@ -500,6 +506,7 @@ class Favourite extends React.Component {
                 {this.state.selectedView != 3 ? null : this.renderCollections() }
             </View>
             
+            <View style={{height: 70}}/>
         </ScrollView>
         <View
         pointerEvents="none"
@@ -510,7 +517,6 @@ class Favourite extends React.Component {
           width: viewportWidth
         }}
       >
-      <View style={{height: 70}}/>
         <LinearGradient
           colors={["rgba(39, 40, 48, 0)", "rgba(39, 40, 48, 1)"]}
           style={{

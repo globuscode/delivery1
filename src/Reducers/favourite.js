@@ -14,6 +14,12 @@ const initialState = {
  * @returns
  */
 export default function favourite(state = initialState, action) {
+  if (action.type == "SET_FAV") {
+    return {
+      ...action.payload
+    };
+  }
+
   if (action.type == "DELETE_PLATE") {
     let i = 0;
     for (i = 0; i < state.plates.length; i += 1) {

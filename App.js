@@ -1,7 +1,7 @@
 import React from "react";
 import { Font } from "expo";
 import Expo from "expo";
-import { StatusBar, Platform, View } from "react-native";
+import { StatusBar, Platform, View, AsyncStorage } from "react-native";
 import { StackNavigator } from "react-navigation";
 import { Provider, connect } from "react-redux";
 
@@ -67,6 +67,11 @@ export default class App extends React.Component {
       "stem-medium": require("./assets/fonts/Stem-Medium.ttf"),
       "stem-regular": require("./assets/fonts/Stem-Regular.ttf")
     });
+
+    const fav = await AsyncStorage.getItem('fav');
+    const nan = await AsyncStorage.getItem('nan');
+    if (fav != nan)
+      Reducer.dispatch({type: 'SET_FAV', payload: JSON.parse(fav)});
 
     this.setState({ canRender: true });
   }
