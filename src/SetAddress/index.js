@@ -15,6 +15,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Touchable from 'react-native-platform-touchable';
 import { connect } from 'react-redux';
 
+import { host } from "../etc";
+
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
 class SelectAddress extends React.Component {
@@ -38,7 +40,7 @@ class SelectAddress extends React.Component {
 	};
 
 	componentWillMount = async () => {
-		const response = await fetch(`http://dostavka1.com/v1/restaurant?restaurantId=${this.props.navigation.state.params.id}`)
+		const response = await fetch(`${host}/restaurant?restaurantId=${this.props.navigation.state.params.id}`)
 		const responseJson = await response.json();
 
 		let prevAddress = await AsyncStorage.getItem('Addresses');
@@ -108,7 +110,7 @@ class SelectAddress extends React.Component {
 	};
 
 	validateAddress = async (address) => {
-		const response = await fetch(`http://dostavka1.com/v1/address?cityId=36&street=${this.state.address}&house=${this.state.house}&restaurantId=${this.props.navigation.state.params.id}`)
+		const response = await fetch(`${host}/address?cityId=36&street=${this.state.address}&house=${this.state.house}&restaurantId=${this.props.navigation.state.params.id}`)
 		const responseJson = await response.json();
 		this.setState({ deliver: responseJson["data"]["result"] == 0 });
 	}
@@ -116,10 +118,12 @@ class SelectAddress extends React.Component {
 	next = () => {
 		if (this.notDeliver(this.state.address))
 			if (this.state.canNav) {
-				this.state.history.push({
-					street: this.state.address,
-					house: this.state.house
-				});
+				const lastAddress = this.state.history[this.state.history.length - 1];
+				if (lastAddress.street != this.state.address && lastAddress.house != this.state.house)
+					this.state.history.push({
+						street: this.state.address,
+						house: this.state.house
+					});
 				if (this.state.history.length <= 2)
 					AsyncStorage.setItem(
 						'Addresses',

@@ -123,7 +123,7 @@ export default class SelectTags extends React.Component {
     
     let tags = f != tagsStr ? JSON.parse(tagsStr) : [];
 
-    fetch('http://dostavka1.com/v1/classificator/tag-groups?cityId=36')
+    fetch(`${host}/classificator/tag-groups?cityId=36`)
       .then((response) => response.json())
       .then((responseJson) => {
         this.state.kitchens = [];

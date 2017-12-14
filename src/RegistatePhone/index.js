@@ -17,6 +17,7 @@ import { TextField } from 'react-native-material-textfield';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { TextInputMask } from 'react-native-masked-text';
 import Button from 'react-native-button';
+import { host } from '../etc';
 import Touchable from 'react-native-platform-touchable';
 import {
 	LinearGradient,
@@ -33,7 +34,7 @@ const hrShort = <View style={{ width: 290, alignSelf: 'center', margin: 0, heigh
 const screen = (viewportWidth >= 320 && viewportWidth < 375) ? 0 : (viewportWidth >= 375 && viewportWidth < 414) ? 1 : 2;
 
 async function sendPhone(phone) {
-    const result = await fetch(`http://dostavka1.com/v1/sms/?action=send_code&phone=${phone}`);
+    const result = await fetch(`${host}/sms/?action=send_code&phone=${phone}`);
     const resultJson = await result.json();
     return resultJson.status;
 }
@@ -203,7 +204,7 @@ class Registration extends React.Component {
 
     next = async () => {
         if (this.isNext()) {
-            const validationResponse = await fetch(`http://dostavka1.com/v1/sms/?action=check_code&phone=${this.state.phone.replace(/\D+/g, '')}&code=${this.state.code}`, {method: 'get'});
+            const validationResponse = await fetch(`${host}/sms/?action=check_code&phone=${this.state.phone.replace(/\D+/g, '')}&code=${this.state.code}`, {method: 'get'});
             const validationResponseJson = await validationResponse.json();
 
             if (validationResponseJson.status === true) {
@@ -216,7 +217,7 @@ class Registration extends React.Component {
                     "phone": this.state.phone ? this.state.phone : 'null',
                     "password": this.props.navigation.state.params.password
                 };
-                const response = await fetch("http://dostavka1.com/v1/auth/register/",
+                const response = await fetch(`${host}/auth/register/`,
                 {
                     method: "POST",
                     body: JSON.stringify( payload )

@@ -17,6 +17,7 @@ import { connect } from 'react-redux';
 
 import IconD from '../IconD';
 import Restaurant from '../Restaurant/index';
+import { host } from "../etc";
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 const shadowOpt = {
@@ -51,7 +52,7 @@ class Recomendations extends React.Component {
 
   componentWillMount = () => {
     if (!this.props.data)
-      fetch('http://dostavka1.com/v1/restaurants')
+      fetch(`${host}/restaurants`)
         .then((response) => response.json())
         .then((responseJson) => {
           if (responseJson["data"]["restaurants"])

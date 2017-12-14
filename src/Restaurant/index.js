@@ -80,7 +80,7 @@ export default class Restaurant extends React.Component {
 
 	componentDidMount = async () => {
 		const restaurantId = this.props.navigation.state ? this.props.navigation.state.params.id : (-1).toString();
-		fetch('http://dostavka1.com/v1/restaurant?restaurantId='+restaurantId)
+		fetch(`${host}/restaurant?restaurantId=${restaurantId}`)
 			.then((response) => response.json())
 			.then((responseJson) => {
 				if (responseJson["data"] && responseJson["data"]["result"])

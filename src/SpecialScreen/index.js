@@ -14,6 +14,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { LinearGradient, Font } from 'expo';
 import IconD from "../IconD";
 
+import { host } from '../etc';
+
 var kitchenPhoto = require('../../assets/img/kitchen.jpg');
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
@@ -33,7 +35,7 @@ export default class SelectCity extends React.Component {
     var city = await AsyncStorage.getItem('city');
     var cit = await AsyncStorage.getItem('cit');
     setTimeout(() => {
-      fetch('http://dostavka1.com/v1/classificator/cities')
+      fetch(`${host}/classificator/cities`)
       .then((response) => {
         if (response.ok == undefined) {
           Alert.alert('Ошибка', 'Ошибка соединения с сервером.')

@@ -12,7 +12,7 @@ import { LinearGradient } from "expo";
 import IconD from "../IconD";
 
 import { connect } from "react-redux";
-
+import { host } from '../etc';
 var kitchenPhoto = require("../../assets/img/kitchen.jpg");
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
@@ -55,7 +55,7 @@ class Loading extends React.Component {
 			tastesIds += element.id.toString() + ',';	
 		});
     
-		fetch(`http://dostavka1.com/v1/recommendations/?cityid=${cityIdJson.id}&tagId=${tastesIds}&tagGroup=${tagsIds}`)
+		fetch(`${host}/recommendations/?cityid=${cityIdJson.id}&tagId=${tastesIds}&tagGroup=${tagsIds}`)
 			.then((response) => response.json())
 			.then((responseJson) => {
         this.props.auth();
@@ -177,7 +177,7 @@ export default connect(
         var data = new FormData();
         data.append("token", token);
         if (token != null)
-          fetch("http://dostavka1.com/v1/auth/auth/", {
+          fetch(`${host}/auth/auth/`, {
             method: "POST",
             body: data
           })

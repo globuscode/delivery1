@@ -18,7 +18,7 @@ import Touchable from "react-native-platform-touchable";
 import { LinearGradient } from "expo";
 import PriceButton from "../PriceButton";
 import IconD from "../IconD";
-
+import { host } from '../etc';
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
@@ -437,12 +437,12 @@ class Favourite extends React.Component {
         this.state.favourite.plates = [];
         this.state.restaurans = [];
         newProps.favourite.plates.forEach(async (plate, i) => {
-          const response = await fetch(`http://dostavka1.com/v1/plate?plate=${plate}`);
+          const response = await fetch(`${host}/plate?plate=${plate}`);
           const responseJson = await response.json();
 
           this.state.favourite.plates.push(responseJson.data[0]);
 
-          const responseRest = await fetch(`http://dostavka1.com/v1/restaurant?restaurantId=${responseJson.data[0].restaurant}`);
+          const responseRest = await fetch(`${host}/restaurant?restaurantId=${responseJson.data[0].restaurant}`);
           const responseRestJson = await responseRest.json();
           this.state.restaurans.push(responseRestJson.data.result);
 
@@ -455,7 +455,7 @@ class Favourite extends React.Component {
         this.state.favouriteIds.restaurants = [];
         this.state.favourite.restaurants = [];
         newProps.favourite.restaurants.forEach(async (restaurant, i) => {
-          const responseRest = await fetch(`http://dostavka1.com/v1/restaurant?restaurantId=${restaurant}`);
+          const responseRest = await fetch(`${host}/restaurant?restaurantId=${restaurant}`);
           const responseRestJson = await responseRest.json();
           this.state.favourite.restaurants.push(responseRestJson.data.result);
 

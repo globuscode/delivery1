@@ -13,7 +13,7 @@ import Touchable from 'react-native-platform-touchable';
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
 
-
+import { host } from '../etc';
 
 
 
@@ -35,7 +35,7 @@ export default class SelectTags extends React.Component {
     
     let tastes = f != tastStr ? JSON.parse(tastStr) : [];
 
-    fetch('http://dostavka1.com/v1/classificator/tags')
+    fetch(`${host}/classificator/tags`)
       .then((response) => response.json())
       .then((responseJson) => {
         this.state.tastes = [];

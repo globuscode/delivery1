@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity, Dimensions, Alert, ActivityIndicator } from "react-native";
 import IconD from "../IconD";
 import { connect } from 'react-redux';
-
+import { host } from '../etc';
 import { NavigationActions } from 'react-navigation';
 
 const resetAction = NavigationActions.reset({
@@ -168,7 +168,7 @@ class MakeOrder extends React.Component {
                     "orderStart": getOrderDate(),
                   };
                   this.setState({fetching: true});
-                  const response = await fetch(`http://dostavka1.com/v1/order/create/index.php?token=${this.props.userStore.token}`, {
+                  const response = await fetch(`${host}/order/create/index.php?token=${this.props.userStore.token}`, {
                     method: 'post',
                     body: JSON.stringify(body)
                   });

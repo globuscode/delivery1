@@ -12,7 +12,7 @@ import { LinearGradient } from "expo";
 import IconD from "../IconD";
 import { NavigationActions } from 'react-navigation';
 import { connect } from "react-redux";
-
+import { host } from '../etc';
 var kitchenPhoto = require("../../assets/img/kitchen.jpg");
 
 const resetAction = NavigationActions.reset({
@@ -84,7 +84,7 @@ class Loading extends React.Component {
     
     this.setState({ text: "Собираем идеи для семейного ужина" });
     
-		fetch(`http://dostavka1.com/v1/recommendations/?cityid=${cityIdJson.id}&tagId=${tastesIds}&tagGroup=${tagsIds}`)
+		fetch(`${host}/recommendations/?cityid=${cityIdJson.id}&tagId=${tastesIds}&tagGroup=${tagsIds}`)
 			.then((response) => response.json())
 			.then((responseJson) => {
         this.setState({ text: "Изучаем манускрипты в поисках крутых рецептов" });
@@ -152,7 +152,7 @@ export default connect(
         var data = new FormData();
         data.append("token", token);
         if (token != null)
-          fetch("http://dostavka1.com/v1/auth/auth/", {
+          fetch(`${host}/auth/auth/`, {
             method: "POST",
             body: data
           })

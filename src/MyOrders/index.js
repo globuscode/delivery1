@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, Dimensions, AsyncStorage, Text, Image, ScrollView, ActivityIndicator} from "react-native";
 import Touchable from "react-native-platform-touchable";
 import { connect } from "react-redux";
-
+import { host } from '../etc';
 class MyOrders extends React.Component {
   constructor(props) {
     super(props);
@@ -12,13 +12,13 @@ class MyOrders extends React.Component {
     };
   }
   componentDidMount = async () => {
-    const response = await fetch(`http://dostavka1.com/v1/cart/orders?token=${this.props.user.token}`);
+    const response = await fetch(`${host}/cart/orders?token=${this.props.user.token}`);
     const responseJson = await response.json();
     this.state.history = responseJson["data"];
     for (var i = 0; i < this.state.history.length; i++) {
       if (this.state.history[i].restaurantId != '') {
         var restRaw = await fetch(
-          "http://dostavka1.com/v1/restaurant?restaurantId=" + this.state.history[i].restaurantId
+          `${host}/restaurant?restaurantId=${this.state.history[i].restaurantId}`
         );
         var restaurant = await restRaw.json();
         this.state.logos.push(restaurant.data.result.logoImage);

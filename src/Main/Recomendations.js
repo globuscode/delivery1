@@ -17,7 +17,7 @@ import { LinearGradient } from "expo";
 import { Badge } from "react-native-elements";
 import { connect } from "react-redux";
 import Touchable from "react-native-platform-touchable";
-
+import { host } from '../etc';
 import Storage from "../Reducers";
 import PriceButton from "../PriceButton";
 import IconD from "../IconD";
@@ -95,7 +95,7 @@ class Recomendations extends React.Component {
         this.state.restaurans.push('');
       }
       else {
-        let restaurant = await fetch(`http://dostavka1.com/v1/restaurant?restaurantId=${element.restaurant}`);
+        let restaurant = await fetch(`${host}/restaurant?restaurantId=${element.restaurant}`);
         let restaurantJson = await restaurant.json();
         this.state.restaurans.push(restaurantJson.data.result);
       }

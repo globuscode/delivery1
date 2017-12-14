@@ -12,7 +12,7 @@ import HTMLView from 'react-native-htmlview';
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 const screen = (viewportWidth >= 320 && viewportWidth < 375) ? 0 : (viewportWidth >= 375 && viewportWidth < 414) ? 1 : 2;
 
-
+import { host } from './etc';
 
 /**
  * Возвращает колличество блюд plate в корзине
@@ -68,11 +68,11 @@ class Popup extends React.Component{
     }
 
     componentWillMount = async () => {
-        /*const responsePlate = await fetch(`http://dostavka1.com/v1/plate?plateId=${this.props.modal.cartId}`);
+        /*const responsePlate = await fetch(`${host}/plate?plateId=${this.props.modal.cartId}`);
         const responsePlateJson = await responsePlate.json();*/
 
 
-        const response = await fetch(`http://dostavka1.com/v1/restaurant?restaurantId=${this.state.plate.restaurant}`);
+        const response = await fetch(`${host}/restaurant?restaurantId=${this.state.plate.restaurant}`);
         const responseJson = await response.json();
         if (responseJson.data && responseJson.data)
             this.setState({ restaurant: responseJson.data.result, freeDelivery: responseJson.data.result.freeDelivery});
@@ -82,7 +82,7 @@ class Popup extends React.Component{
     componentWillReceiveProps = async (newProps) => {
         this.setState({ plate: newProps.modal.plate });
 
-        const response = await fetch(`http://dostavka1.com/v1/restaurant?restaurantId=${newProps.modal.plate.restaurant}`);
+        const response = await fetch(`${host}/restaurant?restaurantId=${newProps.modal.plate.restaurant}`);
         const responseJson = await response.json();
         if (responseJson.data != undefined) {
             this.setState({ restaurant: responseJson.data.result, freeDelivery: responseJson.data.result.minOrder});

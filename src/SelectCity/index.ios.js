@@ -93,7 +93,7 @@ class SelectCity extends React.Component {
     //var city = await AsyncStorage.getItem('city');
     if (0)
         this.props.navigation.navigate('Main');
-    fetch('http://dostavka1.com/v1/classificator/cities')
+    fetch(`${host}/classificator/cities`)
       .then((response) => response.json())
       .then((responseJson) => {
         this.state.cities = responseJson.data;

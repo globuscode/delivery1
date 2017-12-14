@@ -28,6 +28,8 @@ import Recomendations from "../Main/Recomendations";
 import IconD from "../IconD";
 import ButtonD from "../ButtonD";
 
+import { host } from "../etc";
+
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
@@ -101,7 +103,7 @@ class Cart extends React.Component {
 
   componentDidMount = async () => {
     if (this.props.globalStore.cart.length != 0) {
-      const rest = await fetch('http://dostavka1.com/v1/restaurant?restaurantId='+this.props.globalStore.cart[0].plate.restaurant);
+      const rest = await fetch(`${host}/restaurant?restaurantId=`+this.props.globalStore.cart[0].plate.restaurant);
       const restJson = await rest.json();
       this.setState({restaurant: restJson["data"]["result"]});
     }
@@ -329,7 +331,7 @@ class Cart extends React.Component {
         "qty": element.count,
       }
     });
-    const rest = await fetch(`http://dostavka1.com/v1/cart/create/`, {
+    const rest = await fetch(`${host}/cart/create/`, {
       method: 'post',
       body: JSON.stringify({"items": cart})
     });
@@ -342,7 +344,7 @@ class Cart extends React.Component {
 
   componentWillReceiveProps = async (newProps) => {
     if (newProps.globalStore.cart.length != 0) {
-      const rest = await fetch('http://dostavka1.com/v1/restaurant?restaurantId='+newProps.globalStore.cart[0].plate.restaurant);
+      const rest = await fetch(`${host}/restaurant?restaurantId=`+newProps.globalStore.cart[0].plate.restaurant);
       const restJson = await rest.json();
       this.setState({restaurant: restJson["data"]["result"]});
     }

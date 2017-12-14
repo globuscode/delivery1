@@ -12,7 +12,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import Drawer from "react-native-drawer";
 import Picker from "react-native-wheel-picker";
 import { LinearGradient, Constants } from "expo";
-
+import { host } from '../etc';
 import RestouransOfTheWeek from "../Main/RestouransOfTheWeek";
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
@@ -41,7 +41,7 @@ export default class AllRestourans extends React.Component {
   }
 
   componentWillMount = async () => {
-    const response = await fetch(`http://dostavka1.com/v1/classificator/tag-groups?cityId=36`);
+    const response = await fetch(`${host}/classificator/tag-groups?cityId=36`);
     const responseJson = await response.json();
 
     responseJson.data.forEach((element) => {
@@ -51,7 +51,7 @@ export default class AllRestourans extends React.Component {
   }
 
   componentDidMount = async () => {
-    const response = await fetch(`http://dostavka1.com/v1/restaurants?cityId=36&startIndex=${this.state.maxIndex === 0 ? '' : this.state.maxIndex}`);
+    const response = await fetch(`${host}/restaurants?cityId=36&startIndex=${this.state.maxIndex === 0 ? '' : this.state.maxIndex}`);
     const responseJson = await response.json();
 
     this.state.restaurants = responseJson.data.restaurants;
@@ -68,7 +68,7 @@ export default class AllRestourans extends React.Component {
 
   updateResults = async () => {
     this.setState({updating: true});
-    const response = await fetch(`http://dostavka1.com/v1/restaurants?cityId=36&tag=${this.state.types[this.state.selectedType]}`);
+    const response = await fetch(`${host}/restaurants?cityId=36&tag=${this.state.types[this.state.selectedType]}`);
     const responseJson = await response.json();
 
     this.state.restaurans = responseJson.data.restaurants;

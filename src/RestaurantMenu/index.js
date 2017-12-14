@@ -100,7 +100,7 @@ class RestaurantMenu extends React.Component {
   componentDidMount = async () => {
     
 		const restaurantId = this.props.navigation.state ? this.props.navigation.state.params.id : (-1).toString();
-    const response = await fetch('http://dostavka1.com/v1/restaurant?restaurantId='+restaurantId);
+    const response = await fetch(`${host}/restaurant?restaurantId=${restaurantId}`);
     const responseJson = await response.json();
     if (responseJson["data"] && responseJson["data"]["result"]) {
       responseJson["data"]["result"]["menu"] = [];
@@ -110,7 +110,7 @@ class RestaurantMenu extends React.Component {
     this.props.navigation.setParams({
       title: this.state.data.title,
     });
-    const menuResponse = await fetch('http://dostavka1.com/v1/restaurantMenu?restaurantId='+restaurantId);
+    const menuResponse = await fetch(`${host}/restaurantMenu?restaurantId=${restaurantId}`);
     const menuResponseJson = await menuResponse.json();
     if (menuResponseJson["data"] && menuResponseJson["data"]["result"]) {
       this.state.menu = menuResponseJson["data"]["result"];

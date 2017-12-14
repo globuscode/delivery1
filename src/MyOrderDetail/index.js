@@ -6,6 +6,7 @@ import HTMLView from 'react-native-htmlview';
 
 import PriceButton from '../PriceButton';
 import ButtonD from '../ButtonD';
+import { host } from '../etc';
 
 const { width: viewportWidth } = Dimensions.get('window');
 const screen =
@@ -95,7 +96,7 @@ class MyOrderDetail extends React.Component {
   componentDidlMount = async () => {
     const restId = this.state.order.restaurantId;
     const response = await fetch(
-      `http://dostavka1.com/v1/restaurant?restaurantId=${restId}`
+      `${host}/restaurant?restaurantId=${restId}`
     );
     const responseJson = await response.json();
     if (responseJson.data && responseJson.data.result) {
@@ -104,7 +105,7 @@ class MyOrderDetail extends React.Component {
 
     const cartId = this.state.order.cartId;
     const cartResponse = await fetch(
-      `http://dostavka1.com/v1/cart/${cartId}`
+      `${host}/cart/${cartId}`
     );
     const cartRespJson = await cartResponse.json();
     this.state.cart = cartRespJson["data"]["result"];

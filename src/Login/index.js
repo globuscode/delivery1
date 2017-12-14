@@ -20,6 +20,7 @@ import { connect } from "react-redux";
 import Touchable from 'react-native-platform-touchable';
 
 import IconD from "../IconD";
+import { host } from '../etc';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
@@ -323,7 +324,7 @@ class Login extends React.Component {
         var data = new FormData();
         data.append("userName", this.state.email);
         data.append("password", this.state.password);
-        fetch("http://dostavka1.com/v1/auth/auth/", {
+        fetch(`${host}/auth/auth/`, {
           method: "POST",
           body: data
         })
