@@ -167,7 +167,7 @@ export default class SelectTags extends React.Component {
           letterSpacing: 1,
           fontFamily: 'stem-medium',
           color: 'rgb(255,255,255)'
-        }]}>Рассскажите о своих вкусах</Text>
+        }]}>Расскажите о своих вкусах</Text>
         <Text style={{
           fontSize: 12,
           lineHeight: 13,

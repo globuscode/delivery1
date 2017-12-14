@@ -244,7 +244,7 @@ export default class SelectTags extends React.Component {
           letterSpacing: 0.8,
           color: 'rgb(119, 122, 136)',
           textAlign: 'center'
-        }]}>Рассскажите кухни каких стран наиболее привлекательны для вас и мы составим список рекомендаций</Text>
+        }]}>Расскажите кухни каких стран наиболее привлекательны для вас и мы составим список рекомендаций</Text>
 
           <View style={{
             height: viewportHeight - 193,
