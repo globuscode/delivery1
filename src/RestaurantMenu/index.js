@@ -169,6 +169,8 @@ class RestaurantMenu extends React.Component {
   _renderHeader(section) {
     return (
       <View
+
+        hitSlop={{top: 12, bottom: 12}}
         style={[
           styles.row,
           {
