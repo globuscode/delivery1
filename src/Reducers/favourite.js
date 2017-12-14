@@ -48,7 +48,7 @@ export default function favourite(state = initialState, action) {
     };
   }
 
-  if (action.type == "ADD_PLATE_TO_RESTAURANT") {
+  if (action.type == "ADD_RESTAURANT_TO_FAV") {
     for (let i = 0; i < state.restaurants.length; i += 1) {
       if (state.restaurants[i] == action.payload.id) {
         return {
@@ -56,7 +56,7 @@ export default function favourite(state = initialState, action) {
         };
       }
     }
-    state.plates.push(action.payload.id);
+    state.restaurants.push(action.payload.id);
   }
 
   return {

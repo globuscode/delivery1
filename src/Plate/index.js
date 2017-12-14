@@ -306,7 +306,7 @@ class Plate extends React.Component{
 					}}>{this.state.restaurant.title}</Text></TouchableOpacity>
 				</View>
 
-				<TouchableOpacity onPress={() => this.props.navigation.goBack()}><Icon name='md-heart-outline' size={20} color='rgb(255, 255, 255)' style={{ backgroundColor: 'transparent' }} /></TouchableOpacity>
+				<TouchableOpacity onPress={() => this.props.addToFav(this.state.plate)}><Icon name='md-heart-outline' size={20} color='rgb(255, 255, 255)' style={{ backgroundColor: 'transparent' }} /></TouchableOpacity>
 			</View>
 			<LinearGradient colors={['rgba(41,43,55, 0)', 'rgba(34, 35, 39, 1)']} style={{
 				height: 100,
@@ -507,6 +507,9 @@ export default connect(
 	  changeModal: (data) => {
 		dispatch({ type: "CHANGE_CONTENT", payload: data })
 	  },
+		addToFav: (data) => {
+		dispatch({ type: "ADD_PLATE_TO_FAV", payload: data })
+		},
 	})
   )(Plate);
 

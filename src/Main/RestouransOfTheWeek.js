@@ -13,8 +13,10 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { LinearGradient, Font } from 'expo';
 import Touchable from "react-native-platform-touchable";
+import { connect } from 'react-redux';
 
 import IconD from '../IconD';
+import Restaurant from '../Restaurant/index';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 const shadowOpt = {
@@ -28,7 +30,7 @@ const shadowOpt = {
   y: 5,
 }
 
-export default class Recomendations extends React.Component {
+class Recomendations extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -48,14 +50,14 @@ export default class Recomendations extends React.Component {
   }
 
   componentWillMount = () => {
-    /*if (!this.props.data)
+    if (!this.props.data)
       fetch('http://dostavka1.com/v1/restaurants')
         .then((response) => response.json())
         .then((responseJson) => {
           if (responseJson["data"]["restaurants"])
             this.state.restourans = responseJson['data']['restaurants'];
           return responseJson;
-        });*/
+        });
   }
 
   _renderItem = ({ item, index }) => {
@@ -92,7 +94,7 @@ export default class Recomendations extends React.Component {
   }
 
   renderHeart(index) {
-    return <TouchableOpacity onPress={() => { this.fav(index); }}>
+    return <TouchableOpacity hitSlop={{top: 20, bottom: 20, left: 20, right: 20}} onPress={() => { this.props.addToFav(this.state.restourans[index]); this.fav(index); }}>
       <View style={{ backgroundColor: 'transparent' }}>
         <IconD
           name={this.state.restourans[index].favourite ? 'heart_full' : 'heart_empty'}
@@ -153,7 +155,7 @@ export default class Recomendations extends React.Component {
   render() {
     /* Разметка */
     const screen = (viewportWidth >= 320 && viewportWidth < 375) ? 0 : (viewportWidth >= 375 && viewportWidth < 414) ? 1 : 2;
-    const SLIDER_WIDTH = screen == 0 ? 280 : screen == 1 ? 328.1 : 362.3;
+    const SLIDER_WIDTH = screen == 0 ? viewportWidth - 2*20 : screen == 1 ? viewportWidth - 2*24 : viewportWidth - 26;
     const SLIDER_MARGIN = screen == 0 ? 10 / 2 : screen == 1 ? 11.7 / 2 : 13.2 / 2;
     const SLIDER_HEIGHT = SLIDER_WIDTH * 1.32;
     return (
@@ -188,10 +190,10 @@ export default class Recomendations extends React.Component {
                     backgroundColor: '#dcc49c',
                     color: '#292b37',
                     }}>{item.discount}</Text>
-                </View>
+                  </View>*/}
                 <View>
                     {this.renderHeart(index)}
-                  </View>*/}
+                  </View>
               </View>
                 <View pointerEvents='none' style={{ flexDirection: 'column', justifyContent: 'flex-end', backgroundColor: 'transparent' }}>
                 {this.renderLogo(item.restourantLogo)}
@@ -206,6 +208,16 @@ export default class Recomendations extends React.Component {
     );
   }
 }
+
+export default connect(
+  state => ({
+  }),
+  dispatch => ({
+    addToFav: (data) => {
+      dispatch({ type: "ADD_RESTAURANT_TO_FAV", payload: data })
+    },
+  })
+)(Recomendations)
 
 const styles = StyleSheet.create({
   text: {

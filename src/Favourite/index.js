@@ -50,7 +50,7 @@ class Favourite extends React.Component {
             favourite: {
                 plates: [],
                 collections: [],
-                restaurans: []
+                restaurants: []
             },
             favouriteIds: {
                 plates: [],
@@ -63,7 +63,7 @@ class Favourite extends React.Component {
     _renderSinglePlate = ( item, index ) => {
         /* Разметка */
         const screen = adaptWidth(0, 1, 2);
-        const SLIDER_WIDTH = screen == 0 ? 280 : screen == 1 ? 328.1 : 362.3;
+        const SLIDER_WIDTH = screen == 0 ? viewportWidth - 2*20 : screen == 1 ? viewportWidth - 2*24 : viewportWidth - 26;
         const SLIDER_MARGIN =
           screen == 0 ? 10 / 2 : screen == 1 ? 11.7 / 2 : 13.2 / 2;
         const SLIDER_HEIGHT = SLIDER_WIDTH * 1.32;
@@ -204,7 +204,7 @@ class Favourite extends React.Component {
               html:
                 `<img 
             src="` +
-                item.restourantLogo +
+                item.logoImage +
                 `"
               style="
               width:100%;">`
@@ -291,12 +291,131 @@ class Favourite extends React.Component {
       };
 
     renderPlates = () => {
-        return this.state.favourite.plates.map(this._renderSinglePlate);
+      return this.state.favourite.plates.map(this._renderSinglePlate);
+    }
+
+    nav = (index) => {
+      
     }
 
     renderRestaurants = () => {
-        return null;
+      return this.state.favourite.restaurants.map(this._renderSingleRestaurant);
     }
+
+    _renderSingleRestaurant = (item, index) => {
+      const screen = (viewportWidth >= 320 && viewportWidth < 375) ? 0 : (viewportWidth >= 375 && viewportWidth < 414) ? 1 : 2;
+      const SLIDER_WIDTH = screen == 0 ? viewportWidth - 2*20 : screen == 1 ? viewportWidth - 2*24 : viewportWidth - 26;
+      const SLIDER_MARGIN = screen == 0 ? 10 / 2 : screen == 1 ? 11.7 / 2 : 13.2 / 2;
+      const SLIDER_HEIGHT = SLIDER_WIDTH * 1.32;
+      return (
+        <View key={index} style={[styles.itemContainer, {width: SLIDER_WIDTH, height: SLIDER_WIDTH}]}>
+          <Touchable foreground={Touchable.SelectableBackgroundBorderless()} activeOpacity={0.8} style={{ position: 'absolute',width: SLIDER_WIDTH, height: SLIDER_WIDTH }} onPress={() => this.props.navigation.navigate(index)}><View>
+          <Image
+          onLoadEnd={() => this.setState({})}
+          style={[styles.itemBackgroundImage, { width: SLIDER_WIDTH, height: SLIDER_WIDTH}]}
+          source={{ uri: 'http:'+item.image }}
+          />
+          <LinearGradient
+          colors={[
+            'rgba(0,0,0, 0.8)',
+            'transparent', 
+            'rgba(0,0,0, 0.8)'
+            ]}
+            style={[styles.itemGradientStyle, { width: SLIDER_WIDTH + 1, height: SLIDER_WIDTH + 1 }]}
+          /></View></Touchable>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between'}}>
+          {/*<View style={{ flexDirection: 'row', alignSelf: 'flex-start'  }}>
+            {this.renderLevel(item.level)}                
+            <Text style={{
+              paddingHorizontal: 5,
+              maxWidth: 150,
+              //fontFamily: 'stem-medium',
+              fontWeight: 'bold',
+              fontSize: 13,
+              backgroundColor: '#dcc49c',
+              color: '#292b37',
+              }}>{item.discount}</Text>
+            </View>*/}
+          <View>
+              {this.renderHeart(index)}
+            </View>
+        </View>
+          <View pointerEvents='none' style={{ flexDirection: 'column', justifyContent: 'flex-end', backgroundColor: 'transparent' }}>
+          {this.renderLogo(item.logoImage)}
+              <Text style={{ color: 'white', fontSize: 14, lineHeight: 22, fontFamily: 'stem-medium', alignItems: 'flex-end', letterSpacing: 0.4 }}>{item.title}</Text>
+              
+        </View>
+      </View>
+      );
+    }
+
+    fav = (index) => {
+      //this.state.favourite.restaurants[index].favourite = !this.state.favourite.restaurants[index].favourite;
+      this.setState({});
+    };
+  
+    renderLevel = (level) => {
+      var result = [];
+      for (var i=0; i<level; i++)
+        result.push(
+          <View
+            key={i}
+            style={{
+              width: 16,
+              height: 16,
+              backgroundColor: 'rgb( 38, 39, 50)',
+              marginRight: 5,
+            }}>
+            <IconD
+              name='dostavka'
+              size={16}
+              color={'#dcc49c'} 
+            />
+          </View>);
+      return result;
+    }
+  
+    renderHeart(index) {
+      return <TouchableOpacity hitSlop={{top: 20, bottom: 20, left: 20, right: 20}} onPress={() => { this.props.onDeleteRestaurant(this.state.favourite.restaurants[index]); this.fav(index); }}>
+        <View style={{ backgroundColor: 'transparent' }}>
+          <IconD
+            name={'trash'}
+            size={18}
+            color='#dcc49c'
+          /></View>
+      </TouchableOpacity>
+    };
+  
+    renderLogo(logo) {
+  
+      const screen = (viewportWidth >= 320 && viewportWidth < 375) ? 0 : (viewportWidth >= 375 && viewportWidth < 414) ? 1 : 2;
+      const SLIDER_WIDTH = screen == 0 ? 280 : screen == 1 ? 328.1 : 362.3;
+  
+      return <Image
+      style={{
+        width: (SLIDER_WIDTH) / 3,
+        height: (SLIDER_WIDTH) / 3,
+        backgroundColor: 'transparent',
+      }}
+       source={{uri: 'http:'+logo}}
+     />;/*
+      return <View style={{ height: SLIDER_WIDTH / 3 }}>
+        <WebView
+          bounces={false}
+          scrollEnabled={false}
+          source={{
+            html: `<img 
+              src="` + logo + `"
+              style="
+              width:100%;">`
+          }}
+          style={{
+            width: SLIDER_WIDTH / 3,
+            height: SLIDER_WIDTH / 3,
+            backgroundColor: 'transparent',
+          }} />
+      </View>*/
+    };
 
     renderCollections = () => {
         return null;
@@ -307,6 +426,10 @@ class Favourite extends React.Component {
       if (this.state.favouriteIds.plates.length != newProps.favourite.plates.length) {
         needToUpdate = true;
         this.state.favouriteIds.plates = newProps.favourite.plates;
+      }
+      if (this.state.favouriteIds.restaurants.length != newProps.favourite.restaurants.length) {
+        needToUpdate = true;
+        this.state.favouriteIds.restaurants = newProps.favourite.restaurants;
       }
 
       if (needToUpdate || newProps.favourite.plates.length == 0) {
@@ -327,7 +450,19 @@ class Favourite extends React.Component {
             this.setState({});
         }); 
       }
-            
+
+      if (needToUpdate || newProps.favourite.restaurants.length == 0) {
+        this.state.favouriteIds.restaurants = [];
+        this.state.favourite.restaurants = [];
+        newProps.favourite.restaurants.forEach(async (restaurant, i) => {
+          const responseRest = await fetch(`http://dostavka1.com/v1/restaurant?restaurantId=${restaurant}`);
+          const responseRestJson = await responseRest.json();
+          this.state.favourite.restaurants.push(responseRestJson.data.result);
+
+          if (i === newProps.favourite.restaurants.length - 1)
+            this.setState({});
+        }); 
+      }       
     }
 
 
@@ -375,6 +510,7 @@ class Favourite extends React.Component {
           width: viewportWidth
         }}
       >
+      <View style={{height: 70}}/>
         <LinearGradient
           colors={["rgba(39, 40, 48, 0)", "rgba(39, 40, 48, 1)"]}
           style={{
@@ -396,9 +532,9 @@ export default connect(
             type: 'DELETE_PLATE',
             payload: fav
         }),
-        onDeleteRestaurant: fav => dispatch({
+        onDeleteRestaurant: data => dispatch({
             type: 'DELETE_RESTAURANT',
-            payload: fav
+            payload: data
         }),
         onAddPlate: plate => {
           dispatch({ type: "ADD_PLATE", payload: plate });
@@ -429,4 +565,45 @@ const styles = StyleSheet.create({
         color: 'rgb(39, 40, 51)',
         backgroundColor: 'rgb(225, 199, 155)',
     },
+    text: {
+      color: 'white',
+      fontSize: 16,
+    },
+    container: {
+      flex: 1,
+      paddingTop: 20,
+      backgroundColor: '#292b37',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    itemContainer: {
+      flex: 1,
+      padding: 20,
+      width: viewportWidth - 40,
+      marginVertical: 10,
+      height: viewportWidth - 40,
+      backgroundColor: 'black',
+      borderRadius: 10,
+      justifyContent: 'space-between',
+      elevation: 10,
+      shadowColor: '#000',
+      shadowOffset: { width: 2, height: 2 },
+      shadowOpacity: 0.5,
+      shadowRadius: 5,
+    },
+    itemBackgroundImage: {
+      width: viewportWidth - 40,
+      height: viewportWidth - 40,
+      borderRadius: 10,
+      position: 'absolute',
+      backgroundColor: 'transparent'
+    },
+    itemGradientStyle: {
+      height: viewportWidth - 40 + 1,
+      top: -0.5,
+      position: 'absolute',
+      width: viewportWidth - 40 + 1,
+      left: -0.5,
+      borderRadius: 10,
+    }
 });
