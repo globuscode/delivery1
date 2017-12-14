@@ -259,7 +259,7 @@ export default TabNavigator(
         tabBarIcon: ({ tintColor, focused }) => {
           if (!IconD) return <View />;
           return (
-            <View style={{bottom: 12}}>
+            <View style={{ }}>
               <IconD
                 size={24}
                 name={focused ? "homeFill" : "home"}
@@ -280,7 +280,7 @@ export default TabNavigator(
         tabBarIcon: ({ tintColor, focused }) => {
           if (!IconD) return <View />;
           return (
-            <View style={{bottom: 12}}>
+            <View style={{ }}>
               <IconD
                 size={24}
                 name={focused ? "book-fill" : "book"}
@@ -298,7 +298,7 @@ export default TabNavigator(
         tabBarIcon: ({ tintColor, focused }) => {
           if (!IconD) return <View />;
           return (
-            <View style={{bottom: 12}}>
+            <View style={{ }}>
               <IconD
                 size={24}
                 name={focused ? "heart-fill" : "heart"}
@@ -317,7 +317,7 @@ export default TabNavigator(
         tabBarIcon: ({ tintColor, focused }) => {
           if (!IconD) return <View />;
           return (
-            <View style={{bottom: 12}}>
+            <View style={{ }}>
               <IconD
                 size={24}
                 name={focused ? "cart-fill" : "cart"}
@@ -336,7 +336,6 @@ export default TabNavigator(
 
     tabBarOptions: {
       style: {
-        justifyContent: 'flex-end',
         alignSelf: 'stretch',
         padding: 0,
         paddingTop: 1,
@@ -346,7 +345,7 @@ export default TabNavigator(
       tabStyle: {
         flex: 1,
         paddingTop: 3,
-        justifyContent: 'flex-end',
+        justifyContent: 'space-around', 
       },
       pressColor: "red",
       inactiveBackgroundColor: "rgba(39, 40, 48, 1)",
