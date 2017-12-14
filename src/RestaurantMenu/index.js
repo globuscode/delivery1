@@ -18,7 +18,7 @@ import Accordion from "react-native-collapsible/Accordion";
 import { connect } from "react-redux";
 import Touchable from 'react-native-platform-touchable';
 import HTMLView from 'react-native-htmlview';
-
+import { host } from '../etc';
 import PriceButton from "../PriceButton";
 import Storage from "../Reducers";
 

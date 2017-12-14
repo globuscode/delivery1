@@ -12,7 +12,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Picker from "react-native-wheel-picker";
 import Touchable from 'react-native-platform-touchable';
 import { connect } from "react-redux";
-
+import { host } from '../etc';
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
 class SelectCity extends React.Component {

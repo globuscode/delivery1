@@ -17,7 +17,7 @@ import {
 	LinearGradient,
 	Constants
 } from 'expo';
-
+import { host } from '../etc';
 
 import Recomendations from '../Main/Recomendations';
 import IconD from '../IconD';
