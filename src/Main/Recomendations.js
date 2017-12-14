@@ -126,7 +126,7 @@ class Recomendations extends React.Component {
       viewportWidth >= 320 && viewportWidth < 375
         ? 0
         : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
-    const SLIDER_WIDTH = screen == 0 ? 280 : screen == 1 ? 328.1 : 362.3;
+    const SLIDER_WIDTH = screen == 0 ? viewportWidth - 2*20 : screen == 1 ? viewportWidth - 2*24 : viewportWidth - 26;
     const SLIDER_MARGIN =
       screen == 0 ? 10 / 2 : screen == 1 ? 11.7 / 2 : 13.2 / 2;
     const SLIDER_HEIGHT = SLIDER_WIDTH * 1.32;
@@ -194,8 +194,6 @@ class Recomendations extends React.Component {
         fontFamily: "stem-medium"
       },
       topViewStyle: {
-        flexDirection: "row",
-        justifyContent: "space-between"
       }
     });
 
@@ -220,10 +218,10 @@ class Recomendations extends React.Component {
 
     // Компонент с кнопкой добавить в избранное
     var heartButton = (
-      <View>
         <Touchable
+          style={{position: 'absolute', right: 0, top: 0}}
           hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}
-          background={Touchable.SelectableBackgroundBorderless()}
+          foreground={Touchable.SelectableBackgroundBorderless()}
           onPress={() => {
             this.fav(index);
             this.props.addToFav(item);
@@ -236,12 +234,11 @@ class Recomendations extends React.Component {
             />
           </View>
         </Touchable>
-      </View>
     );
     // Верхняя половина карточки
     var topView = (
       <View style={itemStyles.topViewStyle}>
-        <View>
+        <View style={{position: 'absolute', left: 0, top: 0}}>
           <Touchable activeOpacity={0.8} onPress={() => { this.nav(index); }}>
             <View>
               {/* Название блюда */}
@@ -371,7 +368,7 @@ class Recomendations extends React.Component {
       viewportWidth >= 320 && viewportWidth < 375
         ? 0
         : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
-    let slideW = screen == 0 ? 280 : screen == 1 ? 328.1 : 362.3;
+    let slideW  = screen == 0 ? viewportWidth - 2*20 : screen == 1 ? viewportWidth - 2*24 : viewportWidth - 26;
     const SLIDER_MARGIN =
       screen == 0 ? 10 / 2 : screen == 1 ? 11.7 / 2 : 13.2 / 2;
     return (

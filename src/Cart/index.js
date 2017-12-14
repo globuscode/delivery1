@@ -22,6 +22,7 @@ import { connect } from "react-redux";
 import Counter from "../Counter";
 import PriceButton from "../PriceButton";
 import Storage from "../Reducers";
+import { adaptWidth } from '../etc'
 
 import Recomendations from "../Main/Recomendations";
 import IconD from "../IconD";
@@ -416,7 +417,7 @@ class Cart extends React.Component {
             </View>
             <View
               style={{
-                width: screen == 0 ? 290 : screen == 1 ? 346 : 376,
+                width: viewportWidth - 32,
                 height: 1,
                 borderWidth: 1,
                 borderColor: "rgb( 87, 88, 98)"
@@ -443,7 +444,7 @@ class Cart extends React.Component {
             />
             <View
               style={{
-                width: screen == 0 ? 290 : screen == 1 ? 346 : 376,
+                width: viewportWidth - 32,
                 height: 1,
                 borderWidth: 0,
                 borderColor: "rgb(87, 88, 98)"
@@ -457,7 +458,7 @@ class Cart extends React.Component {
                   flexDirection: 'row',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  marginHorizontal: 20,
+                  marginHorizontal: 16,
                   alignSelf: 'stretch'
                 }}>
                 <Text style={{
@@ -479,7 +480,7 @@ class Cart extends React.Component {
             {/*this.renderPromoCode()*/}
             <View
               style={{
-                width: screen == 0 ? 290 : screen == 1 ? 346 : 376,
+                width: viewportWidth - 32,
                 height: 1,
                 borderWidth: 1,
                 borderColor: "rgb( 87, 88, 98)"
@@ -526,7 +527,7 @@ class Cart extends React.Component {
             </View>
             <View
               style={{
-                width: screen == 0 ? 290 : screen == 1 ? 346 : 376,
+                width: viewportWidth - 32,
                 height: 1,
                 borderWidth: 1,
                 borderColor: "rgb( 87, 88, 98)"
@@ -573,7 +574,7 @@ class Cart extends React.Component {
             </View>
             <View
               style={{
-                width: screen == 0 ? 290 : screen == 1 ? 346 : 376,
+                width: viewportWidth - 32,
                 height: 1,
                 borderWidth: 1,
                 borderColor: "rgb( 87, 88, 98)"
@@ -620,7 +621,7 @@ class Cart extends React.Component {
             </View>
             <View
               style={{
-                width: screen == 0 ? 290 : screen == 1 ? 346 : 376,
+                width: viewportWidth - 32,
                 height: 1,
                 borderWidth: 1,
                 borderColor: "rgb( 87, 88, 98)"
@@ -835,14 +836,14 @@ class Cart extends React.Component {
           />
           <View
             style={{
-              width: screen == 0 ? 290 : screen == 1 ? 346 : 376,
+              width: viewportWidth - 30,
               height: 1,
               borderTopWidth: 1,
               borderColor: "rgb(87, 88, 98)"
             }}
           />
           <View style={{
-              width: screen == 0 ? 290 : screen == 1 ? 346 : 376,
+              width: viewportWidth - 30,
               borderBottomWidth: 1,
               borderColor: "rgb(87, 88, 98)",
               paddingHorizontal: 5,
@@ -867,7 +868,7 @@ class Cart extends React.Component {
           <View style={{
             alignSelf: 'center'
           }}>
-            <ButtonD onPress={() => this.props.navigation.navigate('Main')} title={['Добавить к заказу',  'и перейти в ресторан']} width={screen == 0 ? 260 : screen == 1 ? 315 : 354}/>
+            <ButtonD onPress={() => this.props.navigation.navigate('Main')} title={['Добавить к заказу',  'и перейти в ресторан']} width={viewportWidth - 60}/>
           </View>
 
           <View style={{ height: screen == 0 ? 22 : screen == 1 ? 26 : 39 }} />
