@@ -115,7 +115,6 @@ class RestaurantMenu extends React.Component {
     if (menuResponseJson["data"] && menuResponseJson["data"]["result"]) {
       this.state.menu = menuResponseJson["data"]["result"];
       this.setState({  });
-      //console.log("Ok", menuResponseJson["data"]["result"]["menu"]);
     }
 	}
 
