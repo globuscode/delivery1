@@ -43,7 +43,7 @@ export default function cart(state = initialState, action) {
         }
         else {
             state[i-1].count++;
-            return state;
+            return [...state];
         }
     }
     if (action.type === 'REMOVE_PLATE') {
@@ -51,7 +51,7 @@ export default function cart(state = initialState, action) {
             state.splice(action.index, 1);
         else
             state[action.index].count--;
-        return state;
+        return [...state];
     }
 
     if (action.type === 'REMOVE_PLATE_BY_OBJECT') {
@@ -64,7 +64,7 @@ export default function cart(state = initialState, action) {
                 break;
             }
         }
-        return state;
+        return [...state];
     }
     return state;
 }
