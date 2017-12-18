@@ -74,6 +74,7 @@ const FirstScreen = StackNavigator(
       screen: Restaurant,
       navigationOptions: {
         title: "Джон Джоли",
+        gesturesEnabled: false,
         headerTintColor: "#fff",
         headerTitleStyle: {
           fontFamily: "stem-medium",
@@ -93,13 +94,14 @@ const FirstScreen = StackNavigator(
       screen: Plate,
       navigationOptions: {
         header: null,
-        gesturesEnabled: false
+        gesturesEnabled: true
       }
     },
     RestaurantMenu: {
       screen: RestaurantMenu,
       navigationOptions: {
         headerTintColor: "#fff",
+        gesturesEnabled: false,
         headerTitleStyle: {
           fontFamily: "stem-medium",
           fontSize: 14,
@@ -127,13 +129,15 @@ const SecondScreen = StackNavigator(
     AllRestourans: {
       screen: AllRestourans,
       navigationOptions: {
-        header: null
+        header: null,
+        gesturesEnabled: false,
       }
     },
     Restaurant: {
       screen: Restaurant,
       navigationOptions: {
         title: "Джон Джоли",
+        gesturesEnabled: false,        
         headerTintColor: "#fff",
         headerTitleStyle: {
           fontFamily: "stem-medium",
@@ -153,13 +157,14 @@ const SecondScreen = StackNavigator(
       screen: Plate,
       navigationOptions: {
         header: null,
-        gesturesEnabled: false
+        gesturesEnabled: true
       }
     },
     RestaurantMenu: {
       screen: RestaurantMenu,
       navigationOptions: {
         headerTintColor: "#fff",
+        gesturesEnabled: false,
         headerTitleStyle: {
           fontFamily: "stem-medium",
           fontSize: 14,
