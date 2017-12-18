@@ -44,6 +44,7 @@ import RestaurantMenu from "../RestaurantMenu";
 import Favoutite from "../Favourite";
 import Cart from "../Cart";
 
+import CartTabIcon from './CartTabIcon';
 import IconD from "../IconD";
 
 var kitchenPhoto = require("../../assets/img/kitchen.jpeg");
@@ -323,11 +324,7 @@ export default TabNavigator(
           if (!IconD) return <View />;
           return (
             <View style={{ }}>
-              <IconD
-                size={24}
-                name={focused ? "cart-fill" : "cart"}
-                color={"rgb( 225, 199, 155)"}
-              />
+              <CartTabIcon focused={focused}/>
             </View>
           );
         }
