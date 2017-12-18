@@ -405,7 +405,6 @@ class Recomendations extends React.Component {
           dotStyle={{
             width: 6,
             height: 6,
-            margin: -2,
             borderRadius: 3,
             backgroundColor: "#ffffff"
           }}
