@@ -52,7 +52,7 @@ export default class Price extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      pressed: this.props.pressed ? this.props.pressed : false,
+      pressed: this.props.count !== 0,
       value: this.props.value,
       count: this.props.count ? this.props.count : 0
     };
@@ -60,7 +60,7 @@ export default class Price extends React.Component {
 
   componentWillReceiveProps = (newProps) => {
     this.setState({
-      pressed: this.props.pressed ? this.props.pressed : false,
+      pressed: this.props.count !== 0,
       count: this.props.count ? this.props.count : 0
     });
   }
@@ -103,7 +103,8 @@ export default class Price extends React.Component {
               viewportWidth >= 320 && viewportWidth < 375
                 ? 89
                 : viewportWidth >= 375 && viewportWidth < 414 ? 97 : 104,
-            backgroundColor: this.state.pressed ? "#dcc49c" : "transparent"
+            backgroundColor: parseInt(this.props.count) > 0 ? "#dcc49c" : "transparent",
+            borderColor: !parseInt(this.props.count) > 0 ? "#dcc49c" : "transparent"
           }}
         >
           <View style={{marginLeft: 5}}>
@@ -114,7 +115,7 @@ export default class Price extends React.Component {
                   ? 12
                   : viewportWidth >= 375 && viewportWidth < 414 ? 12 : 12
               }
-              color={!this.state.pressed ? "#dcc49c" : "#292b37"}
+              color={!parseInt(this.props.count) > 0 ? "#dcc49c" : "#292b37"}
             />
             {this.props.count == 0 || this.props.count == null ? null : (
               <View style={{
@@ -151,7 +152,7 @@ export default class Price extends React.Component {
               backgroundColor: 'transparent',
               alignSelf: "center",
               fontFamily: "stem-medium",
-              color: !this.state.pressed ? "#fff" : "#292b37"
+              color: !parseInt(this.props.count) > 0 ? "#fff" : "#292b37"
             }}
           >
             {this.state.value + " ₽"}
