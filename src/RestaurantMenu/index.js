@@ -105,7 +105,6 @@ class RestaurantMenu extends React.Component {
     if (responseJson["data"] && responseJson["data"]["result"]) {
       responseJson["data"]["result"]["menu"] = [];
       this.setState({ data: responseJson['data']["result"] });
-      this.setState({});
     }
     this.props.navigation.setParams({
       title: this.state.data.title,
@@ -166,7 +165,7 @@ class RestaurantMenu extends React.Component {
     );
   };
 
-  _renderHeader(section) {
+  _renderHeader({type}) {
     return (
       <View
 
@@ -183,7 +182,7 @@ class RestaurantMenu extends React.Component {
           }
         ]}
       >
-        <Text
+        {/*<Text
           style={{
             color: "#fff",
             fontSize: 16,
@@ -191,16 +190,17 @@ class RestaurantMenu extends React.Component {
             letterSpacing: 0.8
           }}
         >
-          {section.type}
-        </Text>
-        <Touchable
-        background={Touchable.SelectableBackgroundBorderless()} >
+          {type}
+        </Text>*/}
+        <HTMLView
+          value={`<span>${type}</span>`}
+          stylesheet={styles}
+        />
         <Icon
           name="ios-arrow-down-outline"
           size={16}
           color="rgb( 111, 111, 111)"
         />
-        </Touchable>
       </View>
     );
   }
@@ -246,15 +246,16 @@ class RestaurantMenu extends React.Component {
     );
   };
 
-  _renderContent = section => {
+  _renderContent = ({plates}, id, isActive) => {
     const imageHeight =
       viewportWidth >= 320 && viewportWidth < 375
         ? 100
         : viewportWidth >= 375 && viewportWidth < 414 ? 117 : 130;
+    if (!isActive) return null;
     //const textMarginRight = (viewportWidth >= 320 && viewportWidth < 375) ? 40 : (viewportWidth >= 375 && viewportWidth < 414) ? 117 : 130;
     return (
       <View style={{ flexDirection: "column", width: viewportWidth }}>
-        {section.plates.map((e, i) => {
+        {plates.map((e, i) => {
           const itemCount = getCount(this.props.globalStore, e);
           return (
             <Touchable
@@ -330,7 +331,7 @@ class RestaurantMenu extends React.Component {
                       value={e.price}
                       pressed={itemCount >= 1}
                       count={itemCount}
-                      onPress={() => {this.props.onAddPlate(e); this.setState({})}}
+                      onPress={() => {this.props.onAddPlate(e); }}
                     />
                     <Text
                       style={{
@@ -431,9 +432,6 @@ class RestaurantMenu extends React.Component {
 
   render() {
     //this.navigationOptions.title = this.state.data.title;
-    Storage.subscribe(() => {
-    //  this.setState({});
-    });
     var restaurant = (
       <View>
         <ScrollView
@@ -699,8 +697,10 @@ class RestaurantMenu extends React.Component {
             <ActivityIndicator size='large' style={{alignSelf: 'center', marginTop: 60}} /> : null}
           <Accordion
             touchableProps={{
-              activeOpacity: 0.2
+              activeOpacity: 0.2,
+              background: Touchable.Ripple('gray')
             }}
+            touchableComponent={Touchable}
             underlayColor="#292b37"
             style={{ alignSelf: "flex-start", width: viewportWidth }}
             sections={this.state.menu}
@@ -795,5 +795,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 14,
     marginBottom: 5
+  },
+  span: {
+    color: "#fff",
+    fontSize: 16,
+    fontFamily: "stem-medium",
+    letterSpacing: 0.8
   }
 });
