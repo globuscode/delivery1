@@ -24,6 +24,7 @@ import Storage from "../Reducers";
 
 import Recomendations from "../Main/Recomendations";
 import IconD from "../IconD";
+import { adaptWidth } from '../etc';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
@@ -256,7 +257,7 @@ class RestaurantMenu extends React.Component {
     return (
       <View style={{ flexDirection: "column", width: viewportWidth }}>
         {plates.map((e, i) => {
-          const itemCount = getCount(this.props.globalStore, e);
+          const itemCount = this.getCount(e);
           return (
             <Touchable
               key={i}
@@ -329,13 +330,27 @@ class RestaurantMenu extends React.Component {
                   <View style={{ flexDirection: "row" }}>
                     <PriceButton
                       value={e.price}
-                      pressed={itemCount >= 1}
+                      pressed={itemCount !== 0}
                       count={itemCount}
                       onPress={() => {this.props.onAddPlate(e); }}
                     />
+                    {itemCount === 0 ? null : <Touchable
+                    background={Touchable.SelectableBackground()}
+                    onPress={() => { this.props.deletePlate(e)}}
+                    style={{
+                      width: adaptWidth(28, 30, 34),
+                      marginLeft: 10,
+                      height: adaptWidth(28, 30, 34),
+                      borderRadius: 4,
+                      justifyContent: 'center',
+                      backgroundColor: "#dcc49c",
+                      alignItems: 'center'
+                    }}>
+                      <Text style={{color: "rgba(41,43,55, 1)"}}>{'–'}</Text>
+                    </Touchable>}
                     <Text
                       style={{
-                        color: "rgb( 135, 136, 140)",
+                        color: "rgb(135, 136, 140)",
                         marginLeft: 10,
                         fontSize: 12,
                         lineHeight: 14,
@@ -429,6 +444,19 @@ class RestaurantMenu extends React.Component {
       </View>
     );
   };
+
+  getCount = (plate) => {
+    var i = 0;
+    while (i < this.props.globalStore.length) {
+      let equalTitle = plate.title == this.props.globalStore[i].plate.title;
+      let equalRestaurant = plate.restourant == this.props.globalStore[i].plate.restourant;
+      if (equalTitle && equalRestaurant) {
+        return this.props.globalStore[i].count;
+      }
+      i++;
+    }
+    return 0;
+  }
 
   render() {
     //this.navigationOptions.title = this.state.data.title;
@@ -769,6 +797,9 @@ export default connect(
   dispatch => ({
     onAddPlate: plate => {
       dispatch({ type: "ADD_PLATE", payload: plate });
+    },
+    deletePlate: plate => {
+      dispatch({ type: "REMOVE_PLATE_BY_OBJECT", payload: plate });
     }
   })
 )(RestaurantMenu);
