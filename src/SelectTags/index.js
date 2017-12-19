@@ -3,6 +3,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Alert,
   TouchableOpacity,
   Dimensions,
   ActivityIndicator,
@@ -121,7 +122,7 @@ export default class SelectTags extends React.Component {
     let tagsStr = await AsyncStorage.getItem('tags');
     let f = await AsyncStorage.getItem('f');
     
-    let tags = f != tagsStr ? JSON.parse(tagsStr) : [];
+    let tags = f !== tagsStr ? JSON.parse(tagsStr) : [];
 
     fetch(`${host}/classificator/tag-groups?cityId=36`)
       .then((response) => response.json())
@@ -250,17 +251,19 @@ export default class SelectTags extends React.Component {
             height: viewportHeight - 193,
             backgroundColor: '#292b37',
           }}>
-            <ActivityIndicator size='large' style={{position: 'absolute', top: 100, alignSelf: 'center', display: this.state.spinner ? 'flex' : 'none'}} />
             <WebView
               ref={(c) => { this.webview = c; }}
               mixedContentMode='always'
               domStorageEnabled={true}
-              injectedJavaScript={'tags = JSON.parse(' + JSON.stringify(this.state.tags) + ');'}
+              startInLoadingState
+              injectJavaScript
+              onError={() => Alert.alert("Ошибка")}
+              injectedJavaScript={'tags = JSON.parse(' + JSON.stringify(this.state.kitchens) + ');'}
               source={webapp}
               scalesPageToFit={true}
               onMessage={this.onMessage}
               onLoadEnd={() => {
-                this.webview.postMessage(JSON.stringify({ update: false, tags: this.state.kitchens }))
+                this.webview.postMessage(JSON.stringify({update: false,tags: this.state.kitchens }))
                 setTimeout(() => {
                   this.setState({spinner: false});
                 }, 1500);
@@ -268,7 +271,7 @@ export default class SelectTags extends React.Component {
               javaScriptEnabled={true}
               domStorageEnabled={true}
               style={{ 
-                backgroundColor: 'transparent', 
+                backgroundColor: 'red', 
                 height: viewportHeight - 193, 
                 width: viewportWidth }}
             />
