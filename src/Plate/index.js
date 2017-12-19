@@ -26,6 +26,7 @@ import { connect } from 'react-redux';
 import { adaptWidth } from '../etc';
 import Recomendations from '../Main/Recomendations';
 import IconD from '../IconD';
+import Touchable from 'react-native-platform-touchable';
 
 function onlyUnique(value, index, self) { 
     return self.indexOf(value) === index;
@@ -42,6 +43,7 @@ class Plate extends React.Component{
 		this.state = {
 			canNav: true,
 			userTastes: [],
+			favourite: false,
 			plate: {
 				"id": 101,
 				"shortTitle": 'Шоколадный милкшейк',
@@ -114,6 +116,13 @@ class Plate extends React.Component{
 			restaurant: this.props.navigation.state.params.restaurant,
 			userTastes: tastesJson
 		});
+
+		for (let i=0; i<this.props.favourite.plates.length; i++) {
+			if (this.props.favourite.plates[i] === this.state.plate.id) {
+				this.state.favourite = true;
+				break;
+			}
+		}
 		this.state.plate.tags = this.state.plate.tags.filter( onlyUnique );
 		this.setState({});
 	}
@@ -309,7 +318,25 @@ class Plate extends React.Component{
 					}}>{this.state.restaurant.title}</Text></TouchableOpacity>
 				</View>
 
-				<TouchableOpacity onPress={() => this.props.addToFav(this.state.plate)}><Icon name='md-heart-outline' size={20} color='rgb(255, 255, 255)' style={{ backgroundColor: 'transparent' }} /></TouchableOpacity>
+				<Touchable
+					onPress={() => {
+						if (this.state.favourite) {
+							this.props.removeFromFav(this.state.plate);
+							this.setState({favourite: false });
+						}
+						else {
+							this.props.addToFav(this.state.plate);
+							this.setState({favourite: true });
+						}
+					}}>
+					<View style={{ backgroundColor: 'transparent' }}>
+						<IconD
+							name={this.state.favourite ? "heart_full" : "heart_empty"}
+							size={20}
+							color='rgb(255, 255, 255)' 
+						/>
+					</View>
+				</Touchable>
 			</View>
 			<LinearGradient colors={['rgba(41,43,55, 0)', 'rgba(34, 35, 39, 1)']} style={{
 				height: 100,
@@ -522,7 +549,8 @@ class Plate extends React.Component{
 export default connect(
 	state => ({
 	  globalStore: state.cart,
-	  modal: state.modalController
+	  modal: state.modalController,
+	  favourite: state.favourite,
 	}),
 	dispatch => ({
 	  onAddPlate: plate => {
@@ -534,6 +562,9 @@ export default connect(
 	  },
 		addToFav: (data) => {
 		dispatch({ type: "ADD_PLATE_TO_FAV", payload: data })
+		},
+		removeFromFav: (data) => {
+			dispatch({ type: "DELETE_PLATE", payload: data })
 		},
 	})
   )(Plate);

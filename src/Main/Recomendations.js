@@ -33,6 +33,7 @@ class Recomendations extends React.Component {
       canNav: true,
       activeSlide: 0,
       restaurans: [],
+      favourites: [],
       entries: [
         {
           id: 1,
@@ -80,12 +81,25 @@ class Recomendations extends React.Component {
         }
       ]
     };
-    if (this.props.data) this.state.entries = this.props.data;
+    if (this.props.data) {
+      this.state.entries = this.props.data;
+      this.state.entries.forEach(element => {
+        let fav = false;
+        this.props.favourite.plates.forEach(plate => {
+          if (plate === element.id) {
+            this.state.favourites.push(true);
+          }
+          else
+            this.state.favourites.push(false);
+        })
+        
+      })
+    }
     this.fav = this.fav.bind(this);
   }
 
   fav(index) {
-    this.state.entries[index].favourite = !this.state.entries[index].favourite;
+    this.state.favourites[index] = !this.state.favourites[index];
     this.setState({});
   }
 
@@ -220,16 +234,24 @@ class Recomendations extends React.Component {
     // Компонент с кнопкой добавить в избранное
     var heartButton = (
         <Touchable
+          background={Touchable.SelectableBackgroundBorderless()}
           style={{position: 'absolute', right: 0, top: 0}}
           hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}
           foreground={Touchable.SelectableBackgroundBorderless()}
           onPress={() => {
-            this.fav(index);
-            this.props.addToFav(item);
+            if (this.state.favourites[index]) {
+              this.fav(index);
+              this.props.removeFromFav(item);
+            }
+            else {
+              this.fav(index);
+              this.props.addToFav(item);
+            }
+            this.setState({})
           }}>
           <View style={{ backgroundColor: "transparent" }}>
             <IconD
-              name={item.favourite ? "heart_full" : "heart_empty"}
+              name={this.state.favourites[index] ? "heart_full" : "heart_empty"}
               size={18}
               color="#dcc49c"
             />
@@ -468,6 +490,7 @@ function getCount(cart, plate) {
 export default connect(
   state => ({
     globalStore: state.cart,
+    favourite: state.favourite,
     modal: state.modalController
   }),
   dispatch => ({
@@ -481,6 +504,9 @@ export default connect(
     addToFav: (data) => {
       dispatch({ type: "ADD_PLATE_TO_FAV", payload: data })
     },
+		removeFromFav: (data) => {
+			dispatch({ type: "DELETE_PLATE", payload: data })
+		},
   })
 )(Recomendations);
 
