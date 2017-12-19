@@ -8,6 +8,7 @@ import {
 	Image,
 	AsyncStorage,
 	WebView,
+	Platform,
 	Linking,
 	Text
 } from 'react-native';
@@ -22,7 +23,7 @@ import {
 import PriceButton from '../PriceButton';
 import Storage from "../Reducers";
 import { connect } from 'react-redux';
-
+import { adaptWidth } from '../etc';
 import Recomendations from '../Main/Recomendations';
 import IconD from '../IconD';
 
@@ -167,8 +168,8 @@ class Plate extends React.Component{
 					justifyContent: 'center',
 					position: 'absolute',
 					paddingHorizontal: (screen == 0 ? 6 : screen == 1 ? 7 : 8),
-					paddingTop: screen == 0 ? 8 : screen == 1 ? 9 : 10,
-					paddingBottom: screen == 0 ? 8 : screen == 1 ? 9 : 10,
+					paddingTop: adaptWidth(8, 9, 10),
+					paddingBottom: Platform.OS === 'ios' ? adaptWidth(8, 9, 10) : (adaptWidth(8, 9, 10) - 1),
 					borderWidth: 1.5,
 					marginBottom: 10,
 					marginHorizontal: 15,
@@ -182,6 +183,7 @@ class Plate extends React.Component{
 					fontSize: 14,
 					alignSelf: 'center',
 					textAlign: 'center',
+					top: Platform.OS === 'ios' ? 2 : 0,
 					fontFamily: 'stem-medium', 
 					width: screen == 0 ? 95 : screen == 1 ? 111 : 123,
 					}}>{title}</Text></View>
@@ -195,8 +197,8 @@ class Plate extends React.Component{
 						justifyContent: 'center',
 						borderWidth: 1.5,
 						paddingHorizontal: screen == 0 ? 6 : screen == 1 ? 7 : 8,
-						paddingTop: screen == 0 ? 8 : screen == 1 ? 9 : 10,
-						paddingBottom: screen == 0 ? 8 : screen == 1 ? 9 : 10,
+						paddingTop: adaptWidth(8, 9, 10),
+						paddingBottom: Platform.OS === 'ios' ? adaptWidth(8, 9, 10) : (adaptWidth(8, 9, 10) - 1),
 						marginBottom: 10,
 						marginHorizontal: 15,
 						alignItems: 'center',
@@ -208,6 +210,7 @@ class Plate extends React.Component{
 					color: 'rgb( 225, 199, 155)',
 					fontSize: 14,
 					alignSelf: 'center',
+					top: Platform.OS === 'ios' ? 2 : 0,
 					textAlign: 'center',
 					fontFamily: 'stem-medium',
 					width: screen == 0 ? 95 : screen == 1 ? 111 : 123,
@@ -347,8 +350,30 @@ class Plate extends React.Component{
 				count={inCart ? this.props.globalStore[i-1].count : null}
 				pressed={inCart}
 				onPress={() => {
-					this.props.onAddPlate(this.state.plate);
-					this.props.openModal(this.state.plate);
+					let item = this.state.plate;
+					if (this.props.globalStore.length > 0) {
+						if (this.props.globalStore[this.props.globalStore.length - 1].plate.restaurant !== item.restaurant)
+						  Alert.alert(
+							"Вы уверенны?",
+							"Вы добавили блюдо из другого ресторана. Ваша корзина из предыдущего ресторана будет очищена.",
+							[
+							  {text: 'OK', onPress: () => {
+								this.props.onAddPlate(item);
+								this.props.openModal(item);
+							  }},
+							  {text: 'Отмена', onPress: null, style: 'cancel'},
+							],
+							{ cancelable: false }
+						  );
+						else {
+						  this.props.onAddPlate(item);
+						  this.props.openModal(item);
+						}
+					  }
+					  else {
+						this.props.onAddPlate(item);
+						this.props.openModal(item);
+					  }
 				}}/>
 
 
