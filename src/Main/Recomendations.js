@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  Alert,
   AsyncStorage,
   PixelRatio,
   ActivityIndicator,
@@ -308,9 +309,29 @@ class Recomendations extends React.Component {
           pressed={itemCount != 0}
           value={item.price}
           onPress={() => {
-            this.addPlateToCart(item);
-            //this.props.changeModal(item);
-            this.props.open(item);
+            if (this.props.globalStore.length > 0) {
+              if (this.props.globalStore[this.props.globalStore.length - 1].plate.restaurant !== item.restaurant)
+                Alert.alert(
+                  "Вы уверенны?",
+                  "Вы добавили блюдо из другого ресторана. Ваша корзина из предыдущего ресторана будет очищена.",
+                  [
+                    {text: 'OK', onPress: () => {
+                      this.props.onAddPlate(item);
+                      this.props.open(item);
+                    }},
+                    {text: 'Отмена', onPress: null, style: 'cancel'},
+                  ],
+                  { cancelable: false }
+                );
+              else {
+                this.props.onAddPlate(item);
+                this.props.open(item);
+              }
+            }
+            else {
+              this.props.onAddPlate(item);
+              this.props.open(item);
+            }
             
           }}
         />

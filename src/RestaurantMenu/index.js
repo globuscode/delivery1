@@ -10,7 +10,8 @@ import {
   Image,
   WebView,
   Linking,
-  Text
+  Text,
+  Alert
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { LinearGradient, Constants } from "expo";
@@ -98,14 +99,20 @@ class RestaurantMenu extends React.Component {
     this.setState({});
   }
 
+  componentWillMount = () => {
+  }
+
   componentDidMount = async () => {
     
-		const restaurantId = this.props.navigation.state ? this.props.navigation.state.params.id : (-1).toString();
+    const restaurantId = this.props.navigation.state ? this.props.navigation.state.params.id : (-1).toString();
     const response = await fetch(`${host}/restaurant?restaurantId=${restaurantId}`);
     const responseJson = await response.json();
+    
     if (responseJson["data"] && responseJson["data"]["result"]) {
       responseJson["data"]["result"]["menu"] = [];
       this.setState({ data: responseJson['data']["result"] });
+      console.log('RM', responseJson['data']["result"]["id"]);
+      this.props.setLastViewed(responseJson['data']["result"]["id"]);
     }
     this.props.navigation.setParams({
       title: this.state.data.title,
@@ -332,7 +339,25 @@ class RestaurantMenu extends React.Component {
                       value={e.price}
                       pressed={itemCount !== 0}
                       count={itemCount}
-                      onPress={() => {this.props.onAddPlate(e); }}
+                      onPress={async () => {                        
+                        if (this.props.globalStore.length > 0) {
+                          if (this.props.globalStore[this.props.globalStore.length - 1].plate.restaurant !== e.restaurant)
+                            Alert.alert(
+                              "Вы уверенны?",
+                              "Вы добавили блюдо из другого ресторана. Ваша корзина из предыдущего ресторана будет очищена.",
+                              [
+                                {text: 'OK', onPress: () => this.props.onAddPlate(e)},
+                                {text: 'Отмена', onPress: null, style: 'cancel'},
+                              ],
+                              { cancelable: false }
+                            );
+                          else
+                            this.props.onAddPlate(e);
+                          }
+                        else
+                          this.props.onAddPlate(e);
+
+                      }}
                     />
                     {itemCount === 0 ? null : <Touchable
                     background={Touchable.SelectableBackground()}
@@ -448,9 +473,10 @@ class RestaurantMenu extends React.Component {
   getCount = (plate) => {
     var i = 0;
     while (i < this.props.globalStore.length) {
-      let equalTitle = plate.title == this.props.globalStore[i].plate.title;
+      let equalTitle = plate.title === this.props.globalStore[i].plate.title;
+      let equalId = plate.id === this.props.globalStore[i].plate.id;
       let equalRestaurant = plate.restourant == this.props.globalStore[i].plate.restourant;
-      if (equalTitle && equalRestaurant) {
+      if (equalTitle && equalRestaurant && equalId) {
         return this.props.globalStore[i].count;
       }
       i++;
@@ -792,7 +818,7 @@ function getCount(cart, plate) {
 
 export default connect(
   state => ({
-    globalStore: state.cart
+    globalStore: state.cart,
   }),
   dispatch => ({
     onAddPlate: plate => {
@@ -800,7 +826,8 @@ export default connect(
     },
     deletePlate: plate => {
       dispatch({ type: "REMOVE_PLATE_BY_OBJECT", payload: plate });
-    }
+    },
+    setLastViewed: id => dispatch({ type: "SET_VIEWED_RESTAURANT", payload: id })
   })
 )(RestaurantMenu);
 
