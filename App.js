@@ -25,9 +25,10 @@ class ModalComponent extends React.Component {
   render = () => <View style={{flex: 1}}>
     <A />
     <PopupDialog
-      dismissOnHardwareBackPress={false}
+      dismissOnHardwareBackPress={true}
+      onDismissed={() => { Reducer.dispatch({type: "HIDE_MODAL"}) }}
       ref={(popupDialog) => { this.popupDialog = popupDialog; }}
-      dismissOnTouchOutside={false}
+      dismissOnTouchOutside={true}
       dialogStyle={{
         backgroundColor: 'transparent',
         flexDirection: 'column',
