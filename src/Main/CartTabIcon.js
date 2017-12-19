@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, Platform } from "react-native";
 import { connect } from "react-redux";
 import IconD from "../IconD";
 
@@ -14,26 +14,24 @@ class TabIcon extends React.Component {
 
   renderBadge = () => {
     return (
-      <View
-        style={{
-          position: "absolute",
-          width: 10,
-          height: 10,
-          borderRadius: 5,
-          backgroundColor: "#fff"
-        }}
-      >
-        <Text
-          style={{
-            position: "absolute",
-            fontSize: 8,
-            left: 2,
-            backgroundColor: "transparent"
-          }}
-        >
-          {this.getItemsCount()}
-        </Text>
-      </View>
+      <View style={{
+        backgroundColor: '#fff',
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+        top: -4,
+        right: -4,
+        position: "absolute",
+      }}><Text style={{
+        color: "black",
+        fontSize: 8,
+        textAlign: 'center',
+        position: "absolute",
+        width: 10,
+        top: Platform.OS === "ios" ? 1 : 0,
+        fontFamily: 'stem-medium',
+        backgroundColor: 'transparent'
+      }}>{this.getItemsCount()}</Text></View>
     );
   };
 
@@ -51,28 +49,7 @@ class TabIcon extends React.Component {
             name={this.props.focused ? "cart-fill" : "cart"}
             color={"rgb(225, 199, 155)"}
           />
-          <View
-            style={{
-              position: "absolute",
-              top: -5,
-              right: 0,
-              width: 10,
-              height: 10,
-              borderRadius: 5,
-              backgroundColor: "#fff"
-            }}
-          >
-            <Text
-              style={{
-                position: "absolute",
-                fontSize: 8,
-                left: 2,
-                backgroundColor: "transparent"
-              }}
-            >
-              {this.getItemsCount()}
-            </Text>
-          </View>
+          {this.renderBadge()}
         </View>
       );
     }
