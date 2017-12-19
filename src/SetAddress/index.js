@@ -112,6 +112,10 @@ class SelectAddress extends React.Component {
 	};
 
 	validateAddress = async (address) => {
+		if (this.state.address == '' || this.state.house == '') {
+			this.setState({deliver: false});
+			return -1;
+		}
 		const response = await fetch(`${host}/address?cityId=36&street=${this.state.address}&house=${this.state.house}&restaurantId=${this.props.navigation.state.params.id}`)
 		const responseJson = await response.json();
 		this.setState({ deliver: responseJson["data"]["result"] == 0 });
@@ -241,8 +245,8 @@ class SelectAddress extends React.Component {
 							}}
 						/>
 					</View>
-					{this.state.address != '' ? this.renderAutocomplete(this.state.address) : null}
-					{this.state.address != '' ? this.checkForAviability(this.state.address) : null}
+					{this.state.address != '' && this.state.house != '' ? this.renderAutocomplete(this.state.address) : null}
+					{this.state.address != '' && this.state.house != '' ? this.checkForAviability(this.state.address) : null}
 					<View style={{
 						position: 'absolute',
 						alignSelf: 'center',
