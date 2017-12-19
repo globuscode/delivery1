@@ -246,7 +246,7 @@ export default class Restaurant extends React.Component {
               }}
             />
           </View>
-          <View style={{ height: 70 }} />
+          <View style={{ height: 70 - 20 }} />
 
           {/* Ранг пользователя
 			<View style={[styles.row, {justifyContent: 'center'}]}>
