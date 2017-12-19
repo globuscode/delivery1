@@ -37,6 +37,8 @@ class SelectAddress extends React.Component {
 			address: '',
 			house: ''
 		};
+		if (this.props.navigation.state.params.id === this.props.lastViewed.restaurant)
+			this.props.navigation.navigate('RestaurantMenu', {id: this.props.navigation.state.params.id});
 	};
 
 	componentWillMount = async () => {
@@ -275,7 +277,9 @@ class SelectAddress extends React.Component {
 }
 
 export default connect(
-	state => ({}),
+	state => ({
+		lastViewed: state.lastViewed
+	}),
 	dispatch => ({
 		saveAddress: address => dispatch({ type: "SAVE_ADDRESS", payload: address })
 	})
