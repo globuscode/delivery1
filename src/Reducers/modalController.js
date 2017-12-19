@@ -25,7 +25,7 @@ export default function modalController(state = initialState, action) {
         opened: true
       };
   }
-  if (action.type == 'CLOSE_MODAL') {
+  if (action.type == 'CLOSE_MODAL' || action.type == 'HIDE_MODAL') {
     return {
         ...state,
         opened: false
