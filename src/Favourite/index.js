@@ -448,18 +448,27 @@ class Favourite extends React.Component {
 
     componentWillReceiveProps = async (newProps) => {
       await AsyncStorage.setItem('fav', JSON.stringify(newProps.favourite));
-
+      
       let needToUpdate = false;
-      if (this.state.favouriteIds.plates.length != newProps.favourite.plates.length) {
+      let stateFavPlatesLength = this.state.favouriteIds.plates.length;
+      let propsFavPlatesLength = newProps.favourite.plates.length;
+
+
+      let isNeedSetPlates = stateFavPlatesLength != propsFavPlatesLength;
+      if (isNeedSetPlates) {
         needToUpdate = true;
         this.state.favouriteIds.plates = newProps.favourite.plates;
       }
-      if (this.state.favouriteIds.restaurants.length != newProps.favourite.restaurants.length) {
+
+      let isNeedSetRests = this.state.favouriteIds.restaurants.length != this.state.favouriteIds.restaurants.length;
+      let isFavRestEmpty = newProps.favourite.restaurants.length === 0;
+      if (isNeedSetRests || isFavRestEmpty) {
         needToUpdate = true;
         this.state.favouriteIds.restaurants = newProps.favourite.restaurants;
       }
 
-      if (needToUpdate || newProps.favourite.plates.length == 0) {
+
+      if (needToUpdate) {
         this.state.favouriteIds.plates = [];
         this.state.favourite.plates = [];
         this.state.restaurans = [];
@@ -475,10 +484,13 @@ class Favourite extends React.Component {
 
           if (i === newProps.favourite.plates.length - 1)
             this.setState({});
-        }); 
+        });
+        if (this.state.favourite.plates.length === 0) {
+          this.setState({});
+        }
       }
 
-      if (needToUpdate || newProps.favourite.restaurants.length == 0) {
+      if (needToUpdate) {
         this.state.favouriteIds.restaurants = [];
         this.state.favourite.restaurants = [];
         newProps.favourite.restaurants.forEach(async (restaurant, i) => {
@@ -488,7 +500,11 @@ class Favourite extends React.Component {
 
           if (i === newProps.favourite.restaurants.length - 1)
             this.setState({});
-        }); 
+        });
+
+        if (this.state.favourite.restaurants.length === 0) {
+          this.setState({});
+        }
       }       
     }
 
