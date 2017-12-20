@@ -74,7 +74,6 @@ const FirstScreen = StackNavigator(
     Restaurant: {
       screen: Restaurant,
       navigationOptions: {
-        title: "Джон Джоли",
         gesturesEnabled: false,
         headerTintColor: "#fff",
         headerTitleStyle: {
@@ -246,6 +245,52 @@ const ThirdScreen = StackNavigator(
       navigationOptions: {
         header: null,
         gesturesEnabled: false
+      }
+    },
+
+    Restaurant: {
+      screen: Restaurant,
+      navigationOptions: {
+        gesturesEnabled: false,
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontFamily: "stem-medium",
+          fontSize: 14,
+          letterSpacing: 0.8
+        },
+        headerBackTitleStyle: {
+          color: "#dcc49c"
+        },
+        headerStyle: {
+          marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
+          backgroundColor: "#292b37"
+        }
+      }
+    },
+    Plate: {
+      screen: Plate,
+      navigationOptions: {
+        header: null,
+        gesturesEnabled: true
+      }
+    },
+    RestaurantMenu: {
+      screen: RestaurantMenu,
+      navigationOptions: {
+        headerTintColor: "#fff",
+        gesturesEnabled: false,
+        headerTitleStyle: {
+          fontFamily: "stem-medium",
+          fontSize: 14,
+          letterSpacing: 0.8
+        },
+        headerBackTitleStyle: {
+          color: "#dcc49c"
+        },
+        headerStyle: {
+          marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
+          backgroundColor: "#292b37"
+        }
       }
     }
   },

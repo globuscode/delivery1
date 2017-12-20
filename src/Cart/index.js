@@ -17,6 +17,7 @@ import { TextField } from "react-native-material-textfield";
 import Icon from "react-native-vector-icons/Ionicons";
 import Button from "react-native-button";
 import { LinearGradient, Constants } from "expo";
+import Touchable from 'react-native-platform-touchable';
 import { connect } from "react-redux";
 
 import Counter from "../Counter";
@@ -100,10 +101,19 @@ class Cart extends React.Component {
       }
     };
   }
-
+  isInFav = ({id}) => {
+    if (typeof id === undefined) {
+      return false;
+    }
+    for (let i=0; i<this.props.favourite.plates.length; i++) {
+      if (id === this.props.favourite.plates[i]) {
+        return true;
+      }
+    }
+  }
   componentDidMount = async () => {
-    if (this.props.globalStore.cart.length != 0) {
-      const rest = await fetch(`${host}/restaurant?restaurantId=`+this.props.globalStore.cart[0].plate.restaurant);
+    if (this.props.cart.length != 0) {
+      const rest = await fetch(`${host}/restaurant?restaurantId=`+this.props.cart[0].plate.restaurant);
       const restJson = await rest.json();
       this.setState({restaurant: restJson["data"]["result"]});
     }
@@ -197,10 +207,10 @@ class Cart extends React.Component {
 
   totalPrice = () => {
     let result = 0;
-    for (var i = 0; i < this.props.globalStore.cart.length; i++) {
+    for (var i = 0; i < this.props.cart.length; i++) {
       result +=
-        parseFloat(this.props.globalStore.cart[i].plate.price) *
-        parseFloat(this.props.globalStore.cart[i].count);
+        parseFloat(this.props.cart[i].plate.price) *
+        parseFloat(this.props.cart[i].count);
     }
 
     return result;
@@ -225,18 +235,48 @@ class Cart extends React.Component {
           justifyContent: "flex-start"
         }}
       >
-        <Image
-          source={{
-            uri: 'http:'+e.plate.image
-          }}
-          style={{
+        <View
+          styel={{
             width: imageHeight,
             height: imageHeight,
             borderWidth: e.plate.image.indexOf('.png') > 0 ? 1.5 : 0,
             borderColor: 'rgb(225, 199, 155)',
             borderRadius: 10
-          }}
-        />
+          }}>
+            <Image
+              source={{
+                uri: 'http:'+e.plate.image
+              }}
+              style={{
+                width: imageHeight,
+                height: imageHeight,
+                borderWidth: e.plate.image.indexOf('.png') > 0 ? 1.5 : 0,
+                borderColor: 'rgb(225, 199, 155)',
+                borderRadius: 10
+              }}
+            />
+          <Touchable
+            style={{position: 'absolute', right: 5, top: 5}}
+            hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}
+            foreground={Touchable.SelectableBackgroundBorderless()}
+            onPress={() => {
+              if (this.isInFav(e.plate)) {
+                this.props.removeFromFav(e.plate);
+              }
+              else {
+                this.props.addToFav(e.plate);
+              }
+              this.setState({})
+            }}>
+            <View style={{ backgroundColor: "transparent" }}>
+              <IconD
+                name={this.isInFav(e.plate) ? "heart_full" : "heart_empty"}
+                size={18}
+                color="#dcc49c"
+              />
+            </View>
+          </Touchable>
+        </View>
         <View
           style={{
             flexDirection: "column",
@@ -323,9 +363,9 @@ class Cart extends React.Component {
   };
 
   getSalesPrice = async () => {
-    if (this.props.globalStore.cart.length == 0)
+    if (this.props.cart.length == 0)
       return 0;
-    const cart = this.props.globalStore.cart.map((element) => { 
+    const cart = this.props.cart.map((element) => { 
       return {
         "plateId": element.plate.id,
         "qty": element.count,
@@ -343,8 +383,8 @@ class Cart extends React.Component {
   }
 
   componentWillReceiveProps = async (newProps) => {
-    if (newProps.globalStore.cart.length != 0) {
-      const rest = await fetch(`${host}/restaurant?restaurantId=`+newProps.globalStore.cart[0].plate.restaurant);
+    if (newProps.cart.length != 0) {
+      const rest = await fetch(`${host}/restaurant?restaurantId=`+newProps.cart[0].plate.restaurant);
       const restJson = await rest.json();
       this.setState({restaurant: restJson["data"]["result"]});
     }
@@ -365,7 +405,7 @@ class Cart extends React.Component {
         ? 0
         : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
     const change = this.totalPrice() - this.state.restaurant.minOrder;
-    if (this.props.globalStore.cart.length != 0)
+    if (this.props.cart.length != 0)
       return (
         <View style={styles.container}>
           <ScrollView
@@ -434,7 +474,7 @@ class Cart extends React.Component {
 				fontFamily: 'stem-medium',
 				letterSpacing: 0.8
 			}}>{this.getItemsCount().toString() + ' позиции на сумму ' + this.totalPrice() + '₽'}</Text>
-            {this.props.globalStore.cart.map((e, i) => {
+            {this.props.cart.map((e, i) => {
               return (
                 <View key={i} style={{ flexDirection: "row" }}>
                   {this._renderContent(e, i)}
@@ -768,7 +808,7 @@ class Cart extends React.Component {
 
   getItemsCount = () => {
 	  result = 0;
-	  this.props.globalStore.cart.map((e, i) => {
+	  this.props.cart.map((e, i) => {
 		result += e.count;
 	  });
 	  return result;
@@ -907,12 +947,19 @@ class Cart extends React.Component {
 
 export default connect(
   state => ({
-    globalStore: state
+    cart: state.cart,
+    favourite: state.favourite
   }),
   dispatch => ({
     removePlate: plateIndex =>
       dispatch({ type: "REMOVE_PLATE", index: plateIndex }),
-    addPlate: plate => dispatch({ type: "ADD_PLATE", payload: plate })
+    addPlate: plate => dispatch({ type: "ADD_PLATE", payload: plate }),
+    addToFav: (data) => {
+      dispatch({ type: "ADD_PLATE_TO_FAV", payload: data })
+    },
+		removeFromFav: (data) => {
+			dispatch({ type: "DELETE_PLATE", payload: data })
+		},
   })
 )(Cart);
 

@@ -11,6 +11,7 @@ import {
   Image
 } from 'react-native';
 import { connect } from 'react-redux';
+import HTMLView from 'react-native-htmlview';
 import { adaptWidth } from '../etc';
 import { Constants } from 'expo';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
@@ -59,6 +60,20 @@ class Favourite extends React.Component {
             }
         };
     }
+
+    getCount = (plate) => {
+      var i = 0;
+      while (i < this.props.cart.length) {
+        let equalTitle = plate.title == this.props.cart[i].plate.title;
+        let equalRestaurant = plate.restourant == this.props.cart[i].plate.restourant;
+        if (equalTitle && equalRestaurant) {
+          return this.props.cart[i].count;
+        }
+        i++;
+      }
+      return 0;
+    }
+    
 
     _renderSinglePlate = ( item, index ) => {
         /* Разметка */
@@ -312,7 +327,7 @@ class Favourite extends React.Component {
       };
 
     renderPlates = () => {
-      return this.state.favourite.plates.map(this._renderSinglePlate);
+      return this._renderContent(this.state.favourite.plates);
     }
 
     nav = (index) => {
@@ -442,6 +457,173 @@ class Favourite extends React.Component {
         return null;
     }
 
+    _renderContent = (plates) => {
+      const imageHeight =
+        viewportWidth >= 320 && viewportWidth < 375
+          ? 100
+          : viewportWidth >= 375 && viewportWidth < 414 ? 117 : 130;
+      //const textMarginRight = (viewportWidth >= 320 && viewportWidth < 375) ? 40 : (viewportWidth >= 375 && viewportWidth < 414) ? 117 : 130;
+      return (
+        <View style={{ flexDirection: "column", width: viewportWidth }}>
+          {plates.map((e, i) => {
+            const itemCount = this.getCount(e);
+            return (
+              <Touchable
+                key={i}
+                background={Touchable.Ripple('gray')} 
+                onPress={() => {
+                  if (this.state.canNav) {
+                    this.props.navigation.navigate("Plate", {plate: e, restaurant: this.state.data});
+                    this.state.canNav = false;
+                    setTimeout(() => {
+                      this.state.canNav = true;
+                    }, 1500);
+                  }
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginLeft: 10,
+                    width: viewportWidth - 10,
+                    marginTop: 10,
+                    justifyContent: "flex-start"
+                  }}
+                >
+                  <View
+                    styel={{
+                      width: imageHeight,
+                      height: imageHeight,
+                      borderWidth: e.image.indexOf('.png') > 0 ? 1.5 : 0,
+                      borderColor: 'rgb(225, 199, 155)',
+                      borderRadius: 10
+                    }}>
+                      <Image
+                      source={{
+                        uri: 'http:'+e.image
+                      }}
+                      style={{
+                        width: imageHeight,
+                        height: imageHeight,
+                        borderWidth: e.image.indexOf('.png') > 0 ? 1.5 : 0,
+                        borderColor: 'rgb(225, 199, 155)',
+                        borderRadius: 10
+                      }}
+                    />
+                    <Touchable
+                      style={{position: 'absolute', right: 5, top: 5}}
+                      hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}
+                      foreground={Touchable.SelectableBackgroundBorderless()}
+                      onPress={() => {
+                        this.props.onDeletePlate(e);
+                        this.setState({})
+                      }}>
+                      <View style={{ backgroundColor: "transparent" }}>
+                        <IconD
+                          name={"trash"}
+                          size={18}
+                          color="#dcc49c"
+                        />
+                      </View>
+                    </Touchable>
+                  </View>
+                  
+                  <View
+                    style={{
+                      flexDirection: "column",
+                      marginLeft: 10,
+                      marginVertical: 5,
+                      flex: 1,
+                      justifyContent: 'space-between',
+                      width: viewportWidth - 20 - 20 - imageHeight
+                    }}
+                  >
+                    <View style={{
+                      flexDirection: 'column',
+                    }}>
+                    <Text
+                      style={{
+                        color: "#fff",
+                        fontSize: 15,
+                        fontFamily: "stem-medium",
+                        top: 3,
+                        lineHeight: 18,
+                        letterSpacing: 1
+                      }}
+                    >
+                      {e.title}
+                    </Text>
+                    <View style={{
+                      marginBottom: 5
+                  }}>
+                    <HTMLView
+                      value={`<p>${e.description}</p>`}
+                      stylesheet={styles}
+                    />
+                  </View>
+                    </View>
+                    <View style={{ flexDirection: "row" }}>
+                      <PriceButton
+                        value={e.price}
+                        pressed={itemCount !== 0}
+                        count={itemCount}
+                        onPress={async () => {                        
+                          if (this.props.globalStore.length > 0) {
+                            if (this.props.globalStore[this.props.globalStore.length - 1].plate.restaurant !== e.restaurant)
+                              Alert.alert(
+                                "Вы уверенны?",
+                                "Вы добавили блюдо из другого ресторана. Ваша корзина из предыдущего ресторана будет очищена.",
+                                [
+                                  {text: 'OK', onPress: () => this.props.onAddPlate(e)},
+                                  {text: 'Отмена', onPress: null, style: 'cancel'},
+                                ],
+                                { cancelable: false }
+                              );
+                            else
+                              this.props.onAddPlate(e);
+                            }
+                          else
+                            this.props.onAddPlate(e);
+  
+                        }}
+                      />
+                      {itemCount === 0 ? null : <Touchable
+                      background={Touchable.SelectableBackground()}
+                      onPress={() => { this.props.deletePlate(e)}}
+                      style={{
+                        width: adaptWidth(28, 30, 34),
+                        marginLeft: 10,
+                        height: adaptWidth(28, 30, 34),
+                        borderRadius: 4,
+                        justifyContent: 'center',
+                        backgroundColor: "#dcc49c",
+                        alignItems: 'center'
+                      }}>
+                        <Text style={{color: "rgba(41,43,55, 1)"}}>{'–'}</Text>
+                      </Touchable>}
+                      <Text
+                        style={{
+                          color: "rgb(135, 136, 140)",
+                          marginLeft: 10,
+                          fontSize: 12,
+                          lineHeight: 14,
+                          maxWidth: 80,
+                          letterSpacing: 0.4,
+                          fontFamily: "open-sans-semibold"
+                        }}
+                      >
+                        {e.weight}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+              </Touchable>
+            );
+          })}
+        </View>
+      );
+    };
+
     componentWillMount = () => {
       this.componentWillReceiveProps(this.props);
     }
@@ -455,7 +637,8 @@ class Favourite extends React.Component {
 
 
       let isNeedSetPlates = stateFavPlatesLength != propsFavPlatesLength;
-      if (isNeedSetPlates) {
+      let isFavPlatesEmpty = newProps.favourite.plates.length === 0;
+      if (isNeedSetPlates || isFavPlatesEmpty) {
         needToUpdate = true;
         this.state.favouriteIds.plates = newProps.favourite.plates;
       }
@@ -648,5 +831,11 @@ const styles = StyleSheet.create({
       width: viewportWidth - 40 + 1,
       left: -0.5,
       borderRadius: 10,
-    }
+    },
+    p: {
+      color: "rgb(135, 136, 140)",
+      fontSize: 12,
+      lineHeight: 14,
+      marginBottom: 5
+    },
 });
