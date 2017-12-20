@@ -308,6 +308,7 @@ class Recomendations extends React.Component {
           width: SLIDER_WIDTH / 3,
           height: SLIDER_WIDTH / 3
         }}
+        resizeMode={'contain'}
         source={{ uri: this.state.restaurans[index] ? ('http:'+this.state.restaurans[index].logoImage) : "http://dostavka1.com/img/app-icon.png" }}
       />
     );

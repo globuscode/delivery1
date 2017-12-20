@@ -142,6 +142,7 @@ class Recomendations extends React.Component {
       height: (SLIDER_WIDTH) / 3,
       backgroundColor: 'transparent',
     }}
+    resizeMode={'contain'}
      source={{uri: 'http:'+logo}}
    />;/*
     return <View style={{ height: SLIDER_WIDTH / 3 }}>
