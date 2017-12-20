@@ -111,7 +111,6 @@ class RestaurantMenu extends React.Component {
     if (responseJson["data"] && responseJson["data"]["result"]) {
       responseJson["data"]["result"]["menu"] = [];
       this.setState({ data: responseJson['data']["result"] });
-      console.log('RM', responseJson['data']["result"]["id"]);
       this.props.setLastViewed(responseJson['data']["result"]["id"]);
     }
     this.props.navigation.setParams({
@@ -213,6 +212,17 @@ class RestaurantMenu extends React.Component {
     );
   }
 
+  isInFav = ({id}) => {
+    if (typeof id === undefined) {
+      return false;
+    }
+    for (let i=0; i<this.props.favourite.plates.length; i++) {
+      if (id === this.props.favourite.plates[i]) {
+        return true;
+      }
+    }
+  }
+
   /**
 	 * Возвращает кнопку с ценой
 	 * @param {Number} price 
@@ -288,18 +298,49 @@ class RestaurantMenu extends React.Component {
                   justifyContent: "flex-start"
                 }}
               >
-                <Image
-                  source={{
-                    uri: 'http:'+e.image
-                  }}
-                  style={{
+                <View
+                  styel={{
                     width: imageHeight,
                     height: imageHeight,
                     borderWidth: e.image.indexOf('.png') > 0 ? 1.5 : 0,
                     borderColor: 'rgb(225, 199, 155)',
                     borderRadius: 10
-                  }}
-                />
+                  }}>
+                    <Image
+                    source={{
+                      uri: 'http:'+e.image
+                    }}
+                    style={{
+                      width: imageHeight,
+                      height: imageHeight,
+                      borderWidth: e.image.indexOf('.png') > 0 ? 1.5 : 0,
+                      borderColor: 'rgb(225, 199, 155)',
+                      borderRadius: 10
+                    }}
+                  />
+                  <Touchable
+                    style={{position: 'absolute', right: 5, top: 5}}
+                    hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}
+                    foreground={Touchable.SelectableBackgroundBorderless()}
+                    onPress={() => {
+                      if (this.isInFav(e)) {
+                        this.props.removeFromFav(e);
+                      }
+                      else {
+                        this.props.addToFav(e);
+                      }
+                      this.setState({})
+                    }}>
+                    <View style={{ backgroundColor: "transparent" }}>
+                      <IconD
+                        name={this.isInFav(e) ? "heart_full" : "heart_empty"}
+                        size={18}
+                        color="#dcc49c"
+                      />
+                    </View>
+                  </Touchable>
+                </View>
+                
                 <View
                   style={{
                     flexDirection: "column",
@@ -690,7 +731,8 @@ class RestaurantMenu extends React.Component {
           </TouchableOpacity>
 
           {/* Кнопка Прейти к меню */}
-          {this.renderButton("Перейти к меню", () => {
+
+          {this.state.data.bestPlates == undefined ? null : this.renderButton("Перейти к меню", () => {
             this.refs["scroll"].scrollToEnd({ animated: true });
           })}
 
@@ -819,6 +861,7 @@ function getCount(cart, plate) {
 export default connect(
   state => ({
     globalStore: state.cart,
+    favourite: state.favourite
   }),
   dispatch => ({
     onAddPlate: plate => {
@@ -827,7 +870,13 @@ export default connect(
     deletePlate: plate => {
       dispatch({ type: "REMOVE_PLATE_BY_OBJECT", payload: plate });
     },
-    setLastViewed: id => dispatch({ type: "SET_VIEWED_RESTAURANT", payload: id })
+    setLastViewed: id => dispatch({ type: "SET_VIEWED_RESTAURANT", payload: id }),
+    addToFav: (data) => {
+      dispatch({ type: "ADD_PLATE_TO_FAV", payload: data })
+    },
+		removeFromFav: (data) => {
+			dispatch({ type: "DELETE_PLATE", payload: data })
+		},
   })
 )(RestaurantMenu);
 
