@@ -63,6 +63,9 @@ export default function favourite(state = initialState, action) {
       }
     }
     state.restaurants.push(action.payload.id);
+    return {
+      ...state
+    };
   }
 
   return {

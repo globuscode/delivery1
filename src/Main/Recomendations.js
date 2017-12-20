@@ -234,7 +234,6 @@ class Recomendations extends React.Component {
     // Компонент с кнопкой добавить в избранное
     var heartButton = (
         <Touchable
-          background={Touchable.SelectableBackgroundBorderless()}
           style={{position: 'absolute', right: 0, top: 0}}
           hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}
           foreground={Touchable.SelectableBackgroundBorderless()}
@@ -396,6 +395,23 @@ class Recomendations extends React.Component {
 
   componentWillReceiveProps = (newProps) => {
     this.props = newProps;
+    this.state.favourites = [];
+    this.state.entries.forEach(element => {
+      let fav = false;
+      for (let i=0; i<this.props.favourite.plates.length; i++) {
+        let rest = this.props.favourite.plates[i];
+        if (rest === element.id) {
+          fav = true;
+        }
+      }
+      if (fav)
+        this.state.favourites.push(true);
+      else
+        this.state.favourites.push(false);
+
+      this.setState({});
+      
+    });
     this.setState({});
   }
 

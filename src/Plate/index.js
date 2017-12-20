@@ -261,7 +261,17 @@ class Plate extends React.Component{
 
 	componentWillReceiveProps = (newProps) => {
 		this.props = newProps;
-		this.setState({});
+		let fav = false;
+		for (let i=0; i<this.props.favourite.plates.length; i++) {
+			if (this.props.favourite.plates[i] === this.state.plate.id) {
+				this.setState({favourite: true});
+				fav = true;
+				break;
+			}
+		}
+		if (!fav) {
+			this.setState({favourite: false});
+		}
 	  }
 
 	render() {

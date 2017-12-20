@@ -37,18 +37,30 @@ class Recomendations extends React.Component {
     this.state = {
       canNav: true,
       activeSlide: 0,
+      favourites: [],
       restourans: []
     };
     if (props.data) {
       this.state.restourans = props.data;
+      this.state.restourans.forEach(element => {
+        let fav = false;
+
+        for (let i=0; i<this.props.favourite.restaurants.length; i++) {
+          let rest = this.props.favourite.restaurants[i];
+          if (rest === element.id) {
+            fav = true;
+          }
+        }
+        if (fav)
+          this.state.favourites.push(true);
+        else
+          this.state.favourites.push(false);
+        
+      })
     }
     this.fav = this.fav.bind(this);
 
   };
-
-  componentWillReceiveProps = (newProps) => {
-    this.setState({});
-  }
 
   componentWillMount = () => {
     if (!this.props.data)
@@ -69,7 +81,7 @@ class Recomendations extends React.Component {
   };
 
   fav = (index) => {
-    this.state.restourans[index].favourite = !this.state.restourans[index].favourite;
+    this.state.favourites[index] = !this.state.favourites[index];
     this.setState({});
   };
 
@@ -95,10 +107,24 @@ class Recomendations extends React.Component {
   }
 
   renderHeart(index) {
-    return <TouchableOpacity hitSlop={{top: 20, bottom: 20, left: 20, right: 20}} onPress={() => { this.props.addToFav(this.state.restourans[index]); this.fav(index); }}>
+    return <TouchableOpacity 
+      hitSlop={{top: 20, bottom: 20, left: 20, right: 20}} 
+      onPress={() => { 
+        if (this.state.favourites[index]) {
+          this.props.removeFromFav(this.state.restourans[index]);
+          this.setState({})
+          //this.fav(index);
+        }
+        else {
+          this.props.addToFav(this.state.restourans[index]);
+          this.setState({})
+          //this.fav(index);
+        }
+        
+      }}>
       <View style={{ backgroundColor: 'transparent' }}>
         <IconD
-          name={this.state.restourans[index].favourite ? 'heart_full' : 'heart_empty'}
+          name={this.state.favourites[index] ? 'heart_full' : 'heart_empty'}
           size={18}
           color='#dcc49c'
         /></View>
@@ -149,6 +175,21 @@ class Recomendations extends React.Component {
   componentWillReceiveProps = (props) => {
     if (props.data) {
       this.state.restourans = props.data;
+      this.state.favourites = [];
+      this.state.restourans.forEach(element => {
+        let fav = false;
+        for (let i=0; i<this.props.favourite.restaurants.length; i++) {
+          let rest = this.props.favourite.restaurants[i];
+          if (rest === element.id) {
+            fav = true;
+          }
+        }
+        if (fav)
+          this.state.favourites.push(true);
+        else
+          this.state.favourites.push(false);
+        
+      });
       this.setState({});
     }
   }
@@ -212,11 +253,15 @@ class Recomendations extends React.Component {
 
 export default connect(
   state => ({
+    favourite: state.favourite
   }),
   dispatch => ({
     addToFav: (data) => {
       dispatch({ type: "ADD_RESTAURANT_TO_FAV", payload: data })
     },
+		removeFromFav: (data) => {
+			dispatch({ type: "DELETE_RESTAURANT", payload: data })
+		},
   })
 )(Recomendations)
 
