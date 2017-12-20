@@ -256,9 +256,7 @@ export default class SelectTags extends React.Component {
               mixedContentMode='always'
               domStorageEnabled={true}
               startInLoadingState
-              injectJavaScript
               onError={() => Alert.alert("Ошибка")}
-              injectedJavaScript={'tags = JSON.parse(' + JSON.stringify(this.state.kitchens) + ');'}
               source={webapp}
               scalesPageToFit={true}
               onMessage={this.onMessage}
@@ -268,10 +266,9 @@ export default class SelectTags extends React.Component {
                   this.setState({spinner: false});
                 }, 1500);
               }}
-              javaScriptEnabled={true}
               domStorageEnabled={true}
               style={{ 
-                backgroundColor: 'red', 
+                backgroundColor: 'transparent', 
                 height: viewportHeight - 193, 
                 width: viewportWidth }}
             />
