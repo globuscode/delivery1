@@ -45,9 +45,10 @@ const hrShort = (
 );
 
 export default class Restaurant extends React.Component {
-  navigationOptions = {
-    title: "Home"
-  };
+  static navigationOptions = ({ navigation }) => {
+    return {
+    title: navigation.state.params.title
+}}
 
   constructor(props) {
     super(props);
@@ -90,7 +91,6 @@ export default class Restaurant extends React.Component {
         /*discount: <float>*/
       }
     };
-    this.navigationOptions.title = this.state.data.title;
   }
 
   componentDidMount = async () => {
@@ -102,6 +102,9 @@ export default class Restaurant extends React.Component {
       .then(responseJson => {
         if (responseJson["data"] && responseJson["data"]["result"])
           this.state.data = responseJson["data"]["result"];
+          this.props.navigation.setParams({
+            title: this.state.data.title,
+          });
         this.setState({});
         return responseJson;
       });
