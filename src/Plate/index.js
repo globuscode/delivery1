@@ -6,6 +6,7 @@ import {
 	StyleSheet,
 	ScrollView,
 	Image,
+	Alert,
 	AsyncStorage,
 	WebView,
 	Platform,
@@ -27,7 +28,7 @@ import { adaptWidth } from '../etc';
 import Recomendations from '../Main/Recomendations';
 import IconD from '../IconD';
 import Touchable from 'react-native-platform-touchable';
-
+import { host } from '../etc'
 function onlyUnique(value, index, self) { 
     return self.indexOf(value) === index;
 }
@@ -111,9 +112,16 @@ class Plate extends React.Component{
 	componentWillMount = async () => {
 		const tastes = await AsyncStorage.getItem('tastes');
 		const tastesJson = JSON.parse(tastes);
+
+		let restaurant = this.props.navigation.state.params.restaurant
+		if (!this.props.navigation.state.params.restaurant) {
+			const rest = await fetch(`${host}/restaurant?restaurantId=`+this.props.navigation.state.params.plate.restaurant);
+			const restJson = await rest.json();
+			restaurant = restJson["data"]["result"];
+		}
 		this.setState({
 			plate: this.props.navigation.state.params.plate,
-			restaurant: this.props.navigation.state.params.restaurant,
+			restaurant: restaurant,
 			userTastes: tastesJson
 		});
 
