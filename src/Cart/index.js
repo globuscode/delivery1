@@ -111,7 +111,7 @@ class Cart extends React.Component {
       }
     }
   }
-  componentDidMount = async () => {
+  componentWillReceiveProps = async () => {
     if (this.props.cart.length != 0) {
       const rest = await fetch(`${host}/restaurant?restaurantId=`+this.props.cart[0].plate.restaurant);
       const restJson = await rest.json();
@@ -354,7 +354,7 @@ class Cart extends React.Component {
 
   nav = () => {
     if (this.state.canNav) {
-      this.props.navigation.navigate("SetAddress", {id: this.state.restaurant.id});
+      this.props.navigation.navigate('RestaurantMenu', {id: this.state.restaurant.id});
       this.state.canNav = false;
       setTimeout(() => {
         this.state.canNav = true;
@@ -396,6 +396,10 @@ class Cart extends React.Component {
     this.setState({});
   }
 
+  change = () => {
+    return this.totalPrice() - this.state.restaurant.minOrder;
+  }
+
   render() {
     /*Storage.subscribe(() => {
       this.setState({});
@@ -404,7 +408,7 @@ class Cart extends React.Component {
       viewportWidth >= 320 && viewportWidth < 375
         ? 0
         : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
-    const change = this.totalPrice() - this.state.restaurant.minOrder;
+    const change = this.change();
     if (this.props.cart.length != 0)
       return (
         <View style={styles.container}>
@@ -740,7 +744,7 @@ class Cart extends React.Component {
 
   next = () => {
     if (this.totalPrice() >= this.state.restaurant.minBill) {
-      if (this.props.globalStore.user.token)
+      if (this.props.user.token)
         this.props.navigation.navigate('SetFullAddress', {price: this.totalPrice(), persons: this.state.persons});
       else
         this.props.navigation.navigate('Login', {nextScreen: 'SetFullAddress'});
@@ -948,7 +952,8 @@ class Cart extends React.Component {
 export default connect(
   state => ({
     cart: state.cart,
-    favourite: state.favourite
+    favourite: state.favourite,
+    user: state.user
   }),
   dispatch => ({
     removePlate: plateIndex =>
