@@ -6,8 +6,9 @@ import { host } from '../etc';
 import { NavigationActions } from 'react-navigation';
 
 const resetAction = NavigationActions.reset({
-  index: 0,
+  index: 1,
   actions: [
+    NavigationActions.navigate({ routeName: 'Tabs'}),
     NavigationActions.navigate({ routeName: 'MyOrders'}),
   ]
 });
