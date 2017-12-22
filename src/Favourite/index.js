@@ -48,6 +48,7 @@ class Favourite extends React.Component {
         this.state = {
             selectedView: 0,
             restaurans: [],
+            canNav: true,
             favourite: {
                 plates: [],
                 collections: [],
@@ -345,7 +346,7 @@ class Favourite extends React.Component {
       const SLIDER_HEIGHT = SLIDER_WIDTH * 1.32;
       return (
         <View key={index} style={[styles.itemContainer, {width: SLIDER_WIDTH, height: SLIDER_WIDTH}]}>
-          <Touchable foreground={Touchable.SelectableBackgroundBorderless()} activeOpacity={0.8} style={{ position: 'absolute',width: SLIDER_WIDTH, height: SLIDER_WIDTH }} onPress={() => this.props.navigation.navigate(index)}><View>
+          <Touchable foreground={Touchable.SelectableBackgroundBorderless()} activeOpacity={0.8} style={{ position: 'absolute',width: SLIDER_WIDTH, height: SLIDER_WIDTH }} onPress={() => this.props.navigation.navigate('Restaurant', {id: item.id})}><View>
           <Image
           onLoadEnd={() => this.setState({})}
           style={[styles.itemBackgroundImage, { width: SLIDER_WIDTH, height: SLIDER_WIDTH}]}
@@ -473,7 +474,7 @@ class Favourite extends React.Component {
                 background={Touchable.Ripple('gray')} 
                 onPress={() => {
                   if (this.state.canNav) {
-                    this.props.navigation.navigate("Plate", {plate: e, restaurant: this.state.data});
+                    this.props.navigation.navigate("Plate", {plate: e});
                     this.state.canNav = false;
                     setTimeout(() => {
                       this.state.canNav = true;
