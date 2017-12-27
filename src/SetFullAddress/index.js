@@ -117,7 +117,7 @@ class Forms extends React.Component{
         }
     }
 
-    render = () => <View><KeyboardAwareScrollView behavior='position'>
+    render = () => <View><KeyboardAwareScrollView extraHeight={100} extraScrollHeight={100} enableAutoAutomaticScroll enableOnAndroid behavior='position'>
         <Text style={{
             fontFamily: 'stem-medium',
             fontSize: 16,
