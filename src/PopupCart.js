@@ -7,6 +7,7 @@ import { NavigationActions } from 'react-navigation';
 import { Bar } from 'react-native-progress';
 import IconD from "./IconD";
 import HTMLView from 'react-native-htmlview';
+import Store from './Reducers';
 
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
@@ -89,10 +90,18 @@ class Popup extends React.Component{
         }
     }
 
+    getTotalPrice = () => {
+        let result = 0;
+        for (let i=0; i<this.props.cart.length; i++)
+            result += this.props.cart[i].count*this.props.cart[i].plate.price;
+        return result;
+    }
+
     render = () => {
         var itemCount = getCount(this.props.cart, this.state.plate);
         let freeDelivery = (itemCount*this.state.plate.price) < this.state.freeDelivery;
-        
+        if (this.props.cart.length === 0)
+            return null;
         const popupWidth = screen == 0 ? 290 : screen == 1 ? 340 : 375;
         return <View style={{
             borderTopLeftRadius: 8,
@@ -166,8 +175,8 @@ class Popup extends React.Component{
                     value={itemCount}
                     onRemovePress={async () => {
                         this.props.removePlate(this.state.plate);
-                        if (itemCount == 0) {
-                            this.props.close();
+                        if (itemCount == 1) {
+                            this.props.hide();
                         }
                         this.setState({});
                     }}
@@ -195,7 +204,12 @@ class Popup extends React.Component{
                     </Text>
                 </View>
             </View>
-            <ButtonD title={['Добавить к заказу ','и перейти в ресторан']} onPress={() => {this.props.close()}} width={popupWidth - 2*(12)}/>
+            <ButtonD title={['Добавить к заказу ','и перейти в ресторан']} onPress={() => {
+                if (Store.getState().lastViewed.restaurant === this.state.restaurant.id)
+                    this.props.hide();
+                else
+                    this.props.close();
+                }} width={popupWidth - 2*(12)}/>
 
             <View style={{height: screen == 0 ? 15 : screen == 1 ? 20 : 25}}/>
 
@@ -207,7 +221,7 @@ class Popup extends React.Component{
             }}>
                 
                 <View><Bar
-                    progress={(itemCount*this.state.plate.price)/this.state.freeDelivery}
+                    progress={(this.getTotalPrice())/this.state.freeDelivery}
                     width={popupWidth-24 - 40}
                     animated
                     height={3}
@@ -235,7 +249,7 @@ class Popup extends React.Component{
                     justifyContent: 'center',
                     alignItems: 'center',
                     backgroundColor: 'transparent',
-                    left: freeDelivery ? (itemCount*this.state.plate.price)/this.state.freeDelivery*(popupWidth-24 - 40)-20 : popupWidth
+                    left: freeDelivery ? (this.getTotalPrice())/this.state.freeDelivery*(popupWidth-24 - 40)-20 : popupWidth
                 }}>
                     <Text style={{
                         fontFamily: 'open-sans-semibold',
@@ -244,7 +258,7 @@ class Popup extends React.Component{
                         color: 'rgb(225, 199, 155)',
                         paddingBottom: 4,
                         maxWidth: 56
-                    }}>{`Заказ на\n${itemCount*this.state.plate.price} ₽`}</Text>
+                    }}>{`Заказ на\n${this.getTotalPrice()} ₽`}</Text>
                     <View style={{
                         backgroundColor: 'rgb(37, 38, 46)',
                     }}>
@@ -278,6 +292,7 @@ export default connect(
           dispatch({ type: "REMOVE_PLATE_BY_OBJECT", payload: plate }),
         addPlate: plate => dispatch({ type: "ADD_PLATE", payload: plate }),
         open: () => dispatch({ type: "OPEN_MODAL"}),
+        hide: () => dispatch({ type: "HIDE_MODAL"}),
         close: () => dispatch({ type: "CLOSE_MODAL"}),
     })
   )(Popup);
