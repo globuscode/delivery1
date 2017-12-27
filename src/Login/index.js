@@ -342,6 +342,8 @@ class Login extends React.Component {
               this.props.navigation.navigate("Feed");
             }
           });
+      } else {
+        this.setState({ passwordInputError: "Пароль слишком короткий" });
       }
     } else {
       this.setState({ emailInputError: "Email введен неверно " });
