@@ -5,7 +5,7 @@
     "slug": "delivery1",
     "privacy": "public",
     "sdkVersion": "22.0.0",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "orientation": "portrait",
     "primaryColor": "#292b37",
     "icon": "./assets/icons/512x512.png",
@@ -29,7 +29,7 @@
     },
     "android": {
       "permissions": [],
-      "versionCode": 7,
+      "versionCode": 8,
       "splash": {
         "backgroundColor": "#292b37",
         "resizeMode": "cover"
