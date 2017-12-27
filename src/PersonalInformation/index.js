@@ -114,7 +114,7 @@ class PersonalInfo extends React.Component {
               </View>*/}
         </View>
         {/*this.renderMenuItem("phone", "Изменить номер телефона", null)*/}
-        {this.renderMenuItem("credit-card", "Привязать другую карту оплаты", "SetCard")}
+        {/*this.renderMenuItem("credit-card", "Привязать другую карту оплаты", "SetCard")*/}
         {/*this.renderMenuItem("geotag", "Редактировать адреса доставки", null)}
             {this.renderMenuItem("lock", "Изменить пароль", null)*/}
 
