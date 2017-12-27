@@ -496,7 +496,7 @@ class Plate extends React.Component{
 						fontSize: 11,
 						color: checked ? '#292b37' : '#dcc49c'
 					}}>
-						{e.title.toUpperCase()}
+						{e.title.replace('\r','').toUpperCase()}
 					</Text>
 				</TouchableOpacity>
 			})}
