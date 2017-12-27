@@ -206,7 +206,14 @@ class Registration extends React.Component {
     next = async () => {
         if (this.isNext()) {
             const validationResponse = await fetch(`${host}/sms/?action=check_code&phone=${this.state.phone.replace(/\D+/g, '')}&code=${this.state.code}`, {method: 'get'});
-            const validationResponseJson = await validationResponse.json();
+            let validationResponseJson;
+            try {
+                validationResponseJson = await validationResponse.json();
+            }
+            catch(e) {
+                Alert.alert("Упс", "Похоже серверу плохо");
+            }
+
             
             if (validationResponseJson.status === true) {
                 var payload = {
