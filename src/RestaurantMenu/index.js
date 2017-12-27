@@ -638,7 +638,7 @@ class RestaurantMenu extends React.Component {
               }}
             >
               <View style={[styles.row, { justifyContent: "flex-start" }]}>
-                <Text
+                {this.state.data.description.title == "" ? null : <Text
                   style={{
                     color: "#dcc49c",
                     fontSize: 13,
@@ -648,11 +648,11 @@ class RestaurantMenu extends React.Component {
                   }}
                 >
                   {this.state.data.description.title}
-                </Text>
+                </Text>}
               </View>
-              <View style={{ height: 17 }} />
+              {this.state.data.description.description == "" ? null : <View style={{ height: 17 }} />}
               <View style={[styles.row, { justifyContent: "flex-start" }]}>
-                <Text
+                {this.state.data.description.description == "" ? null : <Text
                   style={{
                     color: "#ffffff",
                     fontSize: 13,
@@ -661,7 +661,7 @@ class RestaurantMenu extends React.Component {
                   }}
                 >
                   {this.state.data.description.description}
-                </Text>
+                </Text>}
               </View>
             </View>
           )}
