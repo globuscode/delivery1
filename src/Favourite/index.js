@@ -237,6 +237,7 @@ class Favourite extends React.Component {
             onLoadEnd={() => {
               this.setState({});
             }}
+            resizeMode='contain'
             style={{
               width: SLIDER_WIDTH / 3,
               height: SLIDER_WIDTH / 3
@@ -429,6 +430,7 @@ class Favourite extends React.Component {
       const SLIDER_WIDTH = screen == 0 ? 280 : screen == 1 ? 328.1 : 362.3;
   
       return <Image
+      resizeMode='contain'
       style={{
         width: (SLIDER_WIDTH) / 3,
         height: (SLIDER_WIDTH) / 3,
