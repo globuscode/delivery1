@@ -207,7 +207,7 @@ class Registration extends React.Component {
         if (this.isNext()) {
             const validationResponse = await fetch(`${host}/sms/?action=check_code&phone=${this.state.phone.replace(/\D+/g, '')}&code=${this.state.code}`, {method: 'get'});
             const validationResponseJson = await validationResponse.json();
-
+            
             if (validationResponseJson.status === true) {
                 var payload = {
                     "userName": this.props.navigation.state.params.userName ? this.props.navigation.state.params.userName : 'null',
@@ -243,9 +243,13 @@ class Registration extends React.Component {
                 }
             }
             else {
+                Alert.alert(validationResponseJson.errors.title, validationResponseJson.errors.detail);
                 this.refs['codeInput'].props.error = validationResponseJson.errors.title;
                 this.setState({});
             }
+        } else {
+            this.refs['phone'].props.error = "Это поле обязательно";
+            this.setState({});
         }
     }
 
