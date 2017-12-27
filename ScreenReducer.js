@@ -164,6 +164,9 @@ export default StackNavigator(
   },
   {
     headerMode: 'screen',
+    navigationOptions: {
+      headerTruncatedBackTitle: 'Назад',
+    },
     headerStyle: {
       backcroundColor: "#292b37"
     },

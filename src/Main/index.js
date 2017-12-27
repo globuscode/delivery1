@@ -118,6 +118,9 @@ const FirstScreen = StackNavigator(
     }
   },
   {
+    navigationOptions: {
+      headerTruncatedBackTitle: 'Назад',
+    },
     cardStyle: {
       backgroundColor: "#292b37"
     }
@@ -181,6 +184,9 @@ const SecondScreen = StackNavigator(
     }
   },
   {
+    navigationOptions: {
+      headerTruncatedBackTitle: 'Назад',
+    },
     cardStyle: {
       backgroundColor: "#292b37"
     }
@@ -207,7 +213,7 @@ const FourthScreen = StackNavigator(
               navigation.navigate("Main");
             }}
           >
-            <Icon name={Platform.OS === "ios" ? "ios-arrow-back-outline" : 'md-arrow-back'} size={30} color="#dcc49c" />
+            <Icon name={Platform.OS === "ios" ? "ios-close-outline" : 'md-close'} size={30} color="#dcc49c" />
           </Touchable>
         ),
         headerTintColor: "#fff",
@@ -228,9 +234,38 @@ const FourthScreen = StackNavigator(
         },
         gesturesEnabled: false
       })
+    },
+    Plate: {
+      screen: Plate,
+      navigationOptions: {
+        header: null,
+        gesturesEnabled: true
+      }
+    },
+    RestaurantMenu: {
+      screen: RestaurantMenu,
+      navigationOptions: {
+        headerTintColor: "#fff",
+        gesturesEnabled: false,
+        headerTitleStyle: {
+          fontFamily: "stem-medium",
+          fontSize: 14,
+          letterSpacing: 0.8
+        },
+        headerBackTitleStyle: {
+          color: "#dcc49c"
+        },
+        headerStyle: {
+          marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
+          backgroundColor: "#292b37"
+        }
+      }
     }
   },
   {
+    navigationOptions: {
+      headerTruncatedBackTitle: 'Назад',
+    },
     headerMode: 'screen',
     cardStyle: {
       backgroundColor: "#292b37"
@@ -295,6 +330,9 @@ const ThirdScreen = StackNavigator(
     }
   },
   {
+    navigationOptions: {
+      headerTruncatedBackTitle: 'Назад',
+    },
     cardStyle: {
       backgroundColor: "#292b37"
     }
