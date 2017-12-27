@@ -89,7 +89,7 @@ class Registration extends React.Component {
 						borderRadius: 8,
 						borderColor: 'rgb(87, 88, 98)'
 					}]}>
-				<Text style={{ color: this.state.phone ? 'rgb(225, 199, 155)' : 'rgb(87, 88, 98)', fontSize: 14, fontFamily: 'stem-medium', top: 3}}>{title}</Text>
+				<Text style={{ color: this.isNext() ? 'rgb(225, 199, 155)' : 'rgb(87, 88, 98)', fontSize: 14, fontFamily: 'stem-medium', top: 3}}>{title}</Text>
 			</TouchableOpacity></View>;
 	}
 
@@ -141,8 +141,8 @@ class Registration extends React.Component {
             }}>
             <TextField
                 ref='codeInput'
-                tintColor={this.state.phone ? '#dcc49c' : 'rgb(87, 88, 98)'}
-                baseColor={this.state.phone ? '#dcc49c' : 'rgb(87, 88, 98)'}
+                tintColor={this.isNext() ? '#dcc49c' : 'rgb(87, 88, 98)'}
+                baseColor={this.isNext() ? '#dcc49c' : 'rgb(87, 88, 98)'}
                 textColor={'white'}
                 returnKeyType={'send'}
                 keyboardType={'phone-pad'}
@@ -278,7 +278,7 @@ class Registration extends React.Component {
     }
 
     isNext = () => {
-        return  (this.state.phone);
+        return  (this.state.phone.replace(/\D+/g, '').length > 10);
     }
 }
 export default connect(
