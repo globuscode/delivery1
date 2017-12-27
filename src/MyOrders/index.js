@@ -7,7 +7,7 @@ class MyOrders extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      history: [],
+      history: null,
       logos: []
     };
   }
@@ -31,7 +31,7 @@ class MyOrders extends React.Component {
             this.setState({history: h});*/
   };
   render = () => {
-    if (this.state.history.length == 0)
+    if (this.state.history === null)
       return (
         <View style={{flex: 1, justifyContent: 'center'}}>
           <ActivityIndicator size='large' style={{alignSelf: 'center'}} />
