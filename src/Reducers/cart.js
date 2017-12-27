@@ -60,7 +60,7 @@ export default function cart(state = initialState, action) {
         for (let index = 0; index < state.length; index++) {
             if (action.payload.id == state[index].plate.id) {
                 if (state[index].count <= 1)
-                    state.splice(action.index, 1);
+                    state.splice(index, 1);
                 else
                     state[index].count--;
                 break;
