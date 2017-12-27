@@ -64,6 +64,8 @@ class Cart extends React.Component {
     super(props);
 
     this.state = {
+      sales: 0,
+      change: 0,
       promocode: "",
       withSales: 0,
       persons: 1,
@@ -111,15 +113,16 @@ class Cart extends React.Component {
       }
     }
   }
-  componentWillReceiveProps = async () => {
-    if (this.props.cart.length != 0) {
-      const rest = await fetch(`${host}/restaurant?restaurantId=`+this.props.cart[0].plate.restaurant);
+  componentWillReceiveProps = async (newProps) => {
+    if (newProps.cart.length != 0) {
+      const rest = await fetch(`${host}/restaurant?restaurantId=`+newProps.cart[0].plate.restaurant);
       const restJson = await rest.json();
       this.setState({restaurant: restJson["data"]["result"]});
     }
 
     const priceWithSales = await this.getSalesPrice();
-    this.setState({withSales: priceWithSales});
+    this.state.withSales = priceWithSales;
+    this.setState({change: this.change()});
       
   };
 
@@ -322,11 +325,9 @@ class Cart extends React.Component {
               value={e.count}
               onRemovePress={async () => {
                 this.props.removePlate(index);
-                this.setState({});
               }}
               onAddPress={() => {
                 this.props.addPlate(e.plate);
-                this.setState({});
               }}
             /></View>
 
@@ -379,25 +380,13 @@ class Cart extends React.Component {
     let result = 0;
     restJson["data"]["items"].map(({ price }) => { result += price; });
 
+    this.setState({sales: - result + this.totalPrice()});
     return result;
   }
 
-  componentWillReceiveProps = async (newProps) => {
-    if (newProps.cart.length != 0) {
-      const rest = await fetch(`${host}/restaurant?restaurantId=`+newProps.cart[0].plate.restaurant);
-      const restJson = await rest.json();
-      this.setState({restaurant: restJson["data"]["result"]});
-    }
-    this.props = newProps;
-
-    const priceWithSales = await this.getSalesPrice();
-    this.state.withSales = priceWithSales;
-
-    this.setState({});
-  }
-
   change = () => {
-    return this.totalPrice() - this.state.restaurant.minOrder;
+    const total = this.totalPrice();
+    return total - this.state.restaurant.minOrder;
   }
 
   render() {
@@ -615,7 +604,7 @@ class Cart extends React.Component {
                   color: "rgb( 255, 255, 255)"
                 }}
               >
-                {(this.state.withSales - this.totalPrice()).toString()+' ₽'}
+                {this.state.sales.toString()+' ₽'}
               </Text>
             </View>
             <View
@@ -744,10 +733,16 @@ class Cart extends React.Component {
 
   next = () => {
     if (this.totalPrice() >= this.state.restaurant.minBill) {
-      if (this.props.user.token)
-        this.props.navigation.navigate('SetFullAddress', {price: this.totalPrice(), persons: this.state.persons});
-      else
-        this.props.navigation.navigate('Login', {nextScreen: 'SetFullAddress'});
+      if (this.state.canNav) {
+        this.state.canNav = false;
+        setTimeout(() => {
+          this.state.canNav = true;
+        }, 1500);
+        if (this.props.user.token)
+          this.props.navigation.navigate('SetFullAddress', {price: this.totalPrice(), persons: this.state.persons});
+        else
+          this.props.navigation.navigate('Login', {nextScreen: 'SetFullAddress'});
+      }
     }
       
   }
