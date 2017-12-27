@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   Dimensions,
   ScrollView,
-  ActivityIndicator
+  ActivityIndicator,
+  FlatList
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import Drawer from "react-native-drawer";
@@ -51,19 +52,18 @@ export default class AllRestourans extends React.Component {
   }
 
   componentDidMount = async () => {
-    const response = await fetch(`${host}/restaurants?cityId=36&startIndex=${this.state.maxIndex === 0 ? '' : this.state.maxIndex}`);
-    const responseJson = await response.json();
+    this.updateResults();
+  }
 
-    this.state.restaurants = responseJson.data.restaurants;
-
-    let rests = [];
-    
-    for (let i=0; i<this.state.maxIndex + 5; i++) {
-      rests.push(this.state.restaurants[i]);
+  renderRestaurant = (restaurant, index) => {
+    if (this.state.selectedType === 0)
+      return <RestouransOfTheWeek key={index} data={[restaurant]} navigation={this.props.navigation} />;
+    for (let i = 0; i< restaurant.restourantTags.length; i++) {
+      if (restaurant.restourantTags[i] == this.state.types[this.state.selectedType]) {
+        return <RestouransOfTheWeek key={index} data={[restaurant]} navigation={this.props.navigation} />;
+      }
     }
-    this.setState({ 
-      restauransShort: rests
-    });
+    return null;
   }
 
   updateResults = async () => {
@@ -73,28 +73,27 @@ export default class AllRestourans extends React.Component {
 
     this.state.restaurans = responseJson.data.restaurants;
     
-    let rests = [];
-    let i = 0;
-    while (i < this.state.maxIndex) {
-      if (this.state.restaurants[i] != undefined) {
-        if (this.state.selectedType === 0) {
-          rests.push(this.state.restaurants[i]);
-        }
-        else {
-          this.state.restaurants[i].restourantTags.forEach((e) => {
-            if (e == this.state.types[this.state.selectedType]) {
-              rests.push(this.state.restaurants[i]);
-            }
-          });
-        }
-      }
-      else
-        break;
-      i += 1;
-    }
+    // let rests = [];
+    // let i = 0;
+    // while (i < this.state.maxIndex) {
+    //   if (this.state.restaurants[i] != undefined) {
+    //     if (this.state.selectedType === 0) {
+    //       rests.push(this.state.restaurants[i]);
+    //     }
+    //     else {
+    //       this.state.restaurants[i].restourantTags.forEach((e) => {
+    //         if (e == this.state.types[this.state.selectedType]) {
+    //           rests.push(this.state.restaurants[i]);
+    //         }
+    //       });
+    //     }
+    //   }
+    //   else
+    //     break;
+    //   i += 1;
+    // }
 
-    this.setState({ 
-      restauransShort: rests,
+    this.setState({
       updating: false
     });
   }
@@ -196,13 +195,6 @@ export default class AllRestourans extends React.Component {
             </TouchableOpacity>
           </View>
           <ScrollView
-            onScroll={({nativeEvent}) => {
-              if (isCloseToBottom(nativeEvent)) {
-                this.state.maxIndex = this.state.maxIndex + 1;
-                this.updateResults();
-              }
-            }}
-            scrollEventThrottle={400}
           contentContainerStyle={{ width: viewportWidth }}>
             <Text
               style={{
@@ -243,7 +235,10 @@ export default class AllRestourans extends React.Component {
                 />
               </TouchableOpacity>
             </View>
-            <RestouransOfTheWeek data={this.state.restauransShort} navigation={this.props.navigation} />
+            {/*<RestouransOfTheWeek data={this.state.restauransShort} navigation={this.props.navigation} />*/}
+            <FlatList
+              data={this.state.restaurans}
+              renderItem={({item}, index) => this.renderRestaurant(item, index)} />
             <View style={{ height: 20 }} />
             {this.state.updating ? 
             <ActivityIndicator size='large' style={{alignSelf: 'center'}} /> : null }
