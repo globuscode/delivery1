@@ -26,6 +26,7 @@ import Storage from "../Reducers";
 import Recomendations from "../Main/Recomendations";
 import IconD from "../IconD";
 import { adaptWidth } from '../etc';
+import * as Animatable from 'react-native-animatable';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
@@ -272,7 +273,7 @@ class RestaurantMenu extends React.Component {
     if (!isActive) return null;
     //const textMarginRight = (viewportWidth >= 320 && viewportWidth < 375) ? 40 : (viewportWidth >= 375 && viewportWidth < 414) ? 117 : 130;
     return (
-      <View style={{ flexDirection: "column", width: viewportWidth }}>
+      <Animatable.View animation={isActive ? 'zoomIn' : 'zoomOut'} style={{ flexDirection: "column", width: viewportWidth }}>
         {plates.map((e, i) => {
           const itemCount = this.getCount(e);
           return (
@@ -433,7 +434,7 @@ class RestaurantMenu extends React.Component {
             </Touchable>
           );
         })}
-      </View>
+      </Animatable.View>
     );
   };
 
@@ -796,6 +797,7 @@ class RestaurantMenu extends React.Component {
               activeOpacity: 0.2,
               background: Touchable.Ripple('gray')
             }}
+            duration={500}
             touchableComponent={Touchable}
             underlayColor="#292b37"
             style={{ alignSelf: "flex-start", width: viewportWidth }}
