@@ -322,6 +322,7 @@ class Plate extends React.Component{
 						textAlign: 'center',
 						fontFamily: 'stem-medium',
 						fontSize: 13,
+						maxWidth: viewportWidth - 80,
 						color: '#fff',
 						letterSpacing: 0.8
 					}}>{this.state.plate.shortTitle}</Text>
