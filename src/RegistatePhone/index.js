@@ -47,7 +47,8 @@ class Registration extends React.Component {
 		super(props);
 		this.state = {
 			rang: 2,
-			canNav: true,
+            canNav: true,
+            phone: '',
 		};
     };
     
