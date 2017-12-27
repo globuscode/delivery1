@@ -13,6 +13,26 @@ const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
     "window"
 );
 
+function dateToString(date) {
+    const WEEK = [
+        'Воскресенье',
+        'Понедельник',
+        'Вторник',
+        'Среда',
+        'Четверг',
+        'Пятница',
+        'Суббота',
+    ];
+    let result = '';
+    let now = new Date();
+    let day = date.getDay() === now.getDay() ? 'Сегодня' : WEEK[date.getDay()];
+    let hours = date.getHours().toString().length == 1 ? ('0' + date.getHours().toString()) : date.getHours().toString();
+    let minutes = date.getMinutes().toString().length == 1 ? ('0' + date.getMinutes().toString()) : date.getMinutes().toString();
+
+    let time = `${hours}:${minutes}`;
+
+    return `${day} в ${time}`;
+}
 
 const slide = new SlideAnimation({
     slideFrom: 'bottom',
@@ -72,9 +92,9 @@ class Forms extends React.Component{
             const month = this.state.date.getMonth();
             const year = this.state.date.getFullYear();
 
-            const hours = this.state.date.getHours();
-            const minutes = this.state.date.getMinutes();
-            const seconds = this.state.date.getSeconds();
+            const hours = this.state.date.getHours().toString().length == 1 ? ('0'+this.state.date.getHours()) : this.state.date.getHours();
+            const minutes = this.state.date.getMinutes().toString().length == 1 ? ('0'+this.state.date.getMinutes()) : this.state.date.getMinutes();
+            const seconds = this.state.date.getSeconds().toString().length == 1 ? ('0'+this.state.date.getSeconds()) : this.state.date.getSeconds();
 
             const dateString = `${date}.${month}.${year} ${hours}:${minutes}:${seconds}`;
             this.props.navigation.navigate('MakeOrder', {
@@ -416,11 +436,15 @@ class Forms extends React.Component{
                       });
                     if (action !== DatePickerAndroid.dismissedAction) {
                         const {action, hour, minute} = await TimePickerAndroid.open({
-                            hour: 14,
-                            minute: 0,
-                            is24Hour: false, // Will display '2 PM'
+                            is24Hour: true,
                         });
                         if (action !== TimePickerAndroid.dismissedAction) {
+                            let d = new Date(year, month, day, hour, minute);
+                            let now = new Date();
+                            this.setState({
+                                date: d < now ? now : d
+                            });
+                            
                             // Selected hour (0-23), minute (0-59)
                         }
                     };
@@ -447,7 +471,7 @@ class Forms extends React.Component{
                         color: this.state.selected == 1 ? 'rgb(255, 255, 255)' : 'rgb(87, 88, 98)',
                         marginLeft: 10,
                         fontSize: 14
-                    }}>{this.state.date.toDateString()}</Text>
+                    }}>{dateToString(this.state.date)}</Text>
                 </View>
             </Touchable>
 
@@ -497,7 +521,19 @@ class Forms extends React.Component{
         containerStyle={{
             justifyContent: 'flex-end'
         }}
-        onDismissed={() => this.setState({showModal: false})}
+        onDismissed={() => {
+            let now = new Date();
+            if (this.state.date < now)
+                this.setState({
+                    showModal: false,
+                    date: now
+                });
+            else
+                this.setState({
+                    showModal: false,
+                });
+                
+        }}
         show={this.state.showModal}
         dialogAnimation={slide}
         >
