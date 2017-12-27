@@ -110,7 +110,7 @@ export default class Login extends React.Component {
                     value={this.state.email}
                     onEndEditing={() => {
                         if ( !validateEmail(this.state.email) )
-                            this.setState({ emailInputError: 'Ошибка. Неверный формат' });
+                            this.setState({ emailInputError: 'Неверный формат' });
                         else
                             this.setState({ emailInputError: null });
                     }}
@@ -139,11 +139,11 @@ export default class Login extends React.Component {
                     onEndEditing={() => {
                         if (this.state.password)
                             if ( this.state.password.length <= 6 )
-                                this.setState({ passwordInputError: 'Ошибка. Пароль должен состоять минимум 6 символов.' });
+                                this.setState({ passwordInputError: 'Пароль должен состоять минимум 7 символов' });
                             else
                                 this.setState({ passwordInputError: null });
                         else
-                            this.setState({ passwordInputError: 'Ошибка. Это поле обязательно' });
+                            this.setState({ passwordInputError: 'Это поле обязательно' });
                     }}
                     onChangeText={(address) => {
                         this.state.password = address;
