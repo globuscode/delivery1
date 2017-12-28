@@ -301,6 +301,7 @@ class Plate extends React.Component{
 			<Image source={{
 				uri: 'http:'+this.state.plate.image
 			}}
+			resizeMode={this.state.plate.image.indexOf('.png') > 0 ? 'contain' : 'cover'}
 				style={{
 					width: viewportWidth,
 					height: (viewportWidth >= 320 && viewportWidth < 375) ? 415 : (viewportWidth >= 375 && viewportWidth < 414) ? 485 : 540
