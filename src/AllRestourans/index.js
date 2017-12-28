@@ -238,7 +238,7 @@ export default class AllRestourans extends React.Component {
             {/*<RestouransOfTheWeek data={this.state.restauransShort} navigation={this.props.navigation} />*/}
             <FlatList
               data={this.state.restaurans}
-              renderItem={({item}, index) => this.renderRestaurant(item, index)} />
+              renderItem={({item, index}) => this.renderRestaurant(item, index)} />
             <View style={{ height: 20 }} />
             {this.state.updating ? 
             <ActivityIndicator size='large' style={{alignSelf: 'center'}} /> : null }
