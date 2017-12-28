@@ -3,6 +3,8 @@ import Expo from "expo";
 import { StatusBar, Platform } from "react-native";
 import { StackNavigator } from "react-navigation";
 
+import { adaptWidth } from './src/etc';
+
 import Login from "./src/Login";
 import Registration from "./src/Registration";
 import RegistratePhone from "./src/RegistatePhone";
@@ -28,6 +30,7 @@ import SetCard from "./src/SetCard";
 
 const headerStyleIOS = (title) => ({
   title: title,
+  headerTruncatedBackTitle: 'Назад',
   headerTintColor: "#fff",
   headerTitleStyle: {
     fontFamily: "stem-medium",
@@ -99,7 +102,7 @@ export default StackNavigator(
     },
     SetAddress: {
       screen: SetAddress,
-      navigationOptions: headerStyleIOS('Адрес доставки')
+      navigationOptions: {...headerStyleIOS(adaptWidth(0, 1, 1) ? 'Адрес доставки' : 'Адрес'), headerBackTitle: null}
     },
     Profile: {
       screen: Profile,
@@ -164,9 +167,6 @@ export default StackNavigator(
   },
   {
     headerMode: 'screen',
-    navigationOptions: {
-      headerTruncatedBackTitle: 'Назад',
-    },
     headerStyle: {
       backcroundColor: "#292b37"
     },
