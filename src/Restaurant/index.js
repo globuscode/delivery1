@@ -9,12 +9,15 @@ import {
   Image,
   WebView,
   Linking,
-  Text
+  Text,
+  Alert
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import Button from "react-native-button";
 import { LinearGradient, Constants } from "expo";
+import Touchable from "react-native-platform-touchable";
 import { host } from "../etc";
+import { connect } from 'react-redux';
 
 import Recomendations from "../Main/Recomendations";
 import IconD from "../IconD";
@@ -44,10 +47,23 @@ const hrShort = (
   />
 );
 
-export default class Restaurant extends React.Component {
+class Restaurant extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
-    title: navigation.state.params.title
+    title: navigation.state.params.title,
+    headerRight: <Touchable
+    onPress={navigation.state.params.onHeartPress}
+    style={{
+      aspectRatio: 1, 
+      height: 25, 
+      backgroundColor: 'transparent'
+    }}>
+      <IconD
+        name={navigation.state.params.favourite ? 'heart_full' : 'heart_empty'}
+        size={18}
+        color='#dcc49c'
+      />
+    </Touchable>
 }}
 
   constructor(props) {
@@ -89,8 +105,68 @@ export default class Restaurant extends React.Component {
         minBill: 0,
         web: ""
         /*discount: <float>*/
-      }
+      },
+      favourite: false
     };
+  }
+
+  componentWillReceiveProps = async (newProps) => {
+    let fav = false;
+
+    for (let i=0; i<newProps.favourite.restaurants.length; i++) {
+      let rest = newProps.favourite.restaurants[i];
+      if (rest === this.state.data.id) {
+        fav = true;
+      }
+    }
+
+    const restaurantId = this.props.navigation.state
+      ? this.props.navigation.state.params.id
+      : (-1).toString();
+
+    let restaurantResponse, restaurantResponseJson;
+    try {
+      restaurantResponse = await fetch(`${host}/restaurant?restaurantId=${restaurantId}`);
+    }
+    catch(err) {
+      Alert.alert('Ошибка', 'Соединение с сервером потеряно. Пожалуйста, проверьте ваше соединение с интернетом');
+      return null;
+    }
+
+    try {
+      restaurantResponseJson = await restaurantResponse.json();
+    }
+    catch(err) {
+      Alert.alert('Ошибка', 'Серверу поплохело');
+      return null;
+    }
+
+    if (restaurantResponseJson.data.result === undefined) {
+      Alert.alert('Ошибка', 'Ошибка запроса');
+      throw Error('Упс...');
+    }
+
+    this.props.navigation.setParams({
+      favourite: fav,
+      title: restaurantResponseJson.data.result.title,
+      onHeartPress: () => {
+        if (!this.state.favourite) {
+          this.props.addToFav({
+            id: this.props.navigation.state.params.id
+          });
+        }
+        else {
+          this.props.removeFromFav({
+            id: this.props.navigation.state.params.id
+          });
+        }
+      }
+    });
+
+    this.setState({
+      favourite: fav,
+      data: restaurantResponseJson.data.result
+    });
   }
 
   componentDidMount = async () => {
@@ -103,7 +179,20 @@ export default class Restaurant extends React.Component {
         if (responseJson["data"] && responseJson["data"]["result"])
           this.state.data = responseJson["data"]["result"];
           this.props.navigation.setParams({
+            favourite: this.state.favourite,
             title: this.state.data.title,
+            onHeartPress: () => {
+              if (!this.state.favourite) {
+                this.props.addToFav({
+                  id: this.props.navigation.state.params.id
+                });
+              }
+              else {
+                this.props.removeFromFav({
+                  id: this.props.navigation.state.params.id
+                });
+              }
+            }
           });
         this.setState({});
         return responseJson;
@@ -612,6 +701,20 @@ export default class Restaurant extends React.Component {
     );
   };
 }
+
+export default connect(
+  state => ({
+    favourite: state.favourite
+  }),
+  dispatch => ({
+    addToFav: (data) => {
+      dispatch({ type: "ADD_RESTAURANT_TO_FAV", payload: data })
+    },
+		removeFromFav: (data) => {
+			dispatch({ type: "DELETE_RESTAURANT", payload: data })
+		},
+  })
+)(Restaurant)
 
 const styles = StyleSheet.create({
   text: {
