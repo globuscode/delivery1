@@ -6,16 +6,18 @@ import {
 	TouchableOpacity,
 	Dimensions,
 	PixelRatio,
-	AsyncStorage
+	AsyncStorage,
+	Alert
 } from 'react-native';
 import { LinearGradient } from 'expo';
 import { Header } from 'react-native-elements';
 import { TextField } from 'react-native-material-textfield';
+import { KeyboardAwareScrollView,  } from 'react-native-keyboard-aware-scroll-view';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Touchable from 'react-native-platform-touchable';
 import { connect } from 'react-redux';
 
-import { host } from "../etc";
+import { host, adaptWidth } from "../etc";
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
@@ -24,14 +26,11 @@ class SelectAddress extends React.Component {
 		super(props);
 		this.state = {
 			canNav: true,
+			showAutocomplete: true,
 			hidePrevious: false,
 			restaurantName: '',
 			history: [],
 			recomededAddresses: [
-				'Ул. Северная, Д. 19',
-				'Ул. Северная, Д. 20',
-				'Ул. Северная, Д. 21',
-				'Ул. Северная, Д. 22',
 			],
 			deliver: false,
 			address: '',
@@ -62,12 +61,59 @@ class SelectAddress extends React.Component {
 		return this.state.deliver;
 	}
 
-	renderAutocomplete(address) {
-		var result = [];
-		for (var i=0; i<this.state.recomededAddresses.length; i++) {
-			if (this.state.recomededAddresses[i].indexOf(address) != -1)
-				result.push(<TouchableOpacity><Text>{this.state.recomededAddresses[i]}</Text></TouchableOpacity>)
+	getAutocomplete = async (address) => {
+		let response, responseJson;
+		try {
+			response = await fetch(`${host}/address/autocomplete/?cityId=36&street=${address.street}&house=${address.house}&restaurantId=${this.props.navigation.state.params.id}`);
 		}
+		catch(err) {
+			Alert.alert('Ошибка', 'Соединение с сервером потеряно. Пожалуйста, проверьте ваше соединение с интернетом');
+			return null;
+		  }
+	  
+		try {
+			responseJson = await response.json();
+		}
+		catch(err) {
+			Alert.alert('Ошибка', 'Серверу поплохело');
+			return null;
+		}
+	
+		if (responseJson.data === undefined) {
+			if (responseJson.errors === undefined) {
+				Alert.alert('Ошибка', 'Ошибка запроса');
+				console.error(responseJson);
+				throw Error('Упс...');
+			}
+		}
+		else
+			this.setState({recomededAddresses: responseJson.data});
+	}
+
+	renderAutocomplete = (address) => {
+		var result = [];
+		for (let i=0; i<this.state.recomededAddresses.length; i++) {
+			//if (this.state.recomededAddresses[i].street.indexOf(address.street) != -1)
+			if (i<5)
+				result.push(<TouchableOpacity key={i}
+				onPress={() => {
+					this.setState({
+						showAutocomplete: false,
+						address: this.state.recomededAddresses[i].street,
+						house: this.state.recomededAddresses[i].house,
+					});
+				}}
+				style={{
+					alignSelf: 'stretch',
+					marginTop: adaptWidth(15, 20, 23),
+				}}><Text style={{
+					fontFamily: 'open-sans',
+					color: 'rgb(119, 122, 136)',
+					fontSize: 14,
+					textAlign: 'center'
+				}}>{`Ул. ${this.state.recomededAddresses[i].street}`+ (this.state.recomededAddresses[i].house != '' ? `, д. ${this.state.recomededAddresses[i].house}` : '')}</Text></TouchableOpacity>)
+		}
+		return result;
 	}
 
 	checkForAviability = () => {
@@ -166,6 +212,7 @@ class SelectAddress extends React.Component {
 	render = () => {
 		return (
 				<View style={styles.container}>
+				<KeyboardAwareScrollView extraHeight={100} extraScrollHeight={100} enableAutoAutomaticScroll enableOnAndroid style={{flex: 1, alignSelf: 'stretch'}}  contentContainerStyle={{flex: 1, alignSelf: 'stretch'}} >
 				{/*<Header
 					leftComponent={{ icon: 'ios-arrow-back', type: 'ionicon', color: '#dcc49c',  }}
 					centerComponent={{ text: 'Адрес доставки', style: { color: '#fff', fontWeight: 'bold', fontSize: 20 } }}
@@ -211,6 +258,7 @@ class SelectAddress extends React.Component {
 							baseColor='rgb( 87, 88, 98)'
 							textColor='white'
 							returnKeyType='send'
+							autoCorrect={false}
 							style={{
 								alignItems: 'center',
 								textAlign: 'center',
@@ -218,7 +266,15 @@ class SelectAddress extends React.Component {
 							inputContainerStyle={{ flexDirection: 'column' , alignItems: 'center', justifyContent: 'center' }}
 							label='Улица доставки'
 							value={this.state.address}
-							onChangeText={(address) => { this.state.address = address; }}
+							onChangeText={async (address) => {
+								this.state.address = address;
+								this.state.showAutocomplete = true;
+								if (this.state.address.length > 3)
+									await this.getAutocomplete({
+										street: address, 
+										house: this.state.house
+									});
+							}}
 							onBlur={() => {
 								this.validateAddress();
 								this.setState({hidePrevious: true})
@@ -245,7 +301,7 @@ class SelectAddress extends React.Component {
 							}}
 						/>
 					</View>
-					{this.state.address != '' && this.state.house != '' ? this.renderAutocomplete(this.state.address) : null}
+					{this.state.showAutocomplete ? this.renderAutocomplete(this.state.address) : null}
 					{this.state.address != '' && this.state.house != '' ? this.checkForAviability(this.state.address) : null}
 					<View style={{
 						position: 'absolute',
@@ -275,6 +331,7 @@ class SelectAddress extends React.Component {
 							]}>Далее</Text>
 						</Touchable>
 					</View>
+				</KeyboardAwareScrollView >
 				</View>
 		);
 	}
