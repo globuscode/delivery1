@@ -311,6 +311,7 @@ class RestaurantMenu extends React.Component {
                     source={{
                       uri: 'http:'+e.image
                     }}
+                    resizeMode={e.image.indexOf('.png') > 0 ? 'contain' : 'cover'}
                     style={{
                       width: imageHeight,
                       height: imageHeight,
