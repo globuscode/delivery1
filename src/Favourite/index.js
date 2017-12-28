@@ -667,7 +667,8 @@ class Favourite extends React.Component {
 
           const responseRest = await fetch(`${host}/restaurant?restaurantId=${responseJson.data[0].restaurant}`);
           const responseRestJson = await responseRest.json();
-          this.state.restaurans.push(responseRestJson.data.result);
+          if (responseRestJson.data.result != undefined)
+            this.state.restaurans.push(responseRestJson.data.result);
 
           if (i === newProps.favourite.plates.length - 1)
             this.setState({});
@@ -683,6 +684,7 @@ class Favourite extends React.Component {
         newProps.favourite.restaurants.forEach(async (restaurant, i) => {
           const responseRest = await fetch(`${host}/restaurant?restaurantId=${restaurant}`);
           const responseRestJson = await responseRest.json();
+          if (responseRestJson.data.result != undefined)
           this.state.favourite.restaurants.push(responseRestJson.data.result);
 
           if (i === newProps.favourite.restaurants.length - 1)
