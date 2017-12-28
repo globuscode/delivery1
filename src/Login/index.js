@@ -54,7 +54,8 @@ const screen =
 
 class Login extends React.Component {
   navigationOptions = {
-    title: "Авторизация"
+    title: "Авторизация",
+    headerBackTitle: null,
   };
   constructor(props) {
     super(props);
