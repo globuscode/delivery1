@@ -89,7 +89,7 @@ class MyOrderDetail extends React.Component {
             'С хрустящими шариками из сулугуни и кукурузной муки с домашними соусами'
         }
       ],
-      restaurantLogo: '//dostavka1.com/img/app-icon.png'
+      restaurantLogo: this.props.navigation.state.params ? this.props.navigation.state.params.restaurantLogo : '//dostavka1.com/img/app-icon.png'
     };
   }
 
@@ -268,6 +268,7 @@ class MyOrderDetail extends React.Component {
                 height: screen === 0 ? 85 : screen === 1 ? 100 : 117,
                 width: screen === 0 ? 85 : screen === 1 ? 100 : 117
               }}
+              resizeMode='contain'
               source={{ uri: 'http:' + this.state.restaurantLogo }}
             />
           </View>
@@ -278,7 +279,6 @@ class MyOrderDetail extends React.Component {
   };
 
   render = () => {
-    const info = this.renderInfo();
     const cart = this.renderContent(this.state.cart);
     if (this.state.order.status === 'Активный' || this.state.order.status === 'Принят') {
       var re = new RegExp(/([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]/g);
@@ -465,7 +465,7 @@ class MyOrderDetail extends React.Component {
           paddingTop: screen === 0 ? 12 : screen === 1 ? 25 : 32
         }}
       >
-
+        {this.renderInfo()}
         <View style={{ height: 14 }} />
         <View
           style={{
