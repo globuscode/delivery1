@@ -41,7 +41,7 @@ class MyOrders extends React.Component {
       return (
         <Touchable
           key={index}
-          onPress={() => this.props.navigation.navigate("MyOrderDetail", {order: element})}
+          onPress={() => this.props.navigation.navigate("MyOrderDetail", {order: element, restaurantLogo: this.state.logos[index]})}
         >
           <View
             style={{
