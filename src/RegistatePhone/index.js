@@ -10,7 +10,8 @@ import {
     Linking,
     Alert,
     KeyboardAvoidingView,
-	Text
+	Text,
+    Platform
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { TextField } from 'react-native-material-textfield';
@@ -23,6 +24,7 @@ import {
 	LinearGradient,
 	Constants
 } from 'expo';
+import {adaptWidth} from '../etc';
 import { connect } from 'react-redux';
 
 import IconD from '../IconD';
@@ -48,6 +50,7 @@ class Registration extends React.Component {
 		this.state = {
 			rang: 2,
             canNav: true,
+            canSend: true,
             phone: '',
 		};
     };
@@ -74,7 +77,16 @@ class Registration extends React.Component {
 
 			<TouchableOpacity
 				activeOpacity={0}
-				onPress={callback}
+				onPress={() => {
+                    if (this.state.canSend) {
+                        callback();
+                        this.setState({canSend: false});
+                        setTimeout(() => {
+                            this.setState({canSend: true});
+                        }, 60000);
+                    }
+                    else Alert.alert('Извините', 'Подождите минуту')
+                }}
 				style={[
 					styles.row,
 					{
@@ -89,7 +101,7 @@ class Registration extends React.Component {
 						borderRadius: 8,
 						borderColor: 'rgb(87, 88, 98)'
 					}]}>
-				<Text style={{ color: this.isNext() ? 'rgb(225, 199, 155)' : 'rgb(87, 88, 98)', fontSize: 14, fontFamily: 'stem-medium', top: 3}}>{title}</Text>
+				<Text style={{ color: this.isNext() && this.state.canSend ? 'rgb(225, 199, 155)' : 'rgb(87, 88, 98)', fontSize: 14, fontFamily: 'stem-medium', top: 3}}>{title}</Text>
 			</TouchableOpacity></View>;
 	}
 
@@ -137,7 +149,7 @@ class Registration extends React.Component {
             <View style={{
                 flexDirection: 'column',
                 alignSelf: 'center',
-                width: screen==0 ? 136 : screen == 1 ? 160 : 177,
+                width: Platform.OS === 'ios' ? 0 : 20 + adaptWidth(136, 160, 177),
             }}>
             <TextField
                 ref='codeInput'
