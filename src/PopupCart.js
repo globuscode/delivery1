@@ -36,6 +36,7 @@ class Popup extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
+            canNav: true,
             freeDelivery: 4400,
             plate: {
                 "id": 0,
@@ -205,10 +206,16 @@ class Popup extends React.Component{
                 </View>
             </View>
             <ButtonD title={['Добавить к заказу ','и перейти в ресторан']} onPress={() => {
-                if (Store.getState().lastViewed.restaurant === this.state.restaurant.id)
-                    this.props.hide();
-                else
-                    this.props.close();
+                if (this.state.canNav) {
+                    this.state.canNav = false;
+                    setTimeout(() => {
+                        this.state.canNav = true;
+                    }, 1000);
+                    if (Store.getState().lastViewed.restaurant === this.state.restaurant.id)
+                        this.props.hide();
+                    else
+                        this.props.close();
+                }
                 }} width={popupWidth - 2*(12)}/>
 
             <View style={{height: screen == 0 ? 15 : screen == 1 ? 20 : 25}}/>
