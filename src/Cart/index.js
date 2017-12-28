@@ -250,6 +250,7 @@ class Cart extends React.Component {
               source={{
                 uri: 'http:'+e.plate.image
               }}
+              resizeMode={e.plate.image.indexOf('.png') > 0 ? 'contain' : 'cover'}
               style={{
                 width: imageHeight,
                 height: imageHeight,
