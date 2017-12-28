@@ -57,13 +57,13 @@ export default class AllRestourans extends React.Component {
 
   renderRestaurant = (restaurant, index) => {
     if (this.state.selectedType === 0)
-      return <RestouransOfTheWeek key={index} data={[restaurant]} navigation={this.props.navigation} />;
+      return <RestouransOfTheWeek key={restaurant.id} data={[restaurant]} navigation={this.props.navigation} />;
     for (let i = 0; i< restaurant.restourantTags.length; i++) {
       if (restaurant.restourantTags[i] == this.state.types[this.state.selectedType]) {
-        return <RestouransOfTheWeek key={index} data={[restaurant]} navigation={this.props.navigation} />;
+        return <RestouransOfTheWeek key={restaurant.id} data={[restaurant]} navigation={this.props.navigation} />;
       }
     }
-    return null;
+    return <View key={restaurant.id} style={{display: 'none'}}/>;
   }
 
   updateResults = async () => {
