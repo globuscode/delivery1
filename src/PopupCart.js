@@ -210,7 +210,7 @@ class Popup extends React.Component{
                     this.state.canNav = false;
                     setTimeout(() => {
                         this.state.canNav = true;
-                    }, 1000);
+                    }, 2000);
                     if (Store.getState().lastViewed.restaurant === this.state.restaurant.id)
                         this.props.hide();
                     else
