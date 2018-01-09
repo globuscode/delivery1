@@ -67,28 +67,7 @@ class MyOrderDetail extends React.Component {
           payment: 'Наличными курьеру', // способ оплаты
           total: 8888 // Сумма заказа (с учетом скидок и акций)
         },
-      cart: [
-        {
-          title: 'Мясной хлеб',
-          favorite: false,
-          image:
-            'http://img.povar.ru/uploads/a0/99/e9/31/molochnii_kokteil_s_shokoladom-318319.jpg',
-          weight: '200/25/40/ 15/5/2 гр.',
-          price: 8888,
-          description:
-            'С хрустящими шариками из сулугуни и кукурузной муки с домашними соусами'
-        },
-        {
-          title: 'Мясной хлеб',
-          favorite: false,
-          image:
-            'http://img.povar.ru/uploads/a0/99/e9/31/molochnii_kokteil_s_shokoladom-318319.jpg',
-          weight: '200/25/40/ 15/5/2 гр.',
-          price: 8888,
-          description:
-            'С хрустящими шариками из сулугуни и кукурузной муки с домашними соусами'
-        }
-      ],
+      cart: [],
       restaurantLogo: this.props.navigation.state.params ? this.props.navigation.state.params.restaurantLogo : '//dostavka1.com/img/app-icon.png'
     };
   }
