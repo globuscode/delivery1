@@ -52,6 +52,11 @@ repositories{
 }
 
 dependencies {
+    compile project(':react-native-wheel-picker')
+    compile project(':react-native-linear-gradient')
+    compile project(':appcenter-crashes')
+    compile project(':appcenter-analytics')
+    compile project(':appcenter')
   compile fileTree(dir: 'libs', include: ['*.jar'])
   testCompile 'junit:junit:4.12'
   compile 'com.android.support:appcompat-v7:25.3.1'
