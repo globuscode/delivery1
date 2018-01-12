@@ -74,35 +74,7 @@ export default class SelectTags extends React.Component {
       spinner: true,
       kitchens: [
         {
-          title: 'Россия',
-          icon: 'ios-person',
-          selected: false,
-        }, {
-          title: 'Италия',
-          icon: 'ios-person',
-          selected: false,
-        }, {
-          title: 'Америка',
-          icon: 'ios-person',
-          selected: false,
-        }, {
-          title: 'Китай',
-          icon: 'ios-person',
-          selected: false,
-        }, {
-          title: 'Италия',
-          icon: 'ios-person',
-          selected: false,
-        }, {
-          title: 'Япония',
-          icon: 'ios-person',
-          selected: false,
-        }, {
-          ешеду: 'Шведция',
-          icon: 'ios-person',
-          selected: false,
-        }, {
-          title: 'Мексика',
+          title: 'Ошибка',
           icon: 'ios-person',
           selected: false,
         },
@@ -124,22 +96,36 @@ export default class SelectTags extends React.Component {
     
     let tags = f !== tagsStr ? JSON.parse(tagsStr) : [];
 
-    fetch(`${host}/classificator/tag-groups?cityId=36`)
-      .then((response) => response.json())
-      .then((responseJson) => {
-        this.state.kitchens = [];
-        for (name in responseJson.data) {
-          responseJson.data[name].selected = false;
-          for (let j=0; j<tags.length; j++) {
-            if (tags[j].title === responseJson.data[name].title) {
-              responseJson.data[name].selected = true;
-            }
-          }
-          this.state.kitchens.push(responseJson.data[name]);
+    let response, responseJson;
+    try{
+      response = await fetch(`${host}/classificator/tag-groups?cityId=36`);
+    }
+    catch(e) {
+      Alert.alert('Ошибка', 'Соединение с сервером прервано');
+    }
+
+    try{
+      responseJson = await response.json();
+    }
+    catch(e) {
+      Alert.alert('Ошибка', 'Не правильный ответ');
+    }
+
+    if (responseJson.data.length === undefined)
+      Alert.alert('Ошибка', 'Не верный ответ с сервера');
+
+    this.state.kitchens = [];
+    for (name in responseJson.data) {
+      responseJson.data[name].selected = false;
+      for (let j=0; j<tags.length; j++) {
+        if (tags[j].title === responseJson.data[name].title) {
+          responseJson.data[name].selected = true;
         }
-        this.setState({});
-        return responseJson;
-      });
+      }
+      this.state.kitchens.push(responseJson.data[name]);
+    }
+    this.setState({});
+  
     webapp = await require('./BallPool.html');
   }
 
@@ -246,7 +232,7 @@ export default class SelectTags extends React.Component {
           color: 'rgb(119, 122, 136)',
           textAlign: 'center'
         }]}>Расскажите кухни каких стран наиболее привлекательны для вас и мы составим список рекомендаций</Text>
-
+          <ActivityIndicator style={{ display: this.state.spinner ? 'flex' : 'none' }}/>
           <View style={{
             height: viewportHeight - 193,
             backgroundColor: '#292b37',
@@ -255,7 +241,6 @@ export default class SelectTags extends React.Component {
               ref={(c) => { this.webview = c; }}
               mixedContentMode='always'
               domStorageEnabled={true}
-              startInLoadingState
               onError={() => Alert.alert("Ошибка")}
               source={webapp}
               scalesPageToFit={true}
@@ -264,13 +249,14 @@ export default class SelectTags extends React.Component {
                 this.webview.postMessage(JSON.stringify({update: false,tags: this.state.kitchens }))
                 setTimeout(() => {
                   this.setState({spinner: false});
-                }, 1500);
+                }, 1000);
               }}
               domStorageEnabled={true}
-              style={{ 
+              style={{
                 backgroundColor: 'transparent', 
                 height: viewportHeight - 193, 
-                width: viewportWidth }}
+                width: viewportWidth 
+              }}
             />
           </View>
 

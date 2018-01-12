@@ -1563,15 +1563,25 @@ document.addEventListener("message", function (message) {
 		b2body.AddShape(circle);
 		b2body.userData = { element: element, index: i };
 		if (i % 2 == 0) {
-			var x_pos = stage[2] + (size/3) * i + size;
+			var k = i / 2;
+			if (k % 2 == 0)
+				var x_pos = stage[2] - size;
+			else
+				var x_pos = stage[2] - size * 2;
+
+			//var y_pos = stage[3]*k;
 			//var x_pos =  Math.random() * stage[2];
-			b2body.position.Set(Math.random() * 300 + size + stage[2], Math.random() * stage[3]);
+			b2body.position.Set(x_pos-300, Math.random() * stage[3]);
 			//b2body.linearVelocity.Set(+ b2body.position.x - grav_x, b2body.position.y - grav_y);
 		}
 		else {
-			var x_pos = - (size/3) * i - size;
+			var k = i / 2;
+			if (k % 2 == 0)
+				var x_pos = size;
+			else
+				var x_pos = size * 2;
 			//var x_pos = Math.random() * stage[2]
-			b2body.position.Set(-Math.random() * 300 - size, Math.random() * stage[3]);
+			b2body.position.Set(x_pos + 500, parseInt(Math.random() * stage[3]));
 			//b2body.linearVelocity.Set(- b2body.position.x + grav_x, b2body.position.y - grav_y);
 		}
 		bodies.push(world.CreateBody(b2body));
