@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, Dimensions, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, Image, Dimensions, ScrollView, StyleSheet, Alert } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 import { connect } from 'react-redux';
 import HTMLView from 'react-native-htmlview';
@@ -70,24 +70,80 @@ class MyOrderDetail extends React.Component {
       cart: [],
       restaurantLogo: this.props.navigation.state.params ? this.props.navigation.state.params.restaurantLogo : '//dostavka1.com/img/app-icon.png'
     };
+    this.componentWillReceiveProps(this.props);
   }
 
-  componentDidlMount = async () => {
-    const restId = this.state.order.restaurantId;
-    const response = await fetch(
-      `${host}/restaurant?restaurantId=${restId}`
-    );
-    const responseJson = await response.json();
+  componentWillReceiveProps = async (newProps) => {
+    const restId = newProps.navigation.state.params.order.restaurantId;
+    let response, responseJson;
+    try{
+      response = await fetch(
+        `${host}/restaurant?restaurantId=${restId}`
+      );
+    }
+    catch(e) {
+      Alert.alert('Ошибка', 'Сервер не отвечает');
+      newProps.navigation.goBack(); return -1;
+    }
+
+    try{
+      responseJson = await response.json();
+    }
+    catch(e) {
+      Alert.alert('Ошибка', 'Сервер отвечает неправильно');
+      newProps.navigation.goBack(); return -1;
+    }
+
     if (responseJson.data && responseJson.data.result) {
       this.state.restaurantLogo = responseJson.data.result.logoImage;
     }
-
+    else {
+      Alert.alert('Ошибка', JSON.stringify(responseJson));
+      newProps.navigation.goBack(); return -1;
+    }
     const cartId = this.state.order.cartId;
-    const cartResponse = await fetch(
-      `${host}/cart/${cartId}`
-    );
-    const cartRespJson = await cartResponse.json();
-    this.state.cart = cartRespJson["data"]["result"];
+    try{
+      response = await fetch(
+        `${host}/cart/get/?orderId=${cartId}`
+      );
+    }
+    catch(e) {
+      Alert.alert('Ошибка', 'Сервер не отвечает');
+      newProps.navigation.goBack(); return -1;
+    }
+    try{
+      responseJson = await response.json();
+    }
+    catch(e) {
+      Alert.alert('Ошибка', 'Сервер отвечает неправильно');
+      console.log(`${host}/cart/get/?orderId=${cartId}`);
+      newProps.navigation.goBack(); return -1;
+    }
+
+    let plates = [];
+    for (let i=0; i < responseJson["data"]["items"].length; i++) {
+      console.log(`${host}/plate?plate=${responseJson["data"]["items"][i].plateId}`);
+      try {
+        response = await fetch(`${host}/plate?plate=${responseJson["data"]["items"][i].plateId}`);
+      }
+      catch(e) {
+        Alert.alert('Ошибка', 'Сервер не отвечает');
+        newProps.navigation.goBack(); return -1;
+      }
+      let responseJsonPlate;
+      try{
+        responseJsonPlate = await response.json();
+      }
+      catch(e) {
+        Alert.alert('Ошибка', 'Сервер отвечает неправильно');
+        newProps.navigation.goBack(); return -1;
+      }
+
+      plates.push(responseJsonPlate.data[0]);
+    }
+    
+    this.state.cart = plates;
+    console.log(plates);
 
     this.setState({});
   };
@@ -127,7 +183,7 @@ class MyOrderDetail extends React.Component {
             >
               <Image
                 source={{
-                  uri: e.image
+                  uri: 'http:'+e.image
                 }}
                 style={{
                   width: imageHeight,
