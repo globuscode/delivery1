@@ -469,15 +469,6 @@ class Plate extends React.Component{
 				const checked = this.checkTaste(e);
 				return <TouchableOpacity
 					key={i}
-					onPress={() => {
-						if (this.state.selected.indexOf(i) == -1) {
-							this.state.selected.push(i);
-							this.setState({});
-						} else {
-							this.state.selected.splice(this.state.selected.indexOf(i), 1);
-							this.setState({});
-						}
-					}}
 					style={{
 						height: 36,
 						padding: 10,
