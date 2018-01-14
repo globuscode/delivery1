@@ -21,6 +21,7 @@ import { connect } from 'react-redux';
 
 import Recomendations from "../Main/Recomendations";
 import IconD from "../IconD";
+import { fetchJson } from "../utils";
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
@@ -110,11 +111,11 @@ class Restaurant extends React.Component {
     };
   }
 
-  componentWillReceiveProps = async (newProps) => {
+  componentWillMount = async () => {
     let fav = false;
 
-    for (let i=0; i<newProps.favourite.restaurants.length; i++) {
-      let rest = newProps.favourite.restaurants[i];
+    for (let i=0; i<this.props.favourite.restaurants.length; i++) {
+      let rest = this.props.favourite.restaurants[i];
       if (rest === this.state.data.id) {
         fav = true;
       }
@@ -124,24 +125,9 @@ class Restaurant extends React.Component {
       ? this.props.navigation.state.params.id
       : (-1).toString();
 
-    let restaurantResponse, restaurantResponseJson;
-    try {
-      restaurantResponse = await fetch(`${host}/restaurant?restaurantId=${restaurantId}`);
-    }
-    catch(err) {
-      Alert.alert('Ошибка', 'Соединение с сервером потеряно. Пожалуйста, проверьте ваше соединение с интернетом');
-      return null;
-    }
+    let restaurantResponseJson = await fetchJson(`${host}/restaurant?restaurantId=${restaurantId}`);
 
-    try {
-      restaurantResponseJson = await restaurantResponse.json();
-    }
-    catch(err) {
-      Alert.alert('Ошибка', 'Серверу поплохело');
-      return null;
-    }
-
-    if (restaurantResponseJson.data.result === undefined) {
+    if (restaurantResponseJson.data === undefined) {
       Alert.alert('Ошибка', 'Ошибка запроса');
       throw Error('Упс...');
     }
@@ -167,6 +153,42 @@ class Restaurant extends React.Component {
       favourite: fav,
       data: restaurantResponseJson.data.result
     });
+  }
+
+  componentWillReceiveProps = async () => {
+    let fav = false;
+
+    for (let i=0; i<this.props.favourite.restaurants.length; i++) {
+      let rest = this.props.favourite.restaurants[i];
+      if (rest === this.state.data.id) {
+        fav = true;
+      }
+    }
+
+    if (fav != this.state.favourite) {
+      const restaurantId = this.props.navigation.state
+      ? this.props.navigation.state.params.id
+      : (-1).toString();
+
+      this.props.navigation.setParams({
+        favourite: fav,
+        title: this.state.data.title,
+        onHeartPress: () => {
+          if (!this.state.favourite) {
+            this.props.addToFav({
+              id: this.props.navigation.state.params.id
+            });
+          }
+          else {
+            this.props.removeFromFav({
+              id: this.props.navigation.state.params.id
+            });
+          }
+        }
+      });
+
+      this.state.favourite = fav;
+    } 
   }
 
   componentDidMount = async () => {

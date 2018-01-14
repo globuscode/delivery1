@@ -17,6 +17,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Touchable from 'react-native-platform-touchable';
 import { connect } from 'react-redux';
 
+import { fetchJson } from '../utils';
 import { host, adaptWidth } from "../etc";
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
@@ -58,7 +59,7 @@ class SelectAddress extends React.Component {
 	}
 
 	notDeliver(address) {
-		return this.state.deliver;
+		return !this.state.deliver;
 	}
 
 	getAutocomplete = async (address) => {
@@ -111,13 +112,13 @@ class SelectAddress extends React.Component {
 					color: 'rgb(119, 122, 136)',
 					fontSize: 14,
 					textAlign: 'center'
-				}}>{`Ул. ${this.state.recomededAddresses[i].street}`+ (this.state.recomededAddresses[i].house != '' ? `, д. ${this.state.recomededAddresses[i].house}` : '')}</Text></TouchableOpacity>)
+				}}>{`${this.state.recomededAddresses[i].street}`+ (this.state.recomededAddresses[i].house != '' ? `, ${this.state.recomededAddresses[i].house}` : '')}</Text></TouchableOpacity>)
 		}
 		return result;
 	}
 
 	checkForAviability = () => {
-		if (!this.notDeliver(this.state.address))
+		if (!this.state.deliver)
 			return <View style={{ padding: 20 }}>
 				<Text style={{
 					fontFamily: 'open-sans',
@@ -127,7 +128,7 @@ class SelectAddress extends React.Component {
 					color: '#fff',
 					textAlign: 'center'
 				}}>{`К сожалению ресторан ${this.state.restaurantName} не осуществляет доставку по данному адресу. Но вы можете выбрать другой ресторан который привезет вам все что вы ни пожелаете`}</Text>
-				<TouchableOpacity style={{
+				{/*<TouchableOpacity style={{
 					borderRadius: 5,
 					borderWidth: 1,
 					borderColor: '#dcc49c',
@@ -142,7 +143,7 @@ class SelectAddress extends React.Component {
 						color: '#fff',
 						textAlign: 'center'
 					}}>{'Смотреть все рестораны \nдоступные по этому адресу' }</Text>
-				</TouchableOpacity>
+				</TouchableOpacity>*/}
 				</View>;
 		else
 			return <View style={{ padding: 20 }}>
@@ -162,17 +163,22 @@ class SelectAddress extends React.Component {
 			this.setState({deliver: false});
 			return -1;
 		}
-		const response = await fetch(`${host}/address?cityId=36&street=${this.state.address}&house=${this.state.house}&restaurantId=${this.props.navigation.state.params.id}`)
-		const responseJson = await response.json();
-		this.setState({ deliver: responseJson["data"]["result"] == 0 });
+		const responseJson = await fetchJson(`${host}/address?cityId=36&street=${this.state.address}&house=${this.state.house}&restaurantId=${this.props.navigation.state.params.id}`, {});
+		if (responseJson["errors"] != undefined) {
+			// Alert.alert(responseJson["errors"]["title"] + ' ' + responseJson["errors"]["code"], responseJson["errors"]["detail"]);
+			this.setState({deliver: false});
+			return -1;
+		}
+		else if (responseJson["data"] != undefined)
+			this.setState({ deliver: responseJson["data"]["result"] == 0 });
 	}
 
 	next = () => {
-		if (this.notDeliver(this.state.address))
+		if (this.state.deliver)
 			if (this.state.canNav) {
 				const lastAddress = this.state.history[this.state.history.length - 1];
 				const isInit = this.state.history.length == 0;
-				if (isInit && this.state.deliver)
+				if (isInit)
 					this.state.history.push({
 						street: this.state.address,
 						house: this.state.house
@@ -189,14 +195,13 @@ class SelectAddress extends React.Component {
 						'Addresses',
 						JSON.stringify(this.state.history)
 					);
-				else
+				else{
+					this.state.history.splice(0, 1);
 					AsyncStorage.setItem(
 						'Addresses',
-						JSON.stringify([
-							this.state.history[this.state.history.length-1],
-							this.state.history[this.state.history.length-2]
-						])
+						JSON.stringify(this.state.history)
 					);
+				}
 				this.props.saveAddress({
 					street: this.state.address,
 					house: this.state.house
@@ -250,7 +255,7 @@ class SelectAddress extends React.Component {
 						fontFamily: 'open-sans',
 						fontSize: 14,
 						marginTop: (viewportWidth >= 320 && viewportWidth < 375) ? 12 : (viewportWidth >= 375 && viewportWidth < 414) ? 17 : 21,
-					}]}>{`Ул. ${e.street}, д. ${e.house}`}</Text></TouchableOpacity>
+					}]}>{`${e.street}, ${e.house}`}</Text></TouchableOpacity>
 					})}
 					<View style={{alignSelf: 'stretch', paddingHorizontal: 20}}>
 						<TextField 
@@ -310,7 +315,7 @@ class SelectAddress extends React.Component {
 						bottom: 0,
 						height: 49,
 						borderTopWidth: 2,
-						borderColor: this.notDeliver(this.state.address) ? '#dcc49c' : '#575862',
+						borderColor: this.state.deliver ? '#dcc49c' : '#575862',
 						flexDirection: 'row',
 						justifyContent: 'center'
 					}}>
@@ -326,7 +331,7 @@ class SelectAddress extends React.Component {
 							<Text style={[
 								styles.nextButtonText,
 								{
-									color: this.notDeliver(this.state.address) ? '#dcc49c' : '#575862'
+									color: this.state.deliver ? '#dcc49c' : '#575862'
 								}
 							]}>Далее</Text>
 						</Touchable>

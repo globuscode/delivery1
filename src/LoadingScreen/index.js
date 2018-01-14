@@ -13,6 +13,7 @@ import IconD from "../IconD";
 import { NavigationActions } from 'react-navigation';
 import { connect } from "react-redux";
 import { host } from '../etc';
+import { fetchJson } from '../utils';
 var kitchenPhoto = require("../../assets/img/kitchen.jpg");
 
 const resetAction = NavigationActions.reset({
@@ -84,15 +85,17 @@ class Loading extends React.Component {
     
     this.setState({ text: "Собираем идеи для семейного ужина" });
     
-		fetch(`${host}/recommendations/?cityid=${cityIdJson.id}&tagId=${tastesIds}&tagGroup=${tagsIds}`)
-			.then((response) => response.json())
-			.then((responseJson) => {
-        this.setState({ text: "Изучаем манускрипты в поисках крутых рецептов" });
-        this.props.auth();
-        this.props.loadRecomendations(responseJson.data);
-        this.props.navigation.dispatch(resetAction);
-				return responseJson;
-			});
+    let responseJson = await fetchJson(`${host}/recommendations/?cityid=${cityIdJson.id}&tagId=${tastesIds}&tagGroup=${tagsIds}`);
+    if (responseJson.data != undefined) {
+      this.setState({ text: "Изучаем манускрипты в поисках крутых рецептов" });
+      this.props.auth();
+      this.props.loadRecomendations(responseJson.data);
+      this.props.navigation.dispatch(resetAction);
+    }
+    else{
+      this.setState({ text: "Ошибка" });
+    }
+    
   }
 
   render() {
@@ -147,27 +150,24 @@ export default connect(
   dispatch => ({
     loadRecomendations: (data) => dispatch({type: 'SET_RECOMENDATIONS', payload: data}),
     auth: () => {
-      AsyncStorage.getItem("lastToken", (error, token) => {
+      AsyncStorage.getItem("lastToken", async (error, token) => {
         token = JSON.parse(token);
         var data = new FormData();
         data.append("token", token);
-        if (token != null)
-          fetch(`${host}/auth/auth/`, {
+        if (token != null) {
+          let data = await fetchJson(`${host}/auth/auth/`, {
             method: "POST",
             body: data
-          })
-            .then(res => {
-              return res.json();
-            })
-            .then(data => {
-              if (data.errors) {
-                if (data.errors.code != 200) {
-                  //Alert.alert(data.errors.title, "Авторизируйтесь повторно");
-                }
-              } else {
-                dispatch({ type: "AUTH", payload: data });
-              }
-            });
+          });
+
+          if (data.errors) {
+            if (data.errors.code != 200) {
+              //Alert.alert(data.errors.title, "Авторизируйтесь повторно");
+            }
+          } else {
+            dispatch({ type: "AUTH", payload: data });
+          }
+        }
       });
     }
   })

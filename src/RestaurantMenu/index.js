@@ -26,6 +26,7 @@ import Storage from "../Reducers";
 import Recomendations from "../Main/Recomendations";
 import IconD from "../IconD";
 import { adaptWidth } from '../etc';
+import { fetchJson } from '../utils';
 import * as Animatable from 'react-native-animatable';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
@@ -78,12 +79,12 @@ class RestaurantMenu extends React.Component {
       rang: 0,
       hideInfo: false,
       canNav: true,
+      favourite: false,
       data: {
 				id: 0,
 				title: "",
 				image: "//dostavka1.com/img/app-icon.png",
 				logoImage: '//dostavka1.com/img/app-icon.png',
-				favorite: false,
 				type: '',
 				tagGroups: [
 				],
@@ -109,11 +110,42 @@ class RestaurantMenu extends React.Component {
     };
   }
 
-  componentWillReceiveProps = async (newProps) => {
+  componentWillReceiveProps = (props) => {
+    let fav = false;
+    for (let i=0; i<props.favourite.restaurants.length; i++) {
+      let rest = props.favourite.restaurants[i];
+      if (rest === this.state.data.id) {
+        fav = true;
+      }
+    }
+
+    if (this.state.favourite != fav) {
+      props.navigation.setParams({
+        favourite: fav,
+        title: this.state.data.title,
+        onHeartPress: () => {
+          if (!this.state.favourite) {
+            this.props.addRestToFav({
+              id: props.navigation.state.params.id
+            });
+          }
+          else {
+            this.props.removeRestFromFav({
+              id: props.navigation.state.params.id
+            });
+          }
+        }
+      });
+
+      this.state.favourite = fav;
+    }
+  }
+
+  componentWillMount = async () => {
     let fav = false;
 
-    for (let i=0; i<newProps.favourite.restaurants.length; i++) {
-      let rest = newProps.favourite.restaurants[i];
+    for (let i=0; i<this.props.favourite.restaurants.length; i++) {
+      let rest = this.props.favourite.restaurants[i];
       if (rest === this.state.data.id) {
         fav = true;
       }
@@ -123,23 +155,13 @@ class RestaurantMenu extends React.Component {
       ? this.props.navigation.state.params.id
       : (-1).toString();
 
-    let restaurantResponse, restaurantResponseJson;
-    try {
-      restaurantResponse = await fetch(`${host}/restaurant?restaurantId=${restaurantId}`);
-    }
-    catch(err) {
-      Alert.alert('Ошибка', 'Соединение с сервером потеряно. Пожалуйста, проверьте ваше соединение с интернетом');
-      return null;
-    }
+    let restaurantResponseJson = await fetchJson(`${host}/restaurant?restaurantId=${restaurantId}`);
 
-    try {
-      restaurantResponseJson = await restaurantResponse.json();
-    }
-    catch(err) {
-      Alert.alert('Ошибка', 'Серверу поплохело');
-      return null;
-    }
 
+    if (restaurantResponseJson.data === undefined) {
+      Alert.alert('Ошибка', 'Ошибка запроса');
+      throw Error('Упс...');
+    }
     if (restaurantResponseJson.data.result === undefined) {
       Alert.alert('Ошибка', 'Ошибка запроса');
       throw Error('Упс...');
@@ -162,35 +184,34 @@ class RestaurantMenu extends React.Component {
       }
     });
 
-    this.setState({
-      favourite: fav,
-      data: restaurantResponseJson.data.result
-    });
-  }
-
-
-  componentWillMount = () => {
+    this.state.favourite = fav;
+    this.state.data = restaurantResponseJson.data.result;
+    // this.setState({
+    //   favourite: fav,
+    //   data: restaurantResponseJson.data.result
+    // });
   }
 
   componentDidMount = async () => {
     
     const restaurantId = this.props.navigation.state ? this.props.navigation.state.params.id : (-1).toString();
-    const response = await fetch(`${host}/restaurant?restaurantId=${restaurantId}`);
-    const responseJson = await response.json();
+    // const response = await fetch(`${host}/restaurant?restaurantId=${restaurantId}`);
+    // const responseJson = await response.json();
     
-    if (responseJson["data"] && responseJson["data"]["result"]) {
-      responseJson["data"]["result"]["menu"] = [];
-      this.setState({ data: responseJson['data']["result"] });
-      this.props.setLastViewed(responseJson['data']["result"]["id"]);
-    }
+    // if (responseJson["data"] && responseJson["data"]["result"]) {
+    //   responseJson["data"]["result"]["menu"] = [];
+    //   this.state.data = responseJson['data']["result"];
+    //   this.props.setLastViewed(responseJson['data']["result"]["id"]);
+    // }
     this.props.navigation.setParams({
       title: this.state.data.title,
     });
-    const menuResponse = await fetch(`${host}/restaurantMenu?restaurantId=${restaurantId}`);
-    const menuResponseJson = await menuResponse.json();
-    if (menuResponseJson["data"] && menuResponseJson["data"]["result"]) {
-      this.state.menu = menuResponseJson["data"]["result"];
-      this.setState({  });
+    const menuResponseJson = await fetchJson(`${host}/restaurantMenu?restaurantId=${restaurantId}`);
+    if (menuResponseJson["data"]) {
+      if (menuResponseJson["data"]["result"]) {
+        this.state.menu = menuResponseJson["data"]["result"];
+        this.setState({  });
+      }
     }
 	}
 
@@ -400,7 +421,7 @@ class RestaurantMenu extends React.Component {
                       else {
                         this.props.addToFav(e);
                       }
-                      this.setState({})
+                      // this.setState({})
                     }}>
                     <View style={{ backgroundColor: "transparent" }}>
                       <IconD
