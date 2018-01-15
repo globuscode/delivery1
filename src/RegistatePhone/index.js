@@ -54,10 +54,7 @@ class Registration extends React.Component {
               position: "absolute",
               width: viewportWidth - 80,
               borderWidth: 1,
-              height:
-                viewportWidth >= 320 && viewportWidth < 375
-                  ? 44
-                  : viewportWidth >= 375 && viewportWidth < 414 ? 52 : 57,
+              height: adaptWidth(44, 52, 57),
               marginTop: 31,
               marginBottom: 10,
               marginHorizontal: 40,
@@ -96,10 +93,7 @@ class Registration extends React.Component {
             {
               justifyContent: "center",
               borderWidth: 1,
-              height:
-                viewportWidth >= 320 && viewportWidth < 375
-                  ? 44
-                  : viewportWidth >= 375 && viewportWidth < 414 ? 52 : 57,
+              height: adaptWidth(44, 52, 57),
               marginTop: 31,
               marginBottom: 10,
               marginHorizontal: 40,
