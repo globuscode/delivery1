@@ -437,7 +437,7 @@ class RestaurantMenu extends React.Component {
                   style={{
                     flexDirection: "column",
                     marginLeft: 10,
-                    marginVertical: 5,
+                    marginBottom: 5,
                     flex: 1,
                     justifyContent: 'space-between',
                     width: viewportWidth - 20 - 20 - imageHeight

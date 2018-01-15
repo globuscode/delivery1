@@ -51,6 +51,7 @@ const hrShort = (
 class Restaurant extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
+    headerBackTitle: 'Назад',
     title: navigation.state.params.title,
     headerRight: <Touchable
     onPress={navigation.state.params.onHeartPress}
@@ -354,7 +355,8 @@ class Restaurant extends React.Component {
                   ') center center no-repeat; background-size: contain" />'
               }}
               style={{
-                width: viewportWidth,
+                width: viewportWidth - 60,
+                alignSelf: 'center',
                 height: 120,
                 backgroundColor: "transparent"
               }}

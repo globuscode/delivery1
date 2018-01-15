@@ -47,6 +47,7 @@ import Cart from "../Cart";
 import CartTabIcon from './CartTabIcon';
 import IconD from "../IconD";
 
+import { adaptWidth } from '../etc';
 var kitchenPhoto = require("../../assets/img/kitchen.jpeg");
 
 var err404 = require("../../assets/img/404.jpg");
@@ -54,6 +55,26 @@ var err404 = require("../../assets/img/404.jpg");
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
+
+const headerStyleIOS = () => ({
+  headerTruncatedBackTitle: 'Назад',
+  headerTintColor: "#fff",
+  headerTitleStyle: {
+    fontFamily: "stem-medium",
+    fontSize: 14,
+    letterSpacing: 0.8,
+    color: '#fff'
+  },
+  headerTintColor: "#dcc49c",
+  headerBackTitleStyle: {
+    color: "#dcc49c"
+  },
+  headerStyle: {
+    marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
+    backgroundColor: "#292b37",
+    paddingHorizontal: Platform.OS === "ios" ? adaptWidth(16, 18, 24) : -3,
+  }
+});
 
 const FirstScreen = StackNavigator(
   {
@@ -73,22 +94,7 @@ const FirstScreen = StackNavigator(
     },
     Restaurant: {
       screen: Restaurant,
-      navigationOptions: {
-        gesturesEnabled: false,
-        headerTintColor: "#fff",
-        headerTitleStyle: {
-          fontFamily: "stem-medium",
-          fontSize: 14,
-          letterSpacing: 0.8
-        },
-        headerBackTitleStyle: {
-          color: "#dcc49c"
-        },
-        headerStyle: {
-          marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
-          backgroundColor: "#292b37"
-        }
-      }
+      navigationOptions: headerStyleIOS()
     },
     Plate: {
       screen: Plate,
@@ -119,6 +125,7 @@ const FirstScreen = StackNavigator(
   },
   {
     navigationOptions: {
+      headerBackTitle: 'Назад',
       headerTruncatedBackTitle: 'Назад',
     },
     cardStyle: {
@@ -138,23 +145,7 @@ const SecondScreen = StackNavigator(
     },
     Restaurant: {
       screen: Restaurant,
-      navigationOptions: {
-        title: "Джон Джоли",
-        gesturesEnabled: false,        
-        headerTintColor: "#fff",
-        headerTitleStyle: {
-          fontFamily: "stem-medium",
-          fontSize: 14,
-          letterSpacing: 0.8
-        },
-        headerBackTitleStyle: {
-          color: "#dcc49c"
-        },
-        headerStyle: {
-          marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
-          backgroundColor: "#292b37"
-        }
-      }
+      navigationOptions: headerStyleIOS()
     },
     Plate: {
       screen: Plate,
@@ -285,22 +276,7 @@ const ThirdScreen = StackNavigator(
 
     Restaurant: {
       screen: Restaurant,
-      navigationOptions: {
-        gesturesEnabled: false,
-        headerTintColor: "#fff",
-        headerTitleStyle: {
-          fontFamily: "stem-medium",
-          fontSize: 14,
-          letterSpacing: 0.8
-        },
-        headerBackTitleStyle: {
-          color: "#dcc49c"
-        },
-        headerStyle: {
-          marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
-          backgroundColor: "#292b37"
-        }
-      }
+      navigationOptions: headerStyleIOS()
     },
     Plate: {
       screen: Plate,
