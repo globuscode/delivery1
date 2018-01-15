@@ -13,19 +13,18 @@ import {
   Alert
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import Button from "react-native-button";
-import { LinearGradient, Constants } from "expo";
+import { LinearGradient } from "expo";
 import Touchable from "react-native-platform-touchable";
 import { host } from "../etc";
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 import Recomendations from "../Main/Recomendations";
 import IconD from "../IconD";
 import { fetchJson } from "../utils";
 
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
-  "window"
-);
+const { width: viewportWidth } = Dimensions.get("window");
+
 const hr = (
   <View
     style={{
@@ -51,22 +50,28 @@ const hrShort = (
 class Restaurant extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
-    headerBackTitle: 'Назад',
-    title: navigation.state.params.title,
-    headerRight: <Touchable
-    onPress={navigation.state.params.onHeartPress}
-    style={{
-      aspectRatio: 1, 
-      height: 25, 
-      backgroundColor: 'transparent'
-    }}>
-      <IconD
-        name={navigation.state.params.favourite ? 'heart_full' : 'heart_empty'}
-        size={18}
-        color='#dcc49c'
-      />
-    </Touchable>
-}}
+      headerBackTitle: "Назад",
+      title: navigation.state.params.title,
+      headerRight: (
+        <Touchable
+          onPress={navigation.state.params.onHeartPress}
+          style={{
+            aspectRatio: 1,
+            height: 25,
+            backgroundColor: "transparent"
+          }}
+        >
+          <IconD
+            name={
+              navigation.state.params.favourite ? "heart_full" : "heart_empty"
+            }
+            size={18}
+            color="#dcc49c"
+          />
+        </Touchable>
+      )
+    };
+  };
 
   constructor(props) {
     super(props);
@@ -115,7 +120,7 @@ class Restaurant extends React.Component {
   componentWillMount = async () => {
     let fav = false;
 
-    for (let i=0; i<this.props.favourite.restaurants.length; i++) {
+    for (let i = 0; i < this.props.favourite.restaurants.length; i++) {
       let rest = this.props.favourite.restaurants[i];
       if (rest === this.state.data.id) {
         fav = true;
@@ -126,11 +131,13 @@ class Restaurant extends React.Component {
       ? this.props.navigation.state.params.id
       : (-1).toString();
 
-    let restaurantResponseJson = await fetchJson(`${host}/restaurant?restaurantId=${restaurantId}`);
+    let restaurantResponseJson = await fetchJson(
+      `${host}/restaurant?restaurantId=${restaurantId}`
+    );
 
     if (restaurantResponseJson.data === undefined) {
-      Alert.alert('Ошибка', 'Ошибка запроса');
-      throw Error('Упс...');
+      Alert.alert("Ошибка", "Ошибка запроса");
+      throw Error("Упс...");
     }
 
     this.props.navigation.setParams({
@@ -141,8 +148,7 @@ class Restaurant extends React.Component {
           this.props.addToFav({
             id: this.props.navigation.state.params.id
           });
-        }
-        else {
+        } else {
           this.props.removeFromFav({
             id: this.props.navigation.state.params.id
           });
@@ -154,12 +160,12 @@ class Restaurant extends React.Component {
       favourite: fav,
       data: restaurantResponseJson.data.result
     });
-  }
+  };
 
   componentWillReceiveProps = async () => {
     let fav = false;
 
-    for (let i=0; i<this.props.favourite.restaurants.length; i++) {
+    for (let i = 0; i < this.props.favourite.restaurants.length; i++) {
       let rest = this.props.favourite.restaurants[i];
       if (rest === this.state.data.id) {
         fav = true;
@@ -167,10 +173,6 @@ class Restaurant extends React.Component {
     }
 
     if (fav != this.state.favourite) {
-      const restaurantId = this.props.navigation.state
-      ? this.props.navigation.state.params.id
-      : (-1).toString();
-
       this.props.navigation.setParams({
         favourite: fav,
         title: this.state.data.title,
@@ -179,8 +181,7 @@ class Restaurant extends React.Component {
             this.props.addToFav({
               id: this.props.navigation.state.params.id
             });
-          }
-          else {
+          } else {
             this.props.removeFromFav({
               id: this.props.navigation.state.params.id
             });
@@ -189,8 +190,8 @@ class Restaurant extends React.Component {
       });
 
       this.state.favourite = fav;
-    } 
-  }
+    }
+  };
 
   componentDidMount = async () => {
     const restaurantId = this.props.navigation.state
@@ -201,22 +202,21 @@ class Restaurant extends React.Component {
       .then(responseJson => {
         if (responseJson["data"] && responseJson["data"]["result"])
           this.state.data = responseJson["data"]["result"];
-          this.props.navigation.setParams({
-            favourite: this.state.favourite,
-            title: this.state.data.title,
-            onHeartPress: () => {
-              if (!this.state.favourite) {
-                this.props.addToFav({
-                  id: this.props.navigation.state.params.id
-                });
-              }
-              else {
-                this.props.removeFromFav({
-                  id: this.props.navigation.state.params.id
-                });
-              }
+        this.props.navigation.setParams({
+          favourite: this.state.favourite,
+          title: this.state.data.title,
+          onHeartPress: () => {
+            if (!this.state.favourite) {
+              this.props.addToFav({
+                id: this.props.navigation.state.params.id
+              });
+            } else {
+              this.props.removeFromFav({
+                id: this.props.navigation.state.params.id
+              });
             }
-          });
+          }
+        });
         this.setState({});
         return responseJson;
       });
@@ -350,13 +350,13 @@ class Restaurant extends React.Component {
               scrollEnabled={false}
               source={{
                 html:
-                  '<div style="width:100%; height: 100%; background: url(http:' +
+                  "<div style='width:100%; height: 100%; background: url(http:" +
                   this.state.data.logoImage +
-                  ') center center no-repeat; background-size: contain" />'
+                  ") center center no-repeat; background-size: contain' />"
               }}
               style={{
                 width: viewportWidth - 60,
-                alignSelf: 'center',
+                alignSelf: "center",
                 height: 120,
                 backgroundColor: "transparent"
               }}
@@ -430,9 +430,9 @@ class Restaurant extends React.Component {
               this.props.navigation.navigate("SetAddress", {
                 id: this.state.data.id
               });
-              this.state.canNav = false;
+              this.setState({ canNav: false });
               setTimeout(() => {
-                this.state.canNav = true;
+                this.setState({ canNav: true });
               }, 1500);
             }
           })}
@@ -462,60 +462,64 @@ class Restaurant extends React.Component {
                   marginLeft: 15
                 }}
               >{`Минимальная сумма заказа ${
-                this.state.data.minBill
-              } ₽ \nБесплатная доставка от ${
-                this.state.data.freeDelivery
-              } ₽`}</Text>
+                  this.state.data.minBill
+                } ₽ \nБесплатная доставка от ${
+                  this.state.data.freeDelivery
+                } ₽`}</Text>
             </View>
           )}
 
           {/* Описание ресторана */}
           {this.state.data.description.description == "" &&
           this.state.data.description.title == "" ? null : (
-            <View>
-              {hr}
-              {/* Описание ресторана */}
-              {
-                <View
-                  style={{
-                    alignItems: "flex-start",
-                    alignSelf: "stretch",
-                    marginTop: 15,
-                    marginBottom: 27,
-                    marginHorizontal: 20
-                  }}
-                >
-                  <View style={[styles.row, { justifyContent: "flex-start" }]}>
-                    {this.state.data.description.title == "" ? null : <Text
-                      style={{
-                        color: "#dcc49c",
-                        fontSize: 13,
-                        lineHeight: 16,
-                        letterSpacing: 0.6,
-                        top: 3
-                      }}
-                    >
-                      {this.state.data.description.title}
-                    </Text>}
+              <View>
+                {hr}
+                {/* Описание ресторана */}
+                {
+                  <View
+                    style={{
+                      alignItems: "flex-start",
+                      alignSelf: "stretch",
+                      marginTop: 15,
+                      marginBottom: 27,
+                      marginHorizontal: 20
+                    }}
+                  >
+                    <View style={[styles.row, { justifyContent: "flex-start" }]}>
+                      {this.state.data.description.title == "" ? null : (
+                        <Text
+                          style={{
+                            color: "#dcc49c",
+                            fontSize: 13,
+                            lineHeight: 16,
+                            letterSpacing: 0.6,
+                            top: 3
+                          }}
+                        >
+                          {this.state.data.description.title}
+                        </Text>
+                      )}
+                    </View>
+                    <View style={{ height: 17 }} />
+                    <View style={[styles.row, { justifyContent: "flex-start" }]}>
+                      {this.state.data.description.description == "" ? null : (
+                        <Text
+                          style={{
+                            color: "#ffffff",
+                            fontSize: 13,
+                            lineHeight: 17,
+                            top: 4
+                          }}
+                        >
+                          {this.state.data.description.description}
+                        </Text>
+                      )}
+                    </View>
                   </View>
-                  <View style={{ height: 17 }} />
-                  <View style={[styles.row, { justifyContent: "flex-start" }]}>
-                    {this.state.data.description.description == "" ? null :<Text
-                      style={{
-                        color: "#ffffff",
-                        fontSize: 13,
-                        lineHeight: 17,
-                        top: 4
-                      }}
-                    >
-                      {this.state.data.description.description}
-                    </Text>}
-                  </View>
-                </View>
-              }
-              {hr}
-            </View>
-          )}
+                }
+                {hr}
+              </View>
+            )}
 
           {/* Лучшие блюда */}
           {this.state.data.bestPlates == undefined ? null : (
@@ -726,19 +730,26 @@ class Restaurant extends React.Component {
   };
 }
 
+Restaurant.propTypes = {
+  navigation: PropTypes.object,
+  favourite: PropTypes.object,
+  addToFav: PropTypes.func,
+  removeFromFav: PropTypes.func
+};
+
 export default connect(
   state => ({
     favourite: state.favourite
   }),
   dispatch => ({
-    addToFav: (data) => {
-      dispatch({ type: "ADD_RESTAURANT_TO_FAV", payload: data })
+    addToFav: data => {
+      dispatch({ type: "ADD_RESTAURANT_TO_FAV", payload: data });
     },
-		removeFromFav: (data) => {
-			dispatch({ type: "DELETE_RESTAURANT", payload: data })
-		},
+    removeFromFav: data => {
+      dispatch({ type: "DELETE_RESTAURANT", payload: data });
+    }
   })
-)(Restaurant)
+)(Restaurant);
 
 const styles = StyleSheet.create({
   text: {

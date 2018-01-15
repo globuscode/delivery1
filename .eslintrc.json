@@ -1,11 +1,16 @@
 {
     "env": {
-        "browser": true,
         "es6": true,
         "node": true
     },
-    "extends": "airbnb",
     "parser": "babel-eslint",
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended"
+    ],
+    "globals": { 
+        "fetch": false
+    },
     "parserOptions": {
         "ecmaFeatures": {
             "experimentalObjectRestSpread": true,
@@ -17,8 +22,6 @@
         "react"
     ],
     "rules": {
-        "strict": 0,
-        "react/jsx-uses-vars": [2],
         "indent": [
             "error",
             2
@@ -27,25 +30,13 @@
             "error",
             "unix"
         ],
+        "quotes": [
+            "error",
+            "double"
+        ],
         "semi": [
             "error",
             "always"
-        ],
-        "no-nested-ternary": [
-            "off"
-        ],
-        "react/prop-types": [
-            "off"
-        ],
-        "react/jsx-filename-extension": [
-            "off"
-        ],
-        "comma-dangle": ["error", {
-            "arrays": "never",
-            "objects": "never",
-            "imports": "never",
-            "exports": "never",
-            "functions": "ignore"
-        }]
+        ]
     }
 }

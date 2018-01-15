@@ -1,9 +1,18 @@
 import React from "react";
-import { View, Text, Dimensions, TouchableOpacity, Platform } from 'react-native';
+import {
+  View,
+  Text,
+  Dimensions,
+  TouchableOpacity,
+  Platform
+} from "react-native";
+import propTypes from "prop-types";
 
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
+const { width: viewportWidth } = Dimensions.get(
+  "window"
+);
 
-export default class ButtonD extends React.Component {
+class ButtonD extends React.Component {
   render = () => {
     return (
       <View style={{ alignSelf: "stretch" }}>
@@ -22,19 +31,20 @@ export default class ButtonD extends React.Component {
             }
           ]}
         >
-          {this.props.title.map((element, index) => 
-          <Text
-            style={{
-              color: "#ffffff",
-              fontSize: 14,
-              fontFamily: "stem-medium",
-              textAlign: 'center',
-              top: Platform.OS === 'ios' ? 2 : 0
-            }}
-            key={index}
-          >
-          {element}
-          </Text>)}
+          {this.props.title.map((element, index) => (
+            <Text
+              style={{
+                color: "#ffffff",
+                fontSize: 14,
+                fontFamily: "stem-medium",
+                textAlign: "center",
+                top: Platform.OS === "ios" ? 2 : 0
+              }}
+              key={index}
+            >
+              {element}
+            </Text>
+          ))}
         </View>
 
         <TouchableOpacity
@@ -53,21 +63,30 @@ export default class ButtonD extends React.Component {
             }
           ]}
         >
-          {this.props.title.map((element, index) => 
-          <Text
-            style={{
-              color: "#ffffff",
-              textAlign: 'center',
-              fontSize: 14,
-              fontFamily: "stem-medium",
-              top: Platform.OS === 'ios' ? 2 : 0
-            }}
-            key={index}
-          >
-            {element}
-          </Text>)}
+          {this.props.title.map((element, index) => (
+            <Text
+              style={{
+                color: "#ffffff",
+                textAlign: "center",
+                fontSize: 14,
+                fontFamily: "stem-medium",
+                top: Platform.OS === "ios" ? 2 : 0
+              }}
+              key={index}
+            >
+              {element}
+            </Text>
+          ))}
         </TouchableOpacity>
       </View>
     );
   };
 }
+
+ButtonD.propTypes = {
+  width: propTypes.number,
+  title: propTypes.array,
+  onPress: propTypes.func
+};
+
+export default ButtonD;

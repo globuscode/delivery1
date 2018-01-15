@@ -1,69 +1,36 @@
 import React from "react";
 import {
-  StyleSheet,
-  Text,
   View,
-  TouchableOpacity,
   Dimensions,
-  ScrollView,
-  PlatformIOS,
   Platform,
-  StatusBar,
-  Image
+  StatusBar
 } from "react-native";
-import { Font, LinearGradient } from "expo";
 import Icon from "react-native-vector-icons/Ionicons";
-import Recomendations from "./Recomendations";
-import RestouransOfTheWeek from "./RestouransOfTheWeek";
-import Collections from "./Collections";
 import AllRestourans from "../AllRestourans";
-import SetAddress from "../SetAddress";
-import {
-  StackNavigator,
-  NavigationActions,
-  TabNavigator,
-  TabBarBottom
-} from "react-navigation";
-import Drawer from "react-native-drawer";
-import Touchable from 'react-native-platform-touchable';
+import { StackNavigator, TabNavigator, TabBarBottom } from "react-navigation";
+import Touchable from "react-native-platform-touchable";
 
 import Feed from "./Feed";
-
-import SelectCity from "../SelectCity";
 import Plate from "../Plate";
-import SelectTags from "../SelectTags";
-import SelectTastes from "../SelectTastes";
-
-import Profile from "../Profile";
-
 import SpecialScreen from "../SpecialScreen";
-import LoadingScreen from "../LoadingScreen";
-
 import Restaurant from "../Restaurant";
 import RestaurantMenu from "../RestaurantMenu";
 import Favoutite from "../Favourite";
 import Cart from "../Cart";
 
-import CartTabIcon from './CartTabIcon';
+import CartTabIcon from "./CartTabIcon";
 import IconD from "../IconD";
+import { adaptWidth } from "../etc";
 
-import { adaptWidth } from '../etc';
-var kitchenPhoto = require("../../assets/img/kitchen.jpeg");
-
-var err404 = require("../../assets/img/404.jpg");
-
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
-  "window"
-);
+const { width: viewportWidth } = Dimensions.get("window");
 
 const headerStyleIOS = () => ({
-  headerTruncatedBackTitle: 'Назад',
-  headerTintColor: "#fff",
+  headerTruncatedBackTitle: "Назад",
   headerTitleStyle: {
     fontFamily: "stem-medium",
     fontSize: 14,
     letterSpacing: 0.8,
-    color: '#fff'
+    color: "#fff"
   },
   headerTintColor: "#dcc49c",
   headerBackTitleStyle: {
@@ -72,7 +39,7 @@ const headerStyleIOS = () => ({
   headerStyle: {
     marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
     backgroundColor: "#292b37",
-    paddingHorizontal: Platform.OS === "ios" ? adaptWidth(16, 18, 24) : -3,
+    paddingHorizontal: Platform.OS === "ios" ? adaptWidth(16, 18, 24) : -3
   }
 });
 
@@ -125,8 +92,8 @@ const FirstScreen = StackNavigator(
   },
   {
     navigationOptions: {
-      headerBackTitle: 'Назад',
-      headerTruncatedBackTitle: 'Назад',
+      headerBackTitle: "Назад",
+      headerTruncatedBackTitle: "Назад"
     },
     cardStyle: {
       backgroundColor: "#292b37"
@@ -140,7 +107,7 @@ const SecondScreen = StackNavigator(
       screen: AllRestourans,
       navigationOptions: {
         header: null,
-        gesturesEnabled: false,
+        gesturesEnabled: false
       }
     },
     Restaurant: {
@@ -176,7 +143,7 @@ const SecondScreen = StackNavigator(
   },
   {
     navigationOptions: {
-      headerTruncatedBackTitle: 'Назад',
+      headerTruncatedBackTitle: "Назад"
     },
     cardStyle: {
       backgroundColor: "#292b37"
@@ -192,7 +159,7 @@ const FourthScreen = StackNavigator(
         title: "Корзина",
         headerLeft: (
           <Touchable
-            background={Touchable.SelectableBackgroundBorderless()} 
+            background={Touchable.SelectableBackgroundBorderless()}
             style={{
               width: 50,
               height: 50,
@@ -204,7 +171,11 @@ const FourthScreen = StackNavigator(
               navigation.navigate("Main");
             }}
           >
-            <Icon name={Platform.OS === "ios" ? "ios-close-outline" : 'md-close'} size={30} color="#dcc49c" />
+            <Icon
+              name={Platform.OS === "ios" ? "ios-close-outline" : "md-close"}
+              size={30}
+              color="#dcc49c"
+            />
           </Touchable>
         ),
         headerTintColor: "#fff",
@@ -221,7 +192,7 @@ const FourthScreen = StackNavigator(
           backgroundColor: "transparent",
           borderBottomWidth: Platform.OS === "ios" ? 1 : 0,
           marginHorizontal: Platform.OS === "ios" ? 20 : -3,
-          borderBottomColor: 'rgb(87, 88, 98)'
+          borderBottomColor: "rgb(87, 88, 98)"
         },
         gesturesEnabled: false
       })
@@ -255,9 +226,9 @@ const FourthScreen = StackNavigator(
   },
   {
     navigationOptions: {
-      headerTruncatedBackTitle: 'Назад',
+      headerTruncatedBackTitle: "Назад"
     },
-    headerMode: 'screen',
+    headerMode: "screen",
     cardStyle: {
       backgroundColor: "#292b37"
     }
@@ -307,7 +278,7 @@ const ThirdScreen = StackNavigator(
   },
   {
     navigationOptions: {
-      headerTruncatedBackTitle: 'Назад',
+      headerTruncatedBackTitle: "Назад"
     },
     cardStyle: {
       backgroundColor: "#292b37"
@@ -321,10 +292,10 @@ export default TabNavigator(
       screen: FirstScreen,
       navigationOptions: {
         tabBarLabel: "Домой",
-        tabBarIcon: ({ tintColor, focused }) => {
+        tabBarIcon: ({ focused }) => {
           if (!IconD) return <View />;
           return (
-            <View style={{ }}>
+            <View style={{}}>
               <IconD
                 size={24}
                 name={focused ? "homeFill" : "home"}
@@ -342,10 +313,10 @@ export default TabNavigator(
           viewportWidth >= 320 && viewportWidth < 375
             ? "Рестораны"
             : "Все рестораны",
-        tabBarIcon: ({ tintColor, focused }) => {
+        tabBarIcon: ({ focused }) => {
           if (!IconD) return <View />;
           return (
-            <View style={{ }}>
+            <View style={{}}>
               <IconD
                 size={24}
                 name={focused ? "book-fill" : "book"}
@@ -360,10 +331,10 @@ export default TabNavigator(
       screen: ThirdScreen,
       navigationOptions: {
         tabBarLabel: "Избранное",
-        tabBarIcon: ({ tintColor, focused }) => {
+        tabBarIcon: ({ focused }) => {
           if (!IconD) return <View />;
           return (
-            <View style={{ }}>
+            <View style={{}}>
               <IconD
                 size={24}
                 name={focused ? "heart-fill" : "heart"}
@@ -379,11 +350,11 @@ export default TabNavigator(
       navigationOptions: {
         tabBarLabel: "Корзина",
         tabBarVisible: false,
-        tabBarIcon: ({ tintColor, focused }) => {
+        tabBarIcon: ({ focused }) => {
           if (!IconD) return <View />;
           return (
-            <View style={{ }}>
-              <CartTabIcon focused={focused}/>
+            <View style={{}}>
+              <CartTabIcon focused={focused} />
             </View>
           );
         }
@@ -397,7 +368,7 @@ export default TabNavigator(
 
     tabBarOptions: {
       style: {
-        alignSelf: 'stretch',
+        alignSelf: "stretch",
         padding: 0,
         paddingTop: 1,
         backgroundColor: "rgb(87, 88, 98)",
@@ -406,7 +377,7 @@ export default TabNavigator(
       tabStyle: {
         flex: 1,
         paddingTop: 3,
-        justifyContent: 'space-around', 
+        justifyContent: "space-around"
       },
       pressColor: "red",
       inactiveBackgroundColor: "rgba(39, 40, 48, 1)",
@@ -416,25 +387,3 @@ export default TabNavigator(
     }
   }
 );
-
-const styles = StyleSheet.create({
-  backgroundImage: {
-    flex: 1,
-    width: null,
-    height: null,
-    resizeMode: "cover"
-  },
-  text: {
-    color: "white",
-    fontSize: 20
-  },
-  container: {
-    flex: 1,
-    elevation: -10,
-    paddingTop: 0,
-    backgroundColor: "#292b37",
-    paddingBottom: 0,
-    justifyContent: "space-between",
-    alignItems: "center"
-  }
-});

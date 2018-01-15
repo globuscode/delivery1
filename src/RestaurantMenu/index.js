@@ -9,27 +9,26 @@ import {
   ScrollView,
   Image,
   WebView,
-  Linking,
   Text,
   Alert
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import { LinearGradient, Constants } from "expo";
+import { LinearGradient } from "expo";
 import Accordion from "react-native-collapsible/Accordion";
 import { connect } from "react-redux";
-import Touchable from 'react-native-platform-touchable';
-import HTMLView from 'react-native-htmlview';
-import { host } from '../etc';
-import PriceButton from "../PriceButton";
-import Storage from "../Reducers";
+import Touchable from "react-native-platform-touchable";
+import HTMLView from "react-native-htmlview";
+import PropTypes from "prop-types";
+import * as Animatable from "react-native-animatable";
 
 import Recomendations from "../Main/Recomendations";
 import IconD from "../IconD";
-import { adaptWidth } from '../etc';
-import { fetchJson } from '../utils';
-import * as Animatable from 'react-native-animatable';
+import { adaptWidth } from "../etc";
+import { fetchJson } from "../utils";
+import { host } from "../etc";
+import PriceButton from "../PriceButton";
 
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
+const { width: viewportWidth } = Dimensions.get(
   "window"
 );
 const hr = (
@@ -42,36 +41,31 @@ const hr = (
     }}
   />
 );
-const hrShort = (
-  <View
-    style={{
-      alignSelf: "stretch",
-      margin: 10,
-      marginHorizontal: 20,
-      height: 1,
-      backgroundColor: "rgb(87, 88, 98)"
-    }}
-  />
-);
 
 class RestaurantMenu extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
-    title: navigation.state.params.title,
-    headerRight: <Touchable
-    onPress={navigation.state.params.onHeartPress}
-    style={{
-      aspectRatio: 1, 
-      height: 25, 
-      backgroundColor: 'transparent'
-    }}>
-      <IconD
-        name={navigation.state.params.favourite ? 'heart_full' : 'heart_empty'}
-        size={18}
-        color='#dcc49c'
-      />
-    </Touchable>
-}}
+      title: navigation.state.params.title,
+      headerRight: (
+        <Touchable
+          onPress={navigation.state.params.onHeartPress}
+          style={{
+            aspectRatio: 1,
+            height: 25,
+            backgroundColor: "transparent"
+          }}
+        >
+          <IconD
+            name={
+              navigation.state.params.favourite ? "heart_full" : "heart_empty"
+            }
+            size={18}
+            color="#dcc49c"
+          />
+        </Touchable>
+      )
+    };
+  };
 
   constructor(props) {
     super(props);
@@ -81,38 +75,36 @@ class RestaurantMenu extends React.Component {
       canNav: true,
       favourite: false,
       data: {
-				id: 0,
-				title: "",
-				image: "//dostavka1.com/img/app-icon.png",
-				logoImage: '//dostavka1.com/img/app-icon.png',
-				type: '',
-				tagGroups: [
-				],
-				minOrder: 0,
-				description: {
-					title: '',
-					description: ''
-				},
-				bestPlates: [
-				],
-				promo: {
-						id: 0,
-						title: '',
-						description: ''
-				},
-				time: '',
-				averageBill: 0,
-				minBill: 0,
-				web: '',
-				discount: 0
-			},
-      menu: [],
+        id: 0,
+        title: "",
+        image: "//dostavka1.com/img/app-icon.png",
+        logoImage: "//dostavka1.com/img/app-icon.png",
+        type: "",
+        tagGroups: [],
+        minOrder: 0,
+        description: {
+          title: "",
+          description: ""
+        },
+        bestPlates: [],
+        promo: {
+          id: 0,
+          title: "",
+          description: ""
+        },
+        time: "",
+        averageBill: 0,
+        minBill: 0,
+        web: "",
+        discount: 0
+      },
+      menu: []
     };
   }
 
-  componentWillReceiveProps = (props) => {
+  componentWillReceiveProps = props => {
     let fav = false;
-    for (let i=0; i<props.favourite.restaurants.length; i++) {
+    for (let i = 0; i < props.favourite.restaurants.length; i++) {
       let rest = props.favourite.restaurants[i];
       if (rest === this.state.data.id) {
         fav = true;
@@ -128,8 +120,7 @@ class RestaurantMenu extends React.Component {
             this.props.addRestToFav({
               id: props.navigation.state.params.id
             });
-          }
-          else {
+          } else {
             this.props.removeRestFromFav({
               id: props.navigation.state.params.id
             });
@@ -137,14 +128,14 @@ class RestaurantMenu extends React.Component {
         }
       });
 
-      this.state.favourite = fav;
+      this.setState({ favourite: fav });
     }
-  }
+  };
 
   componentWillMount = async () => {
     let fav = false;
 
-    for (let i=0; i<this.props.favourite.restaurants.length; i++) {
+    for (let i = 0; i < this.props.favourite.restaurants.length; i++) {
       let rest = this.props.favourite.restaurants[i];
       if (rest === this.state.data.id) {
         fav = true;
@@ -155,16 +146,17 @@ class RestaurantMenu extends React.Component {
       ? this.props.navigation.state.params.id
       : (-1).toString();
 
-    let restaurantResponseJson = await fetchJson(`${host}/restaurant?restaurantId=${restaurantId}`);
-
+    let restaurantResponseJson = await fetchJson(
+      `${host}/restaurant?restaurantId=${restaurantId}`
+    );
 
     if (restaurantResponseJson.data === undefined) {
-      Alert.alert('Ошибка', 'Ошибка запроса');
-      throw Error('Упс...');
+      Alert.alert("Ошибка", "Ошибка запроса");
+      throw Error("Упс...");
     }
     if (restaurantResponseJson.data.result === undefined) {
-      Alert.alert('Ошибка', 'Ошибка запроса');
-      throw Error('Упс...');
+      Alert.alert("Ошибка", "Ошибка запроса");
+      throw Error("Упс...");
     }
 
     this.props.navigation.setParams({
@@ -175,8 +167,7 @@ class RestaurantMenu extends React.Component {
           this.props.addRestToFav({
             id: this.props.navigation.state.params.id
           });
-        }
-        else {
+        } else {
           this.props.removeRestFromFav({
             id: this.props.navigation.state.params.id
           });
@@ -190,37 +181,40 @@ class RestaurantMenu extends React.Component {
     //   favourite: fav,
     //   data: restaurantResponseJson.data.result
     // });
-  }
+  };
 
   componentDidMount = async () => {
-    
-    const restaurantId = this.props.navigation.state ? this.props.navigation.state.params.id : (-1).toString();
+    const restaurantId = this.props.navigation.state
+      ? this.props.navigation.state.params.id
+      : (-1).toString();
     // const response = await fetch(`${host}/restaurant?restaurantId=${restaurantId}`);
     // const responseJson = await response.json();
-    
+
     // if (responseJson["data"] && responseJson["data"]["result"]) {
     //   responseJson["data"]["result"]["menu"] = [];
     //   this.state.data = responseJson['data']["result"];
     //   this.props.setLastViewed(responseJson['data']["result"]["id"]);
     // }
     this.props.navigation.setParams({
-      title: this.state.data.title,
+      title: this.state.data.title
     });
-    const menuResponseJson = await fetchJson(`${host}/restaurantMenu?restaurantId=${restaurantId}`);
+    const menuResponseJson = await fetchJson(
+      `${host}/restaurantMenu?restaurantId=${restaurantId}`
+    );
     if (menuResponseJson["data"]) {
       if (menuResponseJson["data"]["result"]) {
         this.state.menu = menuResponseJson["data"]["result"];
-        this.setState({  });
+        this.setState({});
       }
     }
-	}
+  };
 
   /**
-	 * Возвращает меню в формате массива объектов
-	 */
+   * Возвращает меню в формате массива объектов
+   */
   toArrayMenu(menu) {
     var result = [];
-    for (type in menu) {
+    for (let type in menu) {
       result.push({
         plates: menu[type],
         type: type
@@ -230,11 +224,11 @@ class RestaurantMenu extends React.Component {
   }
 
   /**
-	 * Возвращает пункт описания ресторана
-	 * @param {String} icon – иконка пункта
-	 * @param {String} title – заголовок пункта
-	 * @param {String} content – значение пункта
-	 */
+   * Возвращает пункт описания ресторана
+   * @param {String} icon – иконка пункта
+   * @param {String} title – заголовок пункта
+   * @param {String} content – значение пункта
+   */
   renderAboutItem = (icon, title, content) => {
     return (
       <View style={{ flexDirection: "row" }}>
@@ -263,11 +257,10 @@ class RestaurantMenu extends React.Component {
     );
   };
 
-  _renderHeader({type}) {
+  _renderHeader({ type }) {
     return (
       <View
-
-        hitSlop={{top: 12, bottom: 12}}
+        hitSlop={{ top: 12, bottom: 12 }}
         style={[
           styles.row,
           {
@@ -290,10 +283,7 @@ class RestaurantMenu extends React.Component {
         >
           {type}
         </Text>*/}
-        <HTMLView
-          value={`<span>${type}</span>`}
-          stylesheet={styles}
-        />
+        <HTMLView value={`<span>${type}</span>`} stylesheet={styles} />
         <Icon
           name="ios-arrow-down-outline"
           size={16}
@@ -303,21 +293,21 @@ class RestaurantMenu extends React.Component {
     );
   }
 
-  isInFav = ({id}) => {
+  isInFav = ({ id }) => {
     if (typeof id === undefined) {
       return false;
     }
-    for (let i=0; i<this.props.favourite.plates.length; i++) {
+    for (let i = 0; i < this.props.favourite.plates.length; i++) {
       if (id === this.props.favourite.plates[i]) {
         return true;
       }
     }
-  }
+  };
 
   /**
-	 * Возвращает кнопку с ценой
-	 * @param {Number} price 
-	 */
+   * Возвращает кнопку с ценой
+   * @param {Number} price
+   */
   _renderPrice = price => {
     return (
       <TouchableOpacity>
@@ -331,7 +321,6 @@ class RestaurantMenu extends React.Component {
             justifyContent: "center",
             alignContent: "center",
             borderColor: "#dcc49c",
-            flexDirection: "row",
             paddingHorizontal: 5,
             backgroundColor: "transparent"
           }}
@@ -355,7 +344,7 @@ class RestaurantMenu extends React.Component {
     );
   };
 
-  _renderContent = ({plates}, id, isActive) => {
+  _renderContent = ({ plates }, id, isActive) => {
     const imageHeight =
       viewportWidth >= 320 && viewportWidth < 375
         ? 100
@@ -363,19 +352,25 @@ class RestaurantMenu extends React.Component {
     if (!isActive) return null;
     //const textMarginRight = (viewportWidth >= 320 && viewportWidth < 375) ? 40 : (viewportWidth >= 375 && viewportWidth < 414) ? 117 : 130;
     return (
-      <Animatable.View animation={isActive ? 'zoomIn' : 'zoomOut'} style={{ flexDirection: "column", width: viewportWidth }}>
+      <Animatable.View
+        animation={isActive ? "zoomIn" : "zoomOut"}
+        style={{ flexDirection: "column", width: viewportWidth }}
+      >
         {plates.map((e, i) => {
           const itemCount = this.getCount(e);
           return (
             <Touchable
               key={i}
-              background={Touchable.Ripple('gray')} 
+              background={Touchable.Ripple("gray")}
               onPress={() => {
                 if (this.state.canNav) {
-                  this.props.navigation.navigate("Plate", {plate: e, restaurant: this.state.data});
-                  this.state.canNav = false;
+                  this.props.navigation.navigate("Plate", {
+                    plate: e,
+                    restaurant: this.state.data
+                  });
+                  this.setState({ canNav: false });
                   setTimeout(() => {
-                    this.state.canNav = true;
+                    this.setState({ canNav: true });
                   }, 1500);
                 }
               }}
@@ -393,36 +388,39 @@ class RestaurantMenu extends React.Component {
                   styel={{
                     width: imageHeight,
                     height: imageHeight,
-                    borderWidth: e.image.indexOf('.png') > 0 ? 1.5 : 0,
-                    borderColor: 'rgb(225, 199, 155)',
+                    borderWidth: e.image.indexOf(".png") > 0 ? 1.5 : 0,
+                    borderColor: "rgb(225, 199, 155)",
                     borderRadius: 10
-                  }}>
-                    <Image
+                  }}
+                >
+                  <Image
                     source={{
-                      uri: 'http:'+e.image
+                      uri: "http:" + e.image
                     }}
-                    resizeMode={e.image.indexOf('.png') > 0 ? 'contain' : 'cover'}
+                    resizeMode={
+                      e.image.indexOf(".png") > 0 ? "contain" : "cover"
+                    }
                     style={{
                       width: imageHeight,
                       height: imageHeight,
-                      borderWidth: e.image.indexOf('.png') > 0 ? 1.5 : 0,
-                      borderColor: 'rgb(225, 199, 155)',
+                      borderWidth: e.image.indexOf(".png") > 0 ? 1.5 : 0,
+                      borderColor: "rgb(225, 199, 155)",
                       borderRadius: 10
                     }}
                   />
                   <Touchable
-                    style={{position: 'absolute', right: 5, top: 5}}
-                    hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}
+                    style={{ position: "absolute", right: 5, top: 5 }}
+                    hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
                     foreground={Touchable.SelectableBackgroundBorderless()}
                     onPress={() => {
                       if (this.isInFav(e)) {
                         this.props.removeFromFav(e);
-                      }
-                      else {
+                      } else {
                         this.props.addToFav(e);
                       }
                       // this.setState({})
-                    }}>
+                    }}
+                  >
                     <View style={{ backgroundColor: "transparent" }}>
                       <IconD
                         name={this.isInFav(e) ? "heart_full" : "heart_empty"}
@@ -432,80 +430,98 @@ class RestaurantMenu extends React.Component {
                     </View>
                   </Touchable>
                 </View>
-                
+
                 <View
                   style={{
                     flexDirection: "column",
                     marginLeft: 10,
                     marginBottom: 5,
                     flex: 1,
-                    justifyContent: 'space-between',
+                    justifyContent: "space-between",
                     width: viewportWidth - 20 - 20 - imageHeight
                   }}
                 >
-                  <View style={{
-                    flexDirection: 'column',
-                  }}>
-                  <Text
+                  <View
                     style={{
-                      color: "#fff",
-                      fontSize: 15,
-                      fontFamily: "stem-medium",
-                      top: 3,
-                      lineHeight: 18,
-                      letterSpacing: 1
+                      flexDirection: "column"
                     }}
                   >
-                    {e.title}
-                  </Text>
-                  <View style={{
-                    marginBottom: 5
-                }}>
-                  <HTMLView
-                    value={`<p>${e.description}</p>`}
-                    stylesheet={styles}
-                  />
-                </View>
+                    <Text
+                      style={{
+                        color: "#fff",
+                        fontSize: 15,
+                        fontFamily: "stem-medium",
+                        top: 3,
+                        lineHeight: 18,
+                        letterSpacing: 1
+                      }}
+                    >
+                      {e.title}
+                    </Text>
+                    <View
+                      style={{
+                        marginBottom: 5
+                      }}
+                    >
+                      <HTMLView
+                        value={`<p>${e.description}</p>`}
+                        stylesheet={styles}
+                      />
+                    </View>
                   </View>
                   <View style={{ flexDirection: "row" }}>
                     <PriceButton
                       value={e.price}
                       pressed={itemCount !== 0}
                       count={itemCount}
-                      onPress={async () => {                        
+                      onPress={async () => {
                         if (this.props.globalStore.length > 0) {
-                          if (this.props.globalStore[this.props.globalStore.length - 1].plate.restaurant !== e.restaurant)
+                          if (
+                            this.props.globalStore[
+                              this.props.globalStore.length - 1
+                            ].plate.restaurant !== e.restaurant
+                          )
                             Alert.alert(
                               "Вы уверенны?",
                               "Вы добавили блюдо из другого ресторана. Ваша корзина из предыдущего ресторана будет очищена.",
                               [
-                                {text: 'OK', onPress: () => this.props.onAddPlate(e)},
-                                {text: 'Отмена', onPress: null, style: 'cancel'},
+                                {
+                                  text: "OK",
+                                  onPress: () => this.props.onAddPlate(e)
+                                },
+                                {
+                                  text: "Отмена",
+                                  onPress: null,
+                                  style: "cancel"
+                                }
                               ],
                               { cancelable: false }
                             );
-                          else
-                            this.props.onAddPlate(e);
-                          }
-                        else
-                          this.props.onAddPlate(e);
-
+                          else this.props.onAddPlate(e);
+                        } else this.props.onAddPlate(e);
                       }}
                     />
-                    {itemCount === 0 ? null : <Touchable
-                    background={Touchable.SelectableBackground()}
-                    onPress={() => { this.props.deletePlate(e)}}
-                    style={{
-                      width: adaptWidth(28, 30, 34),
-                      marginLeft: 10,
-                      height: adaptWidth(28, 30, 34),
-                      borderRadius: 4,
-                      justifyContent: 'center',
-                      backgroundColor: "#dcc49c",
-                      alignItems: 'center'
-                    }}>
-                      <Text style={{color: "rgba(41,43,55, 1)"}}>{'–'}</Text>
-                    </Touchable>}
+                    {itemCount === 0 ? null : (
+                      <Touchable
+                        background={Touchable.SelectableBackground()}
+                        onPress={() => {
+                          this.props.deletePlate(e);
+                        }}
+                        style={{
+                          width: adaptWidth(28, 30, 34),
+                          marginLeft: 10,
+                          height: adaptWidth(28, 30, 34),
+                          borderRadius: 4,
+                          justifyContent: "center",
+                          backgroundColor: "#dcc49c",
+                          alignItems: "center"
+                        }}
+                      >
+                        <Text style={{ color: "rgba(41,43,55, 1)" }}>
+                          {"–"}
+                        </Text>
+                      </Touchable>
+                    )}
                     <Text
                       style={{
                         color: "rgb(135, 136, 140)",
@@ -559,7 +575,7 @@ class RestaurantMenu extends React.Component {
               color: "#ffffff",
               fontSize: 14,
               fontFamily: "stem-medium",
-              top: Platform.OS === 'ios' ? 2 : 0
+              top: Platform.OS === "ios" ? 2 : 0
             }}
           >
             {title}
@@ -593,7 +609,7 @@ class RestaurantMenu extends React.Component {
               color: "#ffffff",
               fontSize: 14,
               fontFamily: "stem-medium",
-              top: Platform.OS === 'ios' ? 2 : 0
+              top: Platform.OS === "ios" ? 2 : 0
             }}
           >
             {title}
@@ -603,26 +619,27 @@ class RestaurantMenu extends React.Component {
     );
   };
 
-  getCount = (plate) => {
+  getCount = plate => {
     var i = 0;
     while (i < this.props.globalStore.length) {
       let equalTitle = plate.title === this.props.globalStore[i].plate.title;
       let equalId = plate.id === this.props.globalStore[i].plate.id;
-      let equalRestaurant = plate.restourant == this.props.globalStore[i].plate.restourant;
+      let equalRestaurant =
+        plate.restourant == this.props.globalStore[i].plate.restourant;
       if (equalTitle && equalRestaurant && equalId) {
         return this.props.globalStore[i].count;
       }
       i++;
     }
     return 0;
-  }
+  };
 
   render() {
     //this.navigationOptions.title = this.state.data.title;
     var restaurant = (
       <View>
         <ScrollView
-          ref="scroll"
+          ref={c => this.scroll = c}
           style={styles.container}
           contentContainerStyle={{
             justifyContent: "flex-start",
@@ -632,7 +649,7 @@ class RestaurantMenu extends React.Component {
           {/* Фото ресторана */}
           <Image
             source={{
-              uri: 'http:'+this.state.data.image
+              uri: "http:" + this.state.data.image
             }}
             style={{
               width: viewportWidth,
@@ -673,9 +690,9 @@ class RestaurantMenu extends React.Component {
               scrollEnabled={false}
               source={{
                 html:
-                  '<div style="width:100%; height: 100%; background: url(http:' +
+                  "<div style='width:100%; height: 100%; background: url(http:" +
                   this.state.data.logoImage +
-                  ') center center no-repeat; background-size: contain" />'
+                  ") center center no-repeat; background-size: contain' />"
               }}
               style={{
                 width: viewportWidth,
@@ -729,30 +746,36 @@ class RestaurantMenu extends React.Component {
               }}
             >
               <View style={[styles.row, { justifyContent: "flex-start" }]}>
-                {this.state.data.description.title == "" ? null : <Text
-                  style={{
-                    color: "#dcc49c",
-                    fontSize: 13,
-                    lineHeight: 16,
-                    letterSpacing: 0.6,
-                    top: 3
-                  }}
-                >
-                  {this.state.data.description.title}
-                </Text>}
+                {this.state.data.description.title == "" ? null : (
+                  <Text
+                    style={{
+                      color: "#dcc49c",
+                      fontSize: 13,
+                      lineHeight: 16,
+                      letterSpacing: 0.6,
+                      top: 3
+                    }}
+                  >
+                    {this.state.data.description.title}
+                  </Text>
+                )}
               </View>
-              {this.state.data.description.description == "" ? null : <View style={{ height: 17 }} />}
+              {this.state.data.description.description == "" ? null : (
+                <View style={{ height: 17 }} />
+              )}
               <View style={[styles.row, { justifyContent: "flex-start" }]}>
-                {this.state.data.description.description == "" ? null : <Text
-                  style={{
-                    color: "#ffffff",
-                    fontSize: 13,
-                    lineHeight: 17,
-                    top: 4
-                  }}
-                >
-                  {this.state.data.description.description}
-                </Text>}
+                {this.state.data.description.description == "" ? null : (
+                  <Text
+                    style={{
+                      color: "#ffffff",
+                      fontSize: 13,
+                      lineHeight: 17,
+                      top: 4
+                    }}
+                  >
+                    {this.state.data.description.description}
+                  </Text>
+                )}
               </View>
             </View>
           )}
@@ -824,28 +847,34 @@ class RestaurantMenu extends React.Component {
 
           {/* Кнопка Прейти к меню */}
 
-          {this.state.data.bestPlates == undefined ? null : this.renderButton("Перейти к меню", () => {
-            this.refs["scroll"].scrollToEnd({ animated: true });
-          })}
+          {this.state.data.bestPlates == undefined
+            ? null
+            : this.renderButton("Перейти к меню", () => {
+              this.scroll.scrollToEnd({ animated: true });
+            })}
 
           {/* Лучшие блюда */}
           {hr}
-          {this.state.data.bestPlates == undefined? null : 
-          <View
-            style={[
-              styles.row,
-              { justifyContent: "flex-start", marginTop: 12 }
-            ]}
-          >
-            <Text style={{ color: "#FFF", fontSize: 20, marginLeft: 20 }}>
-              {"Лучшие блюда"}
-            </Text>
-          </View>}
-          {this.state.data.bestPlates == undefined? null : 
-          <View style={{ height: (viewportWidth - 40) * 1.32 + 130 }}>
-            
-            <Recomendations data={this.state.data.bestPlates} navigation={this.props.navigation} />
-          </View>}
+          {this.state.data.bestPlates == undefined ? null : (
+            <View
+              style={[
+                styles.row,
+                { justifyContent: "flex-start", marginTop: 12 }
+              ]}
+            >
+              <Text style={{ color: "#FFF", fontSize: 20, marginLeft: 20 }}>
+                {"Лучшие блюда"}
+              </Text>
+            </View>
+          )}
+          {this.state.data.bestPlates == undefined ? null : (
+            <View style={{ height: (viewportWidth - 40) * 1.32 + 130 }}>
+              <Recomendations
+                data={this.state.data.bestPlates}
+                navigation={this.props.navigation}
+              />
+            </View>
+          )}
 
           {/* Меню ресторана */}
           <View
@@ -881,12 +910,16 @@ class RestaurantMenu extends React.Component {
               backgroundColor: "rgb(87, 88, 98)"
             }}
           />
-          {this.state.menu.length < 1 ?
-            <ActivityIndicator size='large' style={{alignSelf: 'center', marginTop: 60}} /> : null}
+          {this.state.menu.length < 1 ? (
+            <ActivityIndicator
+              size="large"
+              style={{ alignSelf: "center", marginTop: 60 }}
+            />
+          ) : null}
           <Accordion
             touchableProps={{
               activeOpacity: 0.2,
-              background: Touchable.Ripple('gray')
+              background: Touchable.Ripple("gray")
             }}
             duration={500}
             touchableComponent={Touchable}
@@ -933,23 +966,17 @@ class RestaurantMenu extends React.Component {
   };
 }
 
-/**
- * Возвращает колличество блюд plate в корзине
- * @param {Object} cart 
- * @param {Object} plate 
- */
-function getCount(cart, plate) {
-  var i = 0;
-  while (i < cart.length) {
-    let equalTitle = plate.title == cart[i].plate.title;
-    let equalRestaurant = plate.restourant == cart[i].plate.restourant;
-    if (equalTitle && equalRestaurant) {
-      return cart[i].count;
-    }
-    i++;
-  }
-  return 0;
-}
+RestaurantMenu.propTypes = {
+  navigation: PropTypes.object,
+  favourite: PropTypes.object,
+  addToFav: PropTypes.func,
+  removeFromFav: PropTypes.func,
+  addRestToFav: PropTypes.func,
+  removeRestFromFav: PropTypes.func,
+  onAddPlate: PropTypes.func,
+  deletePlate: PropTypes.func,
+  globalStore: PropTypes.array
+};
 
 export default connect(
   state => ({
@@ -963,19 +990,20 @@ export default connect(
     deletePlate: plate => {
       dispatch({ type: "REMOVE_PLATE_BY_OBJECT", payload: plate });
     },
-    setLastViewed: id => dispatch({ type: "SET_VIEWED_RESTAURANT", payload: id }),
-    addToFav: (data) => {
-      dispatch({ type: "ADD_PLATE_TO_FAV", payload: data })
+    setLastViewed: id =>
+      dispatch({ type: "SET_VIEWED_RESTAURANT", payload: id }),
+    addToFav: data => {
+      dispatch({ type: "ADD_PLATE_TO_FAV", payload: data });
     },
-		removeFromFav: (data) => {
-			dispatch({ type: "DELETE_PLATE", payload: data })
-		},
-    addRestToFav: (data) => {
-      dispatch({ type: "ADD_RESTAURANT_TO_FAV", payload: data })
+    removeFromFav: data => {
+      dispatch({ type: "DELETE_PLATE", payload: data });
     },
-		removeRestFromFav: (data) => {
-			dispatch({ type: "DELETE_RESTAURANT", payload: data })
-		},
+    addRestToFav: data => {
+      dispatch({ type: "ADD_RESTAURANT_TO_FAV", payload: data });
+    },
+    removeRestFromFav: data => {
+      dispatch({ type: "DELETE_RESTAURANT", payload: data });
+    }
   })
 )(RestaurantMenu);
 

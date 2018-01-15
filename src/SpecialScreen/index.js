@@ -1,100 +1,93 @@
-import React from 'react';
+import React from "react";
 import {
   StyleSheet,
   Text,
   Alert,
   View,
-  TouchableOpacity,
   Dimensions,
-  requireNativeComponent,
   Image,
   AsyncStorage
-} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import { LinearGradient, Font } from 'expo';
+} from "react-native";
+import { LinearGradient } from "expo";
+import propTypes from "prop-types";
+
 import IconD from "../IconD";
+import { host } from "../etc";
+var kitchenPhoto = require("../../assets/img/kitchen.jpg");
 
-import { host } from '../etc';
-
-var kitchenPhoto = require('../../assets/img/kitchen.jpg');
-
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
-export default class SelectCity extends React.Component {
+const { width: viewportWidth } = Dimensions.get(
+  "window"
+);
+class Screen extends React.Component {
   constructor(props) {
     super(props);
   }
 
   async componentWillMount() {
-    let image = parseInt(Math.random() * 13).toString();
-    let imageUrl = `../../assets/img/0.jpg`;
-    kitchenPhoto = await require(`../../assets/img/kitchen.jpg`);
-
+    kitchenPhoto = await require("../../assets/img/kitchen.jpg");
   }
 
   async componentDidMount() {
-    var city = await AsyncStorage.getItem('city');
-    var nan = await AsyncStorage.getItem('nan');
-    setTimeout(() => {
-      fetch(`${host}/classificator/cities`)
-      .then((response) => {
-        if (response.ok == undefined) {
-          Alert.alert('Ошибка', 'Ошибка соединения с сервером.')
-        }
-        else {
-          if (city == nan) {
-            this.props.navigation.navigate('SelectCity'); 
-          }
-          else {
-            this.props.navigation.navigate('LoadingScreen');
-          }
-        }
-        })
-      .catch(error => {
-        Alert.alert('Ошибка', 'Ошибка соединения с сервером.');
-        this.props.navigation.goBack();
-      });
-    }, 2000);
+    var city = await AsyncStorage.getItem("city");
+    var nan = await AsyncStorage.getItem("nan");
+    const response = await fetch(`${host}/classificator/cities`);
+    if (response.status != 200) {
+      Alert.alert("Ошибка", "Ошибка соединения с сервером.");
+    } else {
+      if (city == nan) {
+        this.props.navigation.navigate("SelectCity");
+      } else {
+        this.props.navigation.navigate("LoadingScreen");
+      }
+    }
   }
 
   render() {
     return (
-      <Image style={styles.backgroundImage}
-        source={kitchenPhoto}
-      >
+      <Image style={styles.backgroundImage} source={kitchenPhoto}>
         <View style={styles.container}>
-          <LinearGradient colors={['rgba(0, 0, 0, 0.9)', 'transparent']} style={{
-            height: 80,
-            position: 'absolute',
-            width: viewportWidth
-          }}/>
-          <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.9)']} style={{
-            height: 80,
-            position: 'absolute',
-            width: viewportWidth,
-            bottom: 0
-          }} />
-          <Text style={{
-            color: '#ffffff',
-            width: viewportWidth*0.8,
-            textAlign: 'center',
-            fontSize: 16,
-            fontWeight: 'bold',
-            backgroundColor: 'transparent'
-            }}>
-            {'Первый рекомендательный сервис еды'}
+          <LinearGradient
+            colors={["rgba(0, 0, 0, 0.9)", "transparent"]}
+            style={{
+              height: 80,
+              position: "absolute",
+              width: viewportWidth
+            }}
+          />
+          <LinearGradient
+            colors={["transparent", "rgba(0, 0, 0, 0.9)"]}
+            style={{
+              height: 80,
+              position: "absolute",
+              width: viewportWidth,
+              bottom: 0
+            }}
+          />
+          <Text
+            style={{
+              color: "#ffffff",
+              width: viewportWidth * 0.8,
+              textAlign: "center",
+              fontSize: 16,
+              fontWeight: "bold",
+              backgroundColor: "transparent"
+            }}
+          >
+            {"Первый рекомендательный сервис еды"}
           </Text>
-          <IconD
-            name='dostavka'
-            color='#dcc49c'
-            size={90}/>
-          <Text style={{
-            color: '#ffffff',
-            width: viewportWidth * 0.8,
-            textAlign: 'center',
-            fontSize: 12,
-            backgroundColor: 'transparent'
-          }}>
-            {'Москва'/*, Санкт-Петербург, Екатеренбург, Казань, Краснодар, Нижний Новгород'*/}
+          <IconD name="dostavka" color="#dcc49c" size={90} />
+          <Text
+            style={{
+              color: "#ffffff",
+              width: viewportWidth * 0.8,
+              textAlign: "center",
+              fontSize: 12,
+              backgroundColor: "transparent"
+            }}
+          >
+            {
+              "Москва" /*, Санкт-Петербург, Екатеренбург, Казань, Краснодар, Нижний Новгород'*/
+            }
           </Text>
         </View>
       </Image>
@@ -107,18 +100,24 @@ const styles = StyleSheet.create({
     flex: 1,
     width: null,
     height: null,
-    resizeMode: 'cover'
+    resizeMode: "cover"
   },
   text: {
-    color: 'white',
-    fontSize: 20,
+    color: "white",
+    fontSize: 20
   },
   container: {
     flex: 1,
     paddingTop: 50,
     paddingBottom: 15,
-    backgroundColor: 'transparent',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
+    backgroundColor: "transparent",
+    justifyContent: "space-between",
+    alignItems: "center"
+  }
 });
+
+Screen.propTypes = {
+  navigation: propTypes.object
+};
+
+export default Screen;
