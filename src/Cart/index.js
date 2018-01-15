@@ -5,57 +5,24 @@ import {
   Dimensions,
   StyleSheet,
   ScrollView,
-  TouchableNativeFeedback,
   Image,
-  WebView,
   Platform,
-  Linking,
   Text,
   Alert
 } from "react-native";
-import { Header } from "react-native-elements";
 import { TextField } from "react-native-material-textfield";
-import Icon from "react-native-vector-icons/Ionicons";
-import Button from "react-native-button";
-import { LinearGradient, Constants } from "expo";
-import Touchable from 'react-native-platform-touchable';
+import { LinearGradient } from "expo";
+import Touchable from "react-native-platform-touchable";
 import { connect } from "react-redux";
+import propTypes from "prop-types";
 
 import Counter from "../Counter";
-import PriceButton from "../PriceButton";
-import Storage from "../Reducers";
-import { adaptWidth } from '../etc'
-
-import Recomendations from "../Main/Recomendations";
+import { adaptWidth } from "../etc";
 import IconD from "../IconD";
 import ButtonD from "../ButtonD";
-
 import { host } from "../etc";
 
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
-  "window"
-);
-const hr = (
-  <View
-    style={{
-      alignSelf: "stretch",
-      marginHorizontal: 20,
-      height: 1,
-      backgroundColor: "rgb(87, 88, 98)"
-    }}
-  />
-);
-const hrShort = (
-  <View
-    style={{
-      width: 290,
-      alignSelf: "center",
-      margin: 0,
-      height: 1,
-      backgroundColor: "rgb(87, 88, 98)"
-    }}
-  />
-);
+const { width: viewportWidth } = Dimensions.get("window");
 
 class Cart extends React.Component {
   navigationOptions = {
@@ -84,7 +51,6 @@ class Cart extends React.Component {
         tagGroups: [
           {
             title: "Россия",
-            icon: "ios-person",
             size: 15,
             icon: "http://gg.svg"
           },
@@ -101,45 +67,44 @@ class Cart extends React.Component {
             "Настоящее грузинское гостеприимство в ресторанах «Джон Джоли»",
           description:
             "Хлебосольная, щедрая, сказочная, гостеприимная Грузия! Удивительная страна, которая известна своими застольями, подарила Москве частичку своей души."
-        },
+        }
       }
     };
   }
-  isInFav = ({id}) => {
+  isInFav = ({ id }) => {
     if (typeof id === undefined) {
       return false;
     }
-    for (let i=0; i<this.props.favourite.plates.length; i++) {
+    for (let i = 0; i < this.props.favourite.plates.length; i++) {
       if (id === this.props.favourite.plates[i]) {
         return true;
       }
     }
-  }
-  componentWillReceiveProps = async (newProps) => {
+  };
+  componentWillReceiveProps = async newProps => {
     if (newProps.cart.length >= 1) {
-      const rest = await fetch(`${host}/restaurant?restaurantId=`+newProps.cart[0].plate.restaurant);
+      const rest = await fetch(
+        `${host}/restaurant?restaurantId=` + newProps.cart[0].plate.restaurant
+      );
       const restJson = await rest.json();
-      this.setState({restaurant: restJson["data"]["result"]});
+      this.setState({ restaurant: restJson["data"]["result"] });
     }
-
 
     this.state.totalPrice = this.totalPrice();
     const priceWithSales = await this.getSalesPrice(newProps);
     this.state.withSales = priceWithSales;
-    this.setState({change: this.change()});
-      
+    this.setState({ change: this.change() });
   };
 
   componentWillMount = async () => {
     if (this.props.cart.length >= 1) {
-      const rest = await fetch(`${host}/restaurant?restaurantId=`+this.props.cart[0].plate.restaurant);
+      const rest = await fetch(
+        `${host}/restaurant?restaurantId=` + this.props.cart[0].plate.restaurant
+      );
       const restJson = await rest.json();
-      this.setState({restaurant: restJson["data"]["result"]});
+      this.setState({ restaurant: restJson["data"]["result"] });
     }
-      
   };
-
-  addPlate = async plate => {};
 
   clear = async () => {};
 
@@ -154,10 +119,7 @@ class Cart extends React.Component {
               position: "absolute",
               width: viewportWidth - 30,
               borderWidth: 1,
-              height:
-                viewportWidth >= 320 && viewportWidth < 375
-                  ? 44
-                  : viewportWidth >= 375 && viewportWidth < 414 ? 52 : 57,
+              height: adaptWidth(44, 52, 57),
               marginTop: 31,
               marginBottom: 10,
               marginHorizontal: 15,
@@ -188,10 +150,7 @@ class Cart extends React.Component {
             {
               justifyContent: "center",
               borderWidth: 1,
-              height:
-                viewportWidth >= 320 && viewportWidth < 375
-                  ? 44
-                  : viewportWidth >= 375 && viewportWidth < 414 ? 52 : 57,
+              height: adaptWidth(44, 52, 57),
               marginTop: 31,
               marginBottom: 10,
               marginHorizontal: 15,
@@ -224,21 +183,16 @@ class Cart extends React.Component {
   totalPrice = () => {
     let result = 0;
     for (var i = 0; i < this.props.cart.length; i++) {
-      result += parseFloat(this.props.cart[i].plate.price) * parseFloat(this.props.cart[i].count);
+      result +=
+        parseFloat(this.props.cart[i].plate.price) *
+        parseFloat(this.props.cart[i].count);
     }
 
     return result;
   };
 
   _renderContent = (e, index) => {
-    const imageHeight =
-      viewportWidth >= 320 && viewportWidth < 375
-        ? 100
-        : viewportWidth >= 375 && viewportWidth < 414 ? 117 : 130;
-    const screen =
-      viewportWidth >= 320 && viewportWidth < 375
-        ? 0
-        : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
+    const imageHeight = adaptWidth(100, 117, 130);
     return (
       <View
         style={{
@@ -253,36 +207,37 @@ class Cart extends React.Component {
           styel={{
             width: imageHeight,
             height: imageHeight,
-            borderWidth: e.plate.image.indexOf('.png') > 0 ? 1.5 : 0,
-            borderColor: 'rgb(225, 199, 155)',
+            borderWidth: e.plate.image.indexOf(".png") > 0 ? 1.5 : 0,
+            borderColor: "rgb(225, 199, 155)",
             borderRadius: 10
-          }}>
-            <Image
-              source={{
-                uri: 'http:'+e.plate.image
-              }}
-              resizeMode={e.plate.image.indexOf('.png') > 0 ? 'contain' : 'cover'}
-              style={{
-                width: imageHeight,
-                height: imageHeight,
-                borderWidth: e.plate.image.indexOf('.png') > 0 ? 1.5 : 0,
-                borderColor: 'rgb(225, 199, 155)',
-                borderRadius: 10
-              }}
-            />
+          }}
+        >
+          <Image
+            source={{
+              uri: "http:" + e.plate.image
+            }}
+            resizeMode={e.plate.image.indexOf(".png") > 0 ? "contain" : "cover"}
+            style={{
+              width: imageHeight,
+              height: imageHeight,
+              borderWidth: e.plate.image.indexOf(".png") > 0 ? 1.5 : 0,
+              borderColor: "rgb(225, 199, 155)",
+              borderRadius: 10
+            }}
+          />
           <Touchable
-            style={{position: 'absolute', right: 5, top: 5}}
-            hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}
+            style={{ position: "absolute", right: 5, top: 5 }}
+            hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
             foreground={Touchable.SelectableBackgroundBorderless()}
             onPress={() => {
               if (this.isInFav(e.plate)) {
                 this.props.removeFromFav(e.plate);
-              }
-              else {
+              } else {
                 this.props.addToFav(e.plate);
               }
-              this.setState({})
-            }}>
+              this.setState({});
+            }}
+          >
             <View style={{ backgroundColor: "transparent" }}>
               <IconD
                 name={this.isInFav(e.plate) ? "heart_full" : "heart_empty"}
@@ -333,15 +288,17 @@ class Cart extends React.Component {
               alignItems: "center"
             }}
           >
-            <View style={{top: -5}}><Counter
-              value={e.count}
-              onRemovePress={async () => {
-                this.props.removePlate(index);
-              }}
-              onAddPress={() => {
-                this.props.addPlate(e.plate);
-              }}
-            /></View>
+            <View style={{ top: -5 }}>
+              <Counter
+                value={e.count}
+                onRemovePress={async () => {
+                  this.props.removePlate(index);
+                }}
+                onAddPress={() => {
+                  this.props.addPlate(e.plate);
+                }}
+              />
+            </View>
 
             <Text
               style={{
@@ -361,82 +318,72 @@ class Cart extends React.Component {
   isFreeDelivery = () => {
     if (this.state.freeDelivery != undefined)
       return this.state.totalPrice >= this.state.restaurant.freeDelivery;
-    else
-      return false;
-  }
+    else return false;
+  };
 
   nav = () => {
     if (this.state.canNav) {
-      this.props.navigation.navigate('RestaurantMenu', {id: this.state.restaurant.id});
-      this.state.canNav = false;
+      this.props.navigation.navigate("RestaurantMenu", {
+        id: this.state.restaurant.id
+      });
+      this.setState({ canNav: false });
       setTimeout(() => {
-        this.state.canNav = true;
+        this.setState({ canNav: true });
       }, 1500);
     }
   };
 
-  getSalesPrice = async (props) => {
-    if (props.cart.length == 0)
-      return 0;
-    const cart = props.cart.map((element) => { 
+  getSalesPrice = async props => {
+    if (props.cart.length == 0) return 0;
+    const cart = props.cart.map(element => {
       return {
-        "plateId": element.plate.id,
-        "qty": element.count,
-      }
+        plateId: element.plate.id,
+        qty: element.count
+      };
     });
-    this.setState({sales: this.state.totalPrice});
+    this.setState({ sales: this.state.totalPrice });
     let rest, restJson;
     try {
       rest = await fetch(`${host}/cart/create/`, {
-        method: 'post',
-        body: JSON.stringify({"items": cart})
+        method: "post",
+        body: JSON.stringify({ items: cart })
       });
-    }
-    catch(err) {
-      Alert.alert('Ошибка', 'Сервер не отвечает');
-      this.setState({sales: this.state.totalPrice});
+    } catch (err) {
+      Alert.alert("Ошибка", "Сервер не отвечает");
+      this.setState({ sales: this.state.totalPrice });
       return 0;
     }
     try {
       restJson = await rest.json();
-    }
-    catch(err) {
-      Alert.alert('Ошибка', 'Сервер отвечает не правильно');
-      this.setState({sales: this.state.totalPrice});
+    } catch (err) {
+      Alert.alert("Ошибка", "Сервер отвечает не правильно");
+      this.setState({ sales: this.state.totalPrice });
       return 0;
     }
 
     if (restJson["data"]["items"] === undefined) {
-      this.setState({sales: this.state.totalPrice});
+      this.setState({ sales: this.state.totalPrice });
       return 0;
     }
     let result = 0;
-    for (let i=0; i<restJson["data"]["items"].length; i++)  {
+    for (let i = 0; i < restJson["data"]["items"].length; i++) {
       result += parseInt(restJson["data"]["items"][i].price);
     }
-    let totalPrice = 0;
-    for (var i = 0; i < this.props.cart.length; i++) {
-      totalPrice += parseFloat(this.props.cart[i].plate.price) * parseFloat(this.props.cart[i].count);
-    }
 
-    console.log(totalPrice, result);
-    this.setState({sales: result});
+    this.setState({ sales: result });
     return result;
-  }
+  };
 
   change = () => {
     const total = this.state.totalPrice;
     return total - this.state.restaurant.minOrder;
-  }
+  };
 
   render() {
     /*Storage.subscribe(() => {
       this.setState({});
     });*/
-    const screen =
-      viewportWidth >= 320 && viewportWidth < 375
-        ? 0
-        : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
+    const screen = adaptWidth(0, 1, 2);
     const change = this.change();
     if (this.props.cart.length != 0)
       return (
@@ -452,9 +399,9 @@ class Cart extends React.Component {
               style={[styles.row, { justifyContent: "center", marginTop: 30 }]}
             >
               <Image
-                resizeMode='contain'
+                resizeMode="contain"
                 source={{
-                  uri: "http:"+this.state.restaurant.logoImage
+                  uri: "http:" + this.state.restaurant.logoImage
                 }}
                 style={{
                   width: viewportWidth - 40,
@@ -477,18 +424,23 @@ class Cart extends React.Component {
                 {"Ресторан установил ограничение \nна минимальную сумму заказа " +
                   this.state.restaurant.minOrder +
                   ".\nВам осталось выбрать еще на " +
-                  (-change
-                  ).toString() +
+                  (-change).toString() +
                   " ₽"}
               </Text>
             )}
 
             {/* Кнопка Открыть меню ресторана */}
-            <View style={{
-              alignSelf: 'center',
-              marginVertical: 20
-            }}>
-            <ButtonD onPress={this.nav} title={['Открыть меню ресторана']} width={screen == 0 ? 260 : screen == 1 ? 315 : 354}/>
+            <View
+              style={{
+                alignSelf: "center",
+                marginVertical: 20
+              }}
+            >
+              <ButtonD
+                onPress={this.nav}
+                title={["Открыть меню ресторана"]}
+                width={screen == 0 ? 260 : screen == 1 ? 315 : 354}
+              />
             </View>
             <View
               style={{
@@ -498,15 +450,22 @@ class Cart extends React.Component {
                 borderColor: "rgb( 87, 88, 98)"
               }}
             />
-			<Text style={{
-				marginTop: screen == 0 ? 13 : screen == 1 ? 16 : 20,
-				marginLeft: 20,
-				alignSelf: 'flex-start',
-				color: '#fff',
-				fontSize: 16,
-				fontFamily: 'stem-medium',
-				letterSpacing: 0.8
-			}}>{this.getItemsCount().toString() + ' позиции на сумму ' + this.state.totalPrice + '₽'}</Text>
+            <Text
+              style={{
+                marginTop: screen == 0 ? 13 : screen == 1 ? 16 : 20,
+                marginLeft: 20,
+                alignSelf: "flex-start",
+                color: "#fff",
+                fontSize: 16,
+                fontFamily: "stem-medium",
+                letterSpacing: 0.8
+              }}
+            >
+              {this.getItemsCount().toString() +
+                " позиции на сумму " +
+                this.state.totalPrice +
+                "₽"}
+            </Text>
             {this.props.cart.map((e, i) => {
               return (
                 <View key={i} style={{ flexDirection: "row" }}>
@@ -525,33 +484,39 @@ class Cart extends React.Component {
                 borderColor: "rgb(87, 88, 98)"
               }}
             />
-              <View style={{height: 20}}/>
-              <View style={{
-                  height: 40, 
-                  borderTopWidth: 1.5,
-                  borderColor: "rgb(87, 88, 98)",
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  marginHorizontal: 16,
-                  alignSelf: 'stretch'
-                }}>
-                <Text style={{
-                  fontFamily: 'stem-medium',
+            <View style={{ height: 20 }} />
+            <View
+              style={{
+                height: 40,
+                borderTopWidth: 1.5,
+                borderColor: "rgb(87, 88, 98)",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginHorizontal: 16,
+                alignSelf: "stretch"
+              }}
+            >
+              <Text
+                style={{
+                  fontFamily: "stem-medium",
                   fontSize: 16,
-                  color: 'rgb(225, 199, 155)'
-                }}>{'Количество персон: '}</Text>
-                <Counter
-                  value={this.state.persons}
-                  onRemovePress={() => {
-                    if (this.state.persons > 1)
-                      this.setState({ persons: this.state.persons - 1 });
-                  }}
-                  onAddPress={() => {
-                    this.setState({ persons: this.state.persons + 1 });
-                  }}
-                />
-              </View>
+                  color: "rgb(225, 199, 155)"
+                }}
+              >
+                {"Количество персон: "}
+              </Text>
+              <Counter
+                value={this.state.persons}
+                onRemovePress={() => {
+                  if (this.state.persons > 1)
+                    this.setState({ persons: this.state.persons - 1 });
+                }}
+                onAddPress={() => {
+                  this.setState({ persons: this.state.persons + 1 });
+                }}
+              />
+            </View>
             {/*this.renderPromoCode()*/}
             <View
               style={{
@@ -644,7 +609,7 @@ class Cart extends React.Component {
                   color: "rgb( 255, 255, 255)"
                 }}
               >
-                {(this.state.totalPrice - this.state.sales).toString()+' ₽'}
+                {(this.state.totalPrice - this.state.sales).toString() + " ₽"}
               </Text>
             </View>
             <View
@@ -691,7 +656,9 @@ class Cart extends React.Component {
                   color: "rgb( 255, 255, 255)"
                 }}
               >
-                {!this.isFreeDelivery() ? "бесплатно" : this.state.restaurant.delivery}
+                {!this.isFreeDelivery()
+                  ? "бесплатно"
+                  : this.state.restaurant.delivery}
               </Text>
             </View>
             <View
@@ -742,29 +709,39 @@ class Cart extends React.Component {
               </Text>
             </View>
             <View style={{ height: 60 }} />
-            <View style={{
-						position: 'absolute',
-						alignSelf: 'center',
-						width: viewportWidth - 30,
-						bottom: 0,
-						height: 49,
-						borderTopWidth: 2,
-						borderColor: change >= 0 ? '#dcc49c' : '#575862',
-						flexDirection: 'row',
-						justifyContent: 'center'
-					}}>
-						<TouchableOpacity onPress={this.next}
-							style={{
-								alignSelf: 'center',
-							}}>
-							<Text style={[
-								styles.nextButtonText,
-								{
-									color: change >= 0 ? '#dcc49c' : '#575862'
-								}
-							]}>{change >= 0 ? `Оформить заказ на ${this.state.totalPrice} ₽` : `До покупки не хватает ${ -change } ₽` }</Text>
-						</TouchableOpacity>
-					</View>
+            <View
+              style={{
+                position: "absolute",
+                alignSelf: "center",
+                width: viewportWidth - 30,
+                bottom: 0,
+                height: 49,
+                borderTopWidth: 2,
+                borderColor: change >= 0 ? "#dcc49c" : "#575862",
+                flexDirection: "row",
+                justifyContent: "center"
+              }}
+            >
+              <TouchableOpacity
+                onPress={this.next}
+                style={{
+                  alignSelf: "center"
+                }}
+              >
+                <Text
+                  style={[
+                    styles.nextButtonText,
+                    {
+                      color: change >= 0 ? "#dcc49c" : "#575862"
+                    }
+                  ]}
+                >
+                  {change >= 0
+                    ? `Оформить заказ на ${this.state.totalPrice} ₽`
+                    : `До покупки не хватает ${-change} ₽`}
+                </Text>
+              </TouchableOpacity>
+            </View>
           </ScrollView>
         </View>
       );
@@ -774,90 +751,85 @@ class Cart extends React.Component {
   next = () => {
     if (this.state.totalPrice >= this.state.restaurant.minBill) {
       if (this.state.canNav) {
-        this.state.canNav = false;
+        this.setState({ canNav: false });
         setTimeout(() => {
-          this.state.canNav = true;
+          this.setState({ canNav: true });
         }, 1500);
         if (this.props.user.token)
-          this.props.navigation.navigate('SetFullAddress', {price: this.state.totalPrice, persons: this.state.persons});
+          this.props.navigation.navigate("SetFullAddress", {
+            price: this.state.totalPrice,
+            persons: this.state.persons
+          });
         else
-          this.props.navigation.navigate('Login', {nextScreen: 'SetFullAddress'});
+          this.props.navigation.navigate("Login", {
+            nextScreen: "SetFullAddress"
+          });
       }
     }
-      
-  }
+  };
 
   renderPromoCode() {
-	const screen =
-	viewportWidth >= 320 && viewportWidth < 375
-	? 0
-	: viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
-	  return <View>
-		  <Text
-              style={{
-                fontFamily: "stem-medium",
-                color: "#fff",
-                letterSpacing: 1.1,
-                textAlign: "center",
-                marginTop: screen == 0 ? 28 : screen == 1 ? 34 : 38,
-                marginBottom: screen == 0 ? 10 : screen == 1 ? 13 : 15
-              }}
-            >
-              {"Есть сертификат?"}
-            </Text>
+    const screen = adaptWidth(0, 1, 2);
+    return (
+      <View>
+        <Text
+          style={{
+            fontFamily: "stem-medium",
+            color: "#fff",
+            letterSpacing: 1.1,
+            textAlign: "center",
+            marginTop: screen == 0 ? 28 : screen == 1 ? 34 : 38,
+            marginBottom: screen == 0 ? 10 : screen == 1 ? 13 : 15
+          }}
+        >
+          {"Есть сертификат?"}
+        </Text>
 
-            <Text
-              style={{
-                fontFamily: "open-sans",
-                color: "rgb( 119, 122, 136)",
-                fontSize: 12,
-                lineHeight: 13,
-                letterSpacing: 0.8,
-                textAlign: "center",
-                maxWidth: 250,
-                marginBottom: (screen == 0 ? 33 : screen == 1 ? 45 : 65) - 20
-              }}
-            >
-              {
-                "Если у вас есть сертификат, введите номер чтобы получить скидку"
-              }
-            </Text>
-            <TextField
-
-			tintColor="#dcc49c"
-			baseColor="rgb(87, 88, 98)"
-			textColor="#fff"
-              returnKeyType="send"
-              style={{
-                alignItems: "center",
-                textAlign: "center"
-              }}
-              inputContainerStyle={{
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center"
-              }}
-              label="Введите номер сертификата"
-            />
-            <View
-              style={{ height: screen == 0 ? 32 : screen == 1 ? 40 : 46 }}
-            />
-	  </View>
+        <Text
+          style={{
+            fontFamily: "open-sans",
+            color: "rgb( 119, 122, 136)",
+            fontSize: 12,
+            lineHeight: 13,
+            letterSpacing: 0.8,
+            textAlign: "center",
+            maxWidth: 250,
+            marginBottom: (screen == 0 ? 33 : screen == 1 ? 45 : 65) - 20
+          }}
+        >
+          {"Если у вас есть сертификат, введите номер чтобы получить скидку"}
+        </Text>
+        <TextField
+          tintColor="#dcc49c"
+          baseColor="rgb(87, 88, 98)"
+          textColor="#fff"
+          returnKeyType="send"
+          style={{
+            alignItems: "center",
+            textAlign: "center"
+          }}
+          inputContainerStyle={{
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center"
+          }}
+          label="Введите номер сертификата"
+        />
+        <View style={{ height: screen == 0 ? 32 : screen == 1 ? 40 : 46 }} />
+      </View>
+    );
   }
 
   getItemsCount = () => {
-	  result = 0;
-	  this.props.cart.map((e, i) => {
-		result += e.count;
-	  });
-	  return result;
-  }
+    let result = 0;
+    this.props.cart.map(e => {
+      result += e.count;
+    });
+    return result;
+  };
 
   renderEmpty = () => {
-    const screen =
-      viewportWidth >= 320 && viewportWidth < 375
-        ? 0
-        : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
+    const screen = adaptWidth(0, 1, 2);
     return (
       <View style={styles.container}>
         <ScrollView
@@ -923,44 +895,58 @@ class Cart extends React.Component {
               borderColor: "rgb(87, 88, 98)"
             }}
           />
-          <View style={{
+          <View
+            style={{
               width: viewportWidth - 30,
               borderBottomWidth: 1,
               borderColor: "rgb(87, 88, 98)",
               paddingHorizontal: 5,
               paddingVertical: screen == 0 ? 22 : screen == 1 ? 26 : 39,
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-              alignSelf: 'center'
-          }}>
-            <Text style={{
-              maxWidth: 140,
-              fontFamily: 'open-sans',
-              color: '#fff',
+              justifyContent: "space-between",
+              flexDirection: "row",
+              alignSelf: "center"
+            }}
+          >
+            <Text
+              style={{
+                maxWidth: 140,
+                fontFamily: "open-sans",
+                color: "#fff",
+                fontSize: 12,
+                letterSpacing: 0.8
+              }}
+            >
+              {"Выберите кол-во блюд для заказа"}
+            </Text>
+            <Counter value={1} />
+          </View>
+          <View style={{ height: screen == 0 ? 22 : screen == 1 ? 26 : 39 }} />
+
+          <View
+            style={{
+              alignSelf: "center"
+            }}
+          >
+            <ButtonD
+              onPress={() => this.props.navigation.navigate("Main")}
+              title={["Добавить к заказу", "и перейти в ресторан"]}
+              width={viewportWidth - 60}
+            />
+          </View>
+
+          <View style={{ height: screen == 0 ? 22 : screen == 1 ? 26 : 39 }} />
+          <Text
+            style={{
+              fontFamily: "open-sans",
               fontSize: 12,
-              letterSpacing: 0.8
-
-            }}>{'Выберите кол-во блюд для заказа'}</Text>
-            <Counter 
-              value={1}/>
-          </View>
-          <View style={{ height: screen == 0 ? 22 : screen == 1 ? 26 : 39 }} />
-
-          <View style={{
-            alignSelf: 'center'
-          }}>
-            <ButtonD onPress={() => this.props.navigation.navigate('Main')} title={['Добавить к заказу',  'и перейти в ресторан']} width={viewportWidth - 60}/>
-          </View>
-
-          <View style={{ height: screen == 0 ? 22 : screen == 1 ? 26 : 39 }} />
-          <Text style={{
-            fontFamily: 'open-sans',
-            fontSize: 12,
-            marginHorizontal: 20,
-            letterSpacing: 0.8,
-            color: '#fff'
-          }}>
-            {'При добавлении первого блюда в корзину, вы перейдете в меню ресторана, где сможете дополнить заказ другими блюдами'}
+              marginHorizontal: 20,
+              letterSpacing: 0.8,
+              color: "#fff"
+            }}
+          >
+            {
+              "При добавлении первого блюда в корзину, вы перейдете в меню ресторана, где сможете дополнить заказ другими блюдами"
+            }
           </Text>
         </ScrollView>
         <View
@@ -984,6 +970,17 @@ class Cart extends React.Component {
   };
 }
 
+Cart.propTypes = {
+  favourite: propTypes.object,
+  navigation: propTypes.object,
+  user: propTypes.object,
+  cart: propTypes.array,
+  removeFromFav: propTypes.func,
+  addToFav: propTypes.func,
+  addPlate: propTypes.func,
+  removePlate: propTypes.func,
+};
+
 export default connect(
   state => ({
     cart: state.cart,
@@ -994,12 +991,12 @@ export default connect(
     removePlate: plateIndex =>
       dispatch({ type: "REMOVE_PLATE", index: plateIndex }),
     addPlate: plate => dispatch({ type: "ADD_PLATE", payload: plate }),
-    addToFav: (data) => {
-      dispatch({ type: "ADD_PLATE_TO_FAV", payload: data })
+    addToFav: data => {
+      dispatch({ type: "ADD_PLATE_TO_FAV", payload: data });
     },
-		removeFromFav: (data) => {
-			dispatch({ type: "DELETE_PLATE", payload: data })
-		},
+    removeFromFav: data => {
+      dispatch({ type: "DELETE_PLATE", payload: data });
+    }
   })
 )(Cart);
 
@@ -1012,21 +1009,21 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignSelf: "stretch"
   },
-	nextButtonText: {
-		fontSize: 16,
-		color: '#dcc49c',
-		marginTop: 17,
-		marginBottom: 17,
-		textAlign: 'center',
-		letterSpacing: 0.8,
-		fontFamily: 'stem-regular'
-	},
+  nextButtonText: {
+    fontSize: 16,
+    color: "#dcc49c",
+    marginTop: 17,
+    marginBottom: 17,
+    textAlign: "center",
+    letterSpacing: 0.8,
+    fontFamily: "stem-regular"
+  },
   column: {
     flexDirection: "column",
     alignSelf: "stretch"
   },
   container: {
     flex: 1,
-    elevation: -10,
+    elevation: -10
   }
 });

@@ -14,6 +14,9 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import Touchable from "react-native-platform-touchable";
 import { connect } from "react-redux";
 import PopupDialog, { SlideAnimation } from "react-native-popup-dialog";
+import propTypes from "prop-types";
+
+import { adaptWidth } from "../etc";
 
 const { width: viewportWidth } = Dimensions.get(
   "window"
@@ -49,10 +52,6 @@ const slide = new SlideAnimation({
   slideFrom: "bottom"
 });
 
-const screen =
-  viewportWidth >= 320 && viewportWidth < 375
-    ? 0
-    : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
 
 class Forms extends React.Component {
   constructor(props) {
@@ -146,7 +145,7 @@ class Forms extends React.Component {
             textAlign: "center",
             alignSelf: "stretch",
             color: "#fff",
-            marginTop: screen == 0 ? 20 : screen == 1 ? 36 : 48
+            marginTop: adaptWidth(20, 36, 48)
           }}
         >
           {"Получатель заказа"}
@@ -154,7 +153,7 @@ class Forms extends React.Component {
         <View
           style={{
             alignSelf: "stretch",
-            marginHorizontal: screen == 0 ? 23 : screen == 1 ? 25 : 30
+            marginHorizontal: adaptWidth(23, 25, 30)
           }}
         >
           <TextField
@@ -196,7 +195,6 @@ class Forms extends React.Component {
             label="Фамилия"
           />
           <TextInputMask
-            ref={"phone"}
             type={"custom"}
             customTextInputProps={{
               tintColor: "#dcc49c",
@@ -232,7 +230,7 @@ class Forms extends React.Component {
             textAlign: "center",
             alignSelf: "stretch",
             color: "#fff",
-            marginTop: screen == 0 ? 61 : screen == 1 ? 75 : 82
+            marginTop: adaptWidth(61, 75, 82)
           }}
         >
           {"Адрес доставки"}
@@ -240,7 +238,7 @@ class Forms extends React.Component {
         <View
           style={{
             alignSelf: "stretch",
-            marginHorizontal: screen == 0 ? 23 : screen == 1 ? 25 : 30
+            marginHorizontal: adaptWidth(23, 25, 30)
           }}
         >
           <TextField
@@ -272,7 +270,7 @@ class Forms extends React.Component {
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
             <View
-              style={{ width: screen == 0 ? 128 : screen == 1 ? 150 : 165 }}
+              style={{ width: adaptWidth(128, 150, 165) }}
             >
               <TextField
                 tintColor="#dcc49c"
@@ -300,7 +298,7 @@ class Forms extends React.Component {
               />
             </View>
             <View
-              style={{ width: screen == 0 ? 128 : screen == 1 ? 150 : 165 }}
+              style={{ width: adaptWidth(128, 150, 165) }}
             >
               <TextField
                 tintColor="#dcc49c"
@@ -335,7 +333,7 @@ class Forms extends React.Component {
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
             <View
-              style={{ width: screen == 0 ? 128 : screen == 1 ? 150 : 165 }}
+              style={{ width: adaptWidth(128, 150, 165) }}
             >
               <TextField
                 tintColor="#dcc49c"
@@ -364,7 +362,7 @@ class Forms extends React.Component {
               />
             </View>
             <View
-              style={{ width: screen == 0 ? 128 : screen == 1 ? 150 : 165 }}
+              style={{ width: adaptWidth(128, 150, 165) }}
             >
               <TextField
                 tintColor="#dcc49c"
@@ -430,8 +428,8 @@ class Forms extends React.Component {
             textAlign: "center",
             alignSelf: "stretch",
             color: "#fff",
-            marginBottom: screen == 0 ? 20 : screen == 1 ? 36 : 48,
-            marginTop: screen == 0 ? 42 : screen == 1 ? 50 : 55
+            marginBottom: adaptWidth(20, 36, 48),
+            marginTop: adaptWidth(42, 50, 55)
           }}
         >
           {"Когда доставить?"}
@@ -439,7 +437,7 @@ class Forms extends React.Component {
         <View
           style={{
             alignSelf: "stretch",
-            marginHorizontal: screen == 0 ? 23 : screen == 1 ? 25 : 30
+            marginHorizontal: adaptWidth(23, 25, 30)
           }}
         >
           <Touchable onPress={() => this.setState({ selected: 0 })}>
@@ -447,7 +445,7 @@ class Forms extends React.Component {
               style={{
                 flexDirection: "row",
                 justifyContent: "flex-start",
-                marginBottom: screen == 0 ? 25 : screen == 1 ? 35 : 40
+                marginBottom: adaptWidth(25, 35, 40)
               }}
             >
               <View
@@ -488,7 +486,7 @@ class Forms extends React.Component {
               style={{
                 flexDirection: "row",
                 justifyContent: "flex-start",
-                marginBottom: screen == 0 ? 18 : screen == 1 ? 24 : 29
+                marginBottom: adaptWidth(18, 24, 29)
               }}
             >
               <View
@@ -566,7 +564,7 @@ class Forms extends React.Component {
                 alignSelf: "stretch",
                 borderColor: "rgb(87, 88, 98)",
                 borderBottomWidth: 1.5,
-                marginBottom: screen == 0 ? 18 : screen == 1 ? 24 : 29
+                marginBottom: adaptWidth(18, 24, 29)
               }}
             >
               <Text
@@ -746,6 +744,12 @@ class Forms extends React.Component {
     </View>
   );
 }
+
+Forms.propTypes = {
+  user: propTypes.object,
+  address: propTypes.object,
+  navigation: propTypes.object,
+};
 
 export default connect(
   state => ({
