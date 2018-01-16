@@ -21,6 +21,7 @@ import { adaptWidth } from "../etc";
 import IconD from "../IconD";
 import ButtonD from "../ButtonD";
 import { host } from "../etc";
+import { fetchJson } from "../utils";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -83,11 +84,13 @@ class Cart extends React.Component {
   };
   componentWillReceiveProps = async newProps => {
     if (newProps.cart.length >= 1) {
-      const rest = await fetch(
-        `${host}/restaurant?restaurantId=` + newProps.cart[0].plate.restaurant
-      );
-      const restJson = await rest.json();
-      this.setState({ restaurant: restJson["data"]["result"] });
+      if (newProps.cart[0].plate.restaurant != this.state.restaurant.id) {
+        const rest = await fetch(
+          `${host}/restaurant?restaurantId=` + newProps.cart[0].plate.restaurant
+        );
+        const restJson = await rest.json();
+        this.setState({ restaurant: restJson["data"]["result"] });
+      }
     }
 
     this.state.totalPrice = this.totalPrice();
@@ -98,11 +101,33 @@ class Cart extends React.Component {
 
   componentWillMount = async () => {
     if (this.props.cart.length >= 1) {
-      const rest = await fetch(
-        `${host}/restaurant?restaurantId=` + this.props.cart[0].plate.restaurant
-      );
-      const restJson = await rest.json();
-      this.setState({ restaurant: restJson["data"]["result"] });
+      if (this.props.cart[0].plate.restaurant != this.state.restaurant.id) {
+        const restJson = await fetchJson(
+          `${host}/restaurant?restaurantId=` + this.props.cart[0].plate.restaurant
+        );
+        this.setState({ 
+          restaurant: restJson["data"]["result"]
+        });
+      }
+      this.setState({
+        totalPrice: this.totalPrice()
+      });
+    }
+  };
+
+  componentDidMount = async () => {
+    if (this.props.cart.length >= 1) {
+      if (this.props.cart[0].plate.restaurant != this.state.restaurant.id) {
+        const restJson = await fetchJson(
+          `${host}/restaurant?restaurantId=` + this.props.cart[0].plate.restaurant
+        );
+        this.setState({ 
+          restaurant: restJson["data"]["result"]
+        });
+      }
+      this.setState({
+        totalPrice: this.totalPrice()
+      });
     }
   };
 
