@@ -16,10 +16,7 @@ import About from "./src/about";
 import SpecialScreen from "./src/SpecialScreen";
 import LoadingScreen from "./src/LoadingScreen";
 import Main from "./src/Main";
-import AllRestourans from "./src/AllRestourans";
-import Restaurant from "./src/Restaurant";
-import RestaurantMenu from "./src/RestaurantMenu";
-import Plate from "./src/Plate";
+import Loader from "./src/Loader";
 import Profile from "./src/Profile";
 import MakeOrder from "./src/MakeOrder";
 import MyOrders from "./src/MyOrders";
@@ -31,7 +28,6 @@ import SetCard from "./src/SetCard";
 const headerStyleIOS = title => ({
   title: title,
   headerTruncatedBackTitle: "Назад",
-  headerTintColor: "#fff",
   headerTitleStyle: {
     fontFamily: "stem-medium",
     fontSize: 14,
@@ -166,7 +162,14 @@ export default StackNavigator(
         header: null,
         gesturesEnabled: false
       }
-    }
+    },
+    Loader: {
+      screen: Loader,
+      navigationOptions: {
+        header: null,
+        gesturesEnabled: false
+      }
+    },
   },
   {
     headerMode: "screen",

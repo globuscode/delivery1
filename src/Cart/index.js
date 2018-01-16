@@ -348,8 +348,12 @@ class Cart extends React.Component {
 
   nav = () => {
     if (this.state.canNav) {
-      this.props.navigation.navigate("RestaurantMenu", {
-        id: this.state.restaurant.id
+      this.props.navigation.navigate("Loader", {
+        action: "navigate",
+        screen: "RestaurantMenu",
+        props: {
+          id: this.state.restaurant.id
+        }
       });
       this.setState({ canNav: false });
       setTimeout(() => {
