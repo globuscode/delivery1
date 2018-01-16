@@ -91,7 +91,7 @@ class Forms extends React.Component {
   next = () => {
     if (this.isNext()) {
       const date = this.state.date.getDate();
-      const month = this.state.date.getMonth();
+      const month = this.state.date.getMonth() + 1;
       const year = this.state.date.getFullYear();
 
       const hours =
