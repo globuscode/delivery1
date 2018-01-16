@@ -14,24 +14,32 @@ class TabIcon extends React.Component {
 
   renderBadge = () => {
     return (
-      <View style={{
-        backgroundColor: '#fff',
-        width: 10,
-        height: 10,
-        borderRadius: 5,
-        top: -4,
-        right: -4,
-        position: "absolute",
-      }}><Text style={{
-        color: "black",
-        fontSize: 8,
-        textAlign: 'center',
-        position: "absolute",
-        width: 10,
-        top: Platform.OS === "ios" ? 1 : 0,
-        fontFamily: 'stem-medium',
-        backgroundColor: 'transparent'
-      }}>{this.getItemsCount()}</Text></View>
+      <View
+        style={{
+          backgroundColor: "#fff",
+          width: 10,
+          height: 10,
+          borderRadius: 5,
+          top: -4,
+          right: -4,
+          position: "absolute"
+        }}
+      >
+        <Text
+          style={{
+            color: "black",
+            fontSize: parseInt(this.getItemsCount()) < 20 ? 8 : 7,
+            textAlign: "center",
+            position: "absolute",
+            width: 10,
+            top: Platform.OS === "ios" ? parseInt(this.getItemsCount()) < 20 ? 1 : 2 : 0,
+            fontFamily: "stem-medium",
+            backgroundColor: "transparent"
+          }}
+        >
+          {this.getItemsCount()}
+        </Text>
+      </View>
     );
   };
 

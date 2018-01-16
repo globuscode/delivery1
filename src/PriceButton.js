@@ -85,11 +85,11 @@ class Price extends React.Component {
                   <Text
                     style={{
                       color: "black",
-                      fontSize: 8,
+                      fontSize: parseInt(this.props.count) < 20 ? 8 : 7,
                       textAlign: "center",
                       position: "absolute",
                       width: 10,
-                      top: Platform.OS === "ios" ? 1 : 0,
+                      top: Platform.OS === "ios" ? parseInt(this.getItemsCount()) < 20 ? 1 : 2 : 0,
                       fontFamily: "stem-medium",
                       backgroundColor: "transparent"
                     }}
