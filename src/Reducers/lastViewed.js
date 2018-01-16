@@ -1,13 +1,13 @@
 const initialState = {
-    restaurant: null
+  restaurant: null
 };
 
 export default function lastViewed(state = initialState, action) {
-  if (action.type == 'SET_VIEWED_RESTAURANT') {
-      return {
-          ...state,
-          restaurant: action.payload
-        };
+  if (action.type == "SET_VIEWED_RESTAURANT") {
+    return {
+      ...state,
+      restaurant: action.payload
+    };
   }
   return state;
 }
