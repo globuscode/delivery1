@@ -1,5 +1,3 @@
-import { AsyncStorage } from "react-native";
-
 const initialState = {
   plates: [],
   collections: [],
@@ -40,6 +38,9 @@ export default function favourite(state = initialState, action) {
       }
     }
     state.plates.push(action.payload.id);
+    return {
+      ...state
+    };
   }
 
 
@@ -68,7 +69,5 @@ export default function favourite(state = initialState, action) {
     };
   }
 
-  return {
-    ...state
-  };
+  return state;
 }
