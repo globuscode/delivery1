@@ -3,7 +3,7 @@ import Expo from "expo";
 import { StatusBar, Platform } from "react-native";
 import { StackNavigator } from "react-navigation";
 
-import { adaptWidth } from './src/etc';
+import { adaptWidth } from "./src/etc";
 
 import Login from "./src/Login";
 import Registration from "./src/Registration";
@@ -28,15 +28,15 @@ import PersonalInformation from "./src/PersonalInformation";
 import SetFullAddress from "./src/SetFullAddress";
 import SetCard from "./src/SetCard";
 
-const headerStyleIOS = (title) => ({
+const headerStyleIOS = title => ({
   title: title,
-  headerTruncatedBackTitle: 'Назад',
+  headerTruncatedBackTitle: "Назад",
   headerTintColor: "#fff",
   headerTitleStyle: {
     fontFamily: "stem-medium",
     fontSize: 14,
     letterSpacing: 0.8,
-    color: '#fff'
+    color: "#fff"
   },
   headerTintColor: "#dcc49c",
   headerBackTitleStyle: {
@@ -48,7 +48,7 @@ const headerStyleIOS = (title) => ({
     padding: 0,
     borderBottomWidth: Platform.OS === "ios" ? 1 : 0,
     marginHorizontal: Platform.OS === "ios" ? 20 : -3,
-    borderBottomColor: 'rgb(87, 88, 98)'
+    borderBottomColor: "rgb(87, 88, 98)"
   }
 });
 
@@ -60,7 +60,7 @@ const tabs = StackNavigator(
         header: null,
         gesturesEnabled: false
       }
-    },
+    }
   },
   {
     cardStyle: {
@@ -80,7 +80,7 @@ export default StackNavigator(
     },
     SetFullAddress: {
       screen: SetFullAddress,
-      navigationOptions: headerStyleIOS('Адрес доставки')
+      navigationOptions: headerStyleIOS("Адрес доставки")
     },
     SelectCity: {
       screen: SelectCity,
@@ -98,43 +98,46 @@ export default StackNavigator(
     },
     RegistratePhone: {
       screen: RegistratePhone,
-      navigationOptions: headerStyleIOS('Номер телефона')
+      navigationOptions: headerStyleIOS("Номер телефона")
     },
     SetAddress: {
       screen: SetAddress,
-      navigationOptions: {...headerStyleIOS(adaptWidth(0, 1, 1) ? 'Адрес доставки' : 'Адрес'), headerBackTitle: null}
+      navigationOptions: {
+        ...headerStyleIOS(adaptWidth(0, 1, 1) ? "Адрес доставки" : "Адрес"),
+        headerBackTitle: null
+      }
     },
     Profile: {
       screen: Profile,
-      navigationOptions: headerStyleIOS('Личный кабинет')
+      navigationOptions: headerStyleIOS("Личный кабинет")
     },
     MakeOrder: {
       screen: MakeOrder,
-      navigationOptions: headerStyleIOS('Оплатить заказ')
+      navigationOptions: headerStyleIOS("Оплатить заказ")
     },
     MyOrders: {
       screen: MyOrders,
-      navigationOptions: headerStyleIOS('Мои заказы')
+      navigationOptions: headerStyleIOS("Мои заказы")
     },
     SetCard: {
       screen: SetCard,
-      navigationOptions: headerStyleIOS('Прикрепить карту')
+      navigationOptions: headerStyleIOS("Прикрепить карту")
     },
     MyOrderDetail: {
       screen: MyOrderDetail,
-      navigationOptions: headerStyleIOS('Заказ')
+      navigationOptions: headerStyleIOS("Заказ")
     },
     PersonalInformation: {
       screen: PersonalInformation,
-      navigationOptions: headerStyleIOS('Мои данные')
+      navigationOptions: headerStyleIOS("Мои данные")
     },
     Login: {
       screen: Login,
-      navigationOptions: headerStyleIOS('Авторизация')
+      navigationOptions: headerStyleIOS("Авторизация")
     },
     Registration: {
       screen: Registration,
-      navigationOptions: headerStyleIOS('Регистрация')
+      navigationOptions: headerStyleIOS("Регистрация")
     },
     SelectTags: {
       screen: SelectTags,
@@ -163,10 +166,10 @@ export default StackNavigator(
         header: null,
         gesturesEnabled: false
       }
-    },
+    }
   },
   {
-    headerMode: 'screen',
+    headerMode: "screen",
     headerStyle: {
       backcroundColor: "#292b37"
     },
