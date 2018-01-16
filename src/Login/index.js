@@ -17,10 +17,10 @@ import { TextField } from "react-native-material-textfield";
 import Button from "react-native-button";
 import { LinearGradient, Constants } from "expo";
 import { connect } from "react-redux";
-import Touchable from 'react-native-platform-touchable';
+import Touchable from "react-native-platform-touchable";
 
 import IconD from "../IconD";
-import { host } from '../etc';
+import { host } from "../etc";
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
@@ -55,7 +55,7 @@ const screen =
 class Login extends React.Component {
   navigationOptions = {
     title: "Авторизация",
-    headerBackTitle: null,
+    headerBackTitle: null
   };
   constructor(props) {
     super(props);
@@ -69,10 +69,10 @@ class Login extends React.Component {
     return "Рады видеть вас снова";
   };
   /**
- * Возвращает формы для регистрации
- * 
- * @memberof Login
- */
+   * Возвращает формы для регистрации
+   *
+   * @memberof Login
+   */
   renderForms = () => {
     return;
     <View
@@ -129,10 +129,10 @@ class Login extends React.Component {
     </View>;
   };
   /**
- * Возвращает компонент
- * 
- * @memberof Login
- */
+   * Возвращает компонент
+   *
+   * @memberof Login
+   */
   render = () => {
     return (
       <KeyboardAvoidingView
@@ -262,7 +262,7 @@ class Login extends React.Component {
             label="Пароль"
             value={this.state.password}
             onChangeText={password => {
-              this.setState({ passwordInputError: null});
+              this.setState({ passwordInputError: null });
               this.state.password = password;
             }}
             onBlur={() => this.setState({ hidePrevious: true })}
@@ -287,11 +287,11 @@ class Login extends React.Component {
           }}
         >
           <Touchable
-            background={Touchable.Ripple('gray')} 
+            background={Touchable.Ripple("gray")}
             onPress={this.next}
             style={{
               alignSelf: "stretch",
-              flexDirection: 'column',
+              flexDirection: "column",
               justifyContent: "center",
               width: viewportWidth
             }}
@@ -315,10 +315,10 @@ class Login extends React.Component {
     );
   };
   /**
- * Обрабатывает значения, введенные в формы для авторизации
- * 
- * @memberof Login
- */
+   * Обрабатывает значения, введенные в формы для авторизации
+   *
+   * @memberof Login
+   */
   next = () => {
     if (validateEmail(this.state.email)) {
       if (this.state.password.length > 6) {
@@ -353,8 +353,8 @@ class Login extends React.Component {
 }
 /**
  * Возвращает true, если строка является email'ом
- * 
- * @param {String} email 
+ *
+ * @param {String} email
  * @returns {bool}
  */
 function validateEmail(email) {
@@ -389,7 +389,7 @@ const styles = StyleSheet.create({
   nextButtonText: {
     fontSize: 16,
     color: "#dcc49c",
-    alignSelf: 'center',
+    alignSelf: "center",
     textAlign: "center",
     letterSpacing: 0.8,
     fontFamily: "stem-regular"
