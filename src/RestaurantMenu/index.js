@@ -42,7 +42,7 @@ const hr = (
   />
 );
 
-class RestaurantMenu extends React.Component {
+class RestaurantMenu extends React.PureComponent {
   static navigationOptions = ({ navigation }) => {
     return {
       title: navigation.state.params.title,
@@ -695,7 +695,7 @@ class RestaurantMenu extends React.Component {
                   ") center center no-repeat; background-size: contain' />"
               }}
               style={{
-                width: viewportWidth,
+                width: viewportWidth - 60,
                 height: 120,
                 backgroundColor: "transparent"
               }}
