@@ -705,6 +705,11 @@ class Favourite extends React.Component {
 
   componentWillReceiveProps = async newProps => {
     await AsyncStorage.setItem("fav", JSON.stringify(newProps.favourite));
+    if (this.props.favourite.plates.length == newProps.favourite.plates.length)
+      return 0;
+
+    if (this.props.favourite.restaurants.length == newProps.favourite.restaurants.length)
+      return 0;
 
     this.state.favouriteIds.plates = newProps.favourite.plates;
     this.state.favouriteIds.restaurants = newProps.favourite.restaurants;
