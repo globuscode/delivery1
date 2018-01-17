@@ -186,34 +186,28 @@ class Registration extends React.Component {
         {this.renderButton("Выслать код подтверждения", () => {
           sendPhone(this.state.phone.replace(/\D+/g, ""));
         })}
-        <View
+        <TextField
+          ref={c => this.codeInput = c}
+          tintColor={this.isNext() ? "#dcc49c" : "rgb(87, 88, 98)"}
+          baseColor={this.isNext() ? "#dcc49c" : "rgb(87, 88, 98)"}
+          textColor={"white"}
+          returnKeyType={"send"}
+          keyboardType={"phone-pad"}
+          value={this.state.code}
+          onChangeText={code => this.setState({ code: code })}
           style={{
-            flexDirection: "column",
-            alignSelf: "center",
-            width: Platform.OS === "ios" ? 0 : 20 + adaptWidth(136, 160, 177)
+            alignItems: "center",
+            textAlign: "center"
           }}
-        >
-          <TextField
-            ref={c => this.codeInput = c}
-            tintColor={this.isNext() ? "#dcc49c" : "rgb(87, 88, 98)"}
-            baseColor={this.isNext() ? "#dcc49c" : "rgb(87, 88, 98)"}
-            textColor={"white"}
-            returnKeyType={"send"}
-            keyboardType={"phone-pad"}
-            value={this.state.code}
-            onChangeText={code => this.setState({ code: code })}
-            style={{
-              alignItems: "center",
-              textAlign: "center"
-            }}
-            inputContainerStyle={{
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center"
-            }}
-            label={"Код подтверждения"}
-          />
-        </View>
+          inputContainerStyle={{
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            alignSelf: "center",
+            width: (Platform.OS === "ios" ? 0 : 20) + adaptWidth(136, 160, 177)
+          }}
+          label={"Код подтверждения"}
+        />
         <View
           style={{
             position: "absolute",
