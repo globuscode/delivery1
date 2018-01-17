@@ -61,7 +61,7 @@ class Registration extends React.Component {
               alignItems: "center",
               alignContent: "center",
               borderRadius: 8,
-              borderColor: "white"
+              borderColor: "#ffffff"
             }
           ]}
         >
@@ -92,7 +92,7 @@ class Registration extends React.Component {
             styles.row,
             {
               justifyContent: "center",
-              borderWidth: 1,
+              borderWidth: 1.5,
               height: adaptWidth(44, 52, 57),
               marginTop: 31,
               marginBottom: 10,
@@ -107,7 +107,7 @@ class Registration extends React.Component {
           <Text
             style={{
               color:
-                this.isNext() && this.state.canSend
+                this.isNext() || this.state.canSend
                   ? "rgb(225, 199, 155)"
                   : "rgb(87, 88, 98)",
               fontSize: 14,
