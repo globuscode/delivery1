@@ -92,6 +92,7 @@ class Cart extends React.Component {
     }
 
     this.state.totalPrice = this.totalPrice();
+    this.setState({ change: this.state.totalPrice });
     const priceWithSales = await this.getSalesPrice(newProps);
     this.state.withSales = priceWithSales;
     this.setState({ change: this.change() });
@@ -107,7 +108,7 @@ class Cart extends React.Component {
           restaurant: restJson["data"]["result"]
         });
       }
-      this.getSalesPrice(this.props);
+      await this.getSalesPrice(this.props);
       this.setState({
         totalPrice: this.totalPrice()
       });
@@ -361,9 +362,9 @@ class Cart extends React.Component {
     }
   };
 
-  getSalesPrice = async props => {
-    if (props.cart.length == 0) return 0;
-    const cart = props.cart.map(element => {
+  getSalesPrice = async ({ cart }) => {
+    if (cart.length == 0) return 0;
+    const cart_request = cart.map(element => {
       return {
         plateId: element.plate.id,
         qty: element.count
@@ -373,7 +374,7 @@ class Cart extends React.Component {
     let restJson;
     restJson = await fetchJson(`${host}/cart/create/`, {
       method: "post",
-      body: JSON.stringify({ items: cart })
+      body: JSON.stringify({ items: cart_request })
     });
     let result = 0;
     for (let i = 0; i < restJson["data"]["items"].length; i++) {
