@@ -408,6 +408,17 @@ class RestaurantMenu extends React.PureComponent {
                       borderRadius: 10
                     }}
                   />
+                  {e.image.indexOf(".png") > 0 ? null : <LinearGradient
+                    colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.8)"]}
+                    start={[0, 1]}
+                    end={[1, 0]}
+                    style={{
+                      width: imageHeight,
+                      height: imageHeight,
+                      borderRadius: 10,
+                      position: "absolute"
+                    }}
+                  />}
                   <Touchable
                     style={{ position: "absolute", right: 5, top: 5 }}
                     hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}

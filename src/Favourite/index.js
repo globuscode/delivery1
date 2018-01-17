@@ -570,6 +570,17 @@ class Favourite extends React.Component {
                       borderRadius: 10
                     }}
                   />
+                  {e.image.indexOf(".png") > 0 ? null : <LinearGradient
+                    colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.8)"]}
+                    start={[0, 1]}
+                    end={[1, 0]}
+                    style={{
+                      width: imageHeight,
+                      height: imageHeight,
+                      borderRadius: 10,
+                      position: "absolute"
+                    }}
+                  />}
                   <Touchable
                     style={{ position: "absolute", right: 5, top: 5 }}
                     hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
@@ -705,11 +716,6 @@ class Favourite extends React.Component {
 
   componentWillReceiveProps = async newProps => {
     await AsyncStorage.setItem("fav", JSON.stringify(newProps.favourite));
-    if (this.props.favourite.plates.length == newProps.favourite.plates.length)
-      return 0;
-
-    if (this.props.favourite.restaurants.length == newProps.favourite.restaurants.length)
-      return 0;
 
     this.state.favouriteIds.plates = newProps.favourite.plates;
     this.state.favouriteIds.restaurants = newProps.favourite.restaurants;
