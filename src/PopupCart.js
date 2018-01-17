@@ -90,7 +90,6 @@ class Popup extends React.Component {
   componentWillReceiveProps = async newProps => {
     this.setState({ plate: newProps.modal.plate });
 
-    console.log(newProps.modal.plate.id, this.state.plate.id)
     if (newProps.modal.plate.id != this.state.plate.id) {
       const responseJson = await fetchJson(
         `${host}/restaurant?restaurantId=${newProps.modal.plate.restaurant}`
