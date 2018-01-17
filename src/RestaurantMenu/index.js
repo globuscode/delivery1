@@ -458,6 +458,7 @@ class RestaurantMenu extends React.PureComponent {
                     }}
                   >
                     <Text
+                      numberOfLines={1}
                       style={{
                         color: "#fff",
                         fontSize: 15,
@@ -474,10 +475,23 @@ class RestaurantMenu extends React.PureComponent {
                         marginBottom: 5
                       }}
                     >
-                      <HTMLView
+                      <Text 
+                        numberOfLines={3}
+                        style={{
+                          color: "rgb(135, 136, 140)",
+                          fontSize: 12,
+                          lineHeight: 14,
+                          marginBottom: 5
+                        }}>
+                        {e.description.replace(/(<([^>]+)>)/ig,"").replace(/  +/g, " ")}
+                      </Text>
+                      {/*<HTMLView
+                        textComponentProps={{
+                          numberOfLines: 1
+                        }}
                         value={`<p>${e.description}</p>`}
                         stylesheet={styles}
-                      />
+                      />*/}
                     </View>
                   </View>
                   <View style={{ flexDirection: "row" }}>
@@ -1036,7 +1050,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(41,43,55, 1)"
   },
   p: {
-    color: "rgb( 135, 136, 140)",
+    color: "rgb(135, 136, 140)",
     fontSize: 12,
     lineHeight: 14,
     marginBottom: 5
