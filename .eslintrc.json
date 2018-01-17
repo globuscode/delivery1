@@ -9,7 +9,8 @@
         "plugin:react/recommended"
     ],
     "globals": { 
-        "fetch": false
+        "fetch": false,
+        "FormData": false
     },
     "parserOptions": {
         "ecmaFeatures": {
