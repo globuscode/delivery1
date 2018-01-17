@@ -197,29 +197,25 @@ class Restaurant extends React.Component {
     const restaurantId = this.props.navigation.state
       ? this.props.navigation.state.params.id
       : (-1).toString();
-    fetch(`${host}/restaurant?restaurantId=${restaurantId}`)
-      .then(response => response.json())
-      .then(responseJson => {
-        if (responseJson["data"] && responseJson["data"]["result"])
-          this.state.data = responseJson["data"]["result"];
-        this.props.navigation.setParams({
-          favourite: this.state.favourite,
-          title: this.state.data.title,
-          onHeartPress: () => {
-            if (!this.state.favourite) {
-              this.props.addToFav({
-                id: this.props.navigation.state.params.id
-              });
-            } else {
-              this.props.removeFromFav({
-                id: this.props.navigation.state.params.id
-              });
-            }
-          }
-        });
-        this.setState({});
-        return responseJson;
-      });
+
+    let responseJson = await fetchJson(`${host}/restaurant?restaurantId=${restaurantId}`);
+    if (responseJson["data"] && responseJson["data"]["result"])
+      this.state.data = responseJson["data"]["result"];
+    this.props.navigation.setParams({
+      favourite: this.state.favourite,
+      title: this.state.data.title,
+      onHeartPress: () => {
+        if (!this.state.favourite) {
+          this.props.addToFav({
+            id: this.props.navigation.state.params.id
+          });
+        } else {
+          this.props.removeFromFav({
+            id: this.props.navigation.state.params.id
+          });
+        }
+      }
+    });
   };
 
   renderButton = (title, callback) => {

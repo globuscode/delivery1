@@ -4,53 +4,23 @@ import {
   TouchableOpacity,
   Dimensions,
   StyleSheet,
-  ScrollView,
-  WebView,
-  Linking,
-  Alert,
   Keyboard,
   KeyboardAvoidingView,
   Text
 } from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
 import { TextField } from "react-native-material-textfield";
-import Button from "react-native-button";
-import { LinearGradient, Constants } from "expo";
 import { connect } from "react-redux";
 import Touchable from "react-native-platform-touchable";
+import propTypes from "prop-types";
 
-import IconD from "../IconD";
-import { host } from "../etc";
+import { host, adaptWidth } from "../etc";
+import { fetchJson } from "../utils";
 
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
+const { width: viewportWidth } = Dimensions.get(
   "window"
 );
-const hr = (
-  <View
-    style={{
-      alignSelf: "stretch",
-      marginHorizontal: 20,
-      height: 1,
-      backgroundColor: "rgb(87, 88, 98)"
-    }}
-  />
-);
-const hrShort = (
-  <View
-    style={{
-      width: 290,
-      alignSelf: "center",
-      margin: 0,
-      height: 1,
-      backgroundColor: "rgb(87, 88, 98)"
-    }}
-  />
-);
 
-const screen =
-  viewportWidth >= 320 && viewportWidth < 375
-    ? 0
-    : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
+const screen = adaptWidth(0, 1, 2);
 
 class Login extends React.Component {
   navigationOptions = {
@@ -65,6 +35,11 @@ class Login extends React.Component {
     };
   }
 
+  static propTypes = {
+    navigation: propTypes.object,
+    login: propTypes.func
+  };
+
   renderStatus = () => {
     return "Рады видеть вас снова";
   };
@@ -74,59 +49,7 @@ class Login extends React.Component {
    * @memberof Login
    */
   renderForms = () => {
-    return;
-    <View
-      style={{
-        flexDirection: "column",
-        paddingHorizontal: screen == 0 ? 20 : screen == 1 ? 27 : 30
-      }}
-    >
-      <TextField
-        onBlur={() => {
-          Keyboard.dismiss();
-        }}
-        tintColor="#dcc49c"
-        baseColor="rgb( 87, 88, 98)"
-        textColor="white"
-        returnKeyType="send"
-        style={{
-          alignItems: "center",
-          textAlign: "center"
-        }}
-        keyboardType="email-address"
-        inputContainerStyle={styles.formContainer}
-        label="E-mail адрес"
-        value={this.state.email}
-        onChangeText={address => {
-          this.state.email = address;
-        }}
-        onBlur={() => this.setState({ hidePrevious: true })}
-      />
-      <View
-        style={{ height: (screen == 0 ? 34 : screen == 1 ? 42 : 48) - 10 }}
-      />
-      <TextField
-        onBlur={() => {
-          Keyboard.dismiss();
-        }}
-        secureTextEntry
-        tintColor="#dcc49c"
-        baseColor="rgb( 87, 88, 98)"
-        textColor="white"
-        returnKeyType="send"
-        style={{
-          alignItems: "center",
-          textAlign: "center"
-        }}
-        inputContainerStyle={styles.formContainer}
-        label="Пароль"
-        value={this.state.password}
-        onChangeText={password => {
-          this.state.password = password;
-        }}
-        onBlur={() => this.setState({ hidePrevious: true })}
-      />
-    </View>;
+    return ;
   };
   /**
    * Возвращает компонент
@@ -158,9 +81,9 @@ class Login extends React.Component {
           onPress={() => {
             if (this.state.canNav) {
               this.props.navigation.navigate("Registration");
-              this.state.canNav = false;
+              this.setState({ canNav: false });
               setTimeout(() => {
-                this.state.canNav = true;
+                this.setState({ canNav: true });
               }, 1500);
             }
           }}
@@ -232,10 +155,11 @@ class Login extends React.Component {
             label="E-mail адрес"
             value={this.state.email}
             onChangeText={address => {
-              this.setState({ emailInputError: null });
-              this.state.email = address;
+              this.setState({
+                emailInputError: null,
+                email: address
+              });
             }}
-            onBlur={() => this.setState({ hidePrevious: true })}
           />
           <View
             style={{ height: (screen == 0 ? 34 : screen == 1 ? 42 : 48) - 10 }}
@@ -262,10 +186,11 @@ class Login extends React.Component {
             label="Пароль"
             value={this.state.password}
             onChangeText={password => {
-              this.setState({ passwordInputError: null });
-              this.state.password = password;
+              this.setState({ 
+                passwordInputError: null,
+                password: password
+              });
             }}
-            onBlur={() => this.setState({ hidePrevious: true })}
           />
         </View>
         {this.renderForms()}
@@ -319,30 +244,25 @@ class Login extends React.Component {
    *
    * @memberof Login
    */
-  next = () => {
+  next = async () => {
     if (validateEmail(this.state.email)) {
       if (this.state.password.length > 6) {
-        var data = new FormData();
-        data.append("userName", this.state.email);
-        data.append("password", this.state.password);
-        fetch(`${host}/auth/auth/`, {
+        var form = new FormData();
+        form.append("userName", this.state.email);
+        form.append("password", this.state.password);
+        let data = await fetchJson(`${host}/auth/auth/`, {
           method: "POST",
-          body: data
-        })
-          .then(res => {
-            return res.json();
-          })
-          .then(data => {
-            if (data.errors) {
-              if (data.errors.code != 200) {
-                this.setState({ emailInputError: "Email введен неверно " });
-                this.setState({ passwordInputError: "Пароль введен неверно " });
-              }
-            } else {
-              this.props.login(data);
-              this.props.navigation.navigate("Feed");
-            }
-          });
+          body: form
+        });
+        if (data.errors) {
+          if (data.errors.code != 200) {
+            this.setState({ emailInputError: "Email введен неверно " });
+            this.setState({ passwordInputError: "Пароль введен неверно " });
+          }
+        } else {
+          this.props.login(data);
+          this.props.navigation.navigate("Feed");
+        }
       } else {
         this.setState({ passwordInputError: "Пароль слишком короткий" });
       }

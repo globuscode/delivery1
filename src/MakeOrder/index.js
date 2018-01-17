@@ -4,13 +4,15 @@ import {
   Text,
   TouchableOpacity,
   Dimensions,
-  Alert,
   ActivityIndicator
 } from "react-native";
+import { NavigationActions } from "react-navigation";
+import propTypes from "prop-types";
+
 import IconD from "../IconD";
 import { connect } from "react-redux";
 import { host } from "../etc";
-import { NavigationActions } from "react-navigation";
+import { fetchJson } from "../utils";
 
 const resetAction = NavigationActions.reset({
   index: 1,
@@ -56,6 +58,13 @@ class MakeOrder extends React.Component {
     };
   }
 
+  static propTypes = {
+    globalStore: propTypes.array,
+    userStore: propTypes.object,
+    navigation: propTypes.object,
+    makeOrder: propTypes.func
+  }
+
   totalPrice = () => {
     let result = 0;
     for (var i = 0; i < this.props.globalStore.length; i++) {
@@ -67,7 +76,7 @@ class MakeOrder extends React.Component {
     return result;
   };
 
-  renderMenuItem = (icon, title, nav) => {
+  renderMenuItem = (icon, title) => {
     return (
       <TouchableOpacity
         onPress={() => {
@@ -192,7 +201,7 @@ class MakeOrder extends React.Component {
                   orderStart: getOrderDate()
                 };
                 this.setState({ fetching: true });
-                const response = await fetch(
+                await fetchJson(
                   `${host}/order/create/index.php?token=${
                     this.props.userStore.token
                   }`,
@@ -201,8 +210,6 @@ class MakeOrder extends React.Component {
                     body: JSON.stringify(body)
                   }
                 );
-
-                const responseJson = await response.json();
                 //Alert.alert(JSON.stringify(responseJson));
                 this.setState({ fetching: false });
                 this.props.makeOrder();

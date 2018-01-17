@@ -8,7 +8,6 @@ import {
   Image,
   Platform,
   Text,
-  Alert
 } from "react-native";
 import { TextField } from "react-native-material-textfield";
 import { LinearGradient } from "expo";
@@ -85,10 +84,9 @@ class Cart extends React.Component {
   componentWillReceiveProps = async newProps => {
     if (newProps.cart.length >= 1) {
       if (newProps.cart[0].plate.restaurant != this.state.restaurant.id) {
-        const rest = await fetch(
+        const restJson = await fetchJson(
           `${host}/restaurant?restaurantId=` + newProps.cart[0].plate.restaurant
         );
-        const restJson = await rest.json();
         this.setState({ restaurant: restJson["data"]["result"] });
       }
     }
@@ -109,6 +107,7 @@ class Cart extends React.Component {
           restaurant: restJson["data"]["result"]
         });
       }
+      this.getSalesPrice(this.props);
       this.setState({
         totalPrice: this.totalPrice()
       });
@@ -371,29 +370,11 @@ class Cart extends React.Component {
       };
     });
     this.setState({ sales: this.state.totalPrice });
-    let rest, restJson;
-    try {
-      rest = await fetch(`${host}/cart/create/`, {
-        method: "post",
-        body: JSON.stringify({ items: cart })
-      });
-    } catch (err) {
-      Alert.alert("Ошибка", "Сервер не отвечает");
-      this.setState({ sales: this.state.totalPrice });
-      return 0;
-    }
-    try {
-      restJson = await rest.json();
-    } catch (err) {
-      Alert.alert("Ошибка", "Сервер отвечает не правильно");
-      this.setState({ sales: this.state.totalPrice });
-      return 0;
-    }
-
-    if (restJson["data"]["items"] === undefined) {
-      this.setState({ sales: this.state.totalPrice });
-      return 0;
-    }
+    let restJson;
+    restJson = await fetchJson(`${host}/cart/create/`, {
+      method: "post",
+      body: JSON.stringify({ items: cart })
+    });
     let result = 0;
     for (let i = 0; i < restJson["data"]["items"].length; i++) {
       result += parseInt(restJson["data"]["items"][i].price);

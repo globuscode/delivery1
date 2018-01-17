@@ -1,5 +1,3 @@
-import React from "react";
-import Expo from "expo";
 import { StatusBar, Platform } from "react-native";
 import { StackNavigator } from "react-navigation";
 

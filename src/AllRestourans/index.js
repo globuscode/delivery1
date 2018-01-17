@@ -9,70 +9,88 @@ import {
   ActivityIndicator,
   FlatList
 } from "react-native";
+import { LinearGradient, Constants } from "expo";
 import Icon from "react-native-vector-icons/Ionicons";
 import Drawer from "react-native-drawer";
+import propTypes from "prop-types";
+
 import Picker from "../Picker";
-import { LinearGradient, Constants } from "expo";
-import { host } from '../etc';
+import { host } from "../etc";
+import { fetchJson } from "../utils";
 import RestouransOfTheWeek from "../Main/RestouransOfTheWeek";
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
 
-const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
-  const paddingToBottom = 10;
-  return layoutMeasurement.height + contentOffset.y >=
-    contentSize.height - paddingToBottom;
-};
-
 export default class AllRestourans extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      types: [
-        "Все кухни",
-      ],
+      types: ["Все кухни"],
       maxIndex: 0,
       restaurans: [],
       restauransShort: [],
       selectedType: 0,
-      updating: false,
+      updating: false
     };
   }
 
-  componentWillMount = async () => {
-    const response = await fetch(`${host}/classificator/tag-groups?cityId=36`);
-    const responseJson = await response.json();
+  static propTypes = {
+    navigation: propTypes.object
+  };
 
-    responseJson.data.forEach((element) => {
+  componentWillMount = async () => {
+    const responseJson = await fetchJson(
+      `${host}/classificator/tag-groups?cityId=36`
+    );
+
+    responseJson.data.forEach(element => {
       this.state.types.push(element.titleTag);
     });
     this.setState({});
-  }
+  };
 
   componentDidMount = async () => {
     this.updateResults();
-  }
+  };
 
   renderRestaurant = (restaurant, index) => {
     if (this.state.selectedType === 0)
-      return <RestouransOfTheWeek key={restaurant.id} data={[restaurant]} navigation={this.props.navigation} />;
-    for (let i = 0; i< restaurant.restourantTags.length; i++) {
-      if (restaurant.restourantTags[i] == this.state.types[this.state.selectedType]) {
-        return <RestouransOfTheWeek key={restaurant.id} data={[restaurant]} navigation={this.props.navigation} />;
+      return (
+        <RestouransOfTheWeek
+          key={index}
+          data={[restaurant]}
+          navigation={this.props.navigation}
+        />
+      );
+    for (let i = 0; i < restaurant.restourantTags.length; i++) {
+      if (
+        restaurant.restourantTags[i] ==
+        this.state.types[this.state.selectedType]
+      ) {
+        return (
+          <RestouransOfTheWeek
+            key={restaurant.id}
+            data={[restaurant]}
+            navigation={this.props.navigation}
+          />
+        );
       }
     }
-    return <View key={restaurant.id} style={{display: 'none'}}/>;
-  }
+    return <View key={restaurant.id} style={{ display: "none" }} />;
+  };
 
   updateResults = async () => {
-    this.setState({updating: true});
-    const response = await fetch(`${host}/restaurants?cityId=36&tag=${this.state.types[this.state.selectedType]}`);
-    const responseJson = await response.json();
+    this.setState({ updating: true });
+    const responseJson = await fetchJson(
+      `${host}/restaurants?cityId=36&tag=${
+        this.state.types[this.state.selectedType]
+      }`
+    );
 
     this.state.restaurans = responseJson.data.restaurants;
-    
+
     // let rests = [];
     // let i = 0;
     // while (i < this.state.maxIndex) {
@@ -96,7 +114,7 @@ export default class AllRestourans extends React.Component {
     this.setState({
       updating: false
     });
-  }
+  };
 
   render() {
     //ios - contact - outline
@@ -134,7 +152,7 @@ export default class AllRestourans extends React.Component {
               <TouchableOpacity
                 onPress={() => {
                   //this.selectedType = 0;
-                  this.state.selectedType = this.state.preSelectedType;
+                  this.setState({ selectedType: this.state.preSelectedType });
                   this.updateResults();
                   this._drawer.close();
                 }}
@@ -152,7 +170,7 @@ export default class AllRestourans extends React.Component {
               selectedValue={this.state.preSelectedType}
               data={this.state.types}
               onValueChange={index => {
-                this.setState({preSelectedType: index});
+                this.setState({ preSelectedType: index });
               }}
             />
             <View style={{ height: 20 }} />
@@ -194,8 +212,7 @@ export default class AllRestourans extends React.Component {
               </View>
             </TouchableOpacity>
           </View>
-          <ScrollView
-          contentContainerStyle={{ width: viewportWidth }}>
+          <ScrollView contentContainerStyle={{ width: viewportWidth }}>
             <Text
               style={{
                 fontSize: 10,
@@ -238,10 +255,14 @@ export default class AllRestourans extends React.Component {
             {/*<RestouransOfTheWeek data={this.state.restauransShort} navigation={this.props.navigation} />*/}
             <FlatList
               data={this.state.restaurans}
-              renderItem={({item, index}) => this.renderRestaurant(item, index)} />
+              renderItem={({ item, index }) =>
+                this.renderRestaurant(item, index)
+              }
+            />
             <View style={{ height: 20 }} />
-            {this.state.updating ? 
-            <ActivityIndicator size='large' style={{alignSelf: 'center'}} /> : null }
+            {this.state.updating ? (
+              <ActivityIndicator size="large" style={{ alignSelf: "center" }} />
+            ) : null}
           </ScrollView>
 
           <View

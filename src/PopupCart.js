@@ -19,6 +19,7 @@ const screen =
     : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
 
 import { host } from "./etc";
+import { fetchJson } from "./utils";
 
 /**
  * Возвращает колличество блюд plate в корзине
@@ -76,13 +77,9 @@ class Popup extends React.Component {
   }
 
   componentWillMount = async () => {
-    /*const responsePlate = await fetch(`${host}/plate?plateId=${this.props.modal.cartId}`);
-        const responsePlateJson = await responsePlate.json();*/
-
-    const response = await fetch(
+    const responseJson = await fetchJson(
       `${host}/restaurant?restaurantId=${this.state.plate.restaurant}`
     );
-    const responseJson = await response.json();
     if (responseJson.data && responseJson.data.result)
       this.setState({
         restaurant: responseJson.data.result,
@@ -93,15 +90,17 @@ class Popup extends React.Component {
   componentWillReceiveProps = async newProps => {
     this.setState({ plate: newProps.modal.plate });
 
-    const response = await fetch(
-      `${host}/restaurant?restaurantId=${newProps.modal.plate.restaurant}`
-    );
-    const responseJson = await response.json();
-    if (responseJson.data != undefined) {
-      this.setState({
-        restaurant: responseJson.data.result,
-        freeDelivery: responseJson.data.result.minOrder
-      });
+    console.log(newProps.modal.plate.id, this.state.plate.id)
+    if (newProps.modal.plate.id != this.state.plate.id) {
+      const responseJson = await fetchJson(
+        `${host}/restaurant?restaurantId=${newProps.modal.plate.restaurant}`
+      );
+      if (responseJson.data != undefined) {
+        this.setState({
+          restaurant: responseJson.data.result,
+          freeDelivery: responseJson.data.result.minOrder
+        });
+      }
     }
   };
 
