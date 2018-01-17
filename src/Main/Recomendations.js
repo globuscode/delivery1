@@ -6,23 +6,22 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
-  Alert,
-  AsyncStorage,
-  PixelRatio,
-  ActivityIndicator,
-  WebView
+  Alert
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import { LinearGradient } from "expo";
-import { Badge } from "react-native-elements";
 import { connect } from "react-redux";
 import Touchable from "react-native-platform-touchable";
-import { host } from '../etc';
+import propTypes from "prop-types";
+
+import { host } from "../etc";
 import Storage from "../Reducers";
 import PriceButton from "../PriceButton";
 import IconD from "../IconD";
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
+import { fetchJson } from "../utils";
+
+const { width: viewportWidth } = Dimensions.get(
   "window"
 );
 
@@ -34,84 +33,48 @@ class Recomendations extends React.Component {
       activeSlide: 0,
       restaurans: [],
       favourites: [],
-      entries: [
-        {
-          id: 1,
-          image:
-            "https://img02.rl0.ru/afisha/o/s1.afisha.net/MediaStorage/d5/12/535a1080132c4530a7a4446612d5.jpg",
-          title: "Дабл роял бургер",
-          restourant: "Джон Джоли",
-          weight: "400 гр",
-          price: "8888",
-          restourantLogo: "https://image.ibb.co/fPo4vm/meatless_logo.png",
-          favourite: false
-        },
-        {
-          id: 2,
-          image:
-            "http://shop.web01.widgets.vigbo.com/storage/shops/7776/products/313707/images/2-8606f84da77c5a05532ee2d3f1d9e351.jpg",
-          title: "Стейк",
-          restourant: "Стейк Хаус",
-          weight: "200 гр",
-          price: "30",
-          restourantLogo: "https://image.ibb.co/fPo4vm/meatless_logo.png",
-          favourite: false
-        },
-        {
-          id: 3,
-          image:
-            "http://img.povar.ru/uploads/a0/99/e9/31/molochnii_kokteil_s_shokoladom-318319.jpg",
-          title: "Шоколадный милкшейк",
-          restourant: "Джон Джоли",
-          weight: "150 гр",
-          price: "1000",
-          restourantLogo: "https://image.ibb.co/fPo4vm/meatless_logo.png",
-          favourite: false
-        },
-        {
-          id: 4,
-          image:
-            "https://img02.rl0.ru/afisha/o/s1.afisha.net/MediaStorage/d5/12/535a1080132c4530a7a4446612d5.jpg",
-          title: "Бургер",
-          restourant: "КБ",
-          weight: "200 гр",
-          price: "30",
-          restourantLogo: "https://image.ibb.co/fPo4vm/meatless_logo.png",
-          favourite: false
-        }
-      ]
+      entries: []
     };
     if (this.props.data) {
       this.state.entries = this.props.data;
       this.state.entries.forEach(element => {
-        let fav = false;
         this.props.favourite.plates.forEach(plate => {
           if (plate === element.id) {
             this.state.favourites.push(true);
-          }
-          else
-            this.state.favourites.push(false);
-        })
-        
-      })
+          } else this.state.favourites.push(false);
+        });
+      });
     }
     this.fav = this.fav.bind(this);
   }
 
-  fav(index) {
-    this.state.favourites[index] = !this.state.favourites[index];
-    this.setState({});
+  static propTypes = {
+    navigation: propTypes.object,
+    favourite: propTypes.object,
+    globalStore: propTypes.array,
+    data: propTypes.array,
+    onAddPlate: propTypes.func,
+    removeFromFav: propTypes.func,
+    addToFav: propTypes.func,
+    onNextButtonPress: propTypes.func,
+    open: propTypes.func
+  }
+
+  fav = (index) => {
+    let favourites = this.state.favourites;
+    favourites[index] = !favourites[index];
+    this.setState({ favourites: favourites });
   }
 
   componentWillMount = async () => {
-    for (let i=0; i<this.state.entries.length; i++) {
+    for (let i = 0; i < this.state.entries.length; i++) {
       let element = this.state.entries[i];
       if (element.restaurant == undefined) {
-        this.state.restaurans.push('');
-      }
-      else {
-        let restaurant = await fetch(`${host}/restaurant?restaurantId=${element.restaurant}`);
-        let restaurantJson = await restaurant.json();
+        this.state.restaurans.push("");
+      } else {
+        let restaurantJson = await fetchJson(
+          `${host}/restaurant?restaurantId=${element.restaurant}`
+        );
         this.state.restaurans.push(restaurantJson.data.result);
       }
     }
@@ -122,15 +85,15 @@ class Recomendations extends React.Component {
     this.props.onAddPlate(plate);
   };
 
-  nav = (i) => {
+  nav = i => {
     if (this.state.canNav) {
       this.props.navigation.navigate("Plate", {
         plate: this.state.entries[i],
         restaurant: this.state.restaurans[i]
       });
-      this.state.canNav = false;
+      this.setState({ canNav: false });
       setTimeout(() => {
-        this.state.canNav = true;
+        this.setState({ canNav: true });
       }, 1500);
     }
   };
@@ -141,7 +104,10 @@ class Recomendations extends React.Component {
       viewportWidth >= 320 && viewportWidth < 375
         ? 0
         : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
-    const SLIDER_WIDTH = screen == 0 ? viewportWidth - 2*20 : screen == 1 ? viewportWidth - 2*24 : viewportWidth - 26;
+    const SLIDER_WIDTH =
+      screen == 0
+        ? viewportWidth - 2 * 20
+        : screen == 1 ? viewportWidth - 2 * 24 : viewportWidth - 26;
     const SLIDER_MARGIN =
       screen == 0 ? 10 / 2 : screen == 1 ? 11.7 / 2 : 13.2 / 2;
     const SLIDER_HEIGHT = SLIDER_WIDTH * 1.32;
@@ -170,8 +136,11 @@ class Recomendations extends React.Component {
       },
       BG_IMAGE: {
         width: SLIDER_WIDTH,
-        top: item.image.indexOf('.png') > 0 ? SLIDER_HEIGHT * 0.5 / 3 : 0,
-        height: item.image.indexOf('.png') > 0 ? SLIDER_HEIGHT * 2 / 3 : SLIDER_HEIGHT,
+        top: item.image.indexOf(".png") > 0 ? SLIDER_HEIGHT * 0.5 / 3 : 0,
+        height:
+          item.image.indexOf(".png") > 0
+            ? SLIDER_HEIGHT * 2 / 3
+            : SLIDER_HEIGHT,
         borderRadius: 10,
         position: "absolute",
         backgroundColor: "transparent"
@@ -208,8 +177,7 @@ class Recomendations extends React.Component {
         letterSpacing: 0.5,
         fontFamily: "stem-medium"
       },
-      topViewStyle: {
-      }
+      topViewStyle: {}
     });
 
     const GRADIENT_COLORS = [
@@ -233,35 +201,40 @@ class Recomendations extends React.Component {
 
     // Компонент с кнопкой добавить в избранное
     var heartButton = (
-        <Touchable
-          style={{position: 'absolute', right: 0, top: 0}}
-          hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}
-          foreground={Touchable.SelectableBackgroundBorderless()}
-          onPress={() => {
-            if (this.state.favourites[index]) {
-              this.fav(index);
-              this.props.removeFromFav(item);
-            }
-            else {
-              this.fav(index);
-              this.props.addToFav(item);
-            }
-            this.setState({})
-          }}>
-          <View style={{ backgroundColor: "transparent" }}>
-            <IconD
-              name={this.state.favourites[index] ? "heart_full" : "heart_empty"}
-              size={18}
-              color="#dcc49c"
-            />
-          </View>
-        </Touchable>
+      <Touchable
+        style={{ position: "absolute", right: 0, top: 0 }}
+        hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+        foreground={Touchable.SelectableBackgroundBorderless()}
+        onPress={() => {
+          if (this.state.favourites[index]) {
+            this.fav(index);
+            this.props.removeFromFav(item);
+          } else {
+            this.fav(index);
+            this.props.addToFav(item);
+          }
+          this.setState({});
+        }}
+      >
+        <View style={{ backgroundColor: "transparent" }}>
+          <IconD
+            name={this.state.favourites[index] ? "heart_full" : "heart_empty"}
+            size={18}
+            color="#dcc49c"
+          />
+        </View>
+      </Touchable>
     );
     // Верхняя половина карточки
     var topView = (
       <View style={itemStyles.topViewStyle}>
-        <View style={{position: 'absolute', left: 0, top: 0}}>
-          <Touchable activeOpacity={0.8} onPress={() => { this.nav(index); }}>
+        <View style={{ position: "absolute", left: 0, top: 0 }}>
+          <Touchable
+            activeOpacity={0.8}
+            onPress={() => {
+              this.nav(index);
+            }}
+          >
             <View>
               {/* Название блюда */}
               {titleText}
@@ -279,26 +252,6 @@ class Recomendations extends React.Component {
       </View>
     );
 
-    var logo1 = (
-      <WebView
-        bounces={false}
-        scrollEnabled={false}
-        source={{
-          html:
-            `<img 
-        src="` +
-            item.restourantLogo +
-            `"
-          style="
-          width:100%;">`
-        }}
-        style={{
-          width: SLIDER_WIDTH / 3,
-          height: SLIDER_WIDTH / 3,
-          backgroundColor: "transparent"
-        }}
-      />
-    );
     var logo = (
       <Image
         onLoadEnd={() => {
@@ -308,8 +261,12 @@ class Recomendations extends React.Component {
           width: SLIDER_WIDTH / 3,
           height: SLIDER_WIDTH / 3
         }}
-        resizeMode={'contain'}
-        source={{ uri: this.state.restaurans[index] ? ('http:'+this.state.restaurans[index].logoImage) : "http://dostavka1.com/img/app-icon.png" }}
+        resizeMode={"contain"}
+        source={{
+          uri: this.state.restaurans[index]
+            ? "http:" + this.state.restaurans[index].logoImage
+            : "http://dostavka1.com/img/app-icon.png"
+        }}
       />
     );
     var itemCount = getCount(this.props.globalStore, item);
@@ -323,7 +280,12 @@ class Recomendations extends React.Component {
           height: SLIDER_WIDTH / 3
         }}
       >
-        <Touchable activeOpacity={0.8} onPress={() => { this.nav(index); }}>
+        <Touchable
+          activeOpacity={0.8}
+          onPress={() => {
+            this.nav(index);
+          }}
+        >
           {logo}
         </Touchable>
         <PriceButton
@@ -332,16 +294,22 @@ class Recomendations extends React.Component {
           value={item.price}
           onPress={() => {
             if (this.props.globalStore.length > 0) {
-              if (this.props.globalStore[this.props.globalStore.length - 1].plate.restaurant !== item.restaurant)
+              if (
+                this.props.globalStore[this.props.globalStore.length - 1].plate
+                  .restaurant !== item.restaurant
+              )
                 Alert.alert(
                   "Вы уверенны?",
                   "Вы добавили блюдо из другого ресторана. Ваша корзина из предыдущего ресторана будет очищена.",
                   [
-                    {text: 'OK', onPress: () => {
-                      this.props.onAddPlate(item);
-                      this.props.open(item);
-                    }},
-                    {text: 'Отмена', onPress: null, style: 'cancel'},
+                    {
+                      text: "OK",
+                      onPress: () => {
+                        this.props.onAddPlate(item);
+                        this.props.open(item);
+                      }
+                    },
+                    { text: "Отмена", onPress: null, style: "cancel" }
                   ],
                   { cancelable: false }
                 );
@@ -349,12 +317,10 @@ class Recomendations extends React.Component {
                 this.props.onAddPlate(item);
                 this.props.open(item);
               }
-            }
-            else {
+            } else {
               this.props.onAddPlate(item);
               this.props.open(item);
             }
-            
           }}
         />
       </View>
@@ -371,12 +337,20 @@ class Recomendations extends React.Component {
               position: "absolute",
               height: SLIDER_HEIGHT,
               width: SLIDER_WIDTH,
-              borderRadius: 10,
+              borderRadius: 10
             }}
-            onPress={() => { this.nav(index); }}
+            onPress={() => {
+              this.nav(index);
+            }}
           >
             <View>
-              <Image resizeMode={item.image.indexOf('.png') < 0 ? 'cover' : 'contain'} style={itemStyles.BG_IMAGE} source={{ uri: 'http:'+item.image }} />
+              <Image
+                resizeMode={
+                  item.image.indexOf(".png") < 0 ? "cover" : "contain"
+                }
+                style={itemStyles.BG_IMAGE}
+                source={{ uri: "http:" + item.image }}
+              />
 
               {/* Градиент */}
               <LinearGradient
@@ -394,33 +368,32 @@ class Recomendations extends React.Component {
     );
   };
 
-  componentWillReceiveProps = (newProps) => {
+  componentWillReceiveProps = newProps => {
     this.props = newProps;
     this.state.favourites = [];
     this.state.entries.forEach(element => {
       let fav = false;
-      for (let i=0; i<this.props.favourite.plates.length; i++) {
+      for (let i = 0; i < this.props.favourite.plates.length; i++) {
         let rest = this.props.favourite.plates[i];
         if (rest === element.id) {
           fav = true;
         }
       }
-      if (fav)
-        this.state.favourites.push(true);
-      else
-        this.state.favourites.push(false);
+      if (fav) this.state.favourites.push(true);
+      else this.state.favourites.push(false);
 
       this.setState({});
-      
     });
     this.setState({});
-  }
+  };
 
   render() {
     Storage.subscribe(() => {
-      if (Storage.getState().lastAction.type === 'CLOSE_MODAL') {
-        Storage.dispatch({type: null});
-        this.props.navigation.navigate('SetAddress', {id: Storage.getState().modalController.plate.restaurant});
+      if (Storage.getState().lastAction.type === "CLOSE_MODAL") {
+        Storage.dispatch({ type: null });
+        this.props.navigation.navigate("SetAddress", {
+          id: Storage.getState().modalController.plate.restaurant
+        });
       }
     });
 
@@ -428,7 +401,10 @@ class Recomendations extends React.Component {
       viewportWidth >= 320 && viewportWidth < 375
         ? 0
         : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
-    let slideW  = screen == 0 ? viewportWidth - 2*20 : screen == 1 ? viewportWidth - 2*24 : viewportWidth - 26;
+    let slideW =
+      screen == 0
+        ? viewportWidth - 2 * 20
+        : screen == 1 ? viewportWidth - 2 * 24 : viewportWidth - 26;
     const SLIDER_MARGIN =
       screen == 0 ? 10 / 2 : screen == 1 ? 11.7 / 2 : 13.2 / 2;
     return (
@@ -488,8 +464,8 @@ class Recomendations extends React.Component {
 
 /**
  * Возвращает колличество блюд plate в корзине
- * @param {Object} cart 
- * @param {Object} plate 
+ * @param {Object} cart
+ * @param {Object} plate
  */
 function getCount(cart, plate) {
   var i = 0;
@@ -514,29 +490,16 @@ export default connect(
     onAddPlate: plate => {
       dispatch({ type: "ADD_PLATE", payload: plate });
     },
-    open: (data) => dispatch({ type: "OPEN_MODAL", payload: data}),
-    changeModal: (data) => {
-      dispatch({ type: "CHANGE_CONTENT", payload: data })
+    open: data => dispatch({ type: "OPEN_MODAL", payload: data }),
+    changeModal: data => {
+      dispatch({ type: "CHANGE_CONTENT", payload: data });
     },
-    addToFav: (data) => {
-      dispatch({ type: "ADD_PLATE_TO_FAV", payload: data })
+    addToFav: data => {
+      dispatch({ type: "ADD_PLATE_TO_FAV", payload: data });
     },
-		removeFromFav: (data) => {
-			dispatch({ type: "DELETE_PLATE", payload: data })
-		},
+    removeFromFav: data => {
+      dispatch({ type: "DELETE_PLATE", payload: data });
+    }
   })
 )(Recomendations);
 
-const styles = StyleSheet.create({
-  text: {
-    color: "white",
-    fontSize: 16
-  },
-  container: {
-    flex: 1,
-    paddingTop: 20,
-    backgroundColor: "transparent",
-    justifyContent: "space-between",
-    alignItems: "center"
-  }
-});
