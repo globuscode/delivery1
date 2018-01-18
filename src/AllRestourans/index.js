@@ -48,7 +48,6 @@ export default class AllRestourans extends React.Component {
     responseJson.data.forEach(element => {
       this.state.types.push(element.titleTag);
     });
-    this.setState({});
   };
 
   componentDidMount = async () => {
