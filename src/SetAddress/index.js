@@ -66,29 +66,13 @@ class SelectAddress extends React.Component {
   }
 
   getAutocomplete = async address => {
-    let response, responseJson;
-    try {
-      response = await fetch(
-        `${host}/address/autocomplete/?cityId=36&street=${
-          address.street
-        }&house=${address.house}&restaurantId=${
-          this.props.navigation.state.params.id
-        }`
-      );
-    } catch (err) {
-      Alert.alert(
-        "Ошибка",
-        "Соединение с сервером потеряно. Пожалуйста, проверьте ваше соединение с интернетом"
-      );
-      return null;
-    }
-
-    try {
-      responseJson = await response.json();
-    } catch (err) {
-      Alert.alert("Ошибка", "Серверу поплохело");
-      return null;
-    }
+    let responseJson =  await fetchJson(
+      `${host}/address/autocomplete/?cityId=36&street=${
+        address.street
+      }&house=${address.house}&restaurantId=${
+        this.props.navigation.state.params.id
+      }`
+    );
 
     if (responseJson.data === undefined) {
       if (responseJson.errors === undefined) {
