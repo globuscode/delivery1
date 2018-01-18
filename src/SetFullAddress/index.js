@@ -89,6 +89,21 @@ class Forms extends React.Component {
   };
 
   next = () => {
+    if (this.state.firstName == null || this.state.firstName == "")
+      this.setState({ firstNameError : "Это поле обязательно"});
+    if (this.state.secondName == null || this.state.secondName == "")
+      this.setState({ secondNameError : "Это поле обязательно"});
+    if (this.state.phone == null || this.state.phone == "")
+      this.setState({ phoneError : "Это поле обязательно"});
+    if (this.state.address.street == null || this.state.address.street == "")
+      this.setState({ streetError : "Это поле обязательно"});
+    if (this.state.address.house == null || this.state.address.house == "")
+      this.setState({ houseError : "Это поле обязательно"});
+    if (this.state.address.flat == null || this.state.address.flat == "")
+      this.setState({ flatError : "Это поле обязательно"});
+    if (this.state.address.entrance == null || this.state.address.entrance == "")
+      this.setState({ entranceError : "Это поле обязательно"});
+
     if (this.isNext()) {
       const date = this.state.date.getDate();
       const month = this.state.date.getMonth() + 1;
@@ -161,6 +176,7 @@ class Forms extends React.Component {
             baseColor="rgb(87, 88, 98)"
             textColor="#fff"
             returnKeyType="send"
+            error={this.state.firstNameError}
             style={{
               alignItems: "center",
               alignSelf: "stretch",
@@ -171,11 +187,14 @@ class Forms extends React.Component {
               alignItems: "center",
               justifyContent: "center"
             }}
-            onChangeText={text => this.setState({ firstName: text })}
+            onChangeText={text => {
+              this.setState({ firstName: text, firstNameError: null });
+            }}
             value={this.state.firstName}
             label="Имя"
           />
           <TextField
+            error={this.state.secondNameError}
             tintColor="#dcc49c"
             baseColor="rgb(87, 88, 98)"
             textColor="#fff"
@@ -190,12 +209,13 @@ class Forms extends React.Component {
               alignItems: "center",
               justifyContent: "center"
             }}
-            onChangeText={text => this.setState({ secondName: text })}
+            onChangeText={text => this.setState({ secondName: text, secondNameError: null })}
             value={this.state.secondName}
             label="Фамилия"
           />
           <TextInputMask
             type={"custom"}
+            error={this.state.phoneError}
             customTextInputProps={{
               tintColor: "#dcc49c",
               baseColor: "rgb( 87, 88, 98)",
@@ -216,7 +236,7 @@ class Forms extends React.Component {
             options={{
               mask: "+7 999 999 99-99"
             }}
-            onChangeText={text => this.setState({ phone: text })}
+            onChangeText={text => this.setState({ phone: text, phoneError: null })}
             value={this.state.phone}
             customTextInput={TextField}
           />
@@ -242,6 +262,7 @@ class Forms extends React.Component {
           }}
         >
           <TextField
+            error={this.state.streetError}
             tintColor="#dcc49c"
             baseColor="rgb(87, 88, 98)"
             textColor="#fff"
@@ -261,7 +282,7 @@ class Forms extends React.Component {
                 ...this.state.address,
                 street: text
               };
-              this.setState({ address: address });
+              this.setState({ address: address, streetError: null });
             }}
             value={this.state.address.street}
             label="Улица"
@@ -273,6 +294,7 @@ class Forms extends React.Component {
               style={{ width: adaptWidth(128, 150, 165) }}
             >
               <TextField
+                error={this.state.houseError}
                 tintColor="#dcc49c"
                 baseColor="rgb(87, 88, 98)"
                 textColor="#fff"
@@ -291,7 +313,7 @@ class Forms extends React.Component {
                     ...this.state.address,
                     house: text
                   };
-                  this.setState({ address: address });
+                  this.setState({ address: address, houseError: null });
                 }}
                 value={this.state.address.house}
                 label="Дом"
@@ -301,6 +323,7 @@ class Forms extends React.Component {
               style={{ width: adaptWidth(128, 150, 165) }}
             >
               <TextField
+                error={this.state.flatError}
                 tintColor="#dcc49c"
                 baseColor="rgb(87, 88, 98)"
                 textColor="#fff"
@@ -321,7 +344,7 @@ class Forms extends React.Component {
                     ...this.state.address,
                     flat: text
                   };
-                  this.setState({ address: address });
+                  this.setState({ address: address, flatError: null });
                 }}
                 value={this.state.address.flat}
                 label="Квартира"
@@ -336,6 +359,7 @@ class Forms extends React.Component {
               style={{ width: adaptWidth(128, 150, 165) }}
             >
               <TextField
+                error={this.state.entranceError}
                 tintColor="#dcc49c"
                 baseColor="rgb(87, 88, 98)"
                 textColor="#fff"
@@ -355,7 +379,7 @@ class Forms extends React.Component {
                     ...this.state.address,
                     entrance: text
                   };
-                  this.setState({ address: address });
+                  this.setState({ address: address, entranceError: null });
                 }}
                 value={this.state.address.entrance}
                 label="Подъезд"
@@ -365,6 +389,7 @@ class Forms extends React.Component {
               style={{ width: adaptWidth(128, 150, 165) }}
             >
               <TextField
+                error={this.state.floor}
                 tintColor="#dcc49c"
                 baseColor="rgb(87, 88, 98)"
                 textColor="#fff"

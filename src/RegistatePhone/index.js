@@ -153,6 +153,7 @@ class Registration extends React.Component {
         >
           <TextInputMask
             ref={c => this.phone = c}
+            error={this.state.phoneError}
             type={"custom"}
             customTextInputProps={{
               tintColor: "#dcc49c",
@@ -176,7 +177,7 @@ class Registration extends React.Component {
               mask: "+7 999 999 99-99"
             }}
             customTextInput={TextField}
-            onChangeText={phone => this.setState({ phone: phone })}
+            onChangeText={phone => this.setState({ phone: phone, phoneError: null })}
             onBlur={() => this.setState({ hidePrevious: true })}
           />
           <View
@@ -188,23 +189,29 @@ class Registration extends React.Component {
         })}
         <TextField
           ref={c => this.codeInput = c}
+          error={this.state.codeError}
           tintColor={this.isNext() ? "#dcc49c" : "rgb(87, 88, 98)"}
           baseColor={this.isNext() ? "#dcc49c" : "rgb(87, 88, 98)"}
           textColor={"white"}
           returnKeyType={"send"}
           keyboardType={"phone-pad"}
           value={this.state.code}
-          onChangeText={code => this.setState({ code: code })}
+          onChangeText={code => this.setState({ code: code, codeError: null })}
           style={{
             alignItems: "center",
             textAlign: "center"
+          }}
+          containerStyle={{
+            width: (Platform.OS === "ios" ? 0 : 20) + adaptWidth(136, 160, 177),
+            alignSelf: "center",
+            alignContent: "center",
+            justifyContent: "center",
           }}
           inputContainerStyle={{
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
             alignSelf: "center",
-            width: (Platform.OS === "ios" ? 0 : 20) + adaptWidth(136, 160, 177)
           }}
           label={"Код подтверждения"}
         />
@@ -274,6 +281,10 @@ class Registration extends React.Component {
   };
 
   next = async () => {
+    if (this.state.code == null || this.state.code == "")
+      this.setState({ codeError: "Это поле обязательно "});
+    if (this.state.phone == null || this.state.phone == "")
+      this.setState({ phoneError: "Это поле обязательно "});
     if (this.isNext()) {
       const validationResponse = await fetch(
         `${host}/sms/?action=check_code&phone=${this.state.phone.replace(

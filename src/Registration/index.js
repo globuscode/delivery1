@@ -58,6 +58,8 @@ export default class Login extends React.Component {
             }}
           >
             <TextField
+              ref={c => { this.firstName = c; }}
+              error={this.state.firstNameError}
               tintColor="#dcc49c"
               baseColor="rgb( 87, 88, 98)"
               textColor="white"
@@ -74,8 +76,12 @@ export default class Login extends React.Component {
               }}
               label="Имя"
               value={this.state.firstName}
-              onChangeText={firstName =>
-                this.setState({ firstName: firstName })
+              onChangeText={firstName => {
+                this.setState({
+                  firstName: firstName,
+                  firstNameError: null
+                });
+              }
               }
             />
             <View
@@ -85,6 +91,8 @@ export default class Login extends React.Component {
             />
 
             <TextField
+              ref={c => { this.lastName = c; }}
+              error={this.state.secondNameError}
               tintColor="#dcc49c"
               baseColor="rgb( 87, 88, 98)"
               textColor="white"
@@ -101,7 +109,10 @@ export default class Login extends React.Component {
               }}
               label="Фамилия"
               value={this.state.secondName}
-              onChangeText={name => this.setState({ secondName: name })}
+              onChangeText={name => this.setState({ 
+                secondName: name,
+                secondNameError: null
+              })}
             />
             <View
               style={{
@@ -110,6 +121,7 @@ export default class Login extends React.Component {
             />
 
             <TextField
+              ref={c => { this.email = c; }}
               tintColor="#dcc49c"
               baseColor="rgb( 87, 88, 98)"
               textColor="white"
@@ -133,7 +145,10 @@ export default class Login extends React.Component {
                   this.setState({ emailInputError: "Неверный формат" });
                 else this.setState({ emailInputError: null });
               }}
-              onChangeText={address => this.setState({ email: address })}
+              onChangeText={address => this.setState({
+                email: address,
+                emailInputError: null
+              })}
             />
             <View
               style={{
@@ -142,7 +157,7 @@ export default class Login extends React.Component {
             />
 
             <TextField
-              ref="password"
+              ref={c => { this.password = c; }}
               secureTextEntry
               tintColor="#dcc49c"
               baseColor="rgb( 87, 88, 98)"
@@ -215,6 +230,14 @@ export default class Login extends React.Component {
   };
 
   next = () => {
+    if (this.state.firstName == null || this.state.firstName == "")
+      this.setState({ firstNameError : "Это поле обязательно"});
+    if (this.state.secondName == null || this.state.secondName == "")
+      this.setState({ secondNameError : "Это поле обязательно"});
+    if (this.state.password == null || this.state.password == "")
+      this.setState({ passwordInputError : "Это поле обязательно"});
+    if (this.state.email == null || this.state.email == "")
+      this.setState({ emailInputError : "Это поле обязательно"});
     if (this.state.canNav && this.isNext()) {
       this.props.navigation.navigate("RegistratePhone", {
         userName: this.state.email,
