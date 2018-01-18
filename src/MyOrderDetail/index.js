@@ -116,13 +116,11 @@ class MyOrderDetail extends React.Component {
     }
     catch(e) {
       Alert.alert('Ошибка', 'Сервер отвечает неправильно');
-      console.log(`${host}/cart/get/?orderId=${cartId}`);
       newProps.navigation.goBack(); return -1;
     }
 
     let plates = [];
     for (let i=0; i < responseJson["data"]["items"].length; i++) {
-      console.log(`${host}/plate?plate=${responseJson["data"]["items"][i].plateId}`);
       try {
         response = await fetch(`${host}/plate?plate=${responseJson["data"]["items"][i].plateId}`);
       }
@@ -143,7 +141,6 @@ class MyOrderDetail extends React.Component {
     }
     
     this.state.cart = plates;
-    console.log(plates);
 
     this.setState({});
   };
