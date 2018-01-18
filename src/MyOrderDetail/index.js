@@ -321,11 +321,12 @@ class MyOrderDetail extends React.Component {
           <Image
             style={{
               height: screen === 0 ? 85 : screen === 1 ? 100 : 117,
-              width: screen === 0 ? 85 : screen === 1 ? 100 : 117,
+              width: viewportWidth - 60,
               marginTop: screen === 0 ? 47 : screen === 1 ? 64 : 79,
               marginBottom: 30,
               alignSelf: 'center'
             }}
+            resizeMode="contain"
             source={{ uri: "http:"+this.state.restaurantLogo }}
           />
           <View
