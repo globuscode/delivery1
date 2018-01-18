@@ -7,6 +7,7 @@ import modalController from "./modalController";
 import address from "./address";
 import favourite from "./favourite";
 import lastViewed from "./lastViewed";
+import restaurants from "./restaurants";
 
 function lastAction(state = null, action) {
   return action;
@@ -22,7 +23,8 @@ const store = createStore(
     lastAction,
     address,
     favourite,
-    lastViewed
+    lastViewed,
+    restaurants
   })
 );
 
