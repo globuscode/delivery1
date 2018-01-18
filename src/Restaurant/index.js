@@ -156,10 +156,12 @@ class Restaurant extends React.Component {
       }
     });
 
-    this.setState({
-      favourite: fav,
-      data: restaurantResponseJson.data.result
-    });
+    this.state.favourite = fav;
+    this.state.data = restaurantResponseJson.data.result;
+    // this.setState({
+    //   favourite: fav,
+    //   data: restaurantResponseJson.data.result
+    // });
   };
 
   componentWillReceiveProps = async () => {

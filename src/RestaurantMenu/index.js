@@ -203,8 +203,7 @@ class RestaurantMenu extends React.PureComponent {
     );
     if (menuResponseJson["data"]) {
       if (menuResponseJson["data"]["result"]) {
-        this.state.menu = menuResponseJson["data"]["result"];
-        this.setState({});
+        this.setState({menu: menuResponseJson["data"]["result"]});
       }
     }
   };

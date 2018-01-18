@@ -731,8 +731,9 @@ class Favourite extends React.Component {
       let responsePlateRestJson = await fetchJson(
         `${host}/restaurant?restaurantId=${responseJson.data[0].restaurant}`
       );
-      if (responsePlateRestJson.data.result != undefined)
-        this.state.restaurans.push(responsePlateRestJson.data.result);
+      if (responsePlateRestJson.data != undefined)
+        if (responsePlateRestJson.data.result != undefined)
+          this.state.restaurans.push(responsePlateRestJson.data.result);
     }
 
     this.state.favouriteIds.restaurants = [];

@@ -31,7 +31,9 @@ export const fetchJson = async (url, params) => {
         }
       };
     } else {
-      Reducer.dispatch({type: "SAVE_REST", payload: responseJson.data.result});
+      if (responseJson.data != undefined)
+        if (responseJson.data.result != undefined)
+          Reducer.dispatch({type: "SAVE_REST", payload: responseJson.data.result});
     }
       
   }
