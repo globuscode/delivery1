@@ -194,13 +194,6 @@ class Restaurant extends React.Component {
   };
 
   componentDidMount = async () => {
-    const restaurantId = this.props.navigation.state
-      ? this.props.navigation.state.params.id
-      : (-1).toString();
-
-    let responseJson = await fetchJson(`${host}/restaurant?restaurantId=${restaurantId}`);
-    if (responseJson["data"] && responseJson["data"]["result"])
-      this.state.data = responseJson["data"]["result"];
     this.props.navigation.setParams({
       favourite: this.state.favourite,
       title: this.state.data.title,
