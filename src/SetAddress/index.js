@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   Dimensions,
+  ActivityIndicator,
   AsyncStorage,
   Alert
 } from "react-native";
@@ -25,6 +26,7 @@ class SelectAddress extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      active: false,
       canNav: true,
       showAutocomplete: true,
       hidePrevious: false,
@@ -179,12 +181,14 @@ class SelectAddress extends React.Component {
       this.setState({ deliver: false });
       return -1;
     }
+    this.setState({ active: true });
     const responseJson = await fetchJson(
       `${host}/address?cityId=36&street=${this.state.address}&house=${
         this.state.house
       }&restaurantId=${this.props.navigation.state.params.id}`,
       {}
     );
+    this.setState({ active: false });
     if (responseJson["errors"] != undefined) {
       // Alert.alert(responseJson["errors"]["title"] + ' ' + responseJson["errors"]["code"], responseJson["errors"]["detail"]);
       this.setState({ deliver: false });
@@ -393,6 +397,11 @@ class SelectAddress extends React.Component {
           {this.state.address != "" && this.state.house != ""
             ? this.checkForAviability(this.state.address)
             : null}
+          {!this.state.active ? null : <ActivityIndicator size="large" style={{
+            position: "absolute",
+            alignSelf: "center",
+            top: 300
+          }}/>}
           <View
             style={{
               position: "absolute",
