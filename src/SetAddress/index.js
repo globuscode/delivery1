@@ -95,7 +95,7 @@ class SelectAddress extends React.Component {
         Alert.alert("Ошибка", "Ошибка запроса");
         throw Error("Упс...");
       }
-    } else this.setState({ recomededAddresses: responseJson.data });
+    } else this.setState({ recomededAddresses: responseJson.data.slice(0, 4) });
   };
 
   renderAutocomplete = () => {
@@ -252,7 +252,7 @@ class SelectAddress extends React.Component {
     return (
       <View style={styles.container}>
         <KeyboardAwareScrollView
-          extraHeight={100}
+          extraHeight={200}
           extraScrollHeight={100}
           enableAutoAutomaticScroll
           enableOnAndroid
@@ -317,12 +317,14 @@ class SelectAddress extends React.Component {
               return (
                 <TouchableOpacity
                   key={i}
-                  onPress={() =>
+                  onPress={() => {
                     this.setState({
                       address: e.street,
                       house: e.house,
                       deliver: true
-                    })
+                    });
+                    this.validateAddress();
+                  }
                   }
                 >
                   <Text
