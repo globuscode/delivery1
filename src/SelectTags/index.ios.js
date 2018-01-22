@@ -205,7 +205,7 @@ export default class SelectTags extends React.Component {
               <Text style={[
                 styles.text, {
                   color: 'rgb( 225, 199, 155)',
-                  fontFamily: 'open-sans',
+                  fontFamily: "OpenSans",
                   alignSelf: 'flex-end',
                   fontSize: 14,
                   letterSpacing: 0.4,

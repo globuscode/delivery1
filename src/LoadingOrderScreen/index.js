@@ -8,7 +8,7 @@ import {
   AsyncStorage,
   Image
 } from "react-native";
-import { LinearGradient } from "expo";
+import LinearGradient from 'react-native-linear-gradient';
 import IconD from "../IconD";
 
 import { connect } from "react-redux";
@@ -123,7 +123,7 @@ class Loading extends React.Component {
                 /></View>
                 <View>
                     <Text style={{
-                        fontFamily: 'open-sans-semibold',
+                        fontFamily: "OpenSans", fontWeight: "600",
                         fontSize: 10,
                         textAlign: 'center',
                         color: 'rgb(225, 199, 155)',
@@ -143,7 +143,7 @@ class Loading extends React.Component {
                     left: freeDelivery ? orderPrice/this.state.freeDelivery*(popupWidth-24 - 40)-20 : viewportWidth - 50
                 }}>
                     <Text style={{
-                        fontFamily: 'open-sans-semibold',
+                        fontFamily: "OpenSans", fontWeight: "600",
                         fontSize: 10,
                         textAlign: 'center',
                         color: 'rgb(225, 199, 155)',

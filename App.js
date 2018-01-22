@@ -1,5 +1,4 @@
 import React from "react";
-import { Font } from "expo";
 import { StatusBar, View, AsyncStorage } from "react-native";
 import { Provider, connect } from "react-redux";
 
@@ -67,13 +66,6 @@ export default class App extends React.Component {
     this.state = { canRender: false };
   }
   async componentDidMount() {
-    await Font.loadAsync({
-      "open-sans-semibold": require("./assets/fonts/OpenSans-Semibold.ttf"),
-      "open-sans": require("./assets/fonts/OpenSans.ttf"),
-      "stem-medium": require("./assets/fonts/Stem-Medium.ttf"),
-      "stem-regular": require("./assets/fonts/Stem-Regular.ttf")
-    });
-
     const fav = await AsyncStorage.getItem("fav");
     const nan = await AsyncStorage.getItem("nan");
     if (fav != nan)

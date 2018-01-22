@@ -13,7 +13,7 @@ import {
 import Icon from "react-native-vector-icons/Ionicons";
 import IconD from "../IconD";
 import Carousel, { Pagination } from "react-native-snap-carousel";
-import { LinearGradient } from "expo";
+import LinearGradient from 'react-native-linear-gradient';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
@@ -167,7 +167,7 @@ export default class Recomendations extends React.Component {
             style={{
               backgroundColor: "transparent",
               fontSize: 13,
-              fontFamily: "open-sans-semibold",
+              fontFamily: "OpenSans", fontWeight: "600",
               color: "#dcc49c",
               flexDirection: "row"
             }}
@@ -341,7 +341,7 @@ export default class Recomendations extends React.Component {
           style={{
             backgroundColor: "transparent",
             fontSize: 13,
-            fontFamily: "open-sans-semibold",
+            fontFamily: "OpenSans", fontWeight: "600",
             color: "#dcc49c",
             flexDirection: "row"
           }}

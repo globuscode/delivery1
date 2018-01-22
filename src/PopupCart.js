@@ -167,7 +167,7 @@ class Popup extends React.Component {
           {this.state.plate.title}
         </Text>
         {/*<Text style={{
-                fontFamily: 'open-sans',
+                fontFamily: "OpenSans",
                 fontSize: 10,
                 alignSelf: 'stretch',
                 textAlign: 'left',
@@ -198,7 +198,7 @@ class Popup extends React.Component {
           >
             <Text
               style={{
-                fontFamily: "open-sans",
+                fontFamily: "OpenSans",
                 fontSize: 10,
                 color: "rgb(135, 136, 140)",
                 marginBottom: 5
@@ -230,7 +230,7 @@ class Popup extends React.Component {
           >
             <Text
               style={{
-                fontFamily: "open-sans",
+                fontFamily: "OpenSans",
                 fontSize: 10,
                 color: "rgb(135, 136, 140)",
                 marginBottom: 5
@@ -295,7 +295,7 @@ class Popup extends React.Component {
           <View>
             <Text
               style={{
-                fontFamily: "open-sans-semibold",
+                fontFamily: "OpenSans", fontWeight: "600",
                 fontSize: 10,
                 textAlign: "center",
                 color: "rgb(225, 199, 155)",
@@ -328,7 +328,7 @@ class Popup extends React.Component {
             >
               <Text
                 style={{
-                  fontFamily: "open-sans-semibold",
+                  fontFamily: "OpenSans", fontWeight: "600",
                   fontSize: 10,
                   textAlign: "center",
                   color: "rgb(225, 199, 155)",
@@ -363,7 +363,7 @@ Popup.propTypes = {
 
 const styles = StyleSheet.create({
   p: {
-    fontFamily: "open-sans",
+    fontFamily: "OpenSans",
     fontSize: 10,
     textAlign: "left",
     color: "rgb(135, 136, 140)"

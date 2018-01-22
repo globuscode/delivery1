@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TextInput, Image, Dimensions } from "react-native";
 import { adaptWidth } from "../etc";
 import Touchable from "react-native-platform-touchable";
-import { LinearGradient } from "expo";
+import LinearGradient from 'react-native-linear-gradient';
 import { TextField } from "react-native-material-textfield";
 import { TextInputMask } from "react-native-masked-text";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -85,7 +85,7 @@ class SetCard extends React.Component {
             </View>
             <Text
               style={{
-                fontFamily: "open-sans",
+                fontFamily: "OpenSans",
                 color: "rgb(119, 122, 136)"
               }}
             >
@@ -140,7 +140,7 @@ class SetCard extends React.Component {
                 alignSelf: "stretch",
                 textAlign: "center",
                 fontSize: 24,
-                fontFamily: "open-sans"
+                fontFamily: "OpenSans"
               }}
             />
             <View
@@ -178,7 +178,7 @@ class SetCard extends React.Component {
                       alignSelf: "stretch",
                       textAlign: "center",
                       fontSize: 14,
-                      fontFamily: "open-sans"
+                      fontFamily: "OpenSans"
                     }}
                   />
                 </View>
@@ -199,7 +199,7 @@ class SetCard extends React.Component {
                       alignSelf: "baseline",
                       width: 200,
                       fontSize: 14,
-                      fontFamily: "open-sans"
+                      fontFamily: "OpenSans"
                     }}
                   />
                 </View>

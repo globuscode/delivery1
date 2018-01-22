@@ -36,5 +36,7 @@
       },
       "package": "com.globeltd.delivery1"
     }
-  }
+  },
+  "name": "dostavka1",
+  "displayName": "Dostavka1"
 }

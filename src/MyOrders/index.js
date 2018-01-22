@@ -56,14 +56,14 @@ class MyOrders extends React.Component {
             <View style={{ alignSelf: "flex-start" }}>
               <Text
                 style={{
-                  fontFamily: "open-sans",
+                  fontFamily: "OpenSans",
                   fontSize: 14,
                   color: "#fff"
                 }}
               >{`Заказ на ${element.deliveryTime ? element.deliveryTime : element.orderTime}\nСумма заказа ${element.total} ₽`}</Text>
               <Text
                 style={{
-                  fontFamily: "open-sans-semibold",
+                  fontFamily: "OpenSans", fontWeight: "600",
                   fontSize: 13,
                   color: "rgb(225, 199, 155)",
                   marginTop: 11

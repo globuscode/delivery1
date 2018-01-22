@@ -67,7 +67,7 @@ class Login extends React.Component {
 
         <Text
           style={{
-            fontFamily: "open-sans",
+            fontFamily: "OpenSans",
             fontSize: 14,
             alignSelf: "center",
             letterSpacing: 1,

@@ -108,7 +108,7 @@ class Profile extends React.Component {
           >
             <Text
               style={{
-                fontFamily: "open-sans",
+                fontFamily: "OpenSans",
                 fontSize: 13,
                 color: "rgb( 119, 122, 136)"
               }}
@@ -119,7 +119,7 @@ class Profile extends React.Component {
               {this.renderStatus(2)}
               <Text
                 style={{
-                  fontFamily: "open-sans-semibold",
+                  fontFamily: "OpenSans", fontWeight: "600",
                   fontSize: 12,
                   color: "#ffffff",
                   top: Platform.OS === "ios" ? 1 : 0
@@ -175,7 +175,7 @@ class Profile extends React.Component {
           >
             <Text
               style={{
-                fontFamily: "open-sans",
+                fontFamily: "OpenSans",
                 color: "#ffffff",
                 fontSize: 12
               }}
@@ -198,7 +198,7 @@ class Profile extends React.Component {
                 {this.state.city}
               </Text>
               {/*<TouchableOpacity onPress={()=>this.props.navigation.navigate('SelectCity')}><Text style={{
-                  fontFamily: 'open-sans-semibold',
+                  fontFamily: "OpenSans", fontWeight: "600",
                   fontSize: 12,
                   opacity: 0.5,
                   color: 'rgb( 225, 199, 155)'
@@ -214,7 +214,7 @@ class Profile extends React.Component {
           >
             <Text
               style={{
-                fontFamily: "open-sans",
+                fontFamily: "OpenSans",
                 color: "#ffffff",
                 fontSize: 12
               }}
@@ -259,7 +259,7 @@ class Profile extends React.Component {
         <Text
           style={{
             marginLeft: 10,
-            fontFamily: "open-sans",
+            fontFamily: "OpenSans",
             fontSize: 14,
             letterSpacing: 0.4,
             color: "#ffffff"
@@ -300,13 +300,13 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 12,
     marginTop: 4,
-    fontFamily: "open-sans-semibold"
+    fontFamily: "OpenSans", fontWeight: "600",
   },
   afterHeader2: {
     color: "#dcc49c",
     fontWeight: "bold",
     fontSize: 25,
-    fontFamily: "open-sans-semibold"
+    fontFamily: "OpenSans", fontWeight: "600",
   },
   nextButtonText: {
     fontSize: 16,
@@ -318,7 +318,7 @@ const styles = StyleSheet.create({
     fontFamily: "stem-regular"
   },
   checkingInfo: {
-    fontFamily: "open-sans",
+    fontFamily: "OpenSans",
     fontSize: 12,
     lineHeight: 14,
     textAlign: "center",

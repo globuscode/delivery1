@@ -98,7 +98,7 @@ class SelectTags extends React.Component {
         >
           <Text
             style={{
-              fontFamily: "open-sans-semibold",
+              fontFamily: "OpenSans", fontWeight: "600",
               fontSize: 11,
               color:
                 this.state.selected.indexOf(i) != -1
@@ -164,7 +164,7 @@ class SelectTags extends React.Component {
                   styles.text,
                   {
                     color: "rgb( 135, 136, 140)",
-                    fontFamily: "open-sans",
+                    fontFamily: "OpenSans",
                     alignSelf: "flex-end",
                     fontSize: 14,
                     letterSpacing: 0.4,

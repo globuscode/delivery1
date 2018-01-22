@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import Carousel, { Pagination } from "react-native-snap-carousel";
-import { LinearGradient } from "expo";
+import LinearGradient from 'react-native-linear-gradient';
 import { connect } from "react-redux";
 import Touchable from "react-native-platform-touchable";
 import propTypes from "prop-types";

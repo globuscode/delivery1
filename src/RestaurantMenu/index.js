@@ -13,7 +13,7 @@ import {
   Alert
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import { LinearGradient } from "expo";
+import LinearGradient from 'react-native-linear-gradient';
 import Accordion from "react-native-collapsible/Accordion";
 import { connect } from "react-redux";
 import Touchable from "react-native-platform-touchable";
@@ -409,8 +409,8 @@ class RestaurantMenu extends React.PureComponent {
                   />
                   {e.image.indexOf(".png") > 0 ? null : <LinearGradient
                     colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.8)"]}
-                    start={[0, 1]}
-                    end={[1, 0]}
+                    start={{x: 0, y: 1}}
+                    end={{x: 1, y: 0}}
                     style={{
                       width: imageHeight,
                       height: imageHeight,
@@ -554,7 +554,7 @@ class RestaurantMenu extends React.PureComponent {
                         lineHeight: 14,
                         maxWidth: 80,
                         letterSpacing: 0.4,
-                        fontFamily: "open-sans-semibold"
+                        fontFamily: "OpenSans", fontWeight: "600",
                       }}
                     >
                       {e.weight}
@@ -729,7 +729,7 @@ class RestaurantMenu extends React.PureComponent {
 
           {/* Ранг пользователя
 			<View style={[styles.row, { justifyContent: 'center' }]}>
-				<Text style={{ color: '#dcc49c', fontFamily: 'open-sans-semibold', fontSize: 11 }}>{'Новичок'}</Text>
+				<Text style={{ color: '#dcc49c', fontFamily: "OpenSans", fontWeight: "600", fontSize: 11 }}>{'Новичок'}</Text>
 			</View>
 			<View style={[styles.row, { justifyContent: 'center' }]}>
 				{[1, 2, 3].map(e =>
@@ -751,7 +751,7 @@ class RestaurantMenu extends React.PureComponent {
 					}}>
 					<Text style={{
 						color: 'white',
-						fontFamily: 'open-sans-semibold',
+						fontFamily: "OpenSans", fontWeight: "600",
 						fontSize: 11
 					}}>{'Акция пицца в подарок'}</Text></View>
 				</TouchableOpacity>
@@ -813,7 +813,7 @@ class RestaurantMenu extends React.PureComponent {
                     color: "#dcc49c",
                     marginBottom: 20,
                     letterSpacing: 0.4,
-                    fontFamily: "open-sans-semibold",
+                    fontFamily: "OpenSans", fontWeight: "600",
                     fontSize: 13
                   }}
                 >
@@ -860,7 +860,7 @@ class RestaurantMenu extends React.PureComponent {
                 letterSpacing: 0.9,
                 lineHeight: 15,
                 top: 2,
-                fontFamily: "open-sans-semibold",
+                fontFamily: "OpenSans", fontWeight: "600",
                 fontSize: 13
               }}
             >

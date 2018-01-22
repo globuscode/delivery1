@@ -14,7 +14,8 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import HTMLView from "react-native-htmlview";
-import { LinearGradient, Constants } from "expo";
+import LinearGradient from "react-native-linear-gradient";
+import { getStatusBarHeight } from "react-native-status-bar-height";
 import propTypes from "prop-types";
 import PriceButton from "../PriceButton";
 import { connect } from "react-redux";
@@ -378,7 +379,7 @@ class Plate extends React.Component {
               justifyContent: "space-between",
               flexDirection: "row",
               alignSelf: "stretch",
-              marginTop: Constants.statusBarHeight,
+              marginTop: getStatusBarHeight(),
               width: viewportWidth,
               paddingHorizontal: 21,
               paddingVertical: 10
@@ -412,7 +413,7 @@ class Plate extends React.Component {
                   style={{
                     backgroundColor: "transparent",
                     textAlign: "center",
-                    fontFamily: "open-sans",
+                    fontFamily: "OpenSans",
                     fontSize: 10,
                     color: "#fff",
                     letterSpacing: 0.8
@@ -481,7 +482,8 @@ class Plate extends React.Component {
             <Text
               style={{
                 color: "#dcc49c",
-                fontFamily: "open-sans-semibold",
+                fontFamily: "OpenSans",
+                fontWeight: "600",
                 fontSize: 13,
                 letterSpacing: 0.5,
                 marginBottom: 14.4
@@ -598,7 +600,8 @@ class Plate extends React.Component {
                 >
                   <Text
                     style={{
-                      fontFamily: "open-sans-semibold",
+                      fontFamily: "OpenSans",
+                      fontWeight: "600",
                       fontSize: 11,
                       color: checked ? "#292b37" : "#dcc49c"
                     }}
@@ -616,7 +619,7 @@ class Plate extends React.Component {
               paddingHorizontal: adaptWidth(20, 24, 26), 
               color: "rgb( 135, 136, 140)",
               fontSize: 13,
-              fontFamily: "open-sans",
+              fontFamily: "OpenSans",
               lineHeight: 17,
               letterSpacing: 0.6,
               top: 4
@@ -670,7 +673,7 @@ class Plate extends React.Component {
                 style={{
                   color: "rgb(225, 199, 155)",
                   fontSize: 11,
-                  fontFamily: "open-sans",
+                  fontFamily: "OpenSans",
                   lineHeight: 13,
                   top: 2,
                   marginLeft: 15,
@@ -692,7 +695,7 @@ class Plate extends React.Component {
                 style={{
                   color: "rgb(225, 199, 155)",
                   fontSize: 11,
-                  fontFamily: "open-sans",
+                  fontFamily: "OpenSans",
                   lineHeight: 13,
                   top: 2,
                   marginLeft: 18,
@@ -714,7 +717,7 @@ class Plate extends React.Component {
                 style={{
                   color: "rgb(225, 199, 155)",
                   fontSize: 11,
-                  fontFamily: "open-sans",
+                  fontFamily: "OpenSans",
                   lineHeight: 13,
                   top: 2,
                   marginLeft: 15,

@@ -13,10 +13,10 @@ import {
 import { connect } from "react-redux";
 import HTMLView from "react-native-htmlview";
 import { adaptWidth } from "../etc";
-import { Constants } from "expo";
 import SegmentedControlTab from "react-native-segmented-control-tab";
 import Touchable from "react-native-platform-touchable";
-import { LinearGradient } from "expo";
+import LinearGradient from "react-native-linear-gradient";
+import { getStatusBarHeight } from "react-native-status-bar-height";
 
 import propTypes from "prop-types";
 import PriceButton from "../PriceButton";
@@ -572,8 +572,8 @@ class Favourite extends React.Component {
                   />
                   {e.image.indexOf(".png") > 0 ? null : <LinearGradient
                     colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.8)"]}
-                    start={[0, 1]}
-                    end={[1, 0]}
+                    start={{x:0, y:1}}
+                    end={{x:1, y:0}}
                     style={{
                       width: imageHeight,
                       height: imageHeight,
@@ -695,7 +695,7 @@ class Favourite extends React.Component {
                         lineHeight: 14,
                         maxWidth: 80,
                         letterSpacing: 0.4,
-                        fontFamily: "open-sans-semibold"
+                        fontFamily: "OpenSans", fontWeight: "600",
                       }}
                     >
                       {e.weight}
@@ -752,7 +752,7 @@ class Favourite extends React.Component {
   render = () => {
     return (
       <View style={{ flex: 1 }}>
-        <ScrollView style={{ paddingTop: Constants.statusBarHeight }}>
+        <ScrollView style={{ paddingTop: getStatusBarHeight() }}>
           <Text
             style={{
               fontFamily: "stem-medium",
@@ -863,7 +863,7 @@ const styles = StyleSheet.create({
     borderColor: "rgb(225, 199, 155)"
   },
   tabTextStyle: {
-    fontFamily: "open-sans",
+    fontFamily: "OpenSans",
     fontSize: 13,
     color: "rgb(225, 199, 155)"
   },

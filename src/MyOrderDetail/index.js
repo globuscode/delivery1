@@ -240,7 +240,7 @@ class MyOrderDetail extends React.Component {
                       lineHeight: 14,
                       maxWidth: 80,
                       letterSpacing: 0.4,
-                      fontFamily: 'open-sans-semibold'
+                      fontFamily: "OpenSans", fontWeight: "600",
                     }}
                   >
                     {e.weight}
@@ -276,7 +276,7 @@ class MyOrderDetail extends React.Component {
           >
             <Text
               style={{
-                fontFamily: 'open-sans-semibold',
+                fontFamily: "OpenSans", fontWeight: "600",
                 fontSize: 12,
                 color: 'rgb(225, 199, 155)'
               }}
@@ -285,7 +285,7 @@ class MyOrderDetail extends React.Component {
             </Text>
             <Text
               style={{
-                fontFamily: 'open-sans-semibold',
+                fontFamily: "OpenSans", fontWeight: "600",
                 fontSize: 14,
                 color: '#fff',
                 marginTop: screen === 0 ? 9 : screen === 1 ? 16 : 22
@@ -363,7 +363,7 @@ class MyOrderDetail extends React.Component {
             >
               <Text
                 style={{
-                  fontFamily: 'open-sans',
+                  fontFamily: "OpenSans",
                   fontSize: 12,
                   color: '#fff'
                 }}
@@ -372,7 +372,7 @@ class MyOrderDetail extends React.Component {
               </Text>
               <Text
                 style={{
-                  fontFamily: 'open-sans',
+                  fontFamily: "OpenSans",
                   fontSize: 12,
                   color: '#fff'
                 }}
@@ -448,7 +448,7 @@ class MyOrderDetail extends React.Component {
             style={{
               marginLeft: 23,
               marginVertical: screen === 0 ? 15 : screen === 1 ? 17 : 21,
-              fontFamily: 'open-sans',
+              fontFamily: "OpenSans",
               fontSize: 12,
               color: '#fff'
             }}

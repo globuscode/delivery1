@@ -9,7 +9,7 @@ import {
 	ScrollView,
 	Image
 } from 'react-native';
-import { Font, LinearGradient } from 'expo';
+import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Recomendations from './Recomendations';
 import RestouransOfTheWeek from './RestouransOfTheWeek';

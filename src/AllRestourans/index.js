@@ -9,8 +9,9 @@ import {
   ActivityIndicator,
   FlatList
 } from "react-native";
-import { LinearGradient, Constants } from "expo";
+import LinearGradient from "react-native-linear-gradient";
 import Icon from "react-native-vector-icons/Ionicons";
+import { getStatusBarHeight } from "react-native-status-bar-height";
 import Drawer from "react-native-drawer";
 import propTypes from "prop-types";
 
@@ -219,7 +220,7 @@ export default class AllRestourans extends React.Component {
                 textAlign: "center",
                 marginTop: 5,
                 marginBottom: 2,
-                fontFamily: "open-sans"
+                fontFamily: "OpenSans"
               }}
             >
               {"Тип кухни"}
@@ -300,7 +301,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     elevation: -10,
-    paddingTop: Constants.statusBarHeight,
+    paddingTop: getStatusBarHeight(),
     backgroundColor: "#292b37",
     paddingBottom: 0,
     justifyContent: "space-between",

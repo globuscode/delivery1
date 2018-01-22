@@ -229,7 +229,7 @@ class Registration extends React.Component {
           </View>
           <Text
             style={{
-              fontFamily: "open-sans",
+              fontFamily: "OpenSans",
               marginLeft: 5,
               maxWidth: viewportWidth - 60,
               fontSize: 10,

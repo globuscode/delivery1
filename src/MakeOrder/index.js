@@ -109,7 +109,7 @@ class MakeOrder extends React.Component {
           <Text
             style={{
               marginLeft: 10,
-              fontFamily: "open-sans",
+              fontFamily: "OpenSans",
               fontSize: 14,
               letterSpacing: 0.4,
               color:

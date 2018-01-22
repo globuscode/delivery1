@@ -13,7 +13,7 @@ import {
   Alert
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import { LinearGradient } from "expo";
+import LinearGradient from 'react-native-linear-gradient';
 import Touchable from "react-native-platform-touchable";
 import { host } from "../etc";
 import { connect } from "react-redux";
@@ -357,7 +357,7 @@ class Restaurant extends React.Component {
 
           {/* Ранг пользователя
 			<View style={[styles.row, {justifyContent: 'center'}]}>
-				<Text style={{ color: '#dcc49c', fontFamily: 'open-sans-semibold', fontSize: 11 }}>{'Новичок'}</Text>
+				<Text style={{ color: '#dcc49c', fontFamily: "OpenSans", fontWeight: "600", fontSize: 11 }}>{'Новичок'}</Text>
 			</View>
 			<View style={[styles.row, { justifyContent: 'center' }]}>
 				{[1, 2, 3].map(e => 
@@ -378,7 +378,7 @@ class Restaurant extends React.Component {
 						margin: 5,
 					}}>
 					<Text style={{
-							color: 'white', fontFamily: 'open-sans-semibold', fontSize: 11 
+							color: 'white', fontFamily: "OpenSans", fontWeight: "600", fontSize: 11 
 					}}>{'Хочу скидку в этом ресторане'}</Text></View>
 				</TouchableOpacity>
 			</View>*/}
@@ -447,7 +447,7 @@ class Restaurant extends React.Component {
                 style={{
                   color: "#ffffff",
                   fontSize: 11,
-                  fontFamily: "open-sans",
+                  fontFamily: "OpenSans",
                   lineHeight: 13,
                   top: 2,
                   marginLeft: 15

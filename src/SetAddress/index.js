@@ -106,7 +106,7 @@ class SelectAddress extends React.Component {
           >
             <Text
               style={{
-                fontFamily: "open-sans",
+                fontFamily: "OpenSans",
                 color: "rgb(119, 122, 136)",
                 fontSize: 14,
                 textAlign: "center"
@@ -129,7 +129,7 @@ class SelectAddress extends React.Component {
         <View style={{ padding: 20 }}>
           <Text
             style={{
-              fontFamily: "open-sans",
+              fontFamily: "OpenSans",
               lineHeight: 13,
               fontSize: 12,
               top: 1,
@@ -162,7 +162,7 @@ class SelectAddress extends React.Component {
         <View style={{ padding: 20 }}>
           <Text
             style={{
-              fontFamily: "open-sans",
+              fontFamily: "OpenSans",
               lineHeight: 13,
               fontSize: 12,
               top: 1,
@@ -279,7 +279,7 @@ class SelectAddress extends React.Component {
           </Text>
           <Text
             style={{
-              fontFamily: "open-sans",
+              fontFamily: "OpenSans",
               fontSize: 12,
               lineHeight: 15,
               textAlign: "center",
@@ -320,7 +320,7 @@ class SelectAddress extends React.Component {
                       styles.text,
                       {
                         color: "#dcc49c",
-                        fontFamily: "open-sans",
+                        fontFamily: "OpenSans",
                         fontSize: 14,
                         marginTop:
                             viewportWidth >= 320 && viewportWidth < 375

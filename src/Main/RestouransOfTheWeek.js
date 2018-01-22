@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Dimensions
 } from "react-native";
-import { LinearGradient } from "expo";
+import LinearGradient from 'react-native-linear-gradient';
 import Touchable from "react-native-platform-touchable";
 import { connect } from "react-redux";
 import propTypes from "prop-types";
@@ -278,7 +278,7 @@ class Recomendations extends React.Component {
                     color: "#dcc49c",
                     fontSize: 11,
                     lineHeight: 11,
-                    fontFamily: "open-sans"
+                    fontFamily: "OpenSans"
                   }}
                 >
                   {item.restourantTags.length < 3

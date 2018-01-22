@@ -6,9 +6,9 @@ import {
   Dimensions,
   Alert,
   AsyncStorage,
-  Image
+  ImageBackground,
 } from "react-native";
-import { LinearGradient } from "expo";
+import LinearGradient from 'react-native-linear-gradient';
 import IconD from "../IconD";
 import { NavigationActions } from 'react-navigation';
 import { connect } from "react-redux";
@@ -101,7 +101,8 @@ class Loading extends React.Component {
   render() {
     kitchenPhoto = require("../../assets/img/kitchen.jpg");
     return (
-      <Image
+      <ImageBackground
+        resizeMode="cover"
         style={styles.backgroundImage}
         source={kitchenPhoto}
       >
@@ -136,7 +137,7 @@ class Loading extends React.Component {
             <IconD name="dostavka" color="#dcc49c" size={90} />
           </View>
         </View>
-      </Image>
+      </ImageBackground>
     );
   }
 }
@@ -178,7 +179,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: null,
     height: null,
-    resizeMode: "cover"
   },
   text: {
     color: "white",

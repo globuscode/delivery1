@@ -10,7 +10,7 @@ import {
   Text,
 } from "react-native";
 import { TextField } from "react-native-material-textfield";
-import { LinearGradient } from "expo";
+import LinearGradient from 'react-native-linear-gradient';
 import Touchable from "react-native-platform-touchable";
 import { connect } from "react-redux";
 import propTypes from "prop-types";
@@ -252,8 +252,8 @@ class Cart extends React.Component {
           />
           {e.plate.image.indexOf(".png") > 0 ? null : <LinearGradient
             colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.8)"]}
-            start={[0, 1]}
-            end={[1, 0]}
+            start={{x: 0, y:1}}
+            end={{x: 1, y:0}}
             style={{
               width: imageHeight,
               height: imageHeight,
@@ -436,7 +436,7 @@ class Cart extends React.Component {
             {change > 0 ? null : (
               <Text
                 style={{
-                  fontFamily: "open-sans",
+                  fontFamily: "OpenSans",
                   fontSize: 12,
                   letterSpacing: 0.8,
                   textAlign: "center",
@@ -809,7 +809,7 @@ class Cart extends React.Component {
 
         <Text
           style={{
-            fontFamily: "open-sans",
+            fontFamily: "OpenSans",
             color: "rgb( 119, 122, 136)",
             fontSize: 12,
             lineHeight: 13,
@@ -888,7 +888,7 @@ class Cart extends React.Component {
           >
             <Text
               style={{
-                fontFamily: "open-sans",
+                fontFamily: "OpenSans",
                 color: "#fff",
                 fontSize: 12,
                 lineHeight: 14,
@@ -932,7 +932,7 @@ class Cart extends React.Component {
             <Text
               style={{
                 maxWidth: 140,
-                fontFamily: "open-sans",
+                fontFamily: "OpenSans",
                 color: "#fff",
                 fontSize: 12,
                 letterSpacing: 0.8
@@ -959,7 +959,7 @@ class Cart extends React.Component {
           <View style={{ height: screen == 0 ? 22 : screen == 1 ? 26 : 39 }} />
           <Text
             style={{
-              fontFamily: "open-sans",
+              fontFamily: "OpenSans",
               fontSize: 12,
               marginHorizontal: 20,
               letterSpacing: 0.8,

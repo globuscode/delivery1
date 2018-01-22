@@ -48,7 +48,7 @@ class PersonalInfo extends React.Component {
           <Text
             style={{
               marginLeft: 10,
-              fontFamily: "open-sans",
+              fontFamily: "OpenSans",
               fontSize: 14,
               letterSpacing: 0.4,
               color: "#ffffff"
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent"
   },
   email: {
-    fontFamily: "open-sans",
+    fontFamily: "OpenSans",
     fontSize: 13,
     lineHeight: 18,
     letterSpacing: 0.7,
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
   },
   smallHeader: {
     color: "#fff",
-    fontFamily: "open-sans",
+    fontFamily: "OpenSans",
     fontSize: 13,
     lineHeight: 18,
     letterSpacing: 0.7

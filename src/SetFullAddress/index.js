@@ -495,7 +495,7 @@ class Forms extends React.Component {
               </View>
               <Text
                 style={{
-                  fontFamily: "open-sans",
+                  fontFamily: "OpenSans",
                   color: "rgb(225, 199, 155)",
                   marginLeft: 10,
                   fontSize: 14
@@ -536,7 +536,7 @@ class Forms extends React.Component {
               </View>
               <Text
                 style={{
-                  fontFamily: "open-sans",
+                  fontFamily: "OpenSans",
                   color: "rgb(225, 199, 155)",
                   marginLeft: 10,
                   fontSize: 14
@@ -594,7 +594,7 @@ class Forms extends React.Component {
             >
               <Text
                 style={{
-                  fontFamily: "open-sans",
+                  fontFamily: "OpenSans",
                   color:
                     this.state.selected == 1
                       ? "rgb(225, 199, 155)"
@@ -607,7 +607,7 @@ class Forms extends React.Component {
               </Text>
               <Text
                 style={{
-                  fontFamily: "open-sans",
+                  fontFamily: "OpenSans",
                   color:
                     this.state.selected == 1
                       ? "rgb(255, 255, 255)"

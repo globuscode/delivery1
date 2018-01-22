@@ -183,13 +183,13 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 12,
     marginTop: 4,
-    fontFamily: 'open-sans-semibold'
+    fontFamily: "OpenSans", fontWeight: "600",
   },
   afterHeader2: {
     color: '#dcc49c',
     fontWeight: 'bold',
     fontSize: 25,
-    fontFamily: 'open-sans-semibold'
+    fontFamily: "OpenSans", fontWeight: "600",
   },
   nextButtonText: {
     fontSize: 16,
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
     fontFamily: 'stem-regular'
   },
   checkingInfo: {
-    fontFamily: 'open-sans',
+    fontFamily: "OpenSans",
     fontSize: 12,
     lineHeight: 14,
     textAlign: 'center',

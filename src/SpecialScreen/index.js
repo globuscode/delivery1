@@ -6,9 +6,10 @@ import {
   View,
   Dimensions,
   Image,
+  ImageBackground,
   AsyncStorage
 } from "react-native";
-import { LinearGradient } from "expo";
+import LinearGradient from 'react-native-linear-gradient';
 import propTypes from "prop-types";
 
 import IconD from "../IconD";
@@ -44,7 +45,10 @@ class Screen extends React.Component {
 
   render() {
     return (
-      <Image style={styles.backgroundImage} source={kitchenPhoto}>
+      <ImageBackground style={styles.backgroundImage}
+        source={kitchenPhoto}
+        resizeMode="cover"
+        >
         <View style={styles.container}>
           <LinearGradient
             colors={["rgba(0, 0, 0, 0.9)", "transparent"]}
@@ -90,7 +94,7 @@ class Screen extends React.Component {
             }
           </Text>
         </View>
-      </Image>
+      </ImageBackground>
     );
   }
 }
@@ -100,7 +104,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: null,
     height: null,
-    resizeMode: "cover"
   },
   text: {
     color: "white",
