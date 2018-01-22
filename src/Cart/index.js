@@ -7,10 +7,10 @@ import {
   ScrollView,
   Image,
   Platform,
-  Text,
+  Text
 } from "react-native";
 import { TextField } from "react-native-material-textfield";
-import LinearGradient from 'react-native-linear-gradient';
+import LinearGradient from "react-native-linear-gradient";
 import Touchable from "react-native-platform-touchable";
 import { connect } from "react-redux";
 import propTypes from "prop-types";
@@ -21,6 +21,7 @@ import IconD from "../IconD";
 import ButtonD from "../ButtonD";
 import { host } from "../etc";
 import { fetchJson } from "../utils";
+import { renderButton } from "./mokup";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -102,9 +103,10 @@ class Cart extends React.Component {
     if (this.props.cart.length >= 1) {
       if (this.props.cart[0].plate.restaurant != this.state.restaurant.id) {
         const restJson = await fetchJson(
-          `${host}/restaurant?restaurantId=` + this.props.cart[0].plate.restaurant
+          `${host}/restaurant?restaurantId=` +
+            this.props.cart[0].plate.restaurant
         );
-        this.setState({ 
+        this.setState({
           restaurant: restJson["data"]["result"]
         });
       }
@@ -119,9 +121,10 @@ class Cart extends React.Component {
     if (this.props.cart.length >= 1) {
       if (this.props.cart[0].plate.restaurant != this.state.restaurant.id) {
         const restJson = await fetchJson(
-          `${host}/restaurant?restaurantId=` + this.props.cart[0].plate.restaurant
+          `${host}/restaurant?restaurantId=` +
+            this.props.cart[0].plate.restaurant
         );
-        this.setState({ 
+        this.setState({
           restaurant: restJson["data"]["result"]
         });
       }
@@ -133,73 +136,7 @@ class Cart extends React.Component {
 
   clear = async () => {};
 
-  renderButton = (title, callback) => {
-    return (
-      <View style={{ alignSelf: "stretch" }}>
-        <View
-          style={[
-            styles.row,
-            {
-              justifyContent: "center",
-              position: "absolute",
-              width: viewportWidth - 30,
-              borderWidth: 1,
-              height: adaptWidth(44, 52, 57),
-              marginTop: 31,
-              marginBottom: 10,
-              marginHorizontal: 15,
-              alignItems: "center",
-              alignContent: "center",
-              borderRadius: 4,
-              borderColor: "white"
-            }
-          ]}
-        >
-          <Text
-            style={{
-              color: "#ffffff",
-              fontSize: 14,
-              top: 2,
-              fontFamily: "stem-medium"
-            }}
-          >
-            {title}
-          </Text>
-        </View>
-
-        <TouchableOpacity
-          activeOpacity={0}
-          onPress={callback}
-          style={[
-            styles.row,
-            {
-              justifyContent: "center",
-              borderWidth: 1,
-              height: adaptWidth(44, 52, 57),
-              marginTop: 31,
-              marginBottom: 10,
-              marginHorizontal: 15,
-              alignItems: "center",
-              alignContent: "center",
-              borderRadius: 4,
-              borderColor: "#dcc49c"
-            }
-          ]}
-        >
-          <Text
-            style={{
-              color: "#ffffff",
-              fontSize: 14,
-              top: 2,
-              fontFamily: "stem-medium"
-            }}
-          >
-            {"Открыть меню ресторана"}
-          </Text>
-        </TouchableOpacity>
-      </View>
-    );
-  };
+  renderButton = renderButton;
 
   update = async () => {
     this.setState({});
@@ -250,17 +187,19 @@ class Cart extends React.Component {
               borderRadius: 10
             }}
           />
-          {e.plate.image.indexOf(".png") > 0 ? null : <LinearGradient
-            colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.8)"]}
-            start={{x: 0, y:1}}
-            end={{x: 1, y:0}}
-            style={{
-              width: imageHeight,
-              height: imageHeight,
-              borderRadius: 10,
-              position: "absolute"
-            }}
-          />}
+          {e.plate.image.indexOf(".png") > 0 ? null : (
+            <LinearGradient
+              colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.8)"]}
+              start={{ x: 0, y: 1 }}
+              end={{ x: 1, y: 0 }}
+              style={{
+                width: imageHeight,
+                height: imageHeight,
+                borderRadius: 10,
+                position: "absolute"
+              }}
+            />
+          )}
           <Touchable
             style={{ position: "absolute", right: 5, top: 5 }}
             hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
@@ -1000,7 +939,7 @@ Cart.propTypes = {
   removeFromFav: propTypes.func,
   addToFav: propTypes.func,
   addPlate: propTypes.func,
-  removePlate: propTypes.func,
+  removePlate: propTypes.func
 };
 
 export default connect(
