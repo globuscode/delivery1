@@ -6,21 +6,19 @@ import {
   Dimensions,
   Alert,
   AsyncStorage,
-  ImageBackground,
+  ImageBackground
 } from "react-native";
-import LinearGradient from 'react-native-linear-gradient';
+import LinearGradient from "react-native-linear-gradient";
 import IconD from "../IconD";
-import { NavigationActions } from 'react-navigation';
+import { NavigationActions } from "react-navigation";
 import { connect } from "react-redux";
-import { host } from '../etc';
-import { fetchJson } from '../utils';
+import { host } from "../etc";
+import { fetchJson } from "../etc";
 var kitchenPhoto = require("../../assets/img/kitchen.jpg");
 
 const resetAction = NavigationActions.reset({
   index: 0,
-  actions: [
-    NavigationActions.navigate({ routeName: 'Tabs'})
-  ]
+  actions: [NavigationActions.navigate({ routeName: "Tabs" })]
 });
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
@@ -31,8 +29,8 @@ class Loading extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: 'Опрашиваем кулинарных экспертов со всей страны'
-    }
+      text: "Опрашиваем кулинарных экспертов со всей страны"
+    };
   }
 
   componentWillMount() {
@@ -40,62 +38,60 @@ class Loading extends React.Component {
   }
 
   async componentDidMount() {
-    const nan = await AsyncStorage.getItem('nan');
+    const nan = await AsyncStorage.getItem("nan");
 
-    const cityId = await AsyncStorage.getItem('city');
+    const cityId = await AsyncStorage.getItem("city");
     let cityIdJson;
     if (cityId != nan) {
       cityIdJson = JSON.parse(cityId);
-    }
-    else {
-      this.props.navigation.navigate('SelectCity');
+    } else {
+      this.props.navigation.navigate("SelectCity");
       return 0;
     }
-    
-    
-    const tags = await AsyncStorage.getItem('tags');
+
+    const tags = await AsyncStorage.getItem("tags");
     let tagsJson;
     if (tags != nan) {
       tagsJson = JSON.parse(tags);
-    }
-    else {
-      this.props.navigation.navigate('SelectTags');
+    } else {
+      this.props.navigation.navigate("SelectTags");
       return 0;
     }
-    
-    let tagsIds = '';
-    tagsJson.forEach((element) => {
-      tagsIds += element.id.toString() + ',';	
+
+    let tagsIds = "";
+    tagsJson.forEach(element => {
+      tagsIds += element.id.toString() + ",";
     });
 
-    const tastes = await AsyncStorage.getItem('tastes');
+    const tastes = await AsyncStorage.getItem("tastes");
     let tastesJson;
-    let tastesIds = '';
+    let tastesIds = "";
 
     if (tastes != nan) {
       tastesJson = JSON.parse(tastes);
-      tastesJson.forEach((element) => {
-        tastesIds += element.id.toString() + ',';	
+      tastesJson.forEach(element => {
+        tastesIds += element.id.toString() + ",";
       });
-    }
-    else {
-      this.props.navigation.navigate('SelectTastes');
+    } else {
+      this.props.navigation.navigate("SelectTastes");
       return 0;
     }
-    
+
     this.setState({ text: "Собираем идеи для семейного ужина" });
-    
-    let responseJson = await fetchJson(`${host}/recommendations/?cityid=${cityIdJson.id}&tagId=${tastesIds}&tagGroup=${tagsIds}`);
+
+    let responseJson = await fetchJson(
+      `${host}/recommendations/?cityid=${
+        cityIdJson.id
+      }&tagId=${tastesIds}&tagGroup=${tagsIds}`
+    );
     if (responseJson.data != undefined) {
       this.setState({ text: "Изучаем манускрипты в поисках крутых рецептов" });
       this.props.auth();
       this.props.loadRecomendations(responseJson.data);
       this.props.navigation.dispatch(resetAction);
-    }
-    else{
+    } else {
       this.setState({ text: "Ошибка" });
     }
-    
   }
 
   render() {
@@ -142,14 +138,14 @@ class Loading extends React.Component {
   }
 }
 
-
 export default connect(
   state => ({
     userData: state.user,
-	  recomendations: state.recomendations
+    recomendations: state.recomendations
   }),
   dispatch => ({
-    loadRecomendations: (data) => dispatch({type: 'SET_RECOMENDATIONS', payload: data}),
+    loadRecomendations: data =>
+      dispatch({ type: "SET_RECOMENDATIONS", payload: data }),
     auth: () => {
       AsyncStorage.getItem("lastToken", async (error, token) => {
         token = JSON.parse(token);
@@ -178,7 +174,7 @@ const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
     width: null,
-    height: null,
+    height: null
   },
   text: {
     color: "white",

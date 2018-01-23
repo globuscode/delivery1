@@ -16,8 +16,7 @@ import Drawer from "react-native-drawer";
 import propTypes from "prop-types";
 
 import Picker from "../Picker";
-import { host } from "../etc";
-import { fetchJson } from "../utils";
+import { host, fetchJson } from "../etc";
 import RestouransOfTheWeek from "../Main/RestouransOfTheWeek";
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(

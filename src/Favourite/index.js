@@ -22,10 +22,8 @@ import propTypes from "prop-types";
 import PriceButton from "../PriceButton";
 import IconD from "../IconD";
 import { host } from "../etc";
-import { fetchJson } from "../utils";
-const { width: viewportWidth } = Dimensions.get(
-  "window"
-);
+import { fetchJson } from "../etc";
+const { width: viewportWidth } = Dimensions.get("window");
 
 /**
  * Возвращает колличество блюд plate в корзине
@@ -570,17 +568,19 @@ class Favourite extends React.Component {
                       borderRadius: 10
                     }}
                   />
-                  {e.image.indexOf(".png") > 0 ? null : <LinearGradient
-                    colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.8)"]}
-                    start={{x:0, y:1}}
-                    end={{x:1, y:0}}
-                    style={{
-                      width: imageHeight,
-                      height: imageHeight,
-                      borderRadius: 10,
-                      position: "absolute"
-                    }}
-                  />}
+                  {e.image.indexOf(".png") > 0 ? null : (
+                    <LinearGradient
+                      colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.8)"]}
+                      start={{ x: 0, y: 1 }}
+                      end={{ x: 1, y: 0 }}
+                      style={{
+                        width: imageHeight,
+                        height: imageHeight,
+                        borderRadius: 10,
+                        position: "absolute"
+                      }}
+                    />
+                  )}
                   <Touchable
                     style={{ position: "absolute", right: 5, top: 5 }}
                     hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
@@ -695,7 +695,8 @@ class Favourite extends React.Component {
                         lineHeight: 14,
                         maxWidth: 80,
                         letterSpacing: 0.4,
-                        fontFamily: "OpenSans", fontWeight: "600",
+                        fontFamily: "OpenSans",
+                        fontWeight: "600"
                       }}
                     >
                       {e.weight}
@@ -723,7 +724,7 @@ class Favourite extends React.Component {
     this.state.favouriteIds.plates = [];
     this.state.favourite.plates = [];
     this.state.restaurans = [];
-    for (let i=0; i<newProps.favourite.plates.length; i++) {
+    for (let i = 0; i < newProps.favourite.plates.length; i++) {
       let plate = newProps.favourite.plates[i];
 
       let responseJson = await fetchJson(`${host}/plate?plate=${plate}`);
@@ -738,7 +739,7 @@ class Favourite extends React.Component {
 
     this.state.favouriteIds.restaurants = [];
     this.state.favourite.restaurants = [];
-    for (let i=0; i<newProps.favourite.restaurants.length; i++) {
+    for (let i = 0; i < newProps.favourite.restaurants.length; i++) {
       let restaurant = newProps.favourite.restaurants[i];
       let responseRestJson = await fetchJson(
         `${host}/restaurant?restaurantId=${restaurant}`

@@ -24,7 +24,7 @@ import * as Animatable from "react-native-animatable";
 import Recomendations from "../Main/Recomendations";
 import IconD from "../IconD";
 import { adaptWidth } from "../etc";
-import { fetchJson } from "../utils";
+import { fetchJson } from "../etc";
 import { host } from "../etc";
 import PriceButton from "../PriceButton";
 

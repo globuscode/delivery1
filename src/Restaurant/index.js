@@ -13,7 +13,7 @@ import {
   Alert
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import LinearGradient from 'react-native-linear-gradient';
+import LinearGradient from "react-native-linear-gradient";
 import Touchable from "react-native-platform-touchable";
 import { host } from "../etc";
 import { connect } from "react-redux";
@@ -21,7 +21,7 @@ import PropTypes from "prop-types";
 
 import Recomendations from "../Main/Recomendations";
 import IconD from "../IconD";
-import { fetchJson } from "../utils";
+import { fetchJson } from "../etc";
 
 const { width: viewportWidth } = Dimensions.get("window");
 

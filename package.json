@@ -15,6 +15,7 @@
     "start": "react-native start",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
+    "eject": "react-native eject",
     "test": "node node_modules/jest/bin/jest.js --watch"
   },
   "rnpm": {
