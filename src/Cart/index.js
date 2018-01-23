@@ -6,7 +6,6 @@ import {
   StyleSheet,
   ScrollView,
   Image,
-  Platform,
   Text
 } from "react-native";
 import { TextField } from "react-native-material-textfield";
@@ -20,8 +19,10 @@ import { adaptWidth } from "../etc";
 import IconD from "../IconD";
 import ButtonD from "../ButtonD";
 import { host } from "../etc";
-import { fetchJson } from "../utils";
-import { renderButton } from "./mokup";
+import { fetchJson } from "../etc";
+import renderButton from "./mockup";
+import SummaryItem from "./SummaryItem";
+import EmptyCart from "./EmptyCart";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -39,49 +40,15 @@ class Cart extends React.Component {
       promocode: "",
       withSales: 0,
       persons: 1,
-      cart: [],
       canNav: true,
-      cartSet: [],
       restaurant: {
         id: 0,
         title: "Джон Джоли",
-        image:
-          "http://lamcdn.net/the-village.ru/post_image-image/stUDrX37wGq1g-9mFWRl4A-article.jpg",
         logoImage: "https://image.ibb.co/fPo4vm/meatless_logo.png",
-        favorite: false,
-        tagGroups: [
-          {
-            title: "Россия",
-            size: 15,
-            icon: "http://gg.svg"
-          },
-          {
-            id: 12,
-            title: "Италия",
-            size: 15,
-            icon: "http://gg.svg"
-          }
-        ],
-        minOrder: 8888,
-        description: {
-          title:
-            "Настоящее грузинское гостеприимство в ресторанах «Джон Джоли»",
-          description:
-            "Хлебосольная, щедрая, сказочная, гостеприимная Грузия! Удивительная страна, которая известна своими застольями, подарила Москве частичку своей души."
-        }
+        minOrder: 8888
       }
     };
   }
-  isInFav = ({ id }) => {
-    if (typeof id === undefined) {
-      return false;
-    }
-    for (let i = 0; i < this.props.favourite.plates.length; i++) {
-      if (id === this.props.favourite.plates[i]) {
-        return true;
-      }
-    }
-  };
   componentWillReceiveProps = async newProps => {
     if (newProps.cart.length >= 1) {
       if (newProps.cart[0].plate.restaurant != this.state.restaurant.id) {
@@ -94,8 +61,7 @@ class Cart extends React.Component {
 
     this.state.totalPrice = this.totalPrice();
     this.setState({ change: this.state.totalPrice });
-    const priceWithSales = await this.getSalesPrice(newProps);
-    this.state.withSales = priceWithSales;
+    await this.getSalesPrice(newProps);
     this.setState({ change: this.change() });
   };
 
@@ -134,14 +100,24 @@ class Cart extends React.Component {
     }
   };
 
-  clear = async () => {};
-
   renderButton = renderButton;
 
-  update = async () => {
-    this.setState({});
+  isInFav = ({ id }) => {
+    if (typeof id === undefined) {
+      return false;
+    }
+    for (let i = 0; i < this.props.favourite.plates.length; i++) {
+      if (id === this.props.favourite.plates[i]) {
+        return true;
+      }
+    }
   };
 
+  /**
+   * возвращает общую сумму заказа
+   * @returns {Number}
+   * @memberof Cart
+   */
   totalPrice = () => {
     let result = 0;
     for (var i = 0; i < this.props.cart.length; i++) {
@@ -153,6 +129,122 @@ class Cart extends React.Component {
     return result;
   };
 
+  /**
+   * true, если доставка будет бесплатной
+   * false, иначе
+   *
+   * @memberof Cart
+   */
+  isFreeDelivery = () => {
+    if (this.state.freeDelivery != undefined)
+      return this.state.totalPrice >= this.state.restaurant.freeDelivery;
+    else return false;
+  };
+
+  /**
+   * Обрабатывает переход с экрана корзины на экран меню
+   *
+   * @memberof Cart
+   */
+  nav = () => {
+    if (this.state.canNav) {
+      this.props.navigation.navigate("Loader", {
+        action: "navigate",
+        screen: "RestaurantMenu",
+        props: {
+          id: this.state.restaurant.id
+        }
+      });
+      this.setState({ canNav: false });
+      setTimeout(() => {
+        this.setState({ canNav: true });
+      }, 1500);
+    }
+  };
+
+  /**
+   * Возвращает сумму для оплаты с учетом скидок
+   *
+   * @memberof Cart
+   */
+  getSalesPrice = async ({ cart }) => {
+    if (cart.length == 0) return 0;
+    const cart_request = cart.map(element => {
+      return {
+        plateId: element.plate.id,
+        qty: element.count
+      };
+    });
+    this.setState({ sales: this.state.totalPrice });
+    let restJson;
+    restJson = await fetchJson(`${host}/cart/create/`, {
+      method: "post",
+      body: JSON.stringify({ items: cart_request })
+    });
+    let result = 0;
+    for (let i = 0; i < restJson["data"]["items"].length; i++) {
+      result += parseInt(restJson["data"]["items"][i].price);
+    }
+
+    this.setState({ sales: result });
+    return result;
+  };
+
+  /**
+   * Возвращает сумму, которую нужно добрать для оформления заказа
+   *
+   * @returns {Number}
+   * @memberof Cart
+   */
+  change = () => {
+    const total = this.state.totalPrice;
+    return total - this.state.restaurant.minOrder;
+  };
+
+  /**
+   * Обрабатывает переход с экрана корзины на экран оформления заказа
+   *
+   * @memberof Cart
+   */
+  next = () => {
+    if (this.state.totalPrice >= this.state.restaurant.minBill) {
+      if (this.state.canNav) {
+        this.setState({ canNav: false });
+        setTimeout(() => {
+          this.setState({ canNav: true });
+        }, 1500);
+        if (this.props.user.token)
+          this.props.navigation.navigate("SetFullAddress", {
+            price: this.state.totalPrice,
+            persons: this.state.persons
+          });
+        else
+          this.props.navigation.navigate("Login", {
+            nextScreen: "SetFullAddress"
+          });
+      }
+    }
+  };
+
+  /**
+   * Возвращает общее количество объектов в корзине
+   *
+   * @memberof Cart
+   */
+  getItemsCount = () => {
+    let result = 0;
+    this.props.cart.map(e => {
+      result += e.count;
+    });
+    return result;
+  };
+  /**
+   * Возвращает компонент,
+   * содержащий одну позицию корзины
+   *
+   * @returns {JSX.Element}
+   * @memberof Cart
+   */
   _renderContent = (e, index) => {
     const imageHeight = adaptWidth(100, 117, 130);
     return (
@@ -290,60 +382,66 @@ class Cart extends React.Component {
     );
   };
 
-  isFreeDelivery = () => {
-    if (this.state.freeDelivery != undefined)
-      return this.state.totalPrice >= this.state.restaurant.freeDelivery;
-    else return false;
-  };
+  /**
+   * Возвращеает компонент,
+   * содержащий форму для ввода промокода
+   *
+   * @returns {JSX.Element}
+   * @memberof Cart
+   */
+  renderPromoCode() {
+    const screen = adaptWidth(0, 1, 2);
+    return (
+      <View>
+        <Text
+          style={{
+            fontFamily: "stem-medium",
+            color: "#fff",
+            letterSpacing: 1.1,
+            textAlign: "center",
+            marginTop: screen == 0 ? 28 : screen == 1 ? 34 : 38,
+            marginBottom: screen == 0 ? 10 : screen == 1 ? 13 : 15
+          }}
+        >
+          {"Есть сертификат?"}
+        </Text>
 
-  nav = () => {
-    if (this.state.canNav) {
-      this.props.navigation.navigate("Loader", {
-        action: "navigate",
-        screen: "RestaurantMenu",
-        props: {
-          id: this.state.restaurant.id
-        }
-      });
-      this.setState({ canNav: false });
-      setTimeout(() => {
-        this.setState({ canNav: true });
-      }, 1500);
-    }
-  };
-
-  getSalesPrice = async ({ cart }) => {
-    if (cart.length == 0) return 0;
-    const cart_request = cart.map(element => {
-      return {
-        plateId: element.plate.id,
-        qty: element.count
-      };
-    });
-    this.setState({ sales: this.state.totalPrice });
-    let restJson;
-    restJson = await fetchJson(`${host}/cart/create/`, {
-      method: "post",
-      body: JSON.stringify({ items: cart_request })
-    });
-    let result = 0;
-    for (let i = 0; i < restJson["data"]["items"].length; i++) {
-      result += parseInt(restJson["data"]["items"][i].price);
-    }
-
-    this.setState({ sales: result });
-    return result;
-  };
-
-  change = () => {
-    const total = this.state.totalPrice;
-    return total - this.state.restaurant.minOrder;
-  };
+        <Text
+          style={{
+            fontFamily: "OpenSans",
+            color: "rgb( 119, 122, 136)",
+            fontSize: 12,
+            lineHeight: 13,
+            letterSpacing: 0.8,
+            textAlign: "center",
+            maxWidth: 250,
+            marginBottom: (screen == 0 ? 33 : screen == 1 ? 45 : 65) - 20
+          }}
+        >
+          {"Если у вас есть сертификат, введите номер чтобы получить скидку"}
+        </Text>
+        <TextField
+          tintColor="#dcc49c"
+          baseColor="rgb(87, 88, 98)"
+          textColor="#fff"
+          returnKeyType="send"
+          style={{
+            alignItems: "center",
+            textAlign: "center"
+          }}
+          inputContainerStyle={{
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center"
+          }}
+          label="Введите номер сертификата"
+        />
+        <View style={{ height: screen == 0 ? 32 : screen == 1 ? 40 : 46 }} />
+      </View>
+    );
+  }
 
   render() {
-    /*Storage.subscribe(() => {
-      this.setState({});
-    });*/
     const screen = adaptWidth(0, 1, 2);
     const change = this.change();
     if (this.props.cart.length != 0)
@@ -434,9 +532,7 @@ class Cart extends React.Component {
                 </View>
               );
             })}
-            <View
-              style={{ height: screen == 0 ? 30 : screen == 1 ? 34 : 39.1 }}
-            />
+            <View style={{ height: adaptWidth(30, 34, 39.1) }} />
             <View
               style={{
                 width: viewportWidth - 32,
@@ -446,27 +542,7 @@ class Cart extends React.Component {
               }}
             />
             <View style={{ height: 20 }} />
-            <View
-              style={{
-                height: 40,
-                borderTopWidth: 1.5,
-                borderColor: "rgb(87, 88, 98)",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginHorizontal: 16,
-                alignSelf: "stretch"
-              }}
-            >
-              <Text
-                style={{
-                  fontFamily: "stem-medium",
-                  fontSize: 16,
-                  color: "rgb(225, 199, 155)"
-                }}
-              >
-                {"Количество персон: "}
-              </Text>
+            <SummaryItem label="Количество персон:">
               <Counter
                 value={this.state.persons}
                 onRemovePress={() => {
@@ -477,198 +553,30 @@ class Cart extends React.Component {
                   this.setState({ persons: this.state.persons + 1 });
                 }}
               />
-            </View>
+            </SummaryItem>
+            <SummaryItem
+              label="Сумма заказа"
+              text={this.state.totalPrice.toString() + " ₽"}
+            />
             {/*this.renderPromoCode()*/}
-            <View
-              style={{
-                width: viewportWidth - 32,
-                height: 1,
-                borderWidth: 1,
-                borderColor: "rgb( 87, 88, 98)"
-              }}
-            />
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                height: screen == 0 ? 39 : screen == 1 ? 45 : 50,
-                alignItems: "center",
-                alignContent: "center",
-                alignSelf: "stretch",
-                marginHorizontal: 20
-                //paddingTop: screen == 0 ? 10 : screen == 1 ? 13 : 15,
-                //paddingBottom: screen == 0 ? 15 : screen == 1 ? 18 : 21,
-              }}
-            >
-              <Text
-                style={{
-                  fontFamily: "stem-medium",
-                  fontSize: 16,
-                  lineHeight: 16,
-                  top: 3,
-                  letterSpacing: 1.1,
-                  color: "rgb( 225, 199, 155)"
-                }}
-              >
-                {"Сумма заказа"}
-              </Text>
-              <Text
-                style={{
-                  fontFamily: "stem-medium",
-                  fontSize: 16,
-                  textAlignVertical: "center",
-                  top: 3,
-                  lineHeight: 16,
-                  letterSpacing: 1.1,
-                  color: "rgb( 255, 255, 255)"
-                }}
-              >
-                {this.state.totalPrice.toString() + " ₽"}
-              </Text>
-            </View>
-            <View
-              style={{
-                width: viewportWidth - 32,
-                height: 1,
-                borderWidth: 1,
-                borderColor: "rgb( 87, 88, 98)"
-              }}
-            />
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                height: screen == 0 ? 39 : screen == 1 ? 45 : 50,
-                alignItems: "center",
-                alignContent: "center",
-                alignSelf: "stretch",
-                marginHorizontal: 20
-                //paddingTop: screen == 0 ? 10 : screen == 1 ? 13 : 15,
-                //paddingBottom: screen == 0 ? 15 : screen == 1 ? 18 : 21,
-              }}
-            >
-              <Text
-                style={{
-                  fontFamily: "stem-medium",
-                  fontSize: 16,
-                  lineHeight: 16,
-                  top: 3,
-                  letterSpacing: 1.1,
-                  color: "rgb( 225, 199, 155)"
-                }}
-              >
-                {"Скидка"}
-              </Text>
-              <Text
-                style={{
-                  fontFamily: "stem-medium",
-                  fontSize: 16,
-                  textAlignVertical: "center",
-                  top: 3,
-                  lineHeight: 16,
-                  letterSpacing: 1.1,
-                  color: "rgb( 255, 255, 255)"
-                }}
-              >
-                {(this.state.totalPrice - this.state.sales).toString() + " ₽"}
-              </Text>
-            </View>
-            <View
-              style={{
-                width: viewportWidth - 32,
-                height: 1,
-                borderWidth: 1,
-                borderColor: "rgb( 87, 88, 98)"
-              }}
-            />
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                height: screen == 0 ? 39 : screen == 1 ? 45 : 50,
-                alignItems: "center",
-                alignContent: "center",
-                alignSelf: "stretch",
-                marginHorizontal: 20
-                //paddingTop: screen == 0 ? 10 : screen == 1 ? 13 : 15,
-                //paddingBottom: screen == 0 ? 15 : screen == 1 ? 18 : 21,
-              }}
-            >
-              <Text
-                style={{
-                  fontFamily: "stem-medium",
-                  fontSize: 16,
-                  lineHeight: 16,
-                  top: 3,
-                  letterSpacing: 1.1,
-                  color: "rgb( 225, 199, 155)"
-                }}
-              >
-                {"Доставка"}
-              </Text>
-              <Text
-                style={{
-                  fontFamily: "stem-medium",
-                  fontSize: 16,
-                  textAlignVertical: "center",
-                  top: 3,
-                  lineHeight: 16,
-                  letterSpacing: 1.1,
-                  color: "rgb( 255, 255, 255)"
-                }}
-              >
-                {!this.isFreeDelivery()
+            {/*<SummaryItem
+              label="Скидка"
+              text={
+                (this.state.totalPrice - this.state.sales).toString() + " ₽"
+              }
+            />*/}
+            <SummaryItem
+              label="Доставка"
+              text={
+                !this.isFreeDelivery()
                   ? "бесплатно"
-                  : this.state.restaurant.delivery}
-              </Text>
-            </View>
-            <View
-              style={{
-                width: viewportWidth - 32,
-                height: 1,
-                borderWidth: 1,
-                borderColor: "rgb( 87, 88, 98)"
-              }}
+                  : this.state.restaurant.delivery
+              }
             />
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                height: screen == 0 ? 39 : screen == 1 ? 45 : 50,
-                alignItems: "center",
-                alignContent: "center",
-                alignSelf: "stretch",
-                marginHorizontal: 20
-                //paddingTop: screen == 0 ? 10 : screen == 1 ? 13 : 15,
-                //paddingBottom: screen == 0 ? 15 : screen == 1 ? 18 : 21,
-              }}
-            >
-              <Text
-                style={{
-                  fontFamily: "stem-medium",
-                  fontSize: 16,
-                  lineHeight: 16,
-                  top: 3,
-                  letterSpacing: 1.1,
-                  color: "rgb( 225, 199, 155)"
-                }}
-              >
-                {"Итоговая сумма заказа"}
-              </Text>
-              <Text
-                style={{
-                  fontFamily: "stem-medium",
-                  fontSize: 16,
-                  textAlignVertical: "center",
-                  top: 3,
-                  lineHeight: 16,
-                  letterSpacing: 1.1,
-                  color: "rgb( 255, 255, 255)"
-                }}
-              >
-                {this.state.sales + " ₽"}
-              </Text>
-            </View>
+            <SummaryItem
+              label="Итоговая сумма заказа"
+              text={this.state.sales + " ₽"}
+            />
             <View style={{ height: 60 }} />
             <View
               style={{
@@ -706,229 +614,10 @@ class Cart extends React.Component {
           </ScrollView>
         </View>
       );
-    return this.renderEmpty();
-  }
-
-  next = () => {
-    if (this.state.totalPrice >= this.state.restaurant.minBill) {
-      if (this.state.canNav) {
-        this.setState({ canNav: false });
-        setTimeout(() => {
-          this.setState({ canNav: true });
-        }, 1500);
-        if (this.props.user.token)
-          this.props.navigation.navigate("SetFullAddress", {
-            price: this.state.totalPrice,
-            persons: this.state.persons
-          });
-        else
-          this.props.navigation.navigate("Login", {
-            nextScreen: "SetFullAddress"
-          });
-      }
-    }
-  };
-
-  renderPromoCode() {
-    const screen = adaptWidth(0, 1, 2);
     return (
-      <View>
-        <Text
-          style={{
-            fontFamily: "stem-medium",
-            color: "#fff",
-            letterSpacing: 1.1,
-            textAlign: "center",
-            marginTop: screen == 0 ? 28 : screen == 1 ? 34 : 38,
-            marginBottom: screen == 0 ? 10 : screen == 1 ? 13 : 15
-          }}
-        >
-          {"Есть сертификат?"}
-        </Text>
-
-        <Text
-          style={{
-            fontFamily: "OpenSans",
-            color: "rgb( 119, 122, 136)",
-            fontSize: 12,
-            lineHeight: 13,
-            letterSpacing: 0.8,
-            textAlign: "center",
-            maxWidth: 250,
-            marginBottom: (screen == 0 ? 33 : screen == 1 ? 45 : 65) - 20
-          }}
-        >
-          {"Если у вас есть сертификат, введите номер чтобы получить скидку"}
-        </Text>
-        <TextField
-          tintColor="#dcc49c"
-          baseColor="rgb(87, 88, 98)"
-          textColor="#fff"
-          returnKeyType="send"
-          style={{
-            alignItems: "center",
-            textAlign: "center"
-          }}
-          inputContainerStyle={{
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center"
-          }}
-          label="Введите номер сертификата"
-        />
-        <View style={{ height: screen == 0 ? 32 : screen == 1 ? 40 : 46 }} />
-      </View>
+      <EmptyCart callback={() => this.props.navigation.navigate("Main")} />
     );
   }
-
-  getItemsCount = () => {
-    let result = 0;
-    this.props.cart.map(e => {
-      result += e.count;
-    });
-    return result;
-  };
-
-  renderEmpty = () => {
-    const screen = adaptWidth(0, 1, 2);
-    return (
-      <View style={styles.container}>
-        <ScrollView
-          contentContainerStyle={{
-            justifyContent: "flex-start",
-            alignItems: "center"
-          }}
-        >
-          <Text
-            style={{
-              fontFamily: "stem-medium",
-              fontSize: 14,
-              color: "rgb( 225, 199, 155)",
-              letterSpacing: 0.9,
-              alignSelf: "stretch",
-              marginHorizontal: screen == 0 ? 32 : screen == 1 ? 37.5 : 41.4,
-              marginTop: screen == 0 ? 18 : screen == 1 ? 21.1 : 23.3,
-              marginBottom: screen == 0 ? 19 : screen == 1 ? 24.8 : 28.7
-            }}
-          >
-            {"Начните заказ с любимого блюда"}
-          </Text>
-          <View
-            style={{ height: screen == 0 ? 18 : screen == 1 ? 28.5 : 35.2 }}
-          />
-          <View
-            style={{
-              flexDirection: "row",
-              alignSelf: "stretch",
-              justifyContent: "space-between",
-              marginLeft: 20,
-              marginRight: screen == 0 ? 36.3 : screen == 1 ? 36.5 : 36.7
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: "OpenSans",
-                color: "#fff",
-                fontSize: 12,
-                lineHeight: 14,
-                maxWidth: screen == 0 ? 195 : screen == 1 ? 230.8 : 273,
-                letterSpacing: 0.8,
-                top: Platform.OS == "ios" ? 2 : 0,
-                textAlignVertical: "bottom"
-              }}
-            >
-              {
-                "Нажмите на значек корзины на карточке или рядом с описанием блюда"
-              }
-            </Text>
-            <View>
-              <IconD name="cart" size={40} color="rgb( 225, 199, 155)" />
-            </View>
-          </View>
-          <View
-            style={{ height: screen == 0 ? 18 : screen == 1 ? 28.5 : 35.2 }}
-          />
-          <View
-            style={{
-              width: viewportWidth - 30,
-              height: 1,
-              borderTopWidth: 1,
-              borderColor: "rgb(87, 88, 98)"
-            }}
-          />
-          <View
-            style={{
-              width: viewportWidth - 30,
-              borderBottomWidth: 1,
-              borderColor: "rgb(87, 88, 98)",
-              paddingHorizontal: 5,
-              paddingVertical: screen == 0 ? 22 : screen == 1 ? 26 : 39,
-              justifyContent: "space-between",
-              flexDirection: "row",
-              alignSelf: "center"
-            }}
-          >
-            <Text
-              style={{
-                maxWidth: 140,
-                fontFamily: "OpenSans",
-                color: "#fff",
-                fontSize: 12,
-                letterSpacing: 0.8
-              }}
-            >
-              {"Выберите кол-во блюд для заказа"}
-            </Text>
-            <Counter value={1} />
-          </View>
-          <View style={{ height: screen == 0 ? 22 : screen == 1 ? 26 : 39 }} />
-
-          <View
-            style={{
-              alignSelf: "center"
-            }}
-          >
-            <ButtonD
-              onPress={() => this.props.navigation.navigate("Main")}
-              title={["Добавить к заказу", "и перейти в ресторан"]}
-              width={viewportWidth - 60}
-            />
-          </View>
-
-          <View style={{ height: screen == 0 ? 22 : screen == 1 ? 26 : 39 }} />
-          <Text
-            style={{
-              fontFamily: "OpenSans",
-              fontSize: 12,
-              marginHorizontal: 20,
-              letterSpacing: 0.8,
-              color: "#fff"
-            }}
-          >
-            {
-              "При добавлении первого блюда в корзину, вы перейдете в меню ресторана, где сможете дополнить заказ другими блюдами"
-            }
-          </Text>
-        </ScrollView>
-        <View
-          pointerEvents="none"
-          style={{
-            height: 60,
-            position: "absolute",
-            bottom: 0,
-            width: viewportWidth
-          }}
-        >
-          <LinearGradient
-            colors={["rgba(39, 40, 48, 0)", "rgba(39, 40, 48, 1)"]}
-            style={{
-              flex: 1
-            }}
-          />
-        </View>
-      </View>
-    );
-  };
 }
 
 Cart.propTypes = {

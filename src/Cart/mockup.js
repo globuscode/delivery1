@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   }
 });
 
-export const renderButton = (title, callback) => {
+const renderButton = (title, callback) => {
   return (
     <View style={{ alignSelf: "stretch" }}>
       <View
@@ -104,3 +104,5 @@ export const renderButton = (title, callback) => {
     </View>
   );
 };
+
+export default renderButton;
