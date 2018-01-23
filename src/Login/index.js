@@ -14,11 +14,9 @@ import Touchable from "react-native-platform-touchable";
 import propTypes from "prop-types";
 
 import { host, adaptWidth } from "../etc";
-import { fetchJson } from "../utils";
+import { fetchJson } from "../etc";
 
-const { width: viewportWidth } = Dimensions.get(
-  "window"
-);
+const { width: viewportWidth } = Dimensions.get("window");
 
 const screen = adaptWidth(0, 1, 2);
 
@@ -49,7 +47,7 @@ class Login extends React.Component {
    * @memberof Login
    */
   renderForms = () => {
-    return ;
+    return;
   };
   /**
    * Возвращает компонент
@@ -186,7 +184,7 @@ class Login extends React.Component {
             label="Пароль"
             value={this.state.password}
             onChangeText={password => {
-              this.setState({ 
+              this.setState({
                 passwordInputError: null,
                 password: password
               });
