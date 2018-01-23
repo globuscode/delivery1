@@ -10,16 +10,14 @@ import ButtonD from "./ButtonD";
 import IconD from "./IconD";
 import Store from "./Reducers";
 
-const { width: viewportWidth } = Dimensions.get(
-  "window"
-);
+const { width: viewportWidth } = Dimensions.get("window");
 const screen =
   viewportWidth >= 320 && viewportWidth < 375
     ? 0
     : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
 
 import { host } from "./etc";
-import { fetchJson } from "./utils";
+import { fetchJson } from "./etc";
 
 /**
  * Возвращает колличество блюд plate в корзине
@@ -295,7 +293,8 @@ class Popup extends React.Component {
           <View>
             <Text
               style={{
-                fontFamily: "OpenSans", fontWeight: "600",
+                fontFamily: "OpenSans",
+                fontWeight: "600",
                 fontSize: 10,
                 textAlign: "center",
                 color: "rgb(225, 199, 155)",
@@ -328,7 +327,8 @@ class Popup extends React.Component {
             >
               <Text
                 style={{
-                  fontFamily: "OpenSans", fontWeight: "600",
+                  fontFamily: "OpenSans",
+                  fontWeight: "600",
                   fontSize: 10,
                   textAlign: "center",
                   color: "rgb(225, 199, 155)",
@@ -358,7 +358,7 @@ Popup.propTypes = {
   removePlate: propTypes.func,
   hide: propTypes.func,
   addPlate: propTypes.func,
-  close: propTypes.func,
+  close: propTypes.func
 };
 
 const styles = StyleSheet.create({

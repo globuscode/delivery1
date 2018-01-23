@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import Carousel, { Pagination } from "react-native-snap-carousel";
-import LinearGradient from 'react-native-linear-gradient';
+import LinearGradient from "react-native-linear-gradient";
 import { connect } from "react-redux";
 import Touchable from "react-native-platform-touchable";
 import propTypes from "prop-types";
@@ -19,11 +19,9 @@ import { host } from "../etc";
 import Storage from "../Reducers";
 import PriceButton from "../PriceButton";
 import IconD from "../IconD";
-import { fetchJson } from "../utils";
+import { fetchJson } from "../etc";
 
-const { width: viewportWidth } = Dimensions.get(
-  "window"
-);
+const { width: viewportWidth } = Dimensions.get("window");
 
 class Recomendations extends React.Component {
   constructor(props) {
@@ -58,13 +56,13 @@ class Recomendations extends React.Component {
     addToFav: propTypes.func,
     onNextButtonPress: propTypes.func,
     open: propTypes.func
-  }
+  };
 
-  fav = (index) => {
+  fav = index => {
     let favourites = this.state.favourites;
     favourites[index] = !favourites[index];
     this.setState({ favourites: favourites });
-  }
+  };
 
   componentWillMount = async () => {
     for (let i = 0; i < this.state.entries.length; i++) {
@@ -502,4 +500,3 @@ export default connect(
     }
   })
 )(Recomendations);
-

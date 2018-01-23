@@ -7,18 +7,16 @@ import {
   TouchableOpacity,
   Dimensions
 } from "react-native";
-import LinearGradient from 'react-native-linear-gradient';
+import LinearGradient from "react-native-linear-gradient";
 import Touchable from "react-native-platform-touchable";
 import { connect } from "react-redux";
 import propTypes from "prop-types";
 
 import IconD from "../IconD";
 import { host, adaptWidth } from "../etc";
-import { fetchJson } from "../utils";
+import { fetchJson } from "../etc";
 
-const { width: viewportWidth } = Dimensions.get(
-  "window"
-);
+const { width: viewportWidth } = Dimensions.get("window");
 
 class Recomendations extends React.Component {
   constructor(props) {
@@ -53,7 +51,7 @@ class Recomendations extends React.Component {
     data: propTypes.array,
     addToFav: propTypes.func,
     removeFromFav: propTypes.func
-  }
+  };
 
   componentWillMount = async () => {
     if (!this.props.data) {

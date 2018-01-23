@@ -12,7 +12,7 @@ import propTypes from "prop-types";
 import IconD from "../IconD";
 import { connect } from "react-redux";
 import { host } from "../etc";
-import { fetchJson } from "../utils";
+import { fetchJson } from "../etc";
 
 const resetAction = NavigationActions.reset({
   index: 1,
@@ -39,7 +39,7 @@ function getOrderDate(date) {
   const minutes = date.getMinutes();
   const seconds = date.getSeconds();
 
-  return `${dateOfMonth}.${month+1}.${year} ${hours}:${minutes}:${seconds}`;
+  return `${dateOfMonth}.${month + 1}.${year} ${hours}:${minutes}:${seconds}`;
 }
 
 const screen =
@@ -63,7 +63,7 @@ class MakeOrder extends React.Component {
     userStore: propTypes.object,
     navigation: propTypes.object,
     makeOrder: propTypes.func
-  }
+  };
 
   totalPrice = () => {
     let result = 0;

@@ -23,14 +23,12 @@ import { adaptWidth } from "../etc";
 import IconD from "../IconD";
 import Touchable from "react-native-platform-touchable";
 import { host } from "../etc";
-import { fetchJson } from "../utils";
+import { fetchJson } from "../etc";
 function onlyUnique(value, index, self) {
   return self.indexOf(value) === index;
 }
 
-const { width: viewportWidth } = Dimensions.get(
-  "window"
-);
+const { width: viewportWidth } = Dimensions.get("window");
 
 class Plate extends React.Component {
   constructor(props) {
@@ -616,7 +614,7 @@ class Plate extends React.Component {
           <Text
             style={{
               marginTop: adaptWidth(32, 40, 45),
-              paddingHorizontal: adaptWidth(20, 24, 26), 
+              paddingHorizontal: adaptWidth(20, 24, 26),
               color: "rgb( 135, 136, 140)",
               fontSize: 13,
               fontFamily: "OpenSans",
@@ -680,7 +678,9 @@ class Plate extends React.Component {
                   minWidth: 190
                 }}
               >
-                {`Минимальная сумма \nзаказа ${this.state.restaurant.minBill} ₽`}
+                {`Минимальная сумма \nзаказа ${
+                  this.state.restaurant.minBill
+                } ₽`}
               </Text>
             </View>
             <View
@@ -723,7 +723,9 @@ class Plate extends React.Component {
                   marginLeft: 15,
                   minWidth: 190
                 }}
-              >{"Мы принимаем все типы \nбанковских карт"}</Text>
+              >
+                {"Мы принимаем все типы \nбанковских карт"}
+              </Text>
             </View>
           </View>
 

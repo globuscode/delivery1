@@ -15,12 +15,10 @@ import Touchable from "react-native-platform-touchable";
 import { connect } from "react-redux";
 import propTypes from "prop-types";
 
-import { fetchJson } from "../utils";
+import { fetchJson } from "../etc";
 import { host, adaptWidth } from "../etc";
 
-const { width: viewportWidth } = Dimensions.get(
-  "window"
-);
+const { width: viewportWidth } = Dimensions.get("window");
 
 class SelectAddress extends React.Component {
   constructor(props) {
@@ -68,12 +66,10 @@ class SelectAddress extends React.Component {
   }
 
   getAutocomplete = async address => {
-    let responseJson =  await fetchJson(
-      `${host}/address/autocomplete/?cityId=36&street=${
-        address.street
-      }&house=${address.house}&restaurantId=${
-        this.props.navigation.state.params.id
-      }`
+    let responseJson = await fetchJson(
+      `${host}/address/autocomplete/?cityId=36&street=${address.street}&house=${
+        address.house
+      }&restaurantId=${this.props.navigation.state.params.id}`
     );
 
     if (responseJson.data === undefined) {
@@ -312,8 +308,7 @@ class SelectAddress extends React.Component {
                       deliver: true
                     });
                     this.validateAddress();
-                  }
-                  }
+                  }}
                 >
                   <Text
                     style={[
@@ -397,11 +392,16 @@ class SelectAddress extends React.Component {
           {this.state.address != "" && this.state.house != ""
             ? this.checkForAviability(this.state.address)
             : null}
-          {!this.state.active ? null : <ActivityIndicator size="large" style={{
-            position: "absolute",
-            alignSelf: "center",
-            top: 300
-          }}/>}
+          {!this.state.active ? null : (
+            <ActivityIndicator
+              size="large"
+              style={{
+                position: "absolute",
+                alignSelf: "center",
+                top: 300
+              }}
+            />
+          )}
           <View
             style={{
               position: "absolute",
