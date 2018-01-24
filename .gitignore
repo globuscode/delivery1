@@ -4,3 +4,7 @@ npm-debug.*
 .DS_Store*
 .vscode/
 ios/build/*
+android/app/build/*
+android/build/*
+android/.idea/*
+android/.gradle/*
