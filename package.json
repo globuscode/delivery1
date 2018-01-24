@@ -1,6 +1,6 @@
 {
   "name": "dostavka1",
-  "version": "0.0.15",
+  "version": "0.0.14",
   "private": true,
   "devDependencies": {
     "babel-eslint": "^8.2.1",
@@ -16,13 +16,11 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "eject": "react-native eject",
+    "version": "./version-ios.sh",
     "test": "node node_modules/jest/bin/jest.js --watch"
   },
   "rnpm": {
-    "assets": [
-      "./assets/fonts/",
-      "./assets/icons/fonts"
-    ]
+    "assets": ["./assets/fonts/", "./assets/icons/fonts"]
   },
   "jest": {
     "preset": "jest-expo"
