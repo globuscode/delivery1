@@ -3,5 +3,4 @@ node_modules/**/*
 npm-debug.*
 .DS_Store*
 .vscode/
-ios/*
-android/*
+ios/build/*
