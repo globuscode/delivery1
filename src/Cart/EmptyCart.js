@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     marginBottom: 17,
     textAlign: "center",
     letterSpacing: 0.8,
-    fontFamily: "stem-regular"
+    fontFamily: "Stem-Regular"
   },
   column: {
     flexDirection: "column",
@@ -62,7 +62,7 @@ class EmptyCart extends React.Component {
         >
           <Text
             style={{
-              fontFamily: "stem-medium",
+              fontFamily: "Stem-Medium",
               fontSize: 14,
               color: "rgb( 225, 199, 155)",
               letterSpacing: 0.9,

@@ -25,7 +25,7 @@ class SummaryItem extends React.Component {
       >
         <Text
           style={{
-            fontFamily: "stem-medium",
+            fontFamily: "Stem-Medium",
             fontSize: 16,
             color: "rgb(225, 199, 155)"
           }}
@@ -37,7 +37,7 @@ class SummaryItem extends React.Component {
         ) : (
           <Text
             style={{
-              fontFamily: "stem-medium",
+              fontFamily: "Stem-Medium",
               fontSize: 16,
               textAlignVertical: "center",
               top: 3,

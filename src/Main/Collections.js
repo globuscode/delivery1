@@ -13,7 +13,7 @@ import {
 import Icon from "react-native-vector-icons/Ionicons";
 import IconD from "../IconD";
 import Carousel, { Pagination } from "react-native-snap-carousel";
-import LinearGradient from 'react-native-linear-gradient';
+import LinearGradient from "react-native-linear-gradient";
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
@@ -154,7 +154,7 @@ export default class Recomendations extends React.Component {
             style={{
               backgroundColor: "transparent",
               fontSize: 25,
-              fontFamily: "stem-medium",
+              fontFamily: "Stem-Medium",
               lineHeight: 30,
               top: 5,
               color: "white",
@@ -167,7 +167,8 @@ export default class Recomendations extends React.Component {
             style={{
               backgroundColor: "transparent",
               fontSize: 13,
-              fontFamily: "OpenSans", fontWeight: "600",
+              fontFamily: "OpenSans",
+              fontWeight: "600",
               color: "#dcc49c",
               flexDirection: "row"
             }}
@@ -230,7 +231,7 @@ export default class Recomendations extends React.Component {
         backgroundColor: "transparent",
         fontSize: 20,
         color: "#ffffff",
-        fontFamily: "stem-medium",
+        fontFamily: "Stem-Medium",
         maxWidth: viewportWidth - 100
       },
       restourantTextStyle: {
@@ -239,7 +240,7 @@ export default class Recomendations extends React.Component {
         fontSize: 12,
         color: "#dcc49c",
         letterSpacing: 0.5,
-        fontFamily: "stem-medium"
+        fontFamily: "Stem-Medium"
       },
       topViewStyle: {
         flexDirection: "row",
@@ -329,7 +330,7 @@ export default class Recomendations extends React.Component {
           style={{
             backgroundColor: "transparent",
             fontSize: 25,
-            fontFamily: "stem-medium",
+            fontFamily: "Stem-Medium",
             top: 5,
             color: "white",
             flexDirection: "row"
@@ -341,7 +342,8 @@ export default class Recomendations extends React.Component {
           style={{
             backgroundColor: "transparent",
             fontSize: 13,
-            fontFamily: "OpenSans", fontWeight: "600",
+            fontFamily: "OpenSans",
+            fontWeight: "600",
             color: "#dcc49c",
             flexDirection: "row"
           }}

@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import Carousel, { Pagination } from "react-native-snap-carousel";
-import Touchable from 'react-native-platform-touchable';
+import Touchable from "react-native-platform-touchable";
 
 import IconD from "../IconD";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
@@ -107,7 +107,7 @@ export default class SelectCity extends React.Component {
             color: "#ffffff",
             fontWeight: "bold",
             fontSize: 25,
-            fontFamily: "stem-medium"
+            fontFamily: "Stem-Medium"
           }}
         >
           {item.title}
@@ -213,11 +213,11 @@ export default class SelectCity extends React.Component {
             }}
           >
             <Touchable
-              background={Touchable.Ripple('gray')} 
+              background={Touchable.Ripple("gray")}
               onPress={this.next}
               style={{
                 alignSelf: "stretch",
-                flexDirection: 'column',
+                flexDirection: "column",
                 justifyContent: "center",
                 width: viewportWidth
               }}
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1.1,
     lineHeight: 16,
     top: 4,
-    fontFamily: "stem-medium"
+    fontFamily: "Stem-Medium"
   },
   header2: {
     color: "white",
@@ -256,10 +256,10 @@ const styles = StyleSheet.create({
   nextButtonText: {
     fontSize: 16,
     color: "#dcc49c",
-    alignSelf: 'center',
+    alignSelf: "center",
     textAlign: "center",
     letterSpacing: 0.8,
-    fontFamily: "stem-regular"
+    fontFamily: "Stem-Regular"
   },
   afterHeader2: {
     color: "#dcc49c",

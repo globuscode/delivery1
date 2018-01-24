@@ -241,7 +241,7 @@ class Recomendations extends React.Component {
                   <Text style={{
                     paddingHorizontal: 5,
                     maxWidth: 150,
-                    //fontFamily: 'stem-medium',
+                    //fontFamily: 'Stem-Medium',
                     fontWeight: 'bold',
                     fontSize: 13,
                     backgroundColor: '#dcc49c',
@@ -264,7 +264,7 @@ class Recomendations extends React.Component {
                     color: "white",
                     fontSize: 14,
                     lineHeight: 22,
-                    fontFamily: "stem-medium",
+                    fontFamily: "Stem-Medium",
                     alignItems: "flex-end",
                     letterSpacing: 0.4
                   }}

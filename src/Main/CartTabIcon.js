@@ -32,8 +32,11 @@ class TabIcon extends React.Component {
             textAlign: "center",
             position: "absolute",
             width: 10,
-            top: Platform.OS === "ios" ? parseInt(this.getItemsCount()) < 20 ? 1 : 2 : 0,
-            fontFamily: "stem-medium",
+            top:
+              Platform.OS === "ios"
+                ? parseInt(this.getItemsCount()) < 20 ? 1 : 2
+                : 0,
+            fontFamily: "Stem-Medium",
             backgroundColor: "transparent"
           }}
         >

@@ -327,7 +327,7 @@ class Cart extends React.Component {
               style={{
                 color: "#fff",
                 fontSize: 14,
-                fontFamily: "stem-medium",
+                fontFamily: "Stem-Medium",
                 top: 3,
                 lineHeight: 18,
                 letterSpacing: 1
@@ -341,7 +341,7 @@ class Cart extends React.Component {
                 fontSize: 14,
                 lineHeight: 18,
                 marginBottom: 5,
-                fontFamily: "stem-medium"
+                fontFamily: "Stem-Medium"
               }}
             >
               {e.plate.weight}
@@ -371,7 +371,7 @@ class Cart extends React.Component {
               style={{
                 color: "rgb( 255, 255, 255)",
                 fontSize: 16,
-                fontFamily: "stem-medium"
+                fontFamily: "Stem-Medium"
               }}
             >
               {e.plate.price.toString() + " ₽"}
@@ -395,7 +395,7 @@ class Cart extends React.Component {
       <View>
         <Text
           style={{
-            fontFamily: "stem-medium",
+            fontFamily: "Stem-Medium",
             color: "#fff",
             letterSpacing: 1.1,
             textAlign: "center",
@@ -516,7 +516,7 @@ class Cart extends React.Component {
                 alignSelf: "flex-start",
                 color: "#fff",
                 fontSize: 16,
-                fontFamily: "stem-medium",
+                fontFamily: "Stem-Medium",
                 letterSpacing: 0.8
               }}
             >
@@ -666,7 +666,7 @@ const styles = StyleSheet.create({
     marginBottom: 17,
     textAlign: "center",
     letterSpacing: 0.8,
-    fontFamily: "stem-regular"
+    fontFamily: "Stem-Regular"
   },
   column: {
     flexDirection: "column",

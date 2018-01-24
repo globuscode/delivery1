@@ -9,9 +9,7 @@ import {
 import Icon from "react-native-vector-icons/Ionicons";
 import propTypes from "prop-types";
 
-const { width: viewportWidth } = Dimensions.get(
-  "window"
-);
+const { width: viewportWidth } = Dimensions.get("window");
 
 class Price extends React.Component {
   constructor(props) {
@@ -57,7 +55,7 @@ class Price extends React.Component {
         <Text
           style={{
             color: "#fff",
-            fontFamily: "stem-medium",
+            fontFamily: "Stem-Medium",
             top: Platform.OS === "ios" ? 3 : 0,
             fontSize: 14,
             textAlign: "center"
@@ -84,7 +82,7 @@ class Price extends React.Component {
 Price.propTypes = {
   onAddPress: propTypes.func,
   onRemovePress: propTypes.func,
-  value: propTypes.number,
+  value: propTypes.number
 };
 
 export default Price;

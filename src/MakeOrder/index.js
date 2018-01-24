@@ -133,7 +133,7 @@ class MakeOrder extends React.Component {
         >
           <Text
             style={{
-              fontFamily: "stem-medium",
+              fontFamily: "Stem-Medium",
               fontSize: 16,
               lineHeight: 20,
               letterSpacing: 1.1,
@@ -230,7 +230,7 @@ class MakeOrder extends React.Component {
                   marginBottom: 17,
                   textAlign: "center",
                   letterSpacing: 0.8,
-                  fontFamily: "stem-regular",
+                  fontFamily: "Stem-Regular",
                   color: "#dcc49c"
                 }
               ]}

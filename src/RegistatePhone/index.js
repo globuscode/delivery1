@@ -19,9 +19,7 @@ import { adaptWidth } from "../etc";
 import { host } from "../etc";
 import IconD from "../IconD";
 
-const { width: viewportWidth } = Dimensions.get(
-  "window"
-);
+const { width: viewportWidth } = Dimensions.get("window");
 
 async function sendPhone(phone) {
   const result = await fetch(`${host}/sms/?action=send_code&phone=${phone}`);
@@ -69,7 +67,7 @@ class Registration extends React.Component {
             style={{
               color: "#ffffff",
               fontSize: 14,
-              fontFamily: "stem-medium",
+              fontFamily: "Stem-Medium",
               top: 3
             }}
           >
@@ -111,7 +109,7 @@ class Registration extends React.Component {
                   ? "rgb(225, 199, 155)"
                   : "rgb(87, 88, 98)",
               fontSize: 14,
-              fontFamily: "stem-medium",
+              fontFamily: "Stem-Medium",
               top: 3
             }}
           >
@@ -129,13 +127,11 @@ class Registration extends React.Component {
         style={styles.container}
         contentContainerStyle={{ flex: 1 }}
       >
-        <View
-          style={{ height: adaptWidth(24, 41, 53) + 4 }}
-        />
+        <View style={{ height: adaptWidth(24, 41, 53) + 4 }} />
 
         <Text
           style={{
-            fontFamily: "stem-medium",
+            fontFamily: "Stem-Medium",
             fontSize: 14,
             alignSelf: "center",
             letterSpacing: 1.1,
@@ -152,7 +148,7 @@ class Registration extends React.Component {
           }}
         >
           <TextInputMask
-            ref={c => this.phone = c}
+            ref={c => (this.phone = c)}
             error={this.state.phoneError}
             type={"custom"}
             customTextInputProps={{
@@ -177,18 +173,18 @@ class Registration extends React.Component {
               mask: "+7 999 999 99-99"
             }}
             customTextInput={TextField}
-            onChangeText={phone => this.setState({ phone: phone, phoneError: null })}
+            onChangeText={phone =>
+              this.setState({ phone: phone, phoneError: null })
+            }
             onBlur={() => this.setState({ hidePrevious: true })}
           />
-          <View
-            style={{ height: adaptWidth(30, 39, 45) - 25 }}
-          />
+          <View style={{ height: adaptWidth(30, 39, 45) - 25 }} />
         </View>
         {this.renderButton("Выслать код подтверждения", () => {
           sendPhone(this.state.phone.replace(/\D+/g, ""));
         })}
         <TextField
-          ref={c => this.codeInput = c}
+          ref={c => (this.codeInput = c)}
           error={this.state.codeError}
           tintColor={this.isNext() ? "#dcc49c" : "rgb(87, 88, 98)"}
           baseColor={this.isNext() ? "#dcc49c" : "rgb(87, 88, 98)"}
@@ -205,13 +201,13 @@ class Registration extends React.Component {
             width: (Platform.OS === "ios" ? 0 : 20) + adaptWidth(136, 160, 177),
             alignSelf: "center",
             alignContent: "center",
-            justifyContent: "center",
+            justifyContent: "center"
           }}
           inputContainerStyle={{
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            alignSelf: "center",
+            alignSelf: "center"
           }}
           label={"Код подтверждения"}
         />
@@ -282,9 +278,9 @@ class Registration extends React.Component {
 
   next = async () => {
     if (this.state.code == null || this.state.code == "")
-      this.setState({ codeError: "Это поле обязательно "});
+      this.setState({ codeError: "Это поле обязательно " });
     if (this.state.phone == null || this.state.phone == "")
-      this.setState({ phoneError: "Это поле обязательно "});
+      this.setState({ phoneError: "Это поле обязательно " });
     if (this.isNext()) {
       const validationResponse = await fetch(
         `${host}/sms/?action=check_code&phone=${this.state.phone.replace(
@@ -337,8 +333,7 @@ class Registration extends React.Component {
             this.props.navigation.navigate("Feed");
           }
         } else {
-          this.codeInput.props.error =
-            validationResponseJson.errors.title;
+          this.codeInput.props.error = validationResponseJson.errors.title;
           this.setState({});
         }
       } else {
@@ -346,8 +341,7 @@ class Registration extends React.Component {
           validationResponseJson.errors.title,
           validationResponseJson.errors.detail
         );
-        this.codeInput.props.error =
-          validationResponseJson.errors.title;
+        this.codeInput.props.error = validationResponseJson.errors.title;
         this.setState({});
       }
     } else {
@@ -394,7 +388,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center",
     letterSpacing: 0.8,
-    fontFamily: "stem-regular"
+    fontFamily: "Stem-Regular"
   },
   container: {
     flex: 1,

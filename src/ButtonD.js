@@ -8,9 +8,7 @@ import {
 } from "react-native";
 import propTypes from "prop-types";
 
-const { width: viewportWidth } = Dimensions.get(
-  "window"
-);
+const { width: viewportWidth } = Dimensions.get("window");
 
 class ButtonD extends React.Component {
   render = () => {
@@ -36,7 +34,7 @@ class ButtonD extends React.Component {
               style={{
                 color: "#ffffff",
                 fontSize: 14,
-                fontFamily: "stem-medium",
+                fontFamily: "Stem-Medium",
                 textAlign: "center",
                 top: Platform.OS === "ios" ? 2 : 0
               }}
@@ -69,7 +67,7 @@ class ButtonD extends React.Component {
                 color: "#ffffff",
                 textAlign: "center",
                 fontSize: 14,
-                fontFamily: "stem-medium",
+                fontFamily: "Stem-Medium",
                 top: Platform.OS === "ios" ? 2 : 0
               }}
               key={index}

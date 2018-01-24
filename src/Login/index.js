@@ -88,7 +88,7 @@ class Login extends React.Component {
         >
           <Text
             style={{
-              fontFamily: "stem-medium",
+              fontFamily: "Stem-Medium",
               fontSize: 14,
               alignSelf: "center",
               color: "rgb( 225, 199, 155)",
@@ -111,7 +111,7 @@ class Login extends React.Component {
 
         <Text
           style={{
-            fontFamily: "stem-medium",
+            fontFamily: "Stem-Medium",
             fontSize: 16,
             lineHeight: 20,
             top: 4,
@@ -310,7 +310,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center",
     letterSpacing: 0.8,
-    fontFamily: "stem-regular"
+    fontFamily: "Stem-Regular"
   },
   formContainer: {
     flexDirection: "column",

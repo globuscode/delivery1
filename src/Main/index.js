@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  View,
-  Dimensions,
-  Platform,
-  StatusBar
-} from "react-native";
+import { View, Dimensions, Platform, StatusBar } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import AllRestourans from "../AllRestourans";
 import { StackNavigator, TabNavigator, TabBarBottom } from "react-navigation";
@@ -21,13 +16,14 @@ import Cart from "../Cart";
 import CartTabIcon from "./CartTabIcon";
 import IconD from "../IconD";
 import { adaptWidth } from "../etc";
+import { getStatusBarHeight } from "react-native-status-bar-height";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
 const headerStyleIOS = () => ({
   headerTruncatedBackTitle: "Назад",
   headerTitleStyle: {
-    fontFamily: "stem-medium",
+    fontFamily: "Stem-Medium",
     fontSize: 14,
     letterSpacing: 0.8,
     color: "#fff"
@@ -37,7 +33,7 @@ const headerStyleIOS = () => ({
     color: "#dcc49c"
   },
   headerStyle: {
-    marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
+    marginTop: 20,
     backgroundColor: "#292b37",
     paddingHorizontal: Platform.OS === "ios" ? adaptWidth(16, 18, 24) : -3
   }
@@ -76,7 +72,7 @@ const FirstScreen = StackNavigator(
         headerTintColor: "#fff",
         gesturesEnabled: false,
         headerTitleStyle: {
-          fontFamily: "stem-medium",
+          fontFamily: "Stem-Medium",
           fontSize: 14,
           letterSpacing: 0.8
         },
@@ -84,7 +80,7 @@ const FirstScreen = StackNavigator(
           color: "#dcc49c"
         },
         headerStyle: {
-          marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
+          marginTop: 0,
           backgroundColor: "#292b37"
         }
       }
@@ -127,7 +123,7 @@ const SecondScreen = StackNavigator(
         headerTintColor: "#fff",
         gesturesEnabled: false,
         headerTitleStyle: {
-          fontFamily: "stem-medium",
+          fontFamily: "Stem-Medium",
           fontSize: 14,
           letterSpacing: 0.8
         },
@@ -135,7 +131,7 @@ const SecondScreen = StackNavigator(
           color: "#dcc49c"
         },
         headerStyle: {
-          marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
+          marginTop: 0,
           backgroundColor: "#292b37"
         }
       }
@@ -180,7 +176,7 @@ const FourthScreen = StackNavigator(
         ),
         headerTintColor: "#fff",
         headerTitleStyle: {
-          fontFamily: "stem-medium",
+          fontFamily: "Stem-Medium",
           fontSize: 14,
           letterSpacing: 0.8
         },
@@ -188,7 +184,7 @@ const FourthScreen = StackNavigator(
           color: "#dcc49c"
         },
         headerStyle: {
-          marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
+          marginTop: getStatusBarHeight(),
           backgroundColor: "transparent",
           borderBottomWidth: Platform.OS === "ios" ? 1 : 0,
           marginHorizontal: Platform.OS === "ios" ? 20 : -3,
@@ -210,7 +206,7 @@ const FourthScreen = StackNavigator(
         headerTintColor: "#fff",
         gesturesEnabled: false,
         headerTitleStyle: {
-          fontFamily: "stem-medium",
+          fontFamily: "Stem-Medium",
           fontSize: 14,
           letterSpacing: 0.8
         },
@@ -218,7 +214,7 @@ const FourthScreen = StackNavigator(
           color: "#dcc49c"
         },
         headerStyle: {
-          marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
+          marginTop: 0,
           backgroundColor: "#292b37"
         }
       }
@@ -262,7 +258,7 @@ const ThirdScreen = StackNavigator(
         headerTintColor: "#fff",
         gesturesEnabled: false,
         headerTitleStyle: {
-          fontFamily: "stem-medium",
+          fontFamily: "Stem-Medium",
           fontSize: 14,
           letterSpacing: 0.8
         },
@@ -270,7 +266,7 @@ const ThirdScreen = StackNavigator(
           color: "#dcc49c"
         },
         headerStyle: {
-          marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
+          marginTop: 0,
           backgroundColor: "#292b37"
         }
       }

@@ -156,7 +156,7 @@ class Recomendations extends React.Component {
         backgroundColor: "transparent",
         fontSize: 20,
         color: "#ffffff",
-        fontFamily: "stem-medium",
+        fontFamily: "Stem-Medium",
         maxWidth: viewportWidth - 100
       },
       restourantTextStyle: {
@@ -165,7 +165,7 @@ class Recomendations extends React.Component {
         fontSize: 12,
         color: "#dcc49c",
         letterSpacing: 0.5,
-        fontFamily: "stem-medium"
+        fontFamily: "Stem-Medium"
       },
       weightTextStyle: {
         flexDirection: "row",
@@ -173,7 +173,7 @@ class Recomendations extends React.Component {
         fontSize: 12,
         color: "rgb(119, 122, 136)",
         letterSpacing: 0.5,
-        fontFamily: "stem-medium"
+        fontFamily: "Stem-Medium"
       },
       topViewStyle: {}
     });

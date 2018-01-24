@@ -129,7 +129,7 @@ class Favourite extends React.Component {
         backgroundColor: "transparent",
         fontSize: 20,
         color: "#ffffff",
-        fontFamily: "stem-medium",
+        fontFamily: "Stem-Medium",
         maxWidth: viewportWidth - 100
       },
       restourantTextStyle: {
@@ -138,7 +138,7 @@ class Favourite extends React.Component {
         fontSize: 12,
         color: "#dcc49c",
         letterSpacing: 0.5,
-        fontFamily: "stem-medium"
+        fontFamily: "Stem-Medium"
       },
       weightTextStyle: {
         flexDirection: "row",
@@ -146,7 +146,7 @@ class Favourite extends React.Component {
         fontSize: 12,
         color: "rgb(119, 122, 136)",
         letterSpacing: 0.5,
-        fontFamily: "stem-medium"
+        fontFamily: "Stem-Medium"
       },
       topViewStyle: {
         flexDirection: "row",
@@ -394,7 +394,7 @@ class Favourite extends React.Component {
             <Text style={{
               paddingHorizontal: 5,
               maxWidth: 150,
-              //fontFamily: 'stem-medium',
+              //fontFamily: 'Stem-Medium',
               fontWeight: 'bold',
               fontSize: 13,
               backgroundColor: '#dcc49c',
@@ -417,7 +417,7 @@ class Favourite extends React.Component {
               color: "white",
               fontSize: 14,
               lineHeight: 22,
-              fontFamily: "stem-medium",
+              fontFamily: "Stem-Medium",
               alignItems: "flex-end",
               letterSpacing: 0.4
             }}
@@ -615,7 +615,7 @@ class Favourite extends React.Component {
                       style={{
                         color: "#fff",
                         fontSize: 15,
-                        fontFamily: "stem-medium",
+                        fontFamily: "Stem-Medium",
                         top: 3,
                         lineHeight: 18,
                         letterSpacing: 1
@@ -756,7 +756,7 @@ class Favourite extends React.Component {
         <ScrollView style={{ paddingTop: getStatusBarHeight() }}>
           <Text
             style={{
-              fontFamily: "stem-medium",
+              fontFamily: "Stem-Medium",
               fontSize: 15,
               marginTop: adaptWidth(16, 12, 14),
               marginBottom: 8,

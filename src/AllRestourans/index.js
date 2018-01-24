@@ -203,7 +203,7 @@ export default class AllRestourans extends React.Component {
                     flexDirection: "row",
                     fontSize: 14,
                     letterSpacing: 0.8,
-                    fontFamily: "stem-medium"
+                    fontFamily: "Stem-Medium"
                   }}
                 >
                   {"Рестораны города Москва"}

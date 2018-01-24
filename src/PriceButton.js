@@ -89,8 +89,11 @@ class Price extends React.Component {
                       textAlign: "center",
                       position: "absolute",
                       width: 10,
-                      top: Platform.OS === "ios" ? parseInt(this.props.count) < 20 ? 1 : 2 : 0,
-                      fontFamily: "stem-medium",
+                      top:
+                        Platform.OS === "ios"
+                          ? parseInt(this.props.count) < 20 ? 1 : 2
+                          : 0,
+                      fontFamily: "Stem-Medium",
                       backgroundColor: "transparent"
                     }}
                   >
@@ -109,7 +112,7 @@ class Price extends React.Component {
                 alignItems: "center",
                 backgroundColor: "transparent",
                 alignSelf: "center",
-                fontFamily: "stem-medium",
+                fontFamily: "Stem-Medium",
                 color: !parseInt(this.props.count) > 0 ? "#fff" : "#292b37"
               }}
             >
@@ -125,7 +128,7 @@ class Price extends React.Component {
 Price.propTypes = {
   count: PropTypes.number,
   value: PropTypes.number,
-  onPress: PropTypes.func,
+  onPress: PropTypes.func
 };
 
 export default Price;

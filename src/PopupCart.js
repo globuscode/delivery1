@@ -131,7 +131,7 @@ class Popup extends React.Component {
       >
         <Text
           style={{
-            fontFamily: "stem-medium",
+            fontFamily: "Stem-Medium",
             fontSize: 14,
             alignSelf: "stretch",
             textAlign: "center",
@@ -154,7 +154,7 @@ class Popup extends React.Component {
         />
         <Text
           style={{
-            fontFamily: "stem-medium",
+            fontFamily: "Stem-Medium",
             fontSize: 14,
             alignSelf: "stretch",
             textAlign: "left",
@@ -238,7 +238,7 @@ class Popup extends React.Component {
             </Text>
             <Text
               style={{
-                fontFamily: "stem-medium",
+                fontFamily: "Stem-Medium",
                 top: 4,
                 fontSize: 20,
                 letterSpacing: 1.4,

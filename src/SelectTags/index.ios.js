@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   StyleSheet,
   Text,
@@ -10,32 +10,22 @@ import {
   ScrollView,
   AsyncStorage,
   WebView
-} from 'react-native';
+} from "react-native";
 
-import Touchable from 'react-native-platform-touchable';
-var webapp = require('./BallPool.html');
+import Touchable from "react-native-platform-touchable";
+var webapp = require("./BallPool.html");
 
 const scale = 5;
 
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
-import { host } from '../etc';
-
-
-
-
-
-
-
-
-
-
-
-
+const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
+  "window"
+);
+import { host } from "../etc";
 
 var centersOfCircles = [];
 
 function distance(a, b) {
-  return ((a.x - b.x) ^ 2 + (a.y - b.y) ^ 2) ^ (1 / 2);
+  return (a.x - b.x) ^ (2 + (a.y - b.y)) ^ 2 ^ (1 / 2);
 }
 
 function generateCircles(count, radius) {
@@ -46,25 +36,13 @@ function generateCircles(count, radius) {
       if (i * j < count)
         result.push({
           x: 2 * radius * j + 120 + (i % 2) * 80,
-          y: 2 * radius * i,
-        })
+          y: 2 * radius * i
+        });
     }
   }
 
   return result;
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 export default class SelectTags extends React.Component {
   constructor(props) {
@@ -74,50 +52,42 @@ export default class SelectTags extends React.Component {
       spinner: true,
       kitchens: [
         {
-          title: 'Ошибка',
-          icon: 'ios-person',
-          selected: false,
-        },
+          title: "Ошибка",
+          icon: "ios-person",
+          selected: false
+        }
       ],
       canRender: true,
-      positions: [
-        [0, 20],
-        [10, 20],
-        [0, 20],
-        [10, 20],
-        [0, 20],
-      ],
-    }
-  };
+      positions: [[0, 20], [10, 20], [0, 20], [10, 20], [0, 20]]
+    };
+  }
 
   async componentWillMount() {
-    let tagsStr = await AsyncStorage.getItem('tags');
-    let f = await AsyncStorage.getItem('f');
-    
+    let tagsStr = await AsyncStorage.getItem("tags");
+    let f = await AsyncStorage.getItem("f");
+
     let tags = f !== tagsStr ? JSON.parse(tagsStr) : [];
 
     let response, responseJson;
-    try{
+    try {
       response = await fetch(`${host}/classificator/tag-groups?cityId=36`);
-    }
-    catch(e) {
-      Alert.alert('Ошибка', 'Соединение с сервером прервано');
+    } catch (e) {
+      Alert.alert("Ошибка", "Соединение с сервером прервано");
     }
 
-    try{
+    try {
       responseJson = await response.json();
-    }
-    catch(e) {
-      Alert.alert('Ошибка', 'Не правильный ответ');
+    } catch (e) {
+      Alert.alert("Ошибка", "Не правильный ответ");
     }
 
     if (responseJson.data.length === undefined)
-      Alert.alert('Ошибка', 'Не верный ответ с сервера');
+      Alert.alert("Ошибка", "Не верный ответ с сервера");
 
     this.state.kitchens = [];
     for (name in responseJson.data) {
       responseJson.data[name].selected = false;
-      for (let j=0; j<tags.length; j++) {
+      for (let j = 0; j < tags.length; j++) {
         if (tags[j].title === responseJson.data[name].title) {
           responseJson.data[name].selected = true;
         }
@@ -125,49 +95,47 @@ export default class SelectTags extends React.Component {
       this.state.kitchens.push(responseJson.data[name]);
     }
     this.setState({});
-  
-    webapp = await require('./BallPool.html');
-  }
 
+    webapp = await require("./BallPool.html");
+  }
 
   selectRandom(count) {
     this.state.selected = [];
     for (var i = 0; i < count; i++) {
-      this.state.kitchens[i].selected = (Math.random() > 0.5);
+      this.state.kitchens[i].selected = Math.random() > 0.5;
     }
-    this.webview.postMessage(JSON.stringify({ update: true, tags: this.state.kitchens }));
+    this.webview.postMessage(
+      JSON.stringify({ update: true, tags: this.state.kitchens })
+    );
     this.setState({});
-  };
+  }
 
   getSelectedTags() {
     let result = [];
     selectedKitchens = this.state.kitchens.map((element, index) => {
-      if (element.selected === true)
-        result.push(element);
+      if (element.selected === true) result.push(element);
     });
     return result;
-  };
+  }
 
   setTags = async () => {
-    await AsyncStorage.setItem('tags', JSON.stringify(this.getSelectedTags()));
+    await AsyncStorage.setItem("tags", JSON.stringify(this.getSelectedTags()));
     return 0;
   };
 
   next = () => {
     this.setTags();
     if (this.isNext())
-    if (this.state.canNav) {
-      if (this.props.navigation.state.params) {
-        if (this.props.navigation.state.params.next === 'LoadingScreen')
-          this.props.navigation.navigate('LoadingScreen');
+      if (this.state.canNav) {
+        if (this.props.navigation.state.params) {
+          if (this.props.navigation.state.params.next === "LoadingScreen")
+            this.props.navigation.navigate("LoadingScreen");
+        } else this.props.navigation.navigate("SelectTastes");
+        this.state.canNav = false;
+        setTimeout(() => {
+          this.state.canNav = true;
+        }, 1500);
       }
-      else
-        this.props.navigation.navigate('SelectTastes');
-      this.state.canNav = false;
-      setTimeout(() => {
-        this.state.canNav = true;
-      }, 1500);
-    }
   };
 
   isNext = () => {
@@ -182,137 +150,179 @@ export default class SelectTags extends React.Component {
       isNext = isNext || this.state.kitchens[i].selected;
     }*/
     return isNext;
-  }
+  };
 
   /**
    * Обработчик сообщений из WebView
    */
-  onMessage = (event) => {
+  onMessage = event => {
     data = JSON.parse(event.nativeEvent.data);
     if (data.index >= 0) {
       var index = parseInt(data.index);
-      this.state.kitchens[index].selected = !this.state.kitchens[index].selected;
+      this.state.kitchens[index].selected = !this.state.kitchens[index]
+        .selected;
       this.setState({});
     }
-  }
+  };
 
   render() {
     var result = (
       <View style={styles.container}>
-        <View style={{ alignSelf: 'stretch', paddingHorizontal: 15 }}>
-          <View style={{ alignSelf: 'stretch', justifyContent: 'center', borderBottomWidth: 2, borderColor: 'rgb(87, 88, 98)' }}>
-            <TouchableOpacity onPress={() => this.selectRandom(this.state.kitchens.length)}>
-              <Text style={[
-                styles.text, {
-                  color: 'rgb( 225, 199, 155)',
-                  fontFamily: "OpenSans",
-                  alignSelf: 'flex-end',
-                  fontSize: 14,
-                  letterSpacing: 0.4,
-                  paddingTop: 13,
-                  paddingBottom: 13
-                }]}>
-              {'Выбрать наугад'}</Text>
+        <View style={{ alignSelf: "stretch", paddingHorizontal: 15 }}>
+          <View
+            style={{
+              alignSelf: "stretch",
+              justifyContent: "center",
+              borderBottomWidth: 2,
+              borderColor: "rgb(87, 88, 98)"
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => this.selectRandom(this.state.kitchens.length)}
+            >
+              <Text
+                style={[
+                  styles.text,
+                  {
+                    color: "rgb( 225, 199, 155)",
+                    fontFamily: "OpenSans",
+                    alignSelf: "flex-end",
+                    fontSize: 14,
+                    letterSpacing: 0.4,
+                    paddingTop: 13,
+                    paddingBottom: 13
+                  }
+                ]}
+              >
+                {"Выбрать наугад"}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
-        <Text style={[{ 
-          marginTop: 9,
-          fontSize: 16,
-          lineHeight: 20,
-          letterSpacing: 1,
-          fontFamily: 'stem-medium',
-          color: 'rgb( 255, 255, 255)'
-        }]}>Поведайте свои предпочтения</Text>
-        <Text style={[{
-          fontSize: 12,
-          lineHeight: 13,
-          paddingHorizontal: 35,
-          letterSpacing: 0.8,
-          color: 'rgb(119, 122, 136)',
-          textAlign: 'center'
-        }]}>Расскажите кухни каких стран наиболее привлекательны для вас и мы составим список рекомендаций</Text>
-          <ActivityIndicator style={{ display: this.state.spinner ? 'flex' : 'none' }}/>
-          <View style={{
+        <Text
+          style={[
+            {
+              marginTop: 9,
+              fontSize: 16,
+              lineHeight: 20,
+              letterSpacing: 1,
+              fontFamily: "Stem-Medium",
+              color: "rgb( 255, 255, 255)"
+            }
+          ]}
+        >
+          Поведайте свои предпочтения
+        </Text>
+        <Text
+          style={[
+            {
+              fontSize: 12,
+              lineHeight: 13,
+              paddingHorizontal: 35,
+              letterSpacing: 0.8,
+              color: "rgb(119, 122, 136)",
+              textAlign: "center"
+            }
+          ]}
+        >
+          Расскажите кухни каких стран наиболее привлекательны для вас и мы
+          составим список рекомендаций
+        </Text>
+        <ActivityIndicator
+          style={{ display: this.state.spinner ? "flex" : "none" }}
+        />
+        <View
+          style={{
             height: viewportHeight - 193,
-            backgroundColor: '#292b37',
-          }}>
-            <WebView
-              ref={(c) => { this.webview = c; }}
-              mixedContentMode='always'
-              domStorageEnabled={true}
-              onError={() => Alert.alert("Ошибка")}
-              source={webapp}
-              scalesPageToFit={true}
-              onMessage={this.onMessage}
-              onLoadEnd={() => {
-                this.webview.postMessage(JSON.stringify({update: false,tags: this.state.kitchens }))
-                setTimeout(() => {
-                  this.setState({spinner: false});
-                }, 1000);
-              }}
-              domStorageEnabled={true}
-              style={{
-                backgroundColor: 'transparent', 
-                height: viewportHeight - 193, 
-                width: viewportWidth 
-              }}
-            />
-          </View>
+            backgroundColor: "#292b37"
+          }}
+        >
+          <WebView
+            ref={c => {
+              this.webview = c;
+            }}
+            mixedContentMode="always"
+            domStorageEnabled={true}
+            onError={() => Alert.alert("Ошибка")}
+            source={webapp}
+            scalesPageToFit={true}
+            onMessage={this.onMessage}
+            onLoadEnd={() => {
+              this.webview.postMessage(
+                JSON.stringify({ update: false, tags: this.state.kitchens })
+              );
+              setTimeout(() => {
+                this.setState({ spinner: false });
+              }, 1000);
+            }}
+            domStorageEnabled={true}
+            style={{
+              backgroundColor: "transparent",
+              height: viewportHeight - 193,
+              width: viewportWidth
+            }}
+          />
+        </View>
 
-          <View style={{
-            position: 'absolute',
-            alignSelf: 'center',
+        <View
+          style={{
+            position: "absolute",
+            alignSelf: "center",
             width: viewportWidth - 30,
             bottom: 0,
             height: 49,
             borderTopWidth: 2,
-            borderColor: this.isNext() ? '#dcc49c' : '#575862',
-            flexDirection: 'row',
-            justifyContent: 'center'
-          }}>
-            <Touchable 
-              background={Touchable.Ripple('gray')} 
-              onPress={this.next}
-              style={{
-                alignSelf: 'stretch',
-                flexDirection: 'column',
-                justifyContent: "center",
-                width: viewportWidth
-              }}>
-              <Text style={[
+            borderColor: this.isNext() ? "#dcc49c" : "#575862",
+            flexDirection: "row",
+            justifyContent: "center"
+          }}
+        >
+          <Touchable
+            background={Touchable.Ripple("gray")}
+            onPress={this.next}
+            style={{
+              alignSelf: "stretch",
+              flexDirection: "column",
+              justifyContent: "center",
+              width: viewportWidth
+            }}
+          >
+            <Text
+              style={[
                 styles.nextButtonText,
                 {
-                  color: this.isNext() ? '#dcc49c' : '#575862'
+                  color: this.isNext() ? "#dcc49c" : "#575862"
                 }
-              ]}>Далее</Text>
-            </Touchable>
-          </View>
+              ]}
+            >
+              Далее
+            </Text>
+          </Touchable>
+        </View>
       </View>
     );
     return result;
   }
-};
-
+}
 
 const styles = StyleSheet.create({
   text: {
-    color: 'white',
-    fontSize: 20,
+    color: "white",
+    fontSize: 20
   },
   container: {
     flex: 1,
     paddingTop: 20,
-    backgroundColor: '#292b37',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
+    backgroundColor: "#292b37",
+    justifyContent: "flex-start",
+    alignItems: "center"
   },
   nextButtonText: {
     fontSize: 16,
-    color: '#dcc49c',
-    alignSelf: 'center',
-    textAlign: 'center',
+    color: "#dcc49c",
+    alignSelf: "center",
+    textAlign: "center",
     letterSpacing: 0.8,
-    fontFamily: 'stem-regular'
-  },
+    fontFamily: "Stem-Regular"
+  }
 });

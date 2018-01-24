@@ -276,7 +276,7 @@ class RestaurantMenu extends React.PureComponent {
           style={{
             color: "#fff",
             fontSize: 16,
-            fontFamily: "stem-medium",
+            fontFamily: "Stem-Medium",
             letterSpacing: 0.8
           }}
         >
@@ -332,7 +332,7 @@ class RestaurantMenu extends React.PureComponent {
               backgroundColor: "transparent",
               fontSize: 14,
               marginLeft: 10,
-              fontFamily: "stem-medium",
+              fontFamily: "Stem-Medium",
               color: "#ffffff"
             }}
           >
@@ -461,7 +461,7 @@ class RestaurantMenu extends React.PureComponent {
                       style={{
                         color: "#fff",
                         fontSize: 15,
-                        fontFamily: "stem-medium",
+                        fontFamily: "Stem-Medium",
                         top: 3,
                         lineHeight: 18,
                         letterSpacing: 1
@@ -598,7 +598,7 @@ class RestaurantMenu extends React.PureComponent {
             style={{
               color: "#ffffff",
               fontSize: 14,
-              fontFamily: "stem-medium",
+              fontFamily: "Stem-Medium",
               top: Platform.OS === "ios" ? 2 : 0
             }}
           >
@@ -632,7 +632,7 @@ class RestaurantMenu extends React.PureComponent {
             style={{
               color: "#ffffff",
               fontSize: 14,
-              fontFamily: "stem-medium",
+              fontFamily: "Stem-Medium",
               top: Platform.OS === "ios" ? 2 : 0
             }}
           >
@@ -915,7 +915,7 @@ class RestaurantMenu extends React.PureComponent {
               style={{
                 color: "#FFF",
                 fontSize: 16,
-                fontFamily: "stem-medium",
+                fontFamily: "Stem-Medium",
                 letterSpacing: 0.8,
                 marginLeft:
                   viewportWidth >= 320 && viewportWidth < 375
@@ -1057,7 +1057,7 @@ const styles = StyleSheet.create({
   span: {
     color: "#fff",
     fontSize: 16,
-    fontFamily: "stem-medium",
+    fontFamily: "Stem-Medium",
     letterSpacing: 0.8
   }
 });

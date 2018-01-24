@@ -18,9 +18,7 @@ import propTypes from "prop-types";
 
 import { adaptWidth } from "../etc";
 
-const { width: viewportWidth } = Dimensions.get(
-  "window"
-);
+const { width: viewportWidth } = Dimensions.get("window");
 
 function dateToString(date) {
   const WEEK = [
@@ -51,7 +49,6 @@ function dateToString(date) {
 const slide = new SlideAnimation({
   slideFrom: "bottom"
 });
-
 
 class Forms extends React.Component {
   constructor(props) {
@@ -90,19 +87,22 @@ class Forms extends React.Component {
 
   next = () => {
     if (this.state.firstName == null || this.state.firstName == "")
-      this.setState({ firstNameError : "Это поле обязательно"});
+      this.setState({ firstNameError: "Это поле обязательно" });
     if (this.state.secondName == null || this.state.secondName == "")
-      this.setState({ secondNameError : "Это поле обязательно"});
+      this.setState({ secondNameError: "Это поле обязательно" });
     if (this.state.phone == null || this.state.phone == "")
-      this.setState({ phoneError : "Это поле обязательно"});
+      this.setState({ phoneError: "Это поле обязательно" });
     if (this.state.address.street == null || this.state.address.street == "")
-      this.setState({ streetError : "Это поле обязательно"});
+      this.setState({ streetError: "Это поле обязательно" });
     if (this.state.address.house == null || this.state.address.house == "")
-      this.setState({ houseError : "Это поле обязательно"});
+      this.setState({ houseError: "Это поле обязательно" });
     if (this.state.address.flat == null || this.state.address.flat == "")
-      this.setState({ flatError : "Это поле обязательно"});
-    if (this.state.address.entrance == null || this.state.address.entrance == "")
-      this.setState({ entranceError : "Это поле обязательно"});
+      this.setState({ flatError: "Это поле обязательно" });
+    if (
+      this.state.address.entrance == null ||
+      this.state.address.entrance == ""
+    )
+      this.setState({ entranceError: "Это поле обязательно" });
 
     if (this.isNext()) {
       const date = this.state.date.getDate();
@@ -154,7 +154,7 @@ class Forms extends React.Component {
       >
         <Text
           style={{
-            fontFamily: "stem-medium",
+            fontFamily: "Stem-Medium",
             fontSize: 16,
             letterSpacing: 0.9,
             textAlign: "center",
@@ -209,7 +209,9 @@ class Forms extends React.Component {
               alignItems: "center",
               justifyContent: "center"
             }}
-            onChangeText={text => this.setState({ secondName: text, secondNameError: null })}
+            onChangeText={text =>
+              this.setState({ secondName: text, secondNameError: null })
+            }
             value={this.state.secondName}
             label="Фамилия"
           />
@@ -236,7 +238,9 @@ class Forms extends React.Component {
             options={{
               mask: "+7 999 999 99-99"
             }}
-            onChangeText={text => this.setState({ phone: text, phoneError: null })}
+            onChangeText={text =>
+              this.setState({ phone: text, phoneError: null })
+            }
             value={this.state.phone}
             customTextInput={TextField}
           />
@@ -244,7 +248,7 @@ class Forms extends React.Component {
 
         <Text
           style={{
-            fontFamily: "stem-medium",
+            fontFamily: "Stem-Medium",
             fontSize: 16,
             letterSpacing: 0.9,
             textAlign: "center",
@@ -290,9 +294,7 @@ class Forms extends React.Component {
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
-            <View
-              style={{ width: adaptWidth(128, 150, 165) }}
-            >
+            <View style={{ width: adaptWidth(128, 150, 165) }}>
               <TextField
                 error={this.state.houseError}
                 tintColor="#dcc49c"
@@ -319,9 +321,7 @@ class Forms extends React.Component {
                 label="Дом"
               />
             </View>
-            <View
-              style={{ width: adaptWidth(128, 150, 165) }}
-            >
+            <View style={{ width: adaptWidth(128, 150, 165) }}>
               <TextField
                 error={this.state.flatError}
                 tintColor="#dcc49c"
@@ -355,9 +355,7 @@ class Forms extends React.Component {
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
-            <View
-              style={{ width: adaptWidth(128, 150, 165) }}
-            >
+            <View style={{ width: adaptWidth(128, 150, 165) }}>
               <TextField
                 error={this.state.entranceError}
                 tintColor="#dcc49c"
@@ -385,9 +383,7 @@ class Forms extends React.Component {
                 label="Подъезд"
               />
             </View>
-            <View
-              style={{ width: adaptWidth(128, 150, 165) }}
-            >
+            <View style={{ width: adaptWidth(128, 150, 165) }}>
               <TextField
                 error={this.state.floor}
                 tintColor="#dcc49c"
@@ -433,7 +429,6 @@ class Forms extends React.Component {
               justifyContent: "center"
             }}
             onChangeText={text => {
-
               const address = {
                 ...this.state.address,
                 commentary: text
@@ -447,7 +442,7 @@ class Forms extends React.Component {
 
         <Text
           style={{
-            fontFamily: "stem-medium",
+            fontFamily: "Stem-Medium",
             fontSize: 16,
             letterSpacing: 0.9,
             textAlign: "center",
@@ -652,7 +647,7 @@ class Forms extends React.Component {
                   alignSelf: "center",
                   textAlign: "center",
                   letterSpacing: 0.8,
-                  fontFamily: "stem-regular",
+                  fontFamily: "Stem-Regular",
                   color: this.isNext() ? "#dcc49c" : "#575862"
                 }
               ]}
@@ -773,7 +768,7 @@ class Forms extends React.Component {
 Forms.propTypes = {
   user: propTypes.object,
   address: propTypes.object,
-  navigation: propTypes.object,
+  navigation: propTypes.object
 };
 
 export default connect(

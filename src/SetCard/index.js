@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TextInput, Image, Dimensions } from "react-native";
 import { adaptWidth } from "../etc";
 import Touchable from "react-native-platform-touchable";
-import LinearGradient from 'react-native-linear-gradient';
+import LinearGradient from "react-native-linear-gradient";
 import { TextField } from "react-native-material-textfield";
 import { TextInputMask } from "react-native-masked-text";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -14,9 +14,7 @@ const MASTERCARD =
 const VISA =
   "https://resources.mynewsdesk.com/image/upload/ojf8ed4taaxccncp6pcp.png";
 
-const { width: viewportWidth } = Dimensions.get(
-  "window"
-);
+const { width: viewportWidth } = Dimensions.get("window");
 
 class SetCard extends React.Component {
   constructor(props) {
@@ -98,7 +96,7 @@ class SetCard extends React.Component {
 
         <Text
           style={{
-            fontFamily: "stem-medium",
+            fontFamily: "Stem-Medium",
             fontSize: 16,
             letterSpacing: 1.1,
             marginTop: adaptWidth(21, 34, 56),
@@ -282,7 +280,7 @@ class SetCard extends React.Component {
                   alignSelf: "center",
                   textAlign: "center",
                   letterSpacing: 0.8,
-                  fontFamily: "stem-regular"
+                  fontFamily: "Stem-Regular"
                 },
                 {
                   color: this.isNext() ? "rgb(225, 199, 155)" : "#575862"

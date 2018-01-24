@@ -22,8 +22,8 @@ const screen =
     : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
 
 /**
- * 
- * 
+ *
+ *
  * @class PersonalInfo
  * @extends {React.Component}
  */
@@ -36,15 +36,26 @@ class PersonalInfo extends React.Component {
           flexDirection: "row",
           marginTop: screen == 0 ? 22 : screen == 1 ? 28 : 33,
           alignSelf: "flex-start",
-          alignItems: 'center',
+          alignItems: "center",
           justifyContent: "flex-start",
           paddingLeft: screen == 0 ? 16 : screen == 1 ? 19 : 20
         }}
       >
-        <View style={{ width: 20, height: 10, justifyContent: 'center', alignItems: 'center' }}>
-          <IconD name={icon} size={icon != 'credit-card' ? 20 : 15} color="rgb( 225, 199, 155)" />
+        <View
+          style={{
+            width: 20,
+            height: 10,
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
+          <IconD
+            name={icon}
+            size={icon != "credit-card" ? 20 : 15}
+            color="rgb( 225, 199, 155)"
+          />
         </View>
-        <View style={{alignItems: 'center'}}>
+        <View style={{ alignItems: "center" }}>
           <Text
             style={{
               marginLeft: 10,
@@ -179,7 +190,7 @@ const styles = StyleSheet.create({
   },
   userFullName: {
     flexDirection: "column",
-    fontFamily: "stem-medium",
+    fontFamily: "Stem-Medium",
     fontSize: 20,
     color: "#ffffff",
     letterSpacing: 0.8,

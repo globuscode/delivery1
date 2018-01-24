@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     marginBottom: 17,
     textAlign: "center",
     letterSpacing: 0.8,
-    fontFamily: "stem-regular"
+    fontFamily: "Stem-Regular"
   },
   column: {
     flexDirection: "column",
@@ -64,7 +64,7 @@ const renderButton = (title, callback) => {
             color: "#ffffff",
             fontSize: 14,
             top: 2,
-            fontFamily: "stem-medium"
+            fontFamily: "Stem-Medium"
           }}
         >
           {title}
@@ -95,7 +95,7 @@ const renderButton = (title, callback) => {
             color: "#ffffff",
             fontSize: 14,
             top: 2,
-            fontFamily: "stem-medium"
+            fontFamily: "Stem-Medium"
           }}
         >
           {"Открыть меню ресторана"}

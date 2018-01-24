@@ -11,9 +11,7 @@ import {
 import Touchable from "react-native-platform-touchable";
 import propTypes from "prop-types";
 
-const { width: viewportWidth } = Dimensions.get(
-  "window"
-);
+const { width: viewportWidth } = Dimensions.get("window");
 
 import { host } from "../etc";
 
@@ -98,7 +96,8 @@ class SelectTags extends React.Component {
         >
           <Text
             style={{
-              fontFamily: "OpenSans", fontWeight: "600",
+              fontFamily: "OpenSans",
+              fontWeight: "600",
               fontSize: 11,
               color:
                 this.state.selected.indexOf(i) != -1
@@ -115,7 +114,7 @@ class SelectTags extends React.Component {
   }
 
   getSelectedTastes() {
-    return this.state.selected.map((element) => {
+    return this.state.selected.map(element => {
       //if (element.selected === true)
       return this.state.tastes[element];
     });
@@ -185,7 +184,7 @@ class SelectTags extends React.Component {
               fontSize: 16,
               lineHeight: 20,
               letterSpacing: 1,
-              fontFamily: "stem-medium",
+              fontFamily: "Stem-Medium",
               color: "rgb(255,255,255)"
             }
           ]}
@@ -268,7 +267,7 @@ class SelectTags extends React.Component {
 }
 
 SelectTags.propTypes = {
-  navigation: propTypes.object,
+  navigation: propTypes.object
 };
 
 export default SelectTags;
@@ -291,6 +290,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center",
     letterSpacing: 0.8,
-    fontFamily: "stem-regular"
+    fontFamily: "Stem-Regular"
   }
 });

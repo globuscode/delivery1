@@ -242,7 +242,7 @@ class Restaurant extends React.Component {
             style={{
               color: "#ffffff",
               fontSize: 14,
-              fontFamily: "stem-medium",
+              fontFamily: "Stem-Medium",
               top: Platform.OS === "ios" ? 2 : 0
             }}
           >
@@ -276,7 +276,7 @@ class Restaurant extends React.Component {
             style={{
               color: "#ffffff",
               fontSize: 14,
-              fontFamily: "stem-medium",
+              fontFamily: "Stem-Medium",
               top: Platform.OS === "ios" ? 2 : 0
             }}
           >
@@ -390,7 +390,7 @@ class Restaurant extends React.Component {
                 marginTop: 13,
                 color: "#dcc49c",
                 fontSize: 20,
-                fontFamily: "stem-medium",
+                fontFamily: "Stem-Medium",
                 lineHeight: 22,
                 letterSpacing: 0.9,
                 top: 2
@@ -405,7 +405,7 @@ class Restaurant extends React.Component {
                 marginTop: 6,
                 color: "#fff",
                 fontSize: 13,
-                fontFamily: "stem-medium",
+                fontFamily: "Stem-Medium",
                 lineHeight: 16,
                 letterSpacing: 0.6,
                 top: 4
@@ -700,7 +700,7 @@ class Restaurant extends React.Component {
             fontSize: 16,
             letterSpacing: 0.8,
             marginLeft: 15,
-            fontFamily: "stem-medium"
+            fontFamily: "Stem-Medium"
           }}
         >
           {title}

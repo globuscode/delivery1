@@ -79,7 +79,7 @@ class Profile extends React.Component {
           <Text
             style={{
               marginLeft: 15,
-              fontFamily: "stem-medium",
+              fontFamily: "Stem-Medium",
               fontSize: 16,
               color: "#ffffff",
               letterSpacing: 0.8,
@@ -190,7 +190,7 @@ class Profile extends React.Component {
             >
               <Text
                 style={{
-                  fontFamily: "stem-medium",
+                  fontFamily: "Stem-Medium",
                   fontSize: 20,
                   color: "rgb( 225, 199, 155)"
                 }}
@@ -224,7 +224,7 @@ class Profile extends React.Component {
 
             <Text
               style={{
-                fontFamily: "stem-medium",
+                fontFamily: "Stem-Medium",
                 fontSize: 20,
                 color: "rgb( 225, 199, 155)"
               }}
@@ -294,19 +294,21 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     letterSpacing: 1.1,
     lineHeight: 20,
-    fontFamily: "stem-medium"
+    fontFamily: "Stem-Medium"
   },
   header2: {
     color: "white",
     fontSize: 12,
     marginTop: 4,
-    fontFamily: "OpenSans", fontWeight: "600",
+    fontFamily: "OpenSans",
+    fontWeight: "600"
   },
   afterHeader2: {
     color: "#dcc49c",
     fontWeight: "bold",
     fontSize: 25,
-    fontFamily: "OpenSans", fontWeight: "600",
+    fontFamily: "OpenSans",
+    fontWeight: "600"
   },
   nextButtonText: {
     fontSize: 16,
@@ -315,7 +317,7 @@ const styles = StyleSheet.create({
     marginBottom: 17,
     textAlign: "center",
     letterSpacing: 0.8,
-    fontFamily: "stem-regular"
+    fontFamily: "Stem-Regular"
   },
   checkingInfo: {
     fontFamily: "OpenSans",

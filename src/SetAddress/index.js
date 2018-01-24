@@ -143,7 +143,7 @@ class SelectAddress extends React.Component {
 					marginVertical: 15,
 				}}>
 					<Text style={{
-						fontFamily: 'stem-medium',
+						fontFamily: 'Stem-Medium',
 						lineHeight: 13,
 						fontSize: 12,
 						top: 1,
@@ -256,7 +256,7 @@ class SelectAddress extends React.Component {
 				/>*/}
           <Text
             style={{
-              fontFamily: "stem-medium",
+              fontFamily: "Stem-Medium",
               fontSize: 16,
               lineHeight: 20,
               marginTop:
@@ -470,7 +470,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center",
     letterSpacing: 0.8,
-    fontFamily: "stem-regular"
+    fontFamily: "Stem-Regular"
   },
   container: {
     flex: 2,

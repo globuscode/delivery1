@@ -176,7 +176,7 @@ class Plate extends React.Component {
               backgroundColor: "transparent",
               fontSize: 14,
               marginLeft: 10,
-              fontFamily: "stem-medium",
+              fontFamily: "Stem-Medium",
               color: "#ffffff"
             }}
           >
@@ -220,7 +220,7 @@ class Plate extends React.Component {
               alignSelf: "center",
               textAlign: "center",
               top: Platform.OS === "ios" ? 2 : 0,
-              fontFamily: "stem-medium",
+              fontFamily: "Stem-Medium",
               width: screen == 0 ? 95 : screen == 1 ? 111 : 123
             }}
           >
@@ -258,7 +258,7 @@ class Plate extends React.Component {
               alignSelf: "center",
               top: Platform.OS === "ios" ? 2 : 0,
               textAlign: "center",
-              fontFamily: "stem-medium",
+              fontFamily: "Stem-Medium",
               width: screen == 0 ? 95 : screen == 1 ? 111 : 123
             }}
           >
@@ -397,7 +397,7 @@ class Plate extends React.Component {
                 style={{
                   backgroundColor: "transparent",
                   textAlign: "center",
-                  fontFamily: "stem-medium",
+                  fontFamily: "Stem-Medium",
                   fontSize: 13,
                   maxWidth: viewportWidth - 80,
                   color: "#fff",
@@ -461,7 +461,7 @@ class Plate extends React.Component {
           >
             <Text
               style={{
-                fontFamily: "stem-medium",
+                fontFamily: "Stem-Medium",
                 fontSize: 18,
                 lineHeight: 22,
                 textAlign: "center",
@@ -557,7 +557,7 @@ class Plate extends React.Component {
                 marginTop: adaptWidth(32, 40, 49),
                 color: "#fff",
                 fontSize: 16,
-                fontFamily: "stem-medium",
+                fontFamily: "Stem-Medium",
                 lineHeight: 28,
                 letterSpacing: 0.9,
                 top: 2
