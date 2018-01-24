@@ -33,7 +33,7 @@ const headerStyleIOS = () => ({
     color: "#dcc49c"
   },
   headerStyle: {
-    marginTop: 20,
+    marginTop: Platform.OS === "ios" ? 0 : getStatusBarHeight(),
     backgroundColor: "#292b37",
     paddingHorizontal: Platform.OS === "ios" ? adaptWidth(16, 18, 24) : -3
   }
@@ -184,7 +184,7 @@ const FourthScreen = StackNavigator(
           color: "#dcc49c"
         },
         headerStyle: {
-          marginTop: getStatusBarHeight(),
+          marginTop: 0,
           backgroundColor: "transparent",
           borderBottomWidth: Platform.OS === "ios" ? 1 : 0,
           marginHorizontal: Platform.OS === "ios" ? 20 : -3,
