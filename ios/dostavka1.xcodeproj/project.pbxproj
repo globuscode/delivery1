@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -41,6 +42,7 @@
 		7E09E7B19B4F46E6866C032F /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DB3BFD0D9B649A9A791445C /* libRNVectorIcons.a */; };
 		82DDA35B10F14EDFAE04A76F /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8FFB2AA963C24536826A366C /* Zocial.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
+		89BBA1B46CD34D15898C05FB /* OpenSans_Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C1F1111C72D74B01A7DE9F60 /* OpenSans_Semibold.ttf */; };
 		99E22AA0EE744D02BFC95851 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 362E10FD5FA8401A9D13B513 /* MaterialIcons.ttf */; };
 		9E4EC164E8444C4892A2992E /* Stem-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F1053182C1504A2B918164C9 /* Stem-Medium.ttf */; };
 		A43FD00C94894A8EBDCCD5AB /* icomoon.svg in Resources */ = {isa = PBXBuildFile; fileRef = 96794032C6FB41318C4F6226 /* icomoon.svg */; };
@@ -50,13 +52,12 @@
 		BD00260BE2954C2B9D88C56C /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB7754FCFF35446CBABD1EB3 /* EvilIcons.ttf */; };
 		C18E5D641D7144B6990759C4 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E152E3316FA84D8CBBEBD072 /* Entypo.ttf */; };
 		C9770AEE1A0148C1B5E4A8D7 /* icomoon.woff in Resources */ = {isa = PBXBuildFile; fileRef = DE6EB5CF29C3473896FD2CA1 /* icomoon.woff */; };
+		CDEC53F9454F4D6AB9723CA3 /* OpenSans_Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 025E459243CE44F2A65B6B11 /* OpenSans_Bold.ttf */; };
 		D5B2B02E386648FE86F0C069 /* OpenSans.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6B7FD04AD663492E8E45F04A /* OpenSans.ttf */; };
 		D7D849FD2941433CA3AE081C /* Stem-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9B5CF7050EA42A790B83A63 /* Stem-Regular.ttf */; };
 		DBA362CE815F4DFDA9E3BD02 /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9479BAE3D7E042CFA8C8B145 /* icomoon.ttf */; };
 		E364699FF74B4286B0E93D16 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE85D95D313641FBB3E05BB5 /* libBVLinearGradient.a */; };
 		F42A8D1183C148069DCE8DB1 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D58CD1D71AB24B0FBCB4C349 /* SimpleLineIcons.ttf */; };
-		CDEC53F9454F4D6AB9723CA3 /* OpenSans_Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 025E459243CE44F2A65B6B11 /* OpenSans_Bold.ttf */; };
-		89BBA1B46CD34D15898C05FB /* OpenSans_Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C1F1111C72D74B01A7DE9F60 /* OpenSans_Semibold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -352,6 +353,7 @@
 		00E356EE1AD99517003FC87E /* dostavka1Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = dostavka1Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* dostavka1Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = dostavka1Tests.m; sourceTree = "<group>"; };
+		025E459243CE44F2A65B6B11 /* OpenSans_Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = OpenSans_Bold.ttf; path = ../assets/fonts/OpenSans_Bold.ttf; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* dostavka1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dostavka1.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -381,6 +383,7 @@
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		B0576E87F52B4B7A81D2FA72 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		BB7754FCFF35446CBABD1EB3 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
+		C1F1111C72D74B01A7DE9F60 /* OpenSans_Semibold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = OpenSans_Semibold.ttf; path = ../assets/fonts/OpenSans_Semibold.ttf; sourceTree = "<group>"; };
 		C3D8949A5678405A8306FA3A /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		CE85D95D313641FBB3E05BB5 /* libBVLinearGradient.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libBVLinearGradient.a; sourceTree = "<group>"; };
 		D58CD1D71AB24B0FBCB4C349 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
@@ -389,8 +392,6 @@
 		E152E3316FA84D8CBBEBD072 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		E9B5CF7050EA42A790B83A63 /* Stem-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Stem-Regular.ttf"; path = "../assets/fonts/Stem-Regular.ttf"; sourceTree = "<group>"; };
 		F1053182C1504A2B918164C9 /* Stem-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Stem-Medium.ttf"; path = "../assets/fonts/Stem-Medium.ttf"; sourceTree = "<group>"; };
-		025E459243CE44F2A65B6B11 /* OpenSans_Bold.ttf */ = {isa = PBXFileReference; name = "OpenSans_Bold.ttf"; path = "../assets/fonts/OpenSans_Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		C1F1111C72D74B01A7DE9F60 /* OpenSans_Semibold.ttf */ = {isa = PBXFileReference; name = "OpenSans_Semibold.ttf"; path = "../assets/fonts/OpenSans_Semibold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -788,7 +789,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 9388SGN4DN;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1358,8 +1359,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 9388SGN4DN;
@@ -1377,8 +1378,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.delivery1;
 				PRODUCT_NAME = dostavka1;
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "732e819a-efee-4d31-8a5c-01c6230fac51";
+				PROVISIONING_PROFILE_SPECIFIER = "com.delivery1 AppStore";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1389,8 +1390,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: PWR Group, OOO (9388SGN4DN)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9388SGN4DN;
 				HEADER_SEARCH_PATHS = (
@@ -1407,8 +1408,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.delivery1;
 				PRODUCT_NAME = dostavka1;
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "732e819a-efee-4d31-8a5c-01c6230fac51";
+				PROVISIONING_PROFILE_SPECIFIER = "com.delivery1 AppStore";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
