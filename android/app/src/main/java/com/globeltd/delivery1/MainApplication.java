@@ -1,7 +1,8 @@
-package com.dostavka1;
+package com.globeltd.delivery1;
 
 import android.app.Application;
 
+import com.dostavka1.BuildConfig;
 import com.facebook.react.ReactApplication;
 import com.zyu.ReactNativeWheelPickerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;

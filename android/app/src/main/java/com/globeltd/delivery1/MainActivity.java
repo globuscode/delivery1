@@ -1,4 +1,4 @@
-package com.dostavka1;
+package com.globeltd.delivery1;
 
 import com.facebook.react.ReactActivity;
 
