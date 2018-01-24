@@ -1,5 +1,6 @@
 import { StatusBar, Platform } from "react-native";
 import { StackNavigator } from "react-navigation";
+import { getStatusBarHeight } from "react-native-status-bar-height";
 
 import { adaptWidth } from "./src/etc";
 
@@ -27,7 +28,7 @@ const headerStyleIOS = title => ({
   title: title,
   headerTruncatedBackTitle: "Назад",
   headerTitleStyle: {
-    fontFamily: "stem-medium",
+    fontFamily: "Stem-Medium",
     fontSize: 14,
     letterSpacing: 0.8,
     color: "#fff"
@@ -37,7 +38,7 @@ const headerStyleIOS = title => ({
     color: "#dcc49c"
   },
   headerStyle: {
-    marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
+    marginTop: getStatusBarHeight(),
     backgroundColor: "transparent",
     padding: 0,
     borderBottomWidth: Platform.OS === "ios" ? 1 : 0,
@@ -167,7 +168,7 @@ export default StackNavigator(
         header: null,
         gesturesEnabled: false
       }
-    },
+    }
   },
   {
     headerMode: "screen",

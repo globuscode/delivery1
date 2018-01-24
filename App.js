@@ -9,6 +9,8 @@ import PopupCart from "./src/PopupCart";
 import PopupDialog, { SlideAnimation } from "react-native-popup-dialog";
 
 StatusBar.setBarStyle("light-content", true);
+StatusBar.setTranslucent(true);
+StatusBar.setBackgroundColor("rgb(37, 38, 46)");
 
 const slide = new SlideAnimation({
   slideFrom: "bottom"
