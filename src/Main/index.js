@@ -364,22 +364,19 @@ export default TabNavigator(
 
     tabBarOptions: {
       style: {
-        alignSelf: "stretch",
-        padding: 0,
-        paddingTop: 1,
-        backgroundColor: "rgb(87, 88, 98)",
-        marginHorizontal: 20
+        backgroundColor: "rgba(39, 40, 48, 1)",
+        borderTopColor: "rgba(0, 0, 0, 0)"
       },
       tabStyle: {
-        flex: 1,
-        paddingTop: 3,
-        justifyContent: "space-around"
+        justifyContent: "space-around",
+        borderColor: "rgb(87, 88, 98)",
+        borderTopColor: "rgba(0, 0, 0, 0)"
       },
       pressColor: "red",
       inactiveBackgroundColor: "rgba(39, 40, 48, 1)",
       activeBackgroundColor: "rgba(39, 40, 48, 1)",
-      activeTintColor: "rgb( 225, 199, 155)",
-      inactiveTintColor: "rgb( 225, 199, 155)"
+      activeTintColor: "rgb(225, 199, 155)",
+      inactiveTintColor: "rgb(225, 199, 155)"
     }
   }
 );

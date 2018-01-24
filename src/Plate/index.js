@@ -746,6 +746,16 @@ class Plate extends React.Component {
               flex: 1
             }}
           />
+          <View
+            style={{
+              height: 1,
+              position: "absolute",
+              alignSelf: "center",
+              backgroundColor: "rgb(87, 88, 98)",
+              bottom: 0,
+              width: viewportWidth - 40
+            }}
+          />
         </View>
       </View>
     );
