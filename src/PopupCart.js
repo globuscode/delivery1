@@ -147,7 +147,7 @@ class Popup extends React.Component {
             uri: "http:" + this.state.restaurant.logoImage
           }}
           style={{
-            width: 150,
+            width: viewportWidth - 50,
             height: 100,
             alignSelf: "center"
           }}
