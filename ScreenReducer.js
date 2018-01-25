@@ -38,7 +38,7 @@ const headerStyleIOS = title => ({
     color: "#dcc49c"
   },
   headerStyle: {
-    marginTop: getStatusBarHeight(),
+    marginTop: Platform.OS === "ios" ? 0 : getStatusBarHeight(),
     backgroundColor: "transparent",
     padding: 0,
     borderBottomWidth: Platform.OS === "ios" ? 1 : 0,
