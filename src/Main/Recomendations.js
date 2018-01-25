@@ -113,7 +113,7 @@ class Recomendations extends React.Component {
     /* Стили карточки */
     const itemStyles = StyleSheet.create({
       containerSlider: {
-        margin: SLIDER_MARGIN,
+        marginHorizontal: SLIDER_MARGIN,
         height: SLIDER_HEIGHT,
         width: SLIDER_WIDTH
       },
@@ -157,7 +157,7 @@ class Recomendations extends React.Component {
         fontSize: 20,
         color: "#ffffff",
         fontFamily: "Stem-Medium",
-        maxWidth: viewportWidth - 100
+        maxWidth: viewportWidth - 120
       },
       restourantTextStyle: {
         flexDirection: "row",
