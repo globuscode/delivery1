@@ -48,7 +48,7 @@ class Price extends React.Component {
               flexDirection: "row",
               alignSelf: "flex-start",
               //width: 100,
-              borderWidth: 1,
+              borderWidth: 1.5,
               height: adaptWidth(28, 30, 34),
               borderRadius: 5,
               alignItems: "center",
@@ -64,10 +64,10 @@ class Price extends React.Component {
                 !parseInt(this.props.count) > 0 ? "#dcc49c" : "transparent"
             }}
           >
-            <View style={{ marginLeft: 5 }}>
+            <View style={{ marginLeft: 8 }}>
               <IconD
                 name="cart"
-                size={adaptWidth(12, 12, 12)}
+                size={adaptWidth(13, 13, 13)}
                 color={!parseInt(this.props.count) > 0 ? "#dcc49c" : "#292b37"}
               />
               {this.props.count == 0 || this.props.count == null ? null : (
