@@ -160,7 +160,7 @@ class Feed extends React.Component {
                 alignItems: "center"
               }}
             >
-              <IconD name="contact" color="#dcc49c" size={30} />
+              <IconD name="contact-bold" color="#dcc49c" size={30} />
               <View style={{ marginLeft: 10 }}>
                 <Text
                   style={{

@@ -75,7 +75,7 @@ class Profile extends React.Component {
             marginTop: (screen == 0 ? 30 : screen == 1 ? 50 : 65) / 2
           }}
         >
-          <IconD name="contact" color="#dcc49c" size={50} />
+          <IconD name="contact-bold" color="#dcc49c" size={50} />
           <Text
             style={{
               marginLeft: 15,
