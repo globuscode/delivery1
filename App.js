@@ -37,7 +37,7 @@ class ModalComponent extends React.Component {
         dialogStyle={{
           backgroundColor: "transparent",
           flexDirection: "column",
-          flex: 1,
+          height: 550,
           justifyContent: "flex-end"
         }}
         containerStyle={{

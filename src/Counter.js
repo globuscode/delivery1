@@ -25,6 +25,58 @@ class Price extends React.Component {
       viewportWidth >= 320 && viewportWidth < 375
         ? 0
         : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
+    if (this.props.large)
+      return (
+        <View
+          style={{
+            width: 114,
+            height: 34,
+
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignContent: "center",
+            alignItems: "center",
+
+            borderColor: "#e1c79b",
+            borderWidth: 1,
+            borderRadius: 4
+          }}
+        >
+          <TouchableOpacity onPress={this.props.onRemovePress}>
+            <Icon
+              name="ios-remove-outline"
+              size={27}
+              color="#fff"
+              style={{
+                paddingHorizontal: 5,
+                backgroundColor: "transparent"
+              }}
+            />
+          </TouchableOpacity>
+          <Text
+            style={{
+              color: "#fff",
+              fontFamily: "Stem-Medium",
+              top: Platform.OS === "ios" ? 3 : 0,
+              fontSize: 14,
+              textAlign: "center"
+            }}
+          >
+            {this.props.value}
+          </Text>
+          <TouchableOpacity onPress={this.props.onAddPress}>
+            <Icon
+              name="ios-add-outline"
+              size={27}
+              color="#fff"
+              style={{
+                paddingHorizontal: 5,
+                backgroundColor: "transparent"
+              }}
+            />
+          </TouchableOpacity>
+        </View>
+      );
     return (
       <View
         style={{
@@ -82,6 +134,7 @@ class Price extends React.Component {
 Price.propTypes = {
   onAddPress: propTypes.func,
   onRemovePress: propTypes.func,
+  large: propTypes.bool,
   value: propTypes.number
 };
 

@@ -117,6 +117,7 @@ class Popup extends React.Component {
     return (
       <View
         style={{
+          height: 550,
           borderTopLeftRadius: 8,
           borderTopRightRadius: 8,
           borderWidth: 1,
@@ -129,42 +130,44 @@ class Popup extends React.Component {
           width: popupWidth
         }}
       >
-        <Text
-          style={{
-            fontFamily: "Stem-Medium",
-            fontSize: 14,
-            alignSelf: "stretch",
-            textAlign: "center",
-            marginBottom: 15,
-            color: "#fff"
-          }}
-        >
-          {"Вы переходите в ресторан:"}
-        </Text>
-        <Image
-          resizeMode="contain"
-          source={{
-            uri: "http:" + this.state.restaurant.logoImage
-          }}
-          style={{
-            width: viewportWidth - 50,
-            height: 100,
-            alignSelf: "center"
-          }}
-        />
-        <Text
-          style={{
-            fontFamily: "Stem-Medium",
-            fontSize: 14,
-            alignSelf: "stretch",
-            textAlign: "left",
-            marginTop: 34,
-            color: "#fff"
-          }}
-        >
-          {this.state.plate.title}
-        </Text>
-        {/*<Text style={{
+        <View style={{ flex: 1 }}>
+          <Text
+            style={{
+              fontFamily: "Stem-Medium",
+              fontSize: 14,
+              marginTop: 0,
+              alignSelf: "stretch",
+              textAlign: "center",
+              marginBottom: 15,
+              color: "#fff"
+            }}
+          >
+            {"Вы переходите в ресторан:"}
+          </Text>
+          <Image
+            resizeMode="contain"
+            source={{
+              uri: "http:" + this.state.restaurant.logoImage
+            }}
+            style={{
+              width: viewportWidth - 50,
+              height: 118,
+              alignSelf: "center"
+            }}
+          />
+          <Text
+            style={{
+              fontFamily: "Stem-Medium",
+              fontSize: 14,
+              alignSelf: "stretch",
+              textAlign: "left",
+              marginTop: 34,
+              color: "#fff"
+            }}
+          >
+            {this.state.plate.title}
+          </Text>
+          {/*<Text style={{
                 fontFamily: "OpenSans",
                 fontSize: 10,
                 alignSelf: 'stretch',
@@ -174,157 +177,126 @@ class Popup extends React.Component {
                 marginBottom: screen == 0 ? 31 : screen == 1 ? 66 : 79,
                 color: 'rgb(135, 136, 140)'
             }}>{this.state.plate.description}</Text>*/}
-        <View
-          style={{
-            marginTop: 10,
-            marginBottom: screen == 0 ? 31 : screen == 1 ? 66 : 79,
-            alignSelf: "stretch"
-          }}
-        >
-          <HTMLView
-            value={`<p>${this.state.plate.description}</p>`}
-            stylesheet={styles}
-          />
-        </View>
-        <View style={{ flexDirection: "row" }}>
           <View
             style={{
-              flex: 2,
-              flexDirection: "column",
-              marginBottom: screen == 0 ? 15 : screen == 1 ? 20 : 25
+              marginTop: 10,
+              marginBottom: screen == 0 ? 31 : screen == 1 ? 66 : 79,
+              alignSelf: "stretch"
             }}
           >
-            <Text
-              style={{
-                fontFamily: "OpenSans",
-                fontSize: 10,
-                color: "rgb(135, 136, 140)",
-                marginBottom: 5
-              }}
-            >
-              {"Количество"}
-            </Text>
-            <Counter
-              value={itemCount}
-              onRemovePress={async () => {
-                this.props.removePlate(this.state.plate);
-                if (itemCount == 1) {
-                  this.props.hide();
-                }
-                this.setState({});
-              }}
-              onAddPress={() => {
-                this.props.addPlate(this.state.plate);
-                this.setState({});
-              }}
+            <HTMLView
+              value={`<p>${this.state.plate.description}</p>`}
+              stylesheet={styles}
             />
           </View>
-          <View
-            style={{
-              flex: 2,
-              flexDirection: "column",
-              marginBottom: screen == 0 ? 15 : screen == 1 ? 20 : 25
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: "OpenSans",
-                fontSize: 10,
-                color: "rgb(135, 136, 140)",
-                marginBottom: 5
-              }}
-            >
-              {"Стоимость"}
-            </Text>
-            <Text
-              style={{
-                fontFamily: "Stem-Medium",
-                top: 4,
-                fontSize: 20,
-                letterSpacing: 1.4,
-                color: "#fff"
-              }}
-            >
-              {`${this.state.plate.price} руб.`}
-            </Text>
-          </View>
-        </View>
-        <ButtonD
-          title={["Добавить к заказу ", "и перейти в ресторан"]}
-          onPress={() => {
-            if (this.state.canNav) {
-              this.setState({ canNav: false });
-              setTimeout(() => {
-                this.setState({ canNav: true });
-              }, 2000);
-              if (
-                Store.getState().lastViewed.restaurant ===
-                this.state.restaurant.id
-              )
-                this.props.hide();
-              else this.props.close();
-            }
-          }}
-          width={popupWidth - 2 * 12}
-        />
-
-        <View style={{ height: screen == 0 ? 15 : screen == 1 ? 20 : 25 }} />
-
-        <View
-          style={{
-            alignSelf: "stretch",
-            alignItems: "flex-end",
-            justifyContent: "space-between",
-            flexDirection: "row"
-          }}
-        >
-          <View>
-            <Bar
-              progress={this.getTotalPrice() / this.state.freeDelivery}
-              width={popupWidth - 24 - 40}
-              animated
-              height={3}
-              color="rgb(225, 199, 155)"
-              unfilledColor="rgb(119, 122, 136)"
-              borderRadius={0}
-              borderWidth={0}
-            />
-          </View>
-          <View>
-            <Text
-              style={{
-                fontFamily: "OpenSans",
-                fontWeight: "600",
-                fontSize: 10,
-                textAlign: "center",
-                color: "rgb(225, 199, 155)",
-                paddingBottom: 4,
-                maxWidth: 56
-              }}
-            >{`${this.state.freeDelivery} ₽`}</Text>
-            <IconD
-              color={freeDelivery ? "rgb(231, 208, 172)" : "rgb(119, 122, 136)"}
-              size={35}
-              name="truck"
-            />
-          </View>
-
-          {!freeDelivery ? null : (
+          <View style={{ flexDirection: "row" }}>
             <View
               style={{
-                bottom: -5,
-                position: "absolute",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "transparent",
-                left: freeDelivery
-                  ? this.getTotalPrice() /
-                      this.state.freeDelivery *
-                      (popupWidth - 24 - 40) -
-                    20
-                  : popupWidth
+                flex: 2,
+                flexDirection: "column",
+                marginBottom: screen == 0 ? 15 : screen == 1 ? 20 : 25
               }}
             >
+              <Text
+                style={{
+                  fontFamily: "OpenSans",
+                  fontSize: 10,
+                  color: "rgb(135, 136, 140)",
+                  marginBottom: 5
+                }}
+              >
+                {"Количество"}
+              </Text>
+              <Counter
+                large
+                value={itemCount}
+                onRemovePress={async () => {
+                  this.props.removePlate(this.state.plate);
+                  if (itemCount == 1) {
+                    this.props.hide();
+                  }
+                  this.setState({});
+                }}
+                onAddPress={() => {
+                  this.props.addPlate(this.state.plate);
+                  this.setState({});
+                }}
+              />
+            </View>
+            <View
+              style={{
+                flex: 2,
+                flexDirection: "column",
+                marginBottom: screen == 0 ? 15 : screen == 1 ? 20 : 25
+              }}
+            >
+              <Text
+                style={{
+                  fontFamily: "OpenSans",
+                  fontSize: 10,
+                  color: "rgb(135, 136, 140)",
+                  marginBottom: 5
+                }}
+              >
+                {"Стоимость"}
+              </Text>
+              <Text
+                style={{
+                  fontFamily: "Stem-Medium",
+                  top: 4,
+                  fontSize: 20,
+                  letterSpacing: 1.4,
+                  color: "#fff"
+                }}
+              >
+                {`${this.state.plate.price} руб.`}
+              </Text>
+            </View>
+          </View>
+          <ButtonD
+            title={["Добавить к заказу ", "и перейти в ресторан"]}
+            onPress={() => {
+              if (this.state.canNav) {
+                this.setState({ canNav: false });
+                setTimeout(() => {
+                  this.setState({ canNav: true });
+                }, 2000);
+                if (
+                  Store.getState().lastViewed.restaurant ===
+                  this.state.restaurant.id
+                )
+                  this.props.hide();
+                else this.props.close();
+              }
+            }}
+            width={popupWidth - 2 * 12}
+          />
+
+          <View style={{ height: screen == 0 ? 15 : screen == 1 ? 20 : 25 }} />
+
+          <View
+            style={{
+              position: "absolute",
+              bottom: 10,
+              alignSelf: "stretch",
+              alignItems: "flex-end",
+              justifyContent: "space-between",
+              flexDirection: "row"
+            }}
+          >
+            <View>
+              <Bar
+                progress={this.getTotalPrice() / this.state.freeDelivery}
+                width={popupWidth - 24 - 40}
+                animated
+                height={3}
+                color="rgb(225, 199, 155)"
+                unfilledColor="rgb(119, 122, 136)"
+                borderRadius={0}
+                borderWidth={0}
+              />
+            </View>
+            <View>
               <Text
                 style={{
                   fontFamily: "OpenSans",
@@ -335,19 +307,60 @@ class Popup extends React.Component {
                   paddingBottom: 4,
                   maxWidth: 56
                 }}
-              >{`Заказ на\n${this.getTotalPrice()} ₽`}</Text>
+              >{`${this.state.freeDelivery} ₽`}</Text>
+              <IconD
+                color={
+                  freeDelivery ? "rgb(231, 208, 172)" : "rgb(119, 122, 136)"
+                }
+                size={35}
+                name="truck"
+              />
+            </View>
+
+            {!freeDelivery ? null : (
               <View
                 style={{
-                  backgroundColor: "rgb(37, 38, 46)"
+                  bottom: -5,
+                  position: "absolute",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  backgroundColor: "transparent",
+                  left: freeDelivery
+                    ? this.getTotalPrice() /
+                        this.state.freeDelivery *
+                        (popupWidth - 24 - 40) -
+                      20
+                    : popupWidth
                 }}
               >
-                <IconD color="rgb(231, 208, 172)" size={20} name="cart-small" />
+                <Text
+                  style={{
+                    fontFamily: "OpenSans",
+                    fontWeight: "600",
+                    fontSize: 10,
+                    textAlign: "center",
+                    color: "rgb(225, 199, 155)",
+                    paddingBottom: 4,
+                    maxWidth: 56
+                  }}
+                >{`Заказ на\n${this.getTotalPrice()} ₽`}</Text>
+                <View
+                  style={{
+                    backgroundColor: "rgb(37, 38, 46)"
+                  }}
+                >
+                  <IconD
+                    color="rgb(231, 208, 172)"
+                    size={20}
+                    name="cart-small"
+                  />
+                </View>
               </View>
-            </View>
-          )}
-        </View>
+            )}
+          </View>
 
-        <View style={{ height: 15 }} />
+          <View style={{ height: 15 }} />
+        </View>
       </View>
     );
   };
