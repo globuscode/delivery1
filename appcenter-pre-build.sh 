@@ -1,0 +1,4 @@
+# Example: Change bundle name of an iOS app for non-production
+
+npm install
+react-native link
