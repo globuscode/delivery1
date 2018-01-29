@@ -41,6 +41,8 @@
 	<string></string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>OpenSans_Bold.ttf</string>
+		<string>OpenSans_Semibold.ttf</string>
 		<string>OpenSans.ttf</string>
 		<string>Stem-Medium.ttf</string>
 		<string>Stem-Regular.ttf</string>
@@ -57,8 +59,6 @@
 		<string>Octicons.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
-		<string>OpenSans_Bold.ttf</string>
-		<string>OpenSans_Semibold.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
@@ -66,11 +66,11 @@
 	<array>
 		<string>armv7</string>
 	</array>
-	<key>UIStatusBarStyle</key>
-	<string>UIStatusBarStyleLightContent</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
