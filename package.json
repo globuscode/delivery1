@@ -17,7 +17,8 @@
     "ios": "react-native run-ios",
     "eject": "react-native eject",
     "version": "./version-ios.sh",
-    "test": "node node_modules/jest/bin/jest.js --watch"
+    "test": "node node_modules/jest/bin/jest.js --watch",
+    "prebuild": "appcenter-pre-build.sh"
   },
   "rnpm": {
     "assets": [
