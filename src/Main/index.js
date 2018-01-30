@@ -80,7 +80,7 @@ const FirstScreen = StackNavigator(
           color: "#dcc49c"
         },
         headerStyle: {
-          marginTop: 0,
+          marginTop: Platform.OS === "ios" ? 0 : getStatusBarHeight(),
           backgroundColor: "#292b37"
         }
       }
@@ -131,7 +131,7 @@ const SecondScreen = StackNavigator(
           color: "#dcc49c"
         },
         headerStyle: {
-          marginTop: 0,
+          marginTop: Platform.OS === "ios" ? 0 : getStatusBarHeight(),
           backgroundColor: "#292b37"
         }
       }
@@ -184,7 +184,7 @@ const FourthScreen = StackNavigator(
           color: "#dcc49c"
         },
         headerStyle: {
-          marginTop: 0,
+          marginTop: Platform.OS === "ios" ? 0 : getStatusBarHeight(),
           backgroundColor: "transparent",
           borderBottomWidth: Platform.OS === "ios" ? 1 : 0,
           marginHorizontal: Platform.OS === "ios" ? 20 : -3,
@@ -214,7 +214,7 @@ const FourthScreen = StackNavigator(
           color: "#dcc49c"
         },
         headerStyle: {
-          marginTop: 0,
+          marginTop: Platform.OS === "ios" ? 0 : getStatusBarHeight(),
           backgroundColor: "#292b37"
         }
       }
@@ -266,7 +266,7 @@ const ThirdScreen = StackNavigator(
           color: "#dcc49c"
         },
         headerStyle: {
-          marginTop: 0,
+          marginTop: Platform.OS === "ios" ? 0 : getStatusBarHeight(),
           backgroundColor: "#292b37"
         }
       }
