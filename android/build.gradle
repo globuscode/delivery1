@@ -34,7 +34,7 @@ subprojects {
 }
 
 def getNpmVersion() {
-    def inputFile = new File("${ENVIRONMENT_VARIABLE}/package.json")
+    def inputFile = new File("/Users/vsts/agent/2.127.0/work/1/s//package.json")
     def packageJson = new JsonSlurper().parseText(inputFile.text)
     return packageJson["version"]
 }
