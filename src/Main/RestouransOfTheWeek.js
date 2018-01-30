@@ -86,25 +86,32 @@ class Recomendations extends React.Component {
     return result;
   };
 
-  renderHeart(index) {
+  renderHeart({ id }) {
+    let fav = false;
+    let i;
+    for (i = 0; i < this.props.favourite.restaurants.length; i++) {
+      fav = this.props.favourite.restaurants[i] === id;
+      if (fav) break;
+    }
     return (
       <TouchableOpacity
         hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
         onPress={() => {
-          if (this.state.favourites[index]) {
-            this.props.removeFromFav(this.state.restourans[index]);
+          if (!fav) {
+            this.props.addToFav({ id: id });
             this.setState({});
-            //this.fav(index);
-          } else {
-            this.props.addToFav(this.state.restourans[index]);
-            this.setState({});
+            return 0;
             //this.fav(index);
           }
+
+          this.props.removeFromFav({ id: id });
+          this.setState({});
+          return 0;
         }}
       >
         <View style={{ backgroundColor: "transparent" }}>
           <IconD
-            name={this.state.favourites[index] ? "heart_full" : "heart_empty"}
+            name={fav ? "heart_full" : "heart_empty"}
             size={18}
             color="#dcc49c"
           />
@@ -248,7 +255,7 @@ class Recomendations extends React.Component {
                     color: '#292b37',
                     }}>{item.discount}</Text>
                   </View>*/}
-                <View>{this.renderHeart(index)}</View>
+                <View>{this.renderHeart(item)}</View>
               </View>
               <View
                 pointerEvents="none"
