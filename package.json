@@ -16,15 +16,10 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "eject": "react-native eject",
-    "version": "./version-ios.sh",
-    "test": "node node_modules/jest/bin/jest.js --watch",
-    "prebuild": "appcenter-pre-build.sh"
+    "version": "./version-ios.sh"
   },
   "rnpm": {
-    "assets": [
-      "./assets/fonts/",
-      "./assets/icons/fonts"
-    ]
+    "assets": ["./assets/fonts/", "./assets/icons/fonts"]
   },
   "jest": {
     "preset": "jest-expo"
