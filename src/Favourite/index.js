@@ -586,7 +586,7 @@ class Favourite extends React.Component {
                     hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
                     foreground={Touchable.SelectableBackgroundBorderless()}
                     onPress={() => {
-                      this.props.onDeletePlate(e);
+                      this.props.deletePlate(e);
                       this.setState({});
                     }}
                   >
@@ -640,11 +640,10 @@ class Favourite extends React.Component {
                       pressed={itemCount !== 0}
                       count={itemCount}
                       onPress={async () => {
-                        if (this.props.globalStore.length > 0) {
+                        if (this.props.cart.length > 0) {
                           if (
-                            this.props.globalStore[
-                              this.props.globalStore.length - 1
-                            ].plate.restaurant !== e.restaurant
+                            this.props.cart[this.props.cart.length - 1].plate
+                              .restaurant !== e.restaurant
                           )
                             Alert.alert(
                               "Вы уверенны?",
@@ -670,7 +669,7 @@ class Favourite extends React.Component {
                       <Touchable
                         background={Touchable.SelectableBackground()}
                         onPress={() => {
-                          this.props.deletePlate(e);
+                          this.props.onRemovePlate(e);
                         }}
                         style={{
                           width: adaptWidth(28, 30, 34),
@@ -848,6 +847,9 @@ export default connect(
     onAddPlate: plate => {
       dispatch({ type: "ADD_PLATE", payload: plate });
     },
+    onRemovePlate: plate => {
+      dispatch({ type: "REMOVE_PLATE_BY_OBJECT", payload: plate });
+    },
     open: data => dispatch({ type: "OPEN_MODAL", payload: data }),
     changeModal: data => {
       dispatch({ type: "CHANGE_CONTENT", payload: data });
@@ -860,6 +862,7 @@ Favourite.propTypes = {
   cart: propTypes.array,
   onDeletePlate: propTypes.func,
   onAddPlate: propTypes.func,
+  onRemovePlate: propTypes.func,
   open: propTypes.func,
   navigation: propTypes.object,
   onDeleteRestaurant: propTypes.func,
