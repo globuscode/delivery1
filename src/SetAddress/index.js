@@ -307,7 +307,6 @@ class SelectAddress extends React.Component {
                       house: e.house,
                       deliver: true
                     });
-                    this.validateAddress();
                   }}
                 >
                   <Text
