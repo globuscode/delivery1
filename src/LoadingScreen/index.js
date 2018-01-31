@@ -148,13 +148,13 @@ export default connect(
       dispatch({ type: "SET_RECOMENDATIONS", payload: data }),
     auth: () => {
       AsyncStorage.getItem("lastToken", async (error, token) => {
-        token = JSON.parse(token);
-        var data = new FormData();
-        data.append("token", token);
-        if (token != null) {
+        // token = JSON.parse(token);
+        var formData = new FormData();
+        formData.append("token", token);
+        if (token != "") {
           let data = await fetchJson(`${host}/auth/auth/`, {
             method: "POST",
-            body: data
+            body: formData
           });
 
           if (data.errors) {
