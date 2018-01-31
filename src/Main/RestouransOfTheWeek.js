@@ -10,6 +10,7 @@ import {
 import LinearGradient from "react-native-linear-gradient";
 import Touchable from "react-native-platform-touchable";
 import { connect } from "react-redux";
+import { LeftAlignedImage } from "../components/LeftAlignedImage";
 import propTypes from "prop-types";
 
 import IconD from "../IconD";
@@ -128,32 +129,20 @@ class Recomendations extends React.Component {
     const SLIDER_WIDTH = screen == 0 ? 280 : screen == 1 ? 328.1 : 362.3;
 
     return (
-      <Image
+      <View
         style={{
-          width: SLIDER_WIDTH / 3,
-          height: SLIDER_WIDTH / 3,
-          backgroundColor: "transparent"
+          width: SLIDER_WIDTH - 100,
+          height: 110
         }}
-        resizeMode={"contain"}
-        source={{ uri: "http:" + logo }}
-      />
-    ); /*
-    return <View style={{ height: SLIDER_WIDTH / 3 }}>
-      <WebView
-        bounces={false}
-        scrollEnabled={false}
-        source={{
-          html: `<img 
-            src="` + logo + `"
-            style="
-            width:100%;">`
-        }}
-        style={{
-          width: SLIDER_WIDTH / 3,
-          height: SLIDER_WIDTH / 3,
-          backgroundColor: 'transparent',
-        }} />
-    </View>*/
+      >
+        <LeftAlignedImage
+          height={110}
+          width={SLIDER_WIDTH - 100}
+          resizeMode={"center"}
+          source={{ uri: "http:" + logo }}
+        />
+      </View>
+    );
   }
 
   navigate = index => {
@@ -240,7 +229,7 @@ class Recomendations extends React.Component {
               <View
                 style={{
                   flexDirection: "row",
-                  justifyContent: "space-between"
+                  justifyContent: "flex-end"
                 }}
               >
                 {/*<View style={{ flexDirection: 'row', alignSelf: 'flex-start'  }}>

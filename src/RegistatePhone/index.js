@@ -105,7 +105,7 @@ class Registration extends React.Component {
           <Text
             style={{
               color:
-                this.isNext() || this.state.canSend
+                this.isNext() && this.state.canSend
                   ? "rgb(225, 199, 155)"
                   : "rgb(87, 88, 98)",
               fontSize: 14,

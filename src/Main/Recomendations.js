@@ -16,6 +16,7 @@ import Touchable from "react-native-platform-touchable";
 import propTypes from "prop-types";
 
 import { host } from "../etc";
+import { LeftAlignedImage } from "../components/LeftAlignedImage";
 import Storage from "../Reducers";
 import PriceButton from "../PriceButton";
 import IconD from "../IconD";
@@ -266,6 +267,25 @@ class Recomendations extends React.Component {
             : "http://dostavka1.com/img/app-icon.png"
         }}
       />
+    );
+    logo = (
+      <View
+        style={{
+          width: SLIDER_WIDTH / 2,
+          height: SLIDER_WIDTH / 3
+        }}
+      >
+        <LeftAlignedImage
+          height={SLIDER_WIDTH / 3}
+          width={SLIDER_WIDTH / 2}
+          resizeMode={"center"}
+          source={{
+            uri: this.state.restaurans[index]
+              ? "http:" + this.state.restaurans[index].logoImage
+              : "http://dostavka1.com/img/app-icon.png"
+          }}
+        />
+      </View>
     );
     var itemCount = getCount(this.props.globalStore, item);
     var bottomView = (
