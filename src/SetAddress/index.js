@@ -12,7 +12,6 @@ import { TextField } from "react-native-material-textfield";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Touchable from "react-native-platform-touchable";
 import { connect } from "react-redux";
-import Spinner from "react-native-loading-spinner-overlay";
 import propTypes from "prop-types";
 
 import { fetchJson } from "../etc";
@@ -29,7 +28,7 @@ class SelectAddress extends React.Component {
       restaurantName: "",
       history: [],
       recomededAddresses: [],
-      deliver: false,
+      deliver: undefined,
       address: "",
       house: ""
     };
@@ -119,6 +118,7 @@ class SelectAddress extends React.Component {
 
   checkForAviability = () => {
     if (this.state.address == "" || this.state.house == "") return null;
+    if (this.state.deliver === undefined) return null;
     if (!this.state.deliver)
       return (
         <View style={{ padding: 20 }}>
@@ -173,7 +173,7 @@ class SelectAddress extends React.Component {
 
   validateAddress = async () => {
     if (this.state.address == "" || this.state.house == "") {
-      this.setState({ deliver: false });
+      this.setState({ deliver: undefined });
       return -1;
     }
     this.props.showSpinner();
@@ -351,7 +351,8 @@ class SelectAddress extends React.Component {
                 if (this.state.address.length > 3)
                   await this.getAutocomplete({
                     street: address,
-                    house: this.state.house
+                    house: this.state.house,
+                    deliver: undefined
                   });
               }}
               onBlur={() => {
@@ -376,7 +377,9 @@ class SelectAddress extends React.Component {
               }}
               label="Дом доставки"
               value={this.state.house}
-              onChangeText={address => this.setState({ house: address })}
+              onChangeText={address =>
+                this.setState({ house: address, deliver: undefined })
+              }
               onBlur={() => {
                 this.validateAddress();
               }}
