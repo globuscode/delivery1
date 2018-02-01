@@ -180,6 +180,7 @@ class Popup extends React.Component {
           <View
             style={{
               marginTop: 10,
+              height: 50,
               marginBottom: screen == 0 ? 31 : screen == 1 ? 66 : 79,
               alignSelf: "stretch"
             }}
