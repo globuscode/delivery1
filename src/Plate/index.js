@@ -497,9 +497,10 @@ class Plate extends React.Component {
             pressed={inCart}
             onPress={() => {
               let item = this.state.plate;
-              if (this.props.globalStore.length > 0) {
+              const cart = this.props.globalStore;
+              if (cart.length > 0) {
                 if (
-                  this.props.globalStore[this.props.globalStore.length - 1]
+                  cart[0]
                     .plate.restaurant !== item.restaurant
                 )
                   Alert.alert(
@@ -519,7 +520,15 @@ class Plate extends React.Component {
                   );
                 else {
                   this.props.onAddPlate(item);
-                  this.props.openModal(item);
+                  let needToOpenModal = true;
+                  for (let i=0; i<cart.length; i++) {
+                    if (item.id === cart[i].plate.id) {
+                      needToOpenModal = false;
+                      break;
+                    }
+                  }
+                  if (needToOpenModal)
+                    this.props.openModal(item);
                 }
               } else {
                 this.props.onAddPlate(item);
