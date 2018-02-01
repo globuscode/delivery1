@@ -5,7 +5,6 @@ import {
   View,
   TouchableOpacity,
   Dimensions,
-  ActivityIndicator,
   AsyncStorage,
   Alert
 } from "react-native";
@@ -13,6 +12,7 @@ import { TextField } from "react-native-material-textfield";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Touchable from "react-native-platform-touchable";
 import { connect } from "react-redux";
+import Spinner from "react-native-loading-spinner-overlay";
 import propTypes from "prop-types";
 
 import { fetchJson } from "../etc";
@@ -24,10 +24,8 @@ class SelectAddress extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      active: false,
       canNav: true,
       showAutocomplete: true,
-      hidePrevious: false,
       restaurantName: "",
       history: [],
       recomededAddresses: [],
@@ -120,6 +118,7 @@ class SelectAddress extends React.Component {
   };
 
   checkForAviability = () => {
+    if (this.state.address == "" || this.state.house == "") return null;
     if (!this.state.deliver)
       return (
         <View style={{ padding: 20 }}>
@@ -177,14 +176,14 @@ class SelectAddress extends React.Component {
       this.setState({ deliver: false });
       return -1;
     }
-    this.setState({ active: true });
+    this.props.showSpinner();
     const responseJson = await fetchJson(
       `${host}/address?cityId=36&street=${this.state.address}&house=${
         this.state.house
       }&restaurantId=${this.props.navigation.state.params.id}`,
       {}
     );
-    this.setState({ active: false });
+    this.props.hideSpinner();
     if (responseJson["errors"] != undefined) {
       // Alert.alert(responseJson["errors"]["title"] + ' ' + responseJson["errors"]["code"], responseJson["errors"]["detail"]);
       this.setState({ deliver: false });
@@ -357,7 +356,6 @@ class SelectAddress extends React.Component {
               }}
               onBlur={() => {
                 this.validateAddress();
-                this.setState({ hidePrevious: true });
               }}
             />
           </View>
@@ -381,7 +379,6 @@ class SelectAddress extends React.Component {
               onChangeText={address => this.setState({ house: address })}
               onBlur={() => {
                 this.validateAddress();
-                this.setState({ hidePrevious: true });
               }}
             />
           </View>
@@ -391,16 +388,6 @@ class SelectAddress extends React.Component {
           {this.state.address != "" && this.state.house != ""
             ? this.checkForAviability(this.state.address)
             : null}
-          {!this.state.active ? null : (
-            <ActivityIndicator
-              size="large"
-              style={{
-                position: "absolute",
-                alignSelf: "center",
-                top: 300
-              }}
-            />
-          )}
           <View
             style={{
               position: "absolute",
@@ -453,7 +440,10 @@ export default connect(
     lastViewed: state.lastViewed
   }),
   dispatch => ({
-    saveAddress: address => dispatch({ type: "SAVE_ADDRESS", payload: address })
+    saveAddress: address =>
+      dispatch({ type: "SAVE_ADDRESS", payload: address }),
+    showSpinner: () => dispatch({ type: "SHOW_SPINNER" }),
+    hideSpinner: () => dispatch({ type: "HIDE_SPINNER" })
   })
 )(SelectAddress);
 

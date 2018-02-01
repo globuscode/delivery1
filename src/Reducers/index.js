@@ -4,6 +4,7 @@ import cart from "./cart";
 import user from "./user";
 import recomendations from "./recomendations";
 import modalController from "./modalController";
+import spinnerController from "./spinnerController";
 import address from "./address";
 import favourite from "./favourite";
 import lastViewed from "./lastViewed";
@@ -21,6 +22,7 @@ const store = createStore(
     user,
     recomendations,
     modalController,
+    spinnerController,
     lastAction,
     address,
     favourite,
