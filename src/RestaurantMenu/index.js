@@ -42,7 +42,7 @@ const hr = (
   />
 );
 
-class RestaurantMenu extends React.PureComponent {
+class RestaurantMenu extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       title: navigation.state.params.title,
@@ -348,7 +348,7 @@ class RestaurantMenu extends React.PureComponent {
       viewportWidth >= 320 && viewportWidth < 375
         ? 100
         : viewportWidth >= 375 && viewportWidth < 414 ? 117 : 130;
-    if (!isActive) return null;
+    // if (!isActive) return null;
     //const textMarginRight = (viewportWidth >= 320 && viewportWidth < 375) ? 40 : (viewportWidth >= 375 && viewportWidth < 414) ? 117 : 130;
     return (
       <Animatable.View
@@ -394,8 +394,11 @@ class RestaurantMenu extends React.PureComponent {
                 >
                   <Image
                     source={{
-                      uri: "http:" + e.image
+                      uri: "http:" + e.image,
+                      cache: "force-cache"
+                    
                     }}
+                    onLoad={() => {console.log(e.title); }}
                     resizeMode={
                       e.image.indexOf(".png") > 0 ? "contain" : "cover"
                     }
@@ -673,7 +676,8 @@ class RestaurantMenu extends React.PureComponent {
           {/* Фото ресторана */}
           <Image
             source={{
-              uri: "http:" + this.state.data.image
+              uri: "http:" + this.state.data.image,
+              cache: "force-cache"
             }}
             style={{
               width: viewportWidth,
