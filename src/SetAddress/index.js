@@ -441,8 +441,8 @@ SelectAddress.propTypes = {
 };
 
 export default connect(
-  state => ({
-    lastViewed: state.lastViewed
+  ({ lastViewed }) => ({
+    lastViewed: lastViewed
   }),
   dispatch => ({
     saveAddress: address =>

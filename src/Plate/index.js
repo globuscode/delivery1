@@ -779,10 +779,10 @@ Plate.propTypes = {
 };
 
 export default connect(
-  state => ({
-    globalStore: state.cart,
-    modal: state.modalController,
-    favourite: state.favourite
+  ({ cart, modalController, favourite }) => ({
+    globalStore: cart,
+    modal: modalController,
+    favourite: favourite
   }),
   dispatch => ({
     onAddPlate: plate => {

@@ -499,10 +499,10 @@ function getCount(cart, plate) {
 }
 
 export default connect(
-  state => ({
-    globalStore: state.cart,
-    favourite: state.favourite,
-    modal: state.modalController
+  ({ cart, favourite, modalController }) => ({
+    globalStore: cart,
+    favourite: favourite,
+    modal: modalController
   }),
   dispatch => ({
     onAddPlate: plate => {

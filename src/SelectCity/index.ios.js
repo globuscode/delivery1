@@ -260,7 +260,7 @@ class SelectCity extends React.Component {
 }
 
 export default connect(
-  state => ({}),
+  ({}) => ({}),
   dispatch => ({
     open: () => dispatch({ type: "OPEN_MODAL" })
   })

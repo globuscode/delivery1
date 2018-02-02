@@ -385,9 +385,9 @@ const styles = StyleSheet.create({
 });
 
 export default connect(
-  state => ({
-    modal: state.modalController,
-    cart: state.cart
+  ({ modalController, cart }) => ({
+    modal: modalController,
+    cart: cart
   }),
   dispatch => ({
     removePlate: plate =>

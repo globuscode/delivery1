@@ -245,9 +245,9 @@ class MakeOrder extends React.Component {
 }
 
 export default connect(
-  state => ({
-    globalStore: state.cart,
-    userStore: state.user
+  ({ cart, user }) => ({
+    globalStore: cart,
+    userStore: user
   }),
   dispatch => ({
     makeOrder: () => dispatch({ type: "MAKE_ORDER" })

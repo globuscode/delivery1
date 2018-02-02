@@ -562,8 +562,8 @@ const styles = StyleSheet.create({
   }
 });
 export default connect(
-  state => ({
-    globalStore: state.cart
+  ({ cart }) => ({
+    globalStore: cart
   }),
   dispatch => ({
     onAddPlate: plate => {

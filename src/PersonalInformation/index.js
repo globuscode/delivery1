@@ -143,8 +143,8 @@ class PersonalInfo extends React.Component {
 }
 
 export default connect(
-  state => ({
-    userData: state.user
+  ({ user }) => ({
+    userData: user
   }),
   dispatch => ({
     logout: () => {

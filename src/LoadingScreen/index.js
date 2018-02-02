@@ -148,9 +148,9 @@ class Loading extends React.Component {
 }
 
 export default connect(
-  state => ({
-    userData: state.user,
-    recomendations: state.recomendations
+  ({ user, recomendations }) => ({
+    userData: user,
+    recomendations: recomendations
   }),
   dispatch => ({
     loadRecomendations: data =>

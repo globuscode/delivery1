@@ -841,10 +841,10 @@ class Favourite extends React.Component {
   };
 }
 export default connect(
-  state => ({
-    favourite: state.favourite,
-    cart: state.cart,
-    modal: state.modalController
+  ({ favourite, cart, modalController }) => ({
+    favourite: favourite,
+    cart: cart,
+    modal: modalController
   }),
   dispatch => ({
     onDeletePlate: fav =>

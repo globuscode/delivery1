@@ -82,8 +82,8 @@ class TabIcon extends React.Component {
 }
 
 export default connect(
-  state => ({
-    cart: state.cart
+  ({ cart }) => ({
+    cart: cart
   }),
   dispatch => ({})
 )(TabIcon);

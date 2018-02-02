@@ -62,9 +62,9 @@ class ModalComponent extends React.Component {
 }
 
 const M = connect(
-  state => ({
-    modal: state.modalController,
-    spinnerController: state.spinnerController
+  ({ modalController, spinnerController }) => ({
+    modal: modalController,
+    spinnerController: spinnerController
   }),
   dispatch => ({
     open: () => dispatch({ type: "OPEN_MODAL" }),

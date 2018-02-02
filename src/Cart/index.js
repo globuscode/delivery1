@@ -629,10 +629,10 @@ Cart.propTypes = {
 };
 
 export default connect(
-  state => ({
-    cart: state.cart,
-    favourite: state.favourite,
-    user: state.user
+  ({ cart, favourite, user }) => ({
+    cart: cart,
+    favourite: favourite,
+    user: user
   }),
   dispatch => ({
     removePlate: plateIndex =>

@@ -295,8 +295,8 @@ class Recomendations extends React.Component {
 }
 
 export default connect(
-  state => ({
-    favourite: state.favourite
+  ({ favourite }) => ({
+    favourite: favourite
   }),
   dispatch => ({
     addToFav: data => {
