@@ -586,7 +586,7 @@ class Favourite extends React.Component {
                     hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
                     foreground={Touchable.SelectableBackgroundBorderless()}
                     onPress={() => {
-                      this.props.deletePlate(e);
+                      this.props.onDeletePlate(e);
                       this.setState({});
                     }}
                   >
@@ -727,6 +727,11 @@ class Favourite extends React.Component {
       let plate = newProps.favourite.plates[i];
 
       let responseJson = await fetchJson(`${host}/plate?plate=${plate}`);
+      if (responseJson.errors != undefined)
+        if (responseJson.errors.code === 666) {
+          this.props.onDeletePlate({ id: plate });
+          return -1;
+        }
       this.state.favourite.plates.push(responseJson.data[0]);
       let responsePlateRestJson = await fetchJson(
         `${host}/restaurant?restaurantId=${responseJson.data[0].restaurant}`
@@ -743,6 +748,11 @@ class Favourite extends React.Component {
       let responseRestJson = await fetchJson(
         `${host}/restaurant?restaurantId=${restaurant}`
       );
+      if (responseRestJson.errors != undefined)
+        if (responseRestJson.errors.code === 666) {
+          this.props.onDeleteRestaurant({ id: restaurant });
+          return -1;
+        }
       if (responseRestJson.data.result != undefined)
         this.state.favourite.restaurants.push(responseRestJson.data.result);
     }
