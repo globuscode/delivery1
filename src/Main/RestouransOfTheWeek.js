@@ -147,8 +147,9 @@ class Recomendations extends React.Component {
 
   navigate = index => {
     if (this.state.canNav) {
-      this.props.navigation.navigate("Restaurant", {
-        id: this.state.restourans[index].id
+      this.props.navigation.navigate("Loader", {
+        id: this.state.restourans[index].id,
+        action: "navigateToRestaurant"
       });
       this.setState({ canNav: false });
       setTimeout(() => {

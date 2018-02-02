@@ -367,7 +367,10 @@ class Favourite extends React.Component {
             height: SLIDER_WIDTH
           }}
           onPress={() =>
-            this.props.navigation.navigate("Restaurant", { id: item.id })
+            this.props.navigation.navigate("Loader", {
+              id: item.id,
+              action: "navigateToRestaurant"
+            })
           }
         >
           <View>

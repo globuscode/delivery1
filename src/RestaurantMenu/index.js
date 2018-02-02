@@ -13,7 +13,7 @@ import {
   Alert
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import LinearGradient from 'react-native-linear-gradient';
+import LinearGradient from "react-native-linear-gradient";
 import Accordion from "react-native-collapsible/Accordion";
 import { connect } from "react-redux";
 import Touchable from "react-native-platform-touchable";
@@ -28,9 +28,7 @@ import { fetchJson } from "../etc";
 import { host } from "../etc";
 import PriceButton from "../PriceButton";
 
-const { width: viewportWidth } = Dimensions.get(
-  "window"
-);
+const { width: viewportWidth } = Dimensions.get("window");
 const hr = (
   <View
     style={{
@@ -74,31 +72,8 @@ class RestaurantMenu extends React.Component {
       hideInfo: false,
       canNav: true,
       favourite: false,
-      data: {
-        id: 0,
-        title: "",
-        image: "//dostavka1.com/img/app-icon.png",
-        logoImage: "//dostavka1.com/img/app-icon.png",
-        type: "",
-        tagGroups: [],
-        minOrder: 0,
-        description: {
-          title: "",
-          description: ""
-        },
-        bestPlates: [],
-        promo: {
-          id: 0,
-          title: "",
-          description: ""
-        },
-        time: "",
-        averageBill: 0,
-        minBill: 0,
-        web: "",
-        discount: 0
-      },
-      menu: []
+      data: this.props.navigation.state.params.restaurant,
+      menu: this.props.navigation.state.params.menu
     };
   }
 
@@ -142,26 +117,26 @@ class RestaurantMenu extends React.Component {
       }
     }
 
-    const restaurantId = this.props.navigation.state
-      ? this.props.navigation.state.params.id
-      : (-1).toString();
+    // const restaurantId = this.props.navigation.state
+    //   ? this.props.navigation.state.params.id
+    //   : (-1).toString();
 
-    let restaurantResponseJson = await fetchJson(
-      `${host}/restaurant?restaurantId=${restaurantId}`
-    );
+    // let restaurantResponseJson = await fetchJson(
+    //   `${host}/restaurant?restaurantId=${restaurantId}`
+    // );
 
-    if (restaurantResponseJson.data === undefined) {
-      Alert.alert("Ошибка", "Ошибка запроса");
-      throw Error("Упс...");
-    }
-    if (restaurantResponseJson.data.result === undefined) {
-      Alert.alert("Ошибка", "Ошибка запроса");
-      throw Error("Упс...");
-    }
+    // if (restaurantResponseJson.data === undefined) {
+    //   Alert.alert("Ошибка", "Ошибка запроса");
+    //   throw Error("Упс...");
+    // }
+    // if (restaurantResponseJson.data.result === undefined) {
+    //   Alert.alert("Ошибка", "Ошибка запроса");
+    //   throw Error("Упс...");
+    // }
 
     this.props.navigation.setParams({
       favourite: fav,
-      title: restaurantResponseJson.data.result.title,
+      title: this.props.navigation.state.params.restaurant.title,
       onHeartPress: () => {
         if (!this.state.favourite) {
           this.props.addRestToFav({
@@ -176,7 +151,7 @@ class RestaurantMenu extends React.Component {
     });
 
     this.state.favourite = fav;
-    this.state.data = restaurantResponseJson.data.result;
+    // this.state.data = this.props.navigation.state.params.restaurant;
     // this.setState({
     //   favourite: fav,
     //   data: restaurantResponseJson.data.result
@@ -198,12 +173,16 @@ class RestaurantMenu extends React.Component {
     this.props.navigation.setParams({
       title: this.state.data.title
     });
+
+    if (this.props.navigation.state.params.menu != undefined) {
+      return 0;
+    }
     const menuResponseJson = await fetchJson(
       `${host}/restaurantMenu?restaurantId=${restaurantId}`
     );
     if (menuResponseJson["data"]) {
       if (menuResponseJson["data"]["result"]) {
-        this.setState({menu: menuResponseJson["data"]["result"]});
+        this.setState({ menu: menuResponseJson["data"]["result"] });
       }
     }
   };
@@ -348,6 +327,7 @@ class RestaurantMenu extends React.Component {
       viewportWidth >= 320 && viewportWidth < 375
         ? 100
         : viewportWidth >= 375 && viewportWidth < 414 ? 117 : 130;
+    const { imageCacher } = this.props;
     // if (!isActive) return null;
     //const textMarginRight = (viewportWidth >= 320 && viewportWidth < 375) ? 40 : (viewportWidth >= 375 && viewportWidth < 414) ? 117 : 130;
     return (
@@ -396,9 +376,7 @@ class RestaurantMenu extends React.Component {
                     source={{
                       uri: "http:" + e.image,
                       cache: "force-cache"
-                    
                     }}
-                    onLoad={() => {console.log(e.title); }}
                     resizeMode={
                       e.image.indexOf(".png") > 0 ? "contain" : "cover"
                     }
@@ -410,17 +388,19 @@ class RestaurantMenu extends React.Component {
                       borderRadius: 10
                     }}
                   />
-                  {e.image.indexOf(".png") > 0 ? null : <LinearGradient
-                    colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.8)"]}
-                    start={{x: 0, y: 1}}
-                    end={{x: 1, y: 0}}
-                    style={{
-                      width: imageHeight,
-                      height: imageHeight,
-                      borderRadius: 10,
-                      position: "absolute"
-                    }}
-                  />}
+                  {e.image.indexOf(".png") > 0 ? null : (
+                    <LinearGradient
+                      colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.8)"]}
+                      start={{ x: 0, y: 1 }}
+                      end={{ x: 1, y: 0 }}
+                      style={{
+                        width: imageHeight,
+                        height: imageHeight,
+                        borderRadius: 10,
+                        position: "absolute"
+                      }}
+                    />
+                  )}
                   <Touchable
                     style={{ position: "absolute", right: 5, top: 5 }}
                     hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
@@ -477,15 +457,18 @@ class RestaurantMenu extends React.Component {
                         marginBottom: 5
                       }}
                     >
-                      <Text 
+                      <Text
                         numberOfLines={3}
                         style={{
                           color: "rgb(135, 136, 140)",
                           fontSize: 12,
                           lineHeight: 14,
                           marginBottom: 5
-                        }}>
-                        {e.description.replace(/(<([^>]+)>)/ig,"").replace(/  +/g, " ")}
+                        }}
+                      >
+                        {e.description
+                          .replace(/(<([^>]+)>)/gi, "")
+                          .replace(/  +/g, " ")}
                       </Text>
                       {/*<HTMLView
                         textComponentProps={{
@@ -557,7 +540,8 @@ class RestaurantMenu extends React.Component {
                         lineHeight: 14,
                         maxWidth: 80,
                         letterSpacing: 0.4,
-                        fontFamily: "OpenSans", fontWeight: "600",
+                        fontFamily: "OpenSans",
+                        fontWeight: "600"
                       }}
                     >
                       {e.weight}
@@ -662,11 +646,12 @@ class RestaurantMenu extends React.Component {
   };
 
   render() {
+    const { params } = this.props.navigation.state;
     //this.navigationOptions.title = this.state.data.title;
     var restaurant = (
       <View>
         <ScrollView
-          ref={c => this.scroll = c}
+          ref={c => (this.scroll = c)}
           style={styles.container}
           contentContainerStyle={{
             justifyContent: "flex-start",
@@ -817,7 +802,8 @@ class RestaurantMenu extends React.Component {
                     color: "#dcc49c",
                     marginBottom: 20,
                     letterSpacing: 0.4,
-                    fontFamily: "OpenSans", fontWeight: "600",
+                    fontFamily: "OpenSans",
+                    fontWeight: "600",
                     fontSize: 13
                   }}
                 >
@@ -864,7 +850,8 @@ class RestaurantMenu extends React.Component {
                 letterSpacing: 0.9,
                 lineHeight: 15,
                 top: 2,
-                fontFamily: "OpenSans", fontWeight: "600",
+                fontFamily: "OpenSans",
+                fontWeight: "600",
                 fontSize: 13
               }}
             >
@@ -938,12 +925,12 @@ class RestaurantMenu extends React.Component {
               backgroundColor: "rgb(87, 88, 98)"
             }}
           />
-          {this.state.menu.length < 1 ? (
+          {/* this.state.menu.length < 1 ? (
             <ActivityIndicator
               size="large"
               style={{ alignSelf: "center", marginTop: 60 }}
             />
-          ) : null}
+          ) : null */}
           <Accordion
             touchableProps={{
               activeOpacity: 0.2,
@@ -953,7 +940,7 @@ class RestaurantMenu extends React.Component {
             touchableComponent={Touchable}
             underlayColor="#292b37"
             style={{ alignSelf: "flex-start", width: viewportWidth }}
-            sections={this.state.menu}
+            sections={params.menu != undefined ? params.menu : []}
             renderHeader={this._renderHeader}
             renderContent={this._renderContent}
           />
@@ -1007,6 +994,7 @@ class RestaurantMenu extends React.Component {
 RestaurantMenu.propTypes = {
   navigation: PropTypes.object,
   favourite: PropTypes.object,
+  imageCacher: PropTypes.object,
   addToFav: PropTypes.func,
   removeFromFav: PropTypes.func,
   addRestToFav: PropTypes.func,

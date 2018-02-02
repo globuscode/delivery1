@@ -305,8 +305,9 @@ class Plate extends React.Component {
 
   nav = () => {
     if (this.state.canNav) {
-      this.props.navigation.navigate("Restaurant", {
-        id: this.state.restaurant.id
+      this.props.navigation.navigate("Loader", {
+        id: this.state.restaurant.id,
+        action: "navigateToRestaurant"
       });
       this.setState({ canNav: false });
       setTimeout(() => {
@@ -499,10 +500,7 @@ class Plate extends React.Component {
               let item = this.state.plate;
               const cart = this.props.globalStore;
               if (cart.length > 0) {
-                if (
-                  cart[0]
-                    .plate.restaurant !== item.restaurant
-                )
+                if (cart[0].plate.restaurant !== item.restaurant)
                   Alert.alert(
                     "Вы уверенны?",
                     "Вы добавили блюдо из другого ресторана. Ваша корзина из предыдущего ресторана будет очищена.",
@@ -521,14 +519,13 @@ class Plate extends React.Component {
                 else {
                   this.props.onAddPlate(item);
                   let needToOpenModal = true;
-                  for (let i=0; i<cart.length; i++) {
+                  for (let i = 0; i < cart.length; i++) {
                     if (item.id === cart[i].plate.id) {
                       needToOpenModal = false;
                       break;
                     }
                   }
-                  if (needToOpenModal)
-                    this.props.openModal(item);
+                  if (needToOpenModal) this.props.openModal(item);
                 }
               } else {
                 this.props.onAddPlate(item);

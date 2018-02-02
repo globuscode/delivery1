@@ -78,41 +78,7 @@ class Restaurant extends React.Component {
     this.state = {
       rang: 0,
       canNav: true,
-      data: {
-        id: 0,
-        title: "",
-        image: "//dostavka1.com/img/app-icon.png",
-        logoImage: "//dostavka1.com/img/app-icon.png",
-        favorite: false,
-        type: "",
-        /*
-				tagGroups: [
-						{
-							"id": 12,
-							"title": "<string>",
-							"size": <float>,
-							“icon”: “http://gg.svg”
-						},
-						<tag_grou_id>,
-				],*/
-        minOrder: 0,
-        description: {
-          title: "",
-          description: ""
-        },
-        bestPlates: [] /*
-				promo: {
-						id: <int>,
-						title: <string>,
-						description: <html>
-				},*/,
-        menu: {},
-        time: "",
-        averageBill: 0,
-        minBill: 0,
-        web: ""
-        /*discount: <float>*/
-      },
+      data: this.props.navigation.state.params.restaurant,
       favourite: false
     };
   }
@@ -127,22 +93,22 @@ class Restaurant extends React.Component {
       }
     }
 
-    const restaurantId = this.props.navigation.state
-      ? this.props.navigation.state.params.id
-      : (-1).toString();
+    // const restaurantId = this.props.navigation.state
+    //   ? this.props.navigation.state.params.id
+    //   : (-1).toString();
 
-    let restaurantResponseJson = await fetchJson(
-      `${host}/restaurant?restaurantId=${restaurantId}`
-    );
+    // let restaurantResponseJson = await fetchJson(
+    //   `${host}/restaurant?restaurantId=${restaurantId}`
+    // );
 
-    if (restaurantResponseJson.data === undefined) {
-      Alert.alert("Ошибка", "Ошибка запроса");
-      throw Error("Упс...");
-    }
+    // if (restaurantResponseJson.data === undefined) {
+    //   Alert.alert("Ошибка", "Ошибка запроса");
+    //   throw Error("Упс...");
+    // }
 
     this.props.navigation.setParams({
       favourite: fav,
-      title: restaurantResponseJson.data.result.title,
+      title: this.props.navigation.state.params.restaurant.title,
       onHeartPress: () => {
         if (!this.state.favourite) {
           this.props.addToFav({
@@ -157,7 +123,7 @@ class Restaurant extends React.Component {
     });
 
     this.state.favourite = fav;
-    this.state.data = restaurantResponseJson.data.result;
+    // this.state.data = this.props.navigation.state.params.restaurant;
     // this.setState({
     //   favourite: fav,
     //   data: restaurantResponseJson.data.result

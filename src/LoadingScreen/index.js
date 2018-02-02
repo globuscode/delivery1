@@ -4,7 +4,7 @@ import {
   Text,
   View,
   Dimensions,
-  Alert,
+  Image,
   AsyncStorage,
   ImageBackground
 } from "react-native";
@@ -87,6 +87,15 @@ class Loading extends React.Component {
     if (responseJson.data != undefined) {
       this.setState({ text: "Изучаем манускрипты в поисках крутых рецептов" });
       this.props.auth();
+      for (let i = 0; i < responseJson.data.plates.length; i++) {
+        let { image } = responseJson.data.plates[i];
+        await Image.prefetch("http:" + image);
+      }
+      for (let i = 0; i < responseJson.data.restaurants.length; i++) {
+        let { restourantLogo, photo } = responseJson.data.restaurants[i];
+        await Image.prefetch("http:" + photo);
+        await Image.prefetch("http:" + restourantLogo);
+      }
       this.props.loadRecomendations(responseJson.data);
       this.props.navigation.dispatch(resetAction);
     } else {

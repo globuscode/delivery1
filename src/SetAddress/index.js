@@ -35,8 +35,9 @@ class SelectAddress extends React.Component {
     if (
       this.props.navigation.state.params.id === this.props.lastViewed.restaurant
     )
-      this.props.navigation.navigate("RestaurantMenu", {
-        id: this.props.navigation.state.params.id
+      this.props.navigation.navigate("Loader", {
+        id: this.props.navigation.state.params.id,
+        action: "navigateToMenu"
       });
   }
 
@@ -221,8 +222,9 @@ class SelectAddress extends React.Component {
           street: this.state.address,
           house: this.state.house
         });
-        this.props.navigation.navigate("RestaurantMenu", {
-          id: this.props.navigation.state.params.id
+        this.props.navigation.navigate("Loader", {
+          id: this.props.navigation.state.params.id,
+          action: "navigateToMenu"
         });
         this.setState({ canNav: false });
         setTimeout(() => {
