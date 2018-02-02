@@ -253,6 +253,7 @@ export default class AllRestourans extends React.Component {
             </View>
             {/*<RestouransOfTheWeek data={this.state.restauransShort} navigation={this.props.navigation} />*/}
             <FlatList
+              keyExtractor={item => item.id}
               data={this.state.restaurans}
               renderItem={({ item, index }) =>
                 this.renderRestaurant(item, index)
