@@ -43,7 +43,7 @@ const hr = (
 class RestaurantMenu extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      title: navigation.state.params.title,
+      title: navigation.state.params.restaurant.title,
       headerRight: (
         <Touchable
           onPress={navigation.state.params.onHeartPress}
@@ -327,8 +327,8 @@ class RestaurantMenu extends React.Component {
       viewportWidth >= 320 && viewportWidth < 375
         ? 100
         : viewportWidth >= 375 && viewportWidth < 414 ? 117 : 130;
-    const { imageCacher } = this.props;
-    // if (!isActive) return null;
+    // const { imageCacher } = this.props;
+    if (!isActive) return null;
     //const textMarginRight = (viewportWidth >= 320 && viewportWidth < 375) ? 40 : (viewportWidth >= 375 && viewportWidth < 414) ? 117 : 130;
     return (
       <Animatable.View
@@ -1005,9 +1005,9 @@ RestaurantMenu.propTypes = {
 };
 
 export default connect(
-  state => ({
-    globalStore: state.cart,
-    favourite: state.favourite
+  ({cart, favourite}) => ({
+    globalStore: cart,
+    favourite: favourite
   }),
   dispatch => ({
     onAddPlate: plate => {

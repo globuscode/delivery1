@@ -51,7 +51,7 @@ class Restaurant extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       headerBackTitle: "Назад",
-      title: navigation.state.params.title,
+      title: navigation.state.params.restaurant.title,
       headerRight: (
         <Touchable
           onPress={navigation.state.params.onHeartPress}
@@ -705,8 +705,8 @@ Restaurant.propTypes = {
 };
 
 export default connect(
-  state => ({
-    favourite: state.favourite
+  ({ favourite }) => ({
+    favourite: favourite
   }),
   dispatch => ({
     addToFav: data => {
