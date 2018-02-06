@@ -21,15 +21,43 @@ import ButtonD from "../ButtonD";
 import { host } from "../etc";
 import { fetchJson } from "../etc";
 import renderButton from "./mockup";
+import { getCartTotalPrice, getCartTotalCount } from "../utils";
 import SummaryItem from "./SummaryItem";
 import EmptyCart from "./EmptyCart";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
+/**
+ * Возвращает первый элемент объекта
+ *
+ * @param {Object} obj
+ * @returns
+ */
+function getFirstItem(obj) {
+  if (Object.keys(obj).length >= 1) {
+    const firstItemId = Object.keys(obj)[0];
+    const firstItem = obj[firstItemId];
+
+    return firstItem;
+  } else return undefined;
+}
+
 class Cart extends React.Component {
   navigationOptions = {
     tabBarVisible: false
   };
+
+  static propTypes = {
+    favourite: propTypes.object,
+    navigation: propTypes.object,
+    user: propTypes.object,
+    cart: propTypes.object,
+    removeFromFav: propTypes.func,
+    addToFav: propTypes.func,
+    addPlate: propTypes.func,
+    removePlate: propTypes.func
+  };
+
   constructor(props) {
     super(props);
 
@@ -50,52 +78,58 @@ class Cart extends React.Component {
     };
   }
   componentWillReceiveProps = async newProps => {
-    if (newProps.cart.length >= 1) {
-      if (newProps.cart[0].plate.restaurant != this.state.restaurant.id) {
+    const { cart } = newProps;
+    const firstItem = getFirstItem(cart);
+
+    if (firstItem != undefined) {
+      if (firstItem.plate.restaurant != this.state.restaurant.id) {
         const restJson = await fetchJson(
-          `${host}/restaurant?restaurantId=` + newProps.cart[0].plate.restaurant
+          `${host}/restaurant?restaurantId=${firstItem.plate.restaurant}`
         );
         this.setState({ restaurant: restJson["data"]["result"] });
       }
-    }
 
-    this.state.totalPrice = this.totalPrice();
-    this.setState({ change: this.state.totalPrice });
-    await this.getSalesPrice(newProps);
-    this.setState({ change: this.change() });
+      this.state.totalPrice = getCartTotalPrice(cart);
+      this.setState({ change: this.state.totalPrice });
+      // await this.getSalesPrice(newProps);
+      this.setState({ change: this.change() });
+    }
   };
 
   componentWillMount = async () => {
-    if (this.props.cart.length >= 1) {
-      if (this.props.cart[0].plate.restaurant != this.state.restaurant.id) {
+    const { cart } = this.props;
+    const firstItem = getFirstItem(cart);
+
+    if (firstItem != undefined) {
+      if (firstItem.plate.restaurant != this.state.restaurant.id) {
         const restJson = await fetchJson(
-          `${host}/restaurant?restaurantId=` +
-            this.props.cart[0].plate.restaurant
+          `${host}/restaurant?restaurantId=${firstItem.plate.restaurant}`
         );
         this.setState({
           restaurant: restJson["data"]["result"]
         });
       }
-      await this.getSalesPrice(this.props);
+      // await this.getSalesPrice(this.props);
       this.setState({
-        totalPrice: this.totalPrice()
+        totalPrice: getCartTotalPrice(cart)
       });
     }
   };
 
   componentDidMount = async () => {
-    if (this.props.cart.length >= 1) {
-      if (this.props.cart[0].plate.restaurant != this.state.restaurant.id) {
+    const { cart } = this.props;
+    const firstItem = getFirstItem(cart);
+    if (firstItem != undefined) {
+      if (firstItem.plate.restaurant != this.state.restaurant.id) {
         const restJson = await fetchJson(
-          `${host}/restaurant?restaurantId=` +
-            this.props.cart[0].plate.restaurant
+          `${host}/restaurant?restaurantId=${firstItem.plate.restaurant}`
         );
         this.setState({
           restaurant: restJson["data"]["result"]
         });
       }
       this.setState({
-        totalPrice: this.totalPrice()
+        totalPrice: getCartTotalPrice(cart)
       });
     }
   };
@@ -111,22 +145,6 @@ class Cart extends React.Component {
         return true;
       }
     }
-  };
-
-  /**
-   * возвращает общую сумму заказа
-   * @returns {Number}
-   * @memberof Cart
-   */
-  totalPrice = () => {
-    let result = 0;
-    for (var i = 0; i < this.props.cart.length; i++) {
-      result +=
-        parseFloat(this.props.cart[i].plate.price) *
-        parseFloat(this.props.cart[i].count);
-    }
-
-    return result;
   };
 
   /**
@@ -223,18 +241,6 @@ class Cart extends React.Component {
     }
   };
 
-  /**
-   * Возвращает общее количество объектов в корзине
-   *
-   * @memberof Cart
-   */
-  getItemsCount = () => {
-    let result = 0;
-    this.props.cart.map(e => {
-      result += e.count;
-    });
-    return result;
-  };
   /**
    * Возвращает компонент,
    * содержащий одну позицию корзины
@@ -356,7 +362,7 @@ class Cart extends React.Component {
               <Counter
                 value={e.count}
                 onRemovePress={async () => {
-                  this.props.removePlate(index);
+                  this.props.removePlate({ id: e.plate.id });
                 }}
                 onAddPress={() => {
                   this.props.addPlate(e.plate);
@@ -441,7 +447,9 @@ class Cart extends React.Component {
   render() {
     const screen = adaptWidth(0, 1, 2);
     const change = this.change();
-    if (this.props.cart.length != 0)
+    const { cart } = this.props;
+    const totalCount = getCartTotalCount(cart);
+    if (Object.keys(cart).length != 0)
       return (
         <View style={styles.container}>
           <ScrollView
@@ -517,15 +525,15 @@ class Cart extends React.Component {
                 letterSpacing: 0.8
               }}
             >
-              {this.getItemsCount().toString() +
+              {totalCount.toString() +
                 " позиции на сумму " +
                 this.state.totalPrice +
                 "₽"}
             </Text>
-            {this.props.cart.map((e, i) => {
+            {Object.keys(cart).map((id, index) => {
               return (
-                <View key={i} style={{ flexDirection: "row" }}>
-                  {this._renderContent(e, i)}
+                <View key={index} style={{ flexDirection: "row" }}>
+                  {this._renderContent(cart[id], index)}
                 </View>
               );
             })}
@@ -617,17 +625,6 @@ class Cart extends React.Component {
   }
 }
 
-Cart.propTypes = {
-  favourite: propTypes.object,
-  navigation: propTypes.object,
-  user: propTypes.object,
-  cart: propTypes.array,
-  removeFromFav: propTypes.func,
-  addToFav: propTypes.func,
-  addPlate: propTypes.func,
-  removePlate: propTypes.func
-};
-
 export default connect(
   ({ cart, favourite, user }) => ({
     cart: cart,
@@ -635,9 +632,9 @@ export default connect(
     user: user
   }),
   dispatch => ({
-    removePlate: plateIndex =>
-      dispatch({ type: "REMOVE_PLATE", index: plateIndex }),
-    addPlate: plate => dispatch({ type: "ADD_PLATE", payload: plate }),
+    removePlate: data =>
+      dispatch({ type: "REMOVE_PLATE_BY_OBJECT", payload: data }),
+    addPlate: data => dispatch({ type: "ADD_PLATE", payload: data }),
     addToFav: data => {
       dispatch({ type: "ADD_PLATE_TO_FAV", payload: data });
     },

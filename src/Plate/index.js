@@ -24,6 +24,7 @@ import IconD from "../IconD";
 import Touchable from "react-native-platform-touchable";
 import { host } from "../etc";
 import { fetchJson } from "../etc";
+import { getCartItemCount } from "../utils";
 function onlyUnique(value, index, self) {
   return self.indexOf(value) === index;
 }
@@ -332,15 +333,8 @@ class Plate extends React.Component {
   };
 
   render() {
-    /*Storage.subscribe(() => {
-			this.setState({});
-		  });*/
-    let inCart = false;
-    var i = 0;
-    while (i < this.props.globalStore.length && !inCart) {
-      inCart = this.props.globalStore[i].plate.title == this.state.plate.title;
-      i++;
-    }
+    const { cart } = this.props;
+    let inCart = getCartItemCount(cart, this.state.plate) != 0;
     return (
       <View>
         <ScrollView
@@ -494,13 +488,14 @@ class Plate extends React.Component {
 
           <PriceButton
             value={this.props.navigation.state.params.plate.price}
-            count={inCart ? this.props.globalStore[i - 1].count : null}
+            count={inCart ? cart[this.state.plate.id].count : null}
             pressed={inCart}
             onPress={() => {
               let item = this.state.plate;
-              const cart = this.props.globalStore;
-              if (cart.length > 0) {
-                if (cart[0].plate.restaurant !== item.restaurant)
+              const { cart } = this.props;
+              if (Object.keys(cart).length > 0) {
+                const firstItemId = Object.keys(cart)[0];
+                if (cart[firstItemId].plate.restaurant !== item.restaurant)
                   Alert.alert(
                     "Вы уверенны?",
                     "Вы добавили блюдо из другого ресторана. Ваша корзина из предыдущего ресторана будет очищена.",
@@ -518,14 +513,8 @@ class Plate extends React.Component {
                   );
                 else {
                   this.props.onAddPlate(item);
-                  let needToOpenModal = true;
-                  for (let i = 0; i < cart.length; i++) {
-                    if (item.id === cart[i].plate.id) {
-                      needToOpenModal = false;
-                      break;
-                    }
-                  }
-                  if (needToOpenModal) this.props.openModal(item);
+                  if (cart[this.state.plate.id] != undefined)
+                    this.props.openModal(item);
                 }
               } else {
                 this.props.onAddPlate(item);
@@ -771,7 +760,7 @@ class Plate extends React.Component {
 Plate.propTypes = {
   navigation: propTypes.object,
   favourite: propTypes.object,
-  globalStore: propTypes.array,
+  cart: propTypes.object,
   removeFromFav: propTypes.func,
   addToFav: propTypes.func,
   onAddPlate: propTypes.func,
@@ -780,7 +769,7 @@ Plate.propTypes = {
 
 export default connect(
   ({ cart, modalController, favourite }) => ({
-    globalStore: cart,
+    cart: cart,
     modal: modalController,
     favourite: favourite
   }),

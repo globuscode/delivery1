@@ -1,17 +1,21 @@
-import React, { Component } from "react";
-import {
-  View,
-  Dimensions,
-  AsyncStorage,
-  Text,
-  Image,
-  ScrollView,
-  ActivityIndicator
-} from "react-native";
+import React from "react";
+import { View, Text, Image, ScrollView, ActivityIndicator } from "react-native";
 import Touchable from "react-native-platform-touchable";
 import { connect } from "react-redux";
+import propTypes from "prop-types";
+
 import { host } from "../etc";
+
 class MyOrders extends React.Component {
+  static propTypes = {
+    user: {
+      token: propTypes.string
+    },
+    navigation: {
+      navigate: propTypes.func
+    }
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -37,9 +41,6 @@ class MyOrders extends React.Component {
       } else this.state.logos.push("//dostavka1.com/img/app-icon.png");
     }
     this.setState({});
-    /*var h = JSON.parse(await AsyncStorage.getItem('ORDERS_HISTORY'));
-        if (h != null)
-            this.setState({history: h});*/
   };
   render = () => {
     if (this.state.history === null)

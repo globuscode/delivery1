@@ -13,6 +13,7 @@ import IconD from "../IconD";
 import { connect } from "react-redux";
 import { host } from "../etc";
 import { fetchJson } from "../etc";
+import { getCartTotalPrice } from "../utils";
 
 const resetAction = NavigationActions.reset({
   index: 1,
@@ -53,27 +54,16 @@ class MakeOrder extends React.Component {
     this.state = {
       canNav: true,
       fetching: false,
-      price: this.totalPrice(),
+      price: getCartTotalPrice(props.cart),
       selected: "Наличными курьеру"
     };
   }
 
   static propTypes = {
-    globalStore: propTypes.array,
+    cart: propTypes.array,
     userStore: propTypes.object,
     navigation: propTypes.object,
     makeOrder: propTypes.func
-  };
-
-  totalPrice = () => {
-    let result = 0;
-    for (var i = 0; i < this.props.globalStore.length; i++) {
-      result +=
-        parseFloat(this.props.globalStore[i].plate.price) *
-        parseFloat(this.props.globalStore[i].count);
-    }
-
-    return result;
   };
 
   renderMenuItem = (icon, title) => {
@@ -124,6 +114,8 @@ class MakeOrder extends React.Component {
   };
 
   render = () => {
+    const { cart } = this.props;
+    const navitagionParams = this.props.navigation.state.params;
     return (
       <View style={{ flex: 1 }}>
         <View
@@ -181,23 +173,23 @@ class MakeOrder extends React.Component {
             onPress={async () => {
               if (this.state.canNav) {
                 this.state.canNav = false;
-                const cart = this.props.globalStore.map(element => {
+                const cartForRequest = Object.keys(cart).map(id => {
                   return {
-                    plateId: element.plate.id,
-                    qty: element.count
+                    plateId: cart[id].plate.id,
+                    qty: cart[id].count
                   };
                 });
                 let body = {
                   token: this.props.userStore.token,
-                  items: cart,
-                  address: this.props.navigation.state.params.address,
-                  client: this.props.navigation.state.params.client,
+                  items: cartForRequest,
+                  address: navitagionParams.address,
+                  client: navitagionParams.client,
                   deliveryDate:
-                    this.props.navigation.state.params.deliveryDate == null
+                    navitagionParams.deliveryDate == null
                       ? getOrderDate()
-                      : this.props.navigation.state.params.deliveryDate,
-                  restaurantId: this.props.globalStore[0].plate.restaurant,
-                  persons: this.props.navigation.state.params.persons,
+                      : navitagionParams.deliveryDate,
+                  restaurantId: cart[0].plate.restaurant,
+                  persons: navitagionParams.persons,
                   orderStart: getOrderDate()
                 };
                 this.setState({ fetching: true });
@@ -246,7 +238,7 @@ class MakeOrder extends React.Component {
 
 export default connect(
   ({ cart, user }) => ({
-    globalStore: cart,
+    cart: cart,
     userStore: user
   }),
   dispatch => ({

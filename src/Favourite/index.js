@@ -22,28 +22,23 @@ import propTypes from "prop-types";
 import PriceButton from "../PriceButton";
 import IconD from "../IconD";
 import { host } from "../etc";
-import { fetchJson } from "../etc";
+import { fetchJson, getFirstItem } from "../utils";
+import { getCartTotalCount, getCartItemCount } from "../utils";
 const { width: viewportWidth } = Dimensions.get("window");
 
-/**
- * Возвращает колличество блюд plate в корзине
- * @param {Object} cart
- * @param {Object} plate
- */
-function getCount(cart, plate) {
-  var i = 0;
-  while (i < cart.length) {
-    let equalTitle = plate.title == cart[i].plate.title;
-    let equalRestaurant = plate.restourant == cart[i].plate.restourant;
-    if (equalTitle && equalRestaurant) {
-      return cart[i].count;
-    }
-    i++;
-  }
-  return 0;
-}
-
 class Favourite extends React.Component {
+  static propTypes = {
+    favourite: propTypes.object,
+    cart: propTypes.object,
+    onDeletePlate: propTypes.func,
+    onAddPlate: propTypes.func,
+    onRemovePlate: propTypes.func,
+    open: propTypes.func,
+    navigation: propTypes.object,
+    onDeleteRestaurant: propTypes.func,
+    deletePlate: propTypes.func,
+    globalStore: propTypes.array
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -62,20 +57,6 @@ class Favourite extends React.Component {
       }
     };
   }
-
-  getCount = plate => {
-    var i = 0;
-    while (i < this.props.cart.length) {
-      let equalTitle = plate.title == this.props.cart[i].plate.title;
-      let equalRestaurant =
-        plate.restourant == this.props.cart[i].plate.restourant;
-      if (equalTitle && equalRestaurant) {
-        return this.props.cart[i].count;
-      }
-      i++;
-    }
-    return 0;
-  };
 
   _renderSinglePlate = (item, index) => {
     /* Разметка */
@@ -160,6 +141,8 @@ class Favourite extends React.Component {
       "rgba(0,0,0, 0.8)"
     ];
 
+    const { cart } = this.props;
+
     // Компонент с названием блюда
     var titleText = <Text style={itemStyles.titleTextStyle}>{item.title}</Text>;
 
@@ -232,7 +215,7 @@ class Favourite extends React.Component {
         }}
       />
     );
-    var itemCount = getCount(this.props.cart, item);
+    var itemCount = getCartTotalCount(cart, item);
     var bottomView = (
       <View
         pointerEvents="box-none"
@@ -256,11 +239,9 @@ class Favourite extends React.Component {
           pressed={itemCount != 0}
           value={item.price}
           onPress={() => {
-            if (this.props.cart.length > 0) {
-              if (
-                this.props.cart[this.props.cart.length - 1].plate.restaurant !==
-                item.restaurant
-              )
+            if (Object.keys(cart).length > 0) {
+              const firstItem = getFirstItem(cart);
+              if (firstItem.plate.restaurant !== item.restaurant)
                 Alert.alert(
                   "Вы уверенны?",
                   "Вы добавили блюдо из другого ресторана. Ваша корзина из предыдущего ресторана будет очищена.",
@@ -515,15 +496,12 @@ class Favourite extends React.Component {
   };
 
   _renderContent = plates => {
-    const imageHeight =
-      viewportWidth >= 320 && viewportWidth < 375
-        ? 100
-        : viewportWidth >= 375 && viewportWidth < 414 ? 117 : 130;
-    //const textMarginRight = (viewportWidth >= 320 && viewportWidth < 375) ? 40 : (viewportWidth >= 375 && viewportWidth < 414) ? 117 : 130;
+    const imageHeight = adaptWidth(100, 117, 130);
+    const { cart } = this.props;
     return (
       <View style={{ flexDirection: "column", width: viewportWidth }}>
         {plates.map((e, i) => {
-          const itemCount = this.getCount(e);
+          const itemCount = getCartItemCount(cart, e);
           return (
             <Touchable
               key={i}
@@ -643,11 +621,8 @@ class Favourite extends React.Component {
                       pressed={itemCount !== 0}
                       count={itemCount}
                       onPress={async () => {
-                        if (this.props.cart.length > 0) {
-                          if (
-                            this.props.cart[this.props.cart.length - 1].plate
-                              .restaurant !== e.restaurant
-                          )
+                        if (Object.keys(cart).length > 0) {
+                          if (cart[e.id].plate.restaurant !== e.restaurant)
                             Alert.alert(
                               "Вы уверенны?",
                               "Вы добавили блюдо из другого ресторана. Ваша корзина из предыдущего ресторана будет очищена.",
@@ -869,19 +844,6 @@ export default connect(
     }
   })
 )(Favourite);
-
-Favourite.propTypes = {
-  favourite: propTypes.object,
-  cart: propTypes.array,
-  onDeletePlate: propTypes.func,
-  onAddPlate: propTypes.func,
-  onRemovePlate: propTypes.func,
-  open: propTypes.func,
-  navigation: propTypes.object,
-  onDeleteRestaurant: propTypes.func,
-  deletePlate: propTypes.func,
-  globalStore: propTypes.array
-};
 
 const styles = StyleSheet.create({
   tabStyle: {

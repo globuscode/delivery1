@@ -20,6 +20,13 @@ import { host, adaptWidth } from "../etc";
 const { width: viewportWidth } = Dimensions.get("window");
 
 class SelectAddress extends React.Component {
+  static propTypes = {
+    navigation: propTypes.object,
+    lastViewed: propTypes.object,
+    saveAddress: propTypes.func,
+    showSpinner: propTypes.func,
+    hideSpinner: propTypes.func
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -433,12 +440,6 @@ class SelectAddress extends React.Component {
     );
   };
 }
-
-SelectAddress.propTypes = {
-  navigation: propTypes.object,
-  lastViewed: propTypes.object,
-  saveAddress: propTypes.func
-};
 
 export default connect(
   ({ lastViewed }) => ({

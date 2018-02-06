@@ -4,7 +4,6 @@ import {
   TouchableOpacity,
   Dimensions,
   Platform,
-  ActivityIndicator,
   StyleSheet,
   ScrollView,
   Image,
@@ -27,6 +26,7 @@ import { adaptWidth } from "../etc";
 import { fetchJson } from "../etc";
 import { host } from "../etc";
 import PriceButton from "../PriceButton";
+import { getCartItemCount } from "../utils";
 
 const { width: viewportWidth } = Dimensions.get("window");
 const hr = (
@@ -323,10 +323,8 @@ class RestaurantMenu extends React.Component {
   };
 
   _renderContent = ({ plates }, id, isActive) => {
-    const imageHeight =
-      viewportWidth >= 320 && viewportWidth < 375
-        ? 100
-        : viewportWidth >= 375 && viewportWidth < 414 ? 117 : 130;
+    const imageHeight = adaptWidth(100, 117, 130);
+    const { cart } = this.props;
     // const { imageCacher } = this.props;
     if (!isActive) return null;
     //const textMarginRight = (viewportWidth >= 320 && viewportWidth < 375) ? 40 : (viewportWidth >= 375 && viewportWidth < 414) ? 117 : 130;
@@ -336,7 +334,7 @@ class RestaurantMenu extends React.Component {
         style={{ flexDirection: "column", width: viewportWidth }}
       >
         {plates.map((e, i) => {
-          const itemCount = this.getCount(e);
+          const itemCount = getCartItemCount(cart, e);
           return (
             <Touchable
               key={i}
@@ -485,11 +483,10 @@ class RestaurantMenu extends React.Component {
                       pressed={itemCount !== 0}
                       count={itemCount}
                       onPress={async () => {
-                        if (this.props.globalStore.length > 0) {
+                        if (Object.keys(cart).length > 0) {
+                          const firstItemId = Object.keys(cart)[0];
                           if (
-                            this.props.globalStore[
-                              this.props.globalStore.length - 1
-                            ].plate.restaurant !== e.restaurant
+                            cart[firstItemId].plate.restaurant !== e.restaurant
                           )
                             Alert.alert(
                               "Вы уверенны?",
@@ -628,21 +625,6 @@ class RestaurantMenu extends React.Component {
         </TouchableOpacity>
       </View>
     );
-  };
-
-  getCount = plate => {
-    var i = 0;
-    while (i < this.props.globalStore.length) {
-      let equalTitle = plate.title === this.props.globalStore[i].plate.title;
-      let equalId = plate.id === this.props.globalStore[i].plate.id;
-      let equalRestaurant =
-        plate.restourant == this.props.globalStore[i].plate.restourant;
-      if (equalTitle && equalRestaurant && equalId) {
-        return this.props.globalStore[i].count;
-      }
-      i++;
-    }
-    return 0;
   };
 
   render() {
@@ -1001,12 +983,12 @@ RestaurantMenu.propTypes = {
   removeRestFromFav: PropTypes.func,
   onAddPlate: PropTypes.func,
   deletePlate: PropTypes.func,
-  globalStore: PropTypes.array
+  cart: PropTypes.object
 };
 
 export default connect(
   ({cart, favourite}) => ({
-    globalStore: cart,
+    cart: cart,
     favourite: favourite
   }),
   dispatch => ({

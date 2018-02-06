@@ -15,12 +15,13 @@ import { connect } from "react-redux";
 import Touchable from "react-native-platform-touchable";
 import propTypes from "prop-types";
 
-import { host } from "../etc";
+import { host, adaptWidth } from "../etc";
 import { LeftAlignedImage } from "../components/LeftAlignedImage";
 import Storage from "../Reducers";
 import PriceButton from "../PriceButton";
 import IconD from "../IconD";
 import { fetchJson } from "../etc";
+import { getCartItemCount } from "../utils";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -50,7 +51,7 @@ class Recomendations extends React.Component {
   static propTypes = {
     navigation: propTypes.object,
     favourite: propTypes.object,
-    globalStore: propTypes.array,
+    cart: propTypes.object,
     data: propTypes.array,
     onAddPlate: propTypes.func,
     removeFromFav: propTypes.func,
@@ -287,7 +288,8 @@ class Recomendations extends React.Component {
         />
       </View>
     );
-    var itemCount = getCount(this.props.globalStore, item);
+    const { cart } = this.props;
+    const itemCount = getCartItemCount(cart, item);
     var bottomView = (
       <View
         pointerEvents="box-none"
@@ -311,11 +313,9 @@ class Recomendations extends React.Component {
           pressed={itemCount != 0}
           value={item.price}
           onPress={() => {
-            if (this.props.globalStore.length > 0) {
-              if (
-                this.props.globalStore[this.props.globalStore.length - 1].plate
-                  .restaurant !== item.restaurant
-              )
+            if (Object.keys(cart).length > 0) {
+              let firstItemId = Object.keys(cart)[0];
+              if (cart[firstItemId].plate.restaurant !== item.restaurant)
                 Alert.alert(
                   "Вы уверенны?",
                   "Вы добавили блюдо из другого ресторана. Ваша корзина из предыдущего ресторана будет очищена.",
@@ -388,7 +388,7 @@ class Recomendations extends React.Component {
 
   componentWillReceiveProps = newProps => {
     this.props = newProps;
-    this.state.favourites = [];
+    this.setState({ favourites: [] });
     this.state.entries.forEach(element => {
       let fav = false;
       for (let i = 0; i < this.props.favourite.plates.length; i++) {
@@ -415,16 +415,12 @@ class Recomendations extends React.Component {
       }
     });
 
-    const screen =
-      viewportWidth >= 320 && viewportWidth < 375
-        ? 0
-        : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
-    let slideW =
-      screen == 0
-        ? viewportWidth - 2 * 20
-        : screen == 1 ? viewportWidth - 2 * 24 : viewportWidth - 26;
-    const SLIDER_MARGIN =
-      screen == 0 ? 10 / 2 : screen == 1 ? 11.7 / 2 : 13.2 / 2;
+    let slideW = adaptWidth(
+      viewportWidth - 2 * 20,
+      viewportWidth - 2 * 24,
+      viewportWidth - 26
+    );
+    const SLIDER_MARGIN = adaptWidth(10, 11.7, 13.2) / 2;
     return (
       <View>
         <Carousel
@@ -480,27 +476,9 @@ class Recomendations extends React.Component {
   }
 }
 
-/**
- * Возвращает колличество блюд plate в корзине
- * @param {Object} cart
- * @param {Object} plate
- */
-function getCount(cart, plate) {
-  var i = 0;
-  while (i < cart.length) {
-    let equalTitle = plate.title == cart[i].plate.title;
-    let equalRestaurant = plate.restourant == cart[i].plate.restourant;
-    if (equalTitle && equalRestaurant) {
-      return cart[i].count;
-    }
-    i++;
-  }
-  return 0;
-}
-
 export default connect(
   ({ cart, favourite, modalController }) => ({
-    globalStore: cart,
+    cart: cart,
     favourite: favourite,
     modal: modalController
   }),

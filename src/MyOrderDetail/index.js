@@ -11,34 +11,18 @@ import {
 import Touchable from "react-native-platform-touchable";
 import { connect } from "react-redux";
 import HTMLView from "react-native-htmlview";
+import propTypes from "prop-types";
 
 import PriceButton from "../PriceButton";
 import ButtonD from "../ButtonD";
-import { host } from "../etc";
+import { host, adaptWidth } from "../etc";
+import { getCartItemCount } from "../utils";
 
 const { width: viewportWidth } = Dimensions.get("window");
 const screen =
   viewportWidth >= 320 && viewportWidth < 375
     ? 0
     : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
-
-/**
- * Возвращает колличество блюд plate в корзине
- * @param {Object} cart
- * @param {Object} plate
- */
-function getCount(cart, plate) {
-  let i = 0;
-  while (i < cart.length) {
-    const equalTitle = plate.title === cart[i].plate.title;
-    const equalRestaurant = plate.restourant === cart[i].plate.restourant;
-    if (equalTitle && equalRestaurant) {
-      return cart[i].count;
-    }
-    i += 1;
-  }
-  return 0;
-}
 
 /**
  * Добавляет 2.5 часа с строке времени str
@@ -62,10 +46,21 @@ function addTimeToTimestring(str) {
     deliveryMinutes.toString().length == 1
       ? `0${deliveryMinutes.toString()}`
       : deliveryMinutes.toString();
-  return deliveryHours.toString() + ":" + deliveryMinutes.toString();
+  return deliveryHoursStr.toString() + ":" + deliveryMinutesStr.toString();
 }
 
 class MyOrderDetail extends React.Component {
+  static propTypes = {
+    navigation: {
+      state: {
+        params: {
+          order: propTypes.object
+        }
+      }
+    },
+    onAddPlate: propTypes.func,
+    cart: propTypes.object
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -160,14 +155,13 @@ class MyOrderDetail extends React.Component {
   };
 
   addAll = () => {
-    this.state.cart.forEach(plate => this.props.onAddPlate(plate));
+    Object.keys(this.state.cart).forEach(id =>
+      this.props.onAddPlate(this.state.cart[id])
+    );
   };
 
   renderContent = section => {
-    const imageHeight =
-      viewportWidth >= 320 && viewportWidth < 375
-        ? 100
-        : viewportWidth >= 375 && viewportWidth < 414 ? 117 : 130;
+    const imageHeight = adaptWidth(100, 117, 130);
     return (
       <View style={{ flexDirection: "column", width: viewportWidth }}>
         {section.map((e, i) => (
@@ -176,9 +170,9 @@ class MyOrderDetail extends React.Component {
             onPress={() => {
               if (this.state.canNav) {
                 this.props.navigation.navigate("Plate");
-                this.state.canNav = false;
+                this.setState({ canNav: false });
                 setTimeout(() => {
-                  this.state.canNav = true;
+                  this.setState({ canNav: true });
                 }, 1500);
               }
             }}
@@ -244,8 +238,8 @@ class MyOrderDetail extends React.Component {
                 <View style={{ flexDirection: "row" }}>
                   <PriceButton
                     value={e.price}
-                    pressed={getCount(this.props.globalStore, e) !== 0}
-                    count={getCount(this.props.globalStore, e)}
+                    pressed={getCartItemCount(this.props.cart, e) !== 0}
+                    count={getCartItemCount(this.props.cart, e)}
                     onPress={() => this.props.onAddPlate(e)}
                   />
                   <Text
@@ -332,7 +326,7 @@ class MyOrderDetail extends React.Component {
   };
 
   render = () => {
-    const cart = this.renderContent(this.state.cart);
+    // const cart = this.renderContent(this.state.cart);
     if (
       this.state.order.status === "Активный" ||
       this.state.order.status === "Принят"
@@ -348,9 +342,9 @@ class MyOrderDetail extends React.Component {
         <ScrollView style={{ flex: 1, flexDirection: "column" }}>
           <Image
             style={{
-              height: screen === 0 ? 85 : screen === 1 ? 100 : 117,
+              height: adaptWidth(85, 100, 117),
               width: viewportWidth - 60,
-              marginTop: screen === 0 ? 47 : screen === 1 ? 64 : 79,
+              marginTop: adaptWidth(47, 64, 79),
               marginBottom: 30,
               alignSelf: "center"
             }}
@@ -367,8 +361,8 @@ class MyOrderDetail extends React.Component {
           />
           <Text
             style={{
-              marginTop: screen === 0 ? 25 : screen === 1 ? 30 : 35,
-              marginBottom: screen === 0 ? 28 : screen === 1 ? 38 : 44,
+              marginTop: adaptWidth(25, 30, 35),
+              marginBottom: adaptWidth(28, 38, 44),
               fontFamily: "Stem-Medium",
               fontSize: 17,
               letterSpacing: 0.9,
@@ -383,7 +377,7 @@ class MyOrderDetail extends React.Component {
           <View
             style={{
               alignSelf: "stretch",
-              paddingHorizontal: screen === 0 ? 29 : screen === 1 ? 51 : 68
+              paddingHorizontal: adaptWidth(29, 51, 68)
             }}
           >
             <View
@@ -563,7 +557,7 @@ const styles = StyleSheet.create({
 });
 export default connect(
   ({ cart }) => ({
-    globalStore: cart
+    cart: cart
   }),
   dispatch => ({
     onAddPlate: plate => {
