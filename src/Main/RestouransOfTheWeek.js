@@ -30,25 +30,23 @@ class Recomendations extends React.Component {
     };
     if (props.data) {
       this.state.restourans = props.data;
-      this.state.restourans.forEach(element => {
-        let fav = false;
-
-        for (let i = 0; i < this.props.favourite.restaurants.length; i++) {
-          let rest = this.props.favourite.restaurants[i];
-          if (rest === element.id) {
-            fav = true;
-          }
-        }
-        if (fav) this.state.favourites.push(true);
-        else this.state.favourites.push(false);
-      });
+      for (let i = 0; i < this.state.restourans.length; i++) {
+        let { id } = this.state.restourans[i];
+        this.state.favourites.push(
+          this.props.favourite.restaurants[id] != undefined
+        );
+      }
     }
     this.fav = this.fav.bind(this);
   }
 
   static propTypes = {
     navigation: propTypes.object,
-    favourite: propTypes.object,
+    favourite: propTypes.shape({
+      plates: propTypes.object,
+      collections: propTypes.object,
+      restaurants: propTypes.object
+    }),
     data: propTypes.array,
     addToFav: propTypes.func,
     removeFromFav: propTypes.func
@@ -87,25 +85,19 @@ class Recomendations extends React.Component {
     return result;
   };
 
-  renderHeart({ id }) {
-    let fav = false;
-    let i;
-    for (i = 0; i < this.props.favourite.restaurants.length; i++) {
-      fav = this.props.favourite.restaurants[i] === id;
-      if (fav) break;
-    }
+  renderHeart(item) {
+    let fav = this.props.favourite.restaurants[item.id] != undefined;
     return (
       <TouchableOpacity
         hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
         onPress={() => {
           if (!fav) {
-            this.props.addToFav({ id: id });
+            this.props.addToFav(item);
             this.setState({});
             return 0;
-            //this.fav(index);
           }
 
-          this.props.removeFromFav({ id: id });
+          this.props.removeFromFav(item);
           this.setState({});
           return 0;
         }}

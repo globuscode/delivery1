@@ -78,13 +78,9 @@ class RestaurantMenu extends React.Component {
   }
 
   componentWillReceiveProps = props => {
-    let fav = false;
-    for (let i = 0; i < props.favourite.restaurants.length; i++) {
-      let rest = props.favourite.restaurants[i];
-      if (rest === this.state.data.id) {
-        fav = true;
-      }
-    }
+    const { id } = props.navigation.state.params.restaurant;
+    const { restaurants } = props.favourite;
+    let fav = restaurants[id] != undefined;
 
     if (this.state.favourite != fav) {
       props.navigation.setParams({
@@ -92,13 +88,9 @@ class RestaurantMenu extends React.Component {
         title: this.state.data.title,
         onHeartPress: () => {
           if (!this.state.favourite) {
-            this.props.addRestToFav({
-              id: props.navigation.state.params.id
-            });
+            this.props.addRestToFav(this.props.navigation.state.params.restaurant);
           } else {
-            this.props.removeRestFromFav({
-              id: props.navigation.state.params.id
-            });
+            this.props.removeRestFromFav(this.props.navigation.state.params.restaurant);
           }
         }
       });
@@ -108,14 +100,10 @@ class RestaurantMenu extends React.Component {
   };
 
   componentWillMount = async () => {
-    let fav = false;
-
-    for (let i = 0; i < this.props.favourite.restaurants.length; i++) {
-      let rest = this.props.favourite.restaurants[i];
-      if (rest === this.state.data.id) {
-        fav = true;
-      }
-    }
+    const { id } = this.props.navigation.state.params.restaurant;
+    const { restaurants } = this.props.favourite;
+    let fav = restaurants[id] != undefined;
+    this.state.favourite = fav;
 
     // const restaurantId = this.props.navigation.state
     //   ? this.props.navigation.state.params.id
@@ -139,13 +127,9 @@ class RestaurantMenu extends React.Component {
       title: this.props.navigation.state.params.restaurant.title,
       onHeartPress: () => {
         if (!this.state.favourite) {
-          this.props.addRestToFav({
-            id: this.props.navigation.state.params.id
-          });
+          this.props.addRestToFav(this.props.navigation.state.params.restaurant);
         } else {
-          this.props.removeRestFromFav({
-            id: this.props.navigation.state.params.id
-          });
+          this.props.removeRestFromFav(this.props.navigation.state.params.restaurant);
         }
       }
     });
@@ -272,14 +256,7 @@ class RestaurantMenu extends React.Component {
   }
 
   isInFav = ({ id }) => {
-    if (typeof id === undefined) {
-      return false;
-    }
-    for (let i = 0; i < this.props.favourite.plates.length; i++) {
-      if (id === this.props.favourite.plates[i]) {
-        return true;
-      }
-    }
+    return this.props.favourite.plates[id] != undefined;
   };
 
   /**

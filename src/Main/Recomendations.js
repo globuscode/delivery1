@@ -37,20 +37,23 @@ class Recomendations extends React.Component {
     };
     if (this.props.data) {
       this.state.entries = this.props.data;
-      this.state.entries.forEach(element => {
-        this.props.favourite.plates.forEach(plate => {
-          if (plate === element.id) {
-            this.state.favourites.push(true);
-          } else this.state.favourites.push(false);
-        });
-      });
+      for (let i = 0; i < this.state.entries.length; i++) {
+        let { id } = this.state.entries[i];
+        this.state.favourites.push(
+          this.props.favourite.plates[id] != undefined
+        );
+      }
     }
     this.fav = this.fav.bind(this);
   }
 
   static propTypes = {
     navigation: propTypes.object,
-    favourite: propTypes.object,
+    favourite: propTypes.shape({
+      plates: propTypes.object,
+      collections: propTypes.object,
+      restaurants: propTypes.object
+    }),
     cart: propTypes.object,
     data: propTypes.array,
     onAddPlate: propTypes.func,
@@ -100,16 +103,8 @@ class Recomendations extends React.Component {
 
   _renderNewItem = ({ item, index }) => {
     /* Разметка */
-    const screen =
-      viewportWidth >= 320 && viewportWidth < 375
-        ? 0
-        : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
-    const SLIDER_WIDTH =
-      screen == 0
-        ? viewportWidth - 2 * 20
-        : screen == 1 ? viewportWidth - 2 * 24 : viewportWidth - 26;
-    const SLIDER_MARGIN =
-      screen == 0 ? 10 / 2 : screen == 1 ? 11.7 / 2 : 13.2 / 2;
+    const SLIDER_WIDTH = viewportWidth - 2 * adaptWidth(20, 24, 13);
+    const SLIDER_MARGIN = adaptWidth(10, 11.7, 13.2) / 2;
     const SLIDER_HEIGHT = SLIDER_WIDTH * 1.32;
 
     /* Стили карточки */
@@ -207,10 +202,10 @@ class Recomendations extends React.Component {
         foreground={Touchable.SelectableBackgroundBorderless()}
         onPress={() => {
           if (this.state.favourites[index]) {
-            this.fav(index);
+            this.fav(item);
             this.props.removeFromFav(item);
           } else {
-            this.fav(index);
+            this.fav(item);
             this.props.addToFav(item);
           }
           this.setState({});
@@ -388,21 +383,14 @@ class Recomendations extends React.Component {
 
   componentWillReceiveProps = newProps => {
     this.props = newProps;
-    this.setState({ favourites: [] });
-    this.state.entries.forEach(element => {
-      let fav = false;
-      for (let i = 0; i < this.props.favourite.plates.length; i++) {
-        let rest = this.props.favourite.plates[i];
-        if (rest === element.id) {
-          fav = true;
-        }
-      }
-      if (fav) this.state.favourites.push(true);
-      else this.state.favourites.push(false);
-
-      this.setState({});
-    });
-    this.setState({});
+    const newFavourites = [];
+    for (let i = 0; i < this.state.entries.length; i++) {
+      let { id } = this.state.entries[i];
+      let fav = newProps.favourite.plates[id] != undefined;
+      if (fav) newFavourites.push(true);
+      else newFavourites.push(false);
+    }
+    this.setState({ favourites: newFavourites });
   };
 
   render() {

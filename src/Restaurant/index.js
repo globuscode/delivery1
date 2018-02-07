@@ -84,14 +84,17 @@ class Restaurant extends React.Component {
   }
 
   componentWillMount = async () => {
-    let fav = false;
+    const { id } = this.props.navigation.state.params.restaurant;
+    const { restaurants } = this.props.favourite;
+    let fav = restaurants[id] != undefined;
+    this.state.favourite = fav;
 
-    for (let i = 0; i < this.props.favourite.restaurants.length; i++) {
-      let rest = this.props.favourite.restaurants[i];
-      if (rest === this.state.data.id) {
-        fav = true;
-      }
-    }
+    // for (let i = 0; i < this.props.favourite.restaurants.length; i++) {
+    //   let rest = this.props.favourite.restaurants[i];
+    //   if (rest === this.state.data.id) {
+    //     fav = true;
+    //   }
+    // }
 
     // const restaurantId = this.props.navigation.state
     //   ? this.props.navigation.state.params.id
@@ -111,18 +114,15 @@ class Restaurant extends React.Component {
       title: this.props.navigation.state.params.restaurant.title,
       onHeartPress: () => {
         if (!this.state.favourite) {
-          this.props.addToFav({
-            id: this.props.navigation.state.params.id
-          });
+          this.props.addToFav(this.props.navigation.state.params.restaurant);
         } else {
-          this.props.removeFromFav({
-            id: this.props.navigation.state.params.id
-          });
+          this.props.removeFromFav(
+            this.props.navigation.state.params.restaurant
+          );
         }
       }
     });
 
-    this.state.favourite = fav;
     // this.state.data = this.props.navigation.state.params.restaurant;
     // this.setState({
     //   favourite: fav,
@@ -130,15 +130,10 @@ class Restaurant extends React.Component {
     // });
   };
 
-  componentWillReceiveProps = async () => {
-    let fav = false;
-
-    for (let i = 0; i < this.props.favourite.restaurants.length; i++) {
-      let rest = this.props.favourite.restaurants[i];
-      if (rest === this.state.data.id) {
-        fav = true;
-      }
-    }
+  componentWillReceiveProps = async newProps => {
+    const { id } = newProps.navigation.state.params.restaurant;
+    const { restaurants } = newProps.favourite;
+    let fav = restaurants[id] != undefined;
 
     if (fav != this.state.favourite) {
       this.props.navigation.setParams({
@@ -167,13 +162,11 @@ class Restaurant extends React.Component {
       title: this.state.data.title,
       onHeartPress: () => {
         if (!this.state.favourite) {
-          this.props.addToFav({
-            id: this.props.navigation.state.params.id
-          });
+          this.props.addToFav(this.props.navigation.state.params.restaurant);
         } else {
-          this.props.removeFromFav({
-            id: this.props.navigation.state.params.id
-          });
+          this.props.removeFromFav(
+            this.props.navigation.state.params.restaurant
+          );
         }
       }
     });

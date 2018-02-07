@@ -131,13 +131,10 @@ class Plate extends React.Component {
       userTastes: tastesJson
     });
 
-    for (let i = 0; i < this.props.favourite.plates.length; i++) {
-      if (this.props.favourite.plates[i] === this.state.plate.id) {
-        this.state.favourite = true;
-        break;
-      }
-    }
+    this.state.favourite =
+      this.props.favourite.plates[this.state.plate.id] != undefined;
     this.state.plate.tags = this.state.plate.tags.filter(onlyUnique);
+
     this.setState({});
   };
 
@@ -319,17 +316,9 @@ class Plate extends React.Component {
 
   componentWillReceiveProps = newProps => {
     this.props = newProps;
-    let fav = false;
-    for (let i = 0; i < this.props.favourite.plates.length; i++) {
-      if (this.props.favourite.plates[i] === this.state.plate.id) {
-        this.setState({ favourite: true });
-        fav = true;
-        break;
-      }
-    }
-    if (!fav) {
-      this.setState({ favourite: false });
-    }
+    this.setState({
+      favourite: this.props.favourite.plates[this.state.plate.id] != undefined
+    });
   };
 
   render() {

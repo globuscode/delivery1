@@ -48,7 +48,11 @@ class Cart extends React.Component {
   };
 
   static propTypes = {
-    favourite: propTypes.object,
+    favourite: propTypes.shape({
+      plates: propTypes.object,
+      collections: propTypes.object,
+      restaurants: propTypes.object
+    }),
     navigation: propTypes.object,
     user: propTypes.object,
     cart: propTypes.object,
@@ -140,11 +144,8 @@ class Cart extends React.Component {
     if (typeof id === undefined) {
       return false;
     }
-    for (let i = 0; i < this.props.favourite.plates.length; i++) {
-      if (id === this.props.favourite.plates[i]) {
-        return true;
-      }
-    }
+    const { plates } = this.props.favourite;
+    return plates[id] != undefined;
   };
 
   /**
@@ -250,6 +251,7 @@ class Cart extends React.Component {
    */
   _renderContent = (e, index) => {
     const imageHeight = adaptWidth(100, 117, 130);
+    const isInFav = this.isInFav(e.plate);
     return (
       <View
         style={{
@@ -300,7 +302,7 @@ class Cart extends React.Component {
             hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
             foreground={Touchable.SelectableBackgroundBorderless()}
             onPress={() => {
-              if (this.isInFav(e.plate)) {
+              if (isInFav) {
                 this.props.removeFromFav(e.plate);
               } else {
                 this.props.addToFav(e.plate);
@@ -310,7 +312,7 @@ class Cart extends React.Component {
           >
             <View style={{ backgroundColor: "transparent" }}>
               <IconD
-                name={this.isInFav(e.plate) ? "heart_full" : "heart_empty"}
+                name={isInFav ? "heart_full" : "heart_empty"}
                 size={18}
                 color="#dcc49c"
               />
