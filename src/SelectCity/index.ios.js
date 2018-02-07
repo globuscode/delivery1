@@ -3,13 +3,15 @@ import {
   StyleSheet,
   Text,
   View,
+  Picker,
   TouchableOpacity,
   Dimensions,
   requireNativeComponent,
-  AsyncStorage
+  AsyncStorage,
+  Alert
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import Picker from "react-native-wheel-picker";
+// import Picker from "react-native-wheel-picker";
 import Touchable from "react-native-platform-touchable";
 import { connect } from "react-redux";
 import { host } from "../etc";
@@ -17,7 +19,7 @@ const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
 
-class SelectCity extends React.Component {
+export default class SelectCity extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -96,7 +98,7 @@ class SelectCity extends React.Component {
 
   async componentWillMount() {
     //var city = await AsyncStorage.getItem('city');
-    if (0) this.props.navigation.navigate("Main");
+    // this.props.navigation.navigate("Main");
     fetch(`${host}/classificator/cities`)
       .then(response => response.json())
       .then(responseJson => {
@@ -258,13 +260,6 @@ class SelectCity extends React.Component {
     );
   }
 }
-
-export default connect(
-  ({}) => ({}),
-  dispatch => ({
-    open: () => dispatch({ type: "OPEN_MODAL" })
-  })
-)(SelectCity);
 
 const styles = StyleSheet.create({
   text: {
