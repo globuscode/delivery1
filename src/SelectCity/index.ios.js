@@ -3,15 +3,13 @@ import {
   StyleSheet,
   Text,
   View,
-  Picker,
   TouchableOpacity,
   Dimensions,
   requireNativeComponent,
-  AsyncStorage,
-  Alert
+  AsyncStorage
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-// import Picker from "react-native-wheel-picker";
+import Picker from "react-native-wheel-picker";
 import Touchable from "react-native-platform-touchable";
 import { connect } from "react-redux";
 import { host } from "../etc";
