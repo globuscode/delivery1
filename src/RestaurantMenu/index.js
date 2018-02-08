@@ -4,7 +4,6 @@ import {
   TouchableOpacity,
   Dimensions,
   Platform,
-  ActivityIndicator,
   StyleSheet,
   ScrollView,
   Image,
@@ -13,7 +12,7 @@ import {
   Alert
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import LinearGradient from 'react-native-linear-gradient';
+import LinearGradient from "react-native-linear-gradient";
 import Accordion from "react-native-collapsible/Accordion";
 import { connect } from "react-redux";
 import Touchable from "react-native-platform-touchable";
@@ -27,10 +26,9 @@ import { adaptWidth } from "../etc";
 import { fetchJson } from "../etc";
 import { host } from "../etc";
 import PriceButton from "../PriceButton";
+import { getCartItemCount } from "../utils";
 
-const { width: viewportWidth } = Dimensions.get(
-  "window"
-);
+const { width: viewportWidth } = Dimensions.get("window");
 const hr = (
   <View
     style={{
@@ -42,10 +40,10 @@ const hr = (
   />
 );
 
-class RestaurantMenu extends React.PureComponent {
+class RestaurantMenu extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      title: navigation.state.params.title,
+      title: navigation.state.params.restaurant.title,
       headerRight: (
         <Touchable
           onPress={navigation.state.params.onHeartPress}
@@ -74,42 +72,15 @@ class RestaurantMenu extends React.PureComponent {
       hideInfo: false,
       canNav: true,
       favourite: false,
-      data: {
-        id: 0,
-        title: "",
-        image: "//dostavka1.com/img/app-icon.png",
-        logoImage: "//dostavka1.com/img/app-icon.png",
-        type: "",
-        tagGroups: [],
-        minOrder: 0,
-        description: {
-          title: "",
-          description: ""
-        },
-        bestPlates: [],
-        promo: {
-          id: 0,
-          title: "",
-          description: ""
-        },
-        time: "",
-        averageBill: 0,
-        minBill: 0,
-        web: "",
-        discount: 0
-      },
-      menu: []
+      data: this.props.navigation.state.params.restaurant,
+      menu: this.props.navigation.state.params.menu
     };
   }
 
   componentWillReceiveProps = props => {
-    let fav = false;
-    for (let i = 0; i < props.favourite.restaurants.length; i++) {
-      let rest = props.favourite.restaurants[i];
-      if (rest === this.state.data.id) {
-        fav = true;
-      }
-    }
+    const { id } = props.navigation.state.params.restaurant;
+    const { restaurants } = props.favourite;
+    let fav = restaurants[id] != undefined;
 
     if (this.state.favourite != fav) {
       props.navigation.setParams({
@@ -117,13 +88,9 @@ class RestaurantMenu extends React.PureComponent {
         title: this.state.data.title,
         onHeartPress: () => {
           if (!this.state.favourite) {
-            this.props.addRestToFav({
-              id: props.navigation.state.params.id
-            });
+            this.props.addRestToFav(this.props.navigation.state.params.restaurant);
           } else {
-            this.props.removeRestFromFav({
-              id: props.navigation.state.params.id
-            });
+            this.props.removeRestFromFav(this.props.navigation.state.params.restaurant);
           }
         }
       });
@@ -133,50 +100,42 @@ class RestaurantMenu extends React.PureComponent {
   };
 
   componentWillMount = async () => {
-    let fav = false;
+    const { id } = this.props.navigation.state.params.restaurant;
+    const { restaurants } = this.props.favourite;
+    let fav = restaurants[id] != undefined;
+    this.state.favourite = fav;
 
-    for (let i = 0; i < this.props.favourite.restaurants.length; i++) {
-      let rest = this.props.favourite.restaurants[i];
-      if (rest === this.state.data.id) {
-        fav = true;
-      }
-    }
+    // const restaurantId = this.props.navigation.state
+    //   ? this.props.navigation.state.params.id
+    //   : (-1).toString();
 
-    const restaurantId = this.props.navigation.state
-      ? this.props.navigation.state.params.id
-      : (-1).toString();
+    // let restaurantResponseJson = await fetchJson(
+    //   `${host}/restaurant?restaurantId=${restaurantId}`
+    // );
 
-    let restaurantResponseJson = await fetchJson(
-      `${host}/restaurant?restaurantId=${restaurantId}`
-    );
-
-    if (restaurantResponseJson.data === undefined) {
-      Alert.alert("Ошибка", "Ошибка запроса");
-      throw Error("Упс...");
-    }
-    if (restaurantResponseJson.data.result === undefined) {
-      Alert.alert("Ошибка", "Ошибка запроса");
-      throw Error("Упс...");
-    }
+    // if (restaurantResponseJson.data === undefined) {
+    //   Alert.alert("Ошибка", "Ошибка запроса");
+    //   throw Error("Упс...");
+    // }
+    // if (restaurantResponseJson.data.result === undefined) {
+    //   Alert.alert("Ошибка", "Ошибка запроса");
+    //   throw Error("Упс...");
+    // }
 
     this.props.navigation.setParams({
       favourite: fav,
-      title: restaurantResponseJson.data.result.title,
+      title: this.props.navigation.state.params.restaurant.title,
       onHeartPress: () => {
         if (!this.state.favourite) {
-          this.props.addRestToFav({
-            id: this.props.navigation.state.params.id
-          });
+          this.props.addRestToFav(this.props.navigation.state.params.restaurant);
         } else {
-          this.props.removeRestFromFav({
-            id: this.props.navigation.state.params.id
-          });
+          this.props.removeRestFromFav(this.props.navigation.state.params.restaurant);
         }
       }
     });
 
     this.state.favourite = fav;
-    this.state.data = restaurantResponseJson.data.result;
+    // this.state.data = this.props.navigation.state.params.restaurant;
     // this.setState({
     //   favourite: fav,
     //   data: restaurantResponseJson.data.result
@@ -198,12 +157,16 @@ class RestaurantMenu extends React.PureComponent {
     this.props.navigation.setParams({
       title: this.state.data.title
     });
+
+    if (this.props.navigation.state.params.menu != undefined) {
+      return 0;
+    }
     const menuResponseJson = await fetchJson(
       `${host}/restaurantMenu?restaurantId=${restaurantId}`
     );
     if (menuResponseJson["data"]) {
       if (menuResponseJson["data"]["result"]) {
-        this.setState({menu: menuResponseJson["data"]["result"]});
+        this.setState({ menu: menuResponseJson["data"]["result"] });
       }
     }
   };
@@ -293,14 +256,7 @@ class RestaurantMenu extends React.PureComponent {
   }
 
   isInFav = ({ id }) => {
-    if (typeof id === undefined) {
-      return false;
-    }
-    for (let i = 0; i < this.props.favourite.plates.length; i++) {
-      if (id === this.props.favourite.plates[i]) {
-        return true;
-      }
-    }
+    return this.props.favourite.plates[id] != undefined;
   };
 
   /**
@@ -344,10 +300,9 @@ class RestaurantMenu extends React.PureComponent {
   };
 
   _renderContent = ({ plates }, id, isActive) => {
-    const imageHeight =
-      viewportWidth >= 320 && viewportWidth < 375
-        ? 100
-        : viewportWidth >= 375 && viewportWidth < 414 ? 117 : 130;
+    const imageHeight = adaptWidth(100, 117, 130);
+    const { cart } = this.props;
+    // const { imageCacher } = this.props;
     if (!isActive) return null;
     //const textMarginRight = (viewportWidth >= 320 && viewportWidth < 375) ? 40 : (viewportWidth >= 375 && viewportWidth < 414) ? 117 : 130;
     return (
@@ -356,7 +311,7 @@ class RestaurantMenu extends React.PureComponent {
         style={{ flexDirection: "column", width: viewportWidth }}
       >
         {plates.map((e, i) => {
-          const itemCount = this.getCount(e);
+          const itemCount = getCartItemCount(cart, e);
           return (
             <Touchable
               key={i}
@@ -394,7 +349,8 @@ class RestaurantMenu extends React.PureComponent {
                 >
                   <Image
                     source={{
-                      uri: "http:" + e.image
+                      uri: "http:" + e.image,
+                      cache: "force-cache"
                     }}
                     resizeMode={
                       e.image.indexOf(".png") > 0 ? "contain" : "cover"
@@ -407,17 +363,19 @@ class RestaurantMenu extends React.PureComponent {
                       borderRadius: 10
                     }}
                   />
-                  {e.image.indexOf(".png") > 0 ? null : <LinearGradient
-                    colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.8)"]}
-                    start={{x: 0, y: 1}}
-                    end={{x: 1, y: 0}}
-                    style={{
-                      width: imageHeight,
-                      height: imageHeight,
-                      borderRadius: 10,
-                      position: "absolute"
-                    }}
-                  />}
+                  {e.image.indexOf(".png") > 0 ? null : (
+                    <LinearGradient
+                      colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.8)"]}
+                      start={{ x: 0, y: 1 }}
+                      end={{ x: 1, y: 0 }}
+                      style={{
+                        width: imageHeight,
+                        height: imageHeight,
+                        borderRadius: 10,
+                        position: "absolute"
+                      }}
+                    />
+                  )}
                   <Touchable
                     style={{ position: "absolute", right: 5, top: 5 }}
                     hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
@@ -474,15 +432,18 @@ class RestaurantMenu extends React.PureComponent {
                         marginBottom: 5
                       }}
                     >
-                      <Text 
+                      <Text
                         numberOfLines={3}
                         style={{
                           color: "rgb(135, 136, 140)",
                           fontSize: 12,
                           lineHeight: 14,
                           marginBottom: 5
-                        }}>
-                        {e.description.replace(/(<([^>]+)>)/ig,"").replace(/  +/g, " ")}
+                        }}
+                      >
+                        {e.description
+                          .replace(/(<([^>]+)>)/gi, "")
+                          .replace(/  +/g, " ")}
                       </Text>
                       {/*<HTMLView
                         textComponentProps={{
@@ -499,11 +460,10 @@ class RestaurantMenu extends React.PureComponent {
                       pressed={itemCount !== 0}
                       count={itemCount}
                       onPress={async () => {
-                        if (this.props.globalStore.length > 0) {
+                        if (Object.keys(cart).length > 0) {
+                          const firstItemId = Object.keys(cart)[0];
                           if (
-                            this.props.globalStore[
-                              this.props.globalStore.length - 1
-                            ].plate.restaurant !== e.restaurant
+                            cart[firstItemId].plate.restaurant !== e.restaurant
                           )
                             Alert.alert(
                               "Вы уверенны?",
@@ -554,7 +514,8 @@ class RestaurantMenu extends React.PureComponent {
                         lineHeight: 14,
                         maxWidth: 80,
                         letterSpacing: 0.4,
-                        fontFamily: "OpenSans", fontWeight: "600",
+                        fontFamily: "OpenSans",
+                        fontWeight: "600"
                       }}
                     >
                       {e.weight}
@@ -643,27 +604,13 @@ class RestaurantMenu extends React.PureComponent {
     );
   };
 
-  getCount = plate => {
-    var i = 0;
-    while (i < this.props.globalStore.length) {
-      let equalTitle = plate.title === this.props.globalStore[i].plate.title;
-      let equalId = plate.id === this.props.globalStore[i].plate.id;
-      let equalRestaurant =
-        plate.restourant == this.props.globalStore[i].plate.restourant;
-      if (equalTitle && equalRestaurant && equalId) {
-        return this.props.globalStore[i].count;
-      }
-      i++;
-    }
-    return 0;
-  };
-
   render() {
+    const { params } = this.props.navigation.state;
     //this.navigationOptions.title = this.state.data.title;
     var restaurant = (
       <View>
         <ScrollView
-          ref={c => this.scroll = c}
+          ref={c => (this.scroll = c)}
           style={styles.container}
           contentContainerStyle={{
             justifyContent: "flex-start",
@@ -673,7 +620,8 @@ class RestaurantMenu extends React.PureComponent {
           {/* Фото ресторана */}
           <Image
             source={{
-              uri: "http:" + this.state.data.image
+              uri: "http:" + this.state.data.image,
+              cache: "force-cache"
             }}
             style={{
               width: viewportWidth,
@@ -813,7 +761,8 @@ class RestaurantMenu extends React.PureComponent {
                     color: "#dcc49c",
                     marginBottom: 20,
                     letterSpacing: 0.4,
-                    fontFamily: "OpenSans", fontWeight: "600",
+                    fontFamily: "OpenSans",
+                    fontWeight: "600",
                     fontSize: 13
                   }}
                 >
@@ -860,7 +809,8 @@ class RestaurantMenu extends React.PureComponent {
                 letterSpacing: 0.9,
                 lineHeight: 15,
                 top: 2,
-                fontFamily: "OpenSans", fontWeight: "600",
+                fontFamily: "OpenSans",
+                fontWeight: "600",
                 fontSize: 13
               }}
             >
@@ -934,12 +884,12 @@ class RestaurantMenu extends React.PureComponent {
               backgroundColor: "rgb(87, 88, 98)"
             }}
           />
-          {this.state.menu.length < 1 ? (
+          {/* this.state.menu.length < 1 ? (
             <ActivityIndicator
               size="large"
               style={{ alignSelf: "center", marginTop: 60 }}
             />
-          ) : null}
+          ) : null */}
           <Accordion
             touchableProps={{
               activeOpacity: 0.2,
@@ -949,7 +899,7 @@ class RestaurantMenu extends React.PureComponent {
             touchableComponent={Touchable}
             underlayColor="#292b37"
             style={{ alignSelf: "flex-start", width: viewportWidth }}
-            sections={this.state.menu}
+            sections={params.menu != undefined ? params.menu : []}
             renderHeader={this._renderHeader}
             renderContent={this._renderContent}
           />
@@ -1003,19 +953,20 @@ class RestaurantMenu extends React.PureComponent {
 RestaurantMenu.propTypes = {
   navigation: PropTypes.object,
   favourite: PropTypes.object,
+  imageCacher: PropTypes.object,
   addToFav: PropTypes.func,
   removeFromFav: PropTypes.func,
   addRestToFav: PropTypes.func,
   removeRestFromFav: PropTypes.func,
   onAddPlate: PropTypes.func,
   deletePlate: PropTypes.func,
-  globalStore: PropTypes.array
+  cart: PropTypes.object
 };
 
 export default connect(
-  state => ({
-    globalStore: state.cart,
-    favourite: state.favourite
+  ({cart, favourite}) => ({
+    cart: cart,
+    favourite: favourite
   }),
   dispatch => ({
     onAddPlate: plate => {

@@ -51,7 +51,7 @@ class Restaurant extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       headerBackTitle: "Назад",
-      title: navigation.state.params.title,
+      title: navigation.state.params.restaurant.title,
       headerRight: (
         <Touchable
           onPress={navigation.state.params.onHeartPress}
@@ -78,101 +78,62 @@ class Restaurant extends React.Component {
     this.state = {
       rang: 0,
       canNav: true,
-      data: {
-        id: 0,
-        title: "",
-        image: "//dostavka1.com/img/app-icon.png",
-        logoImage: "//dostavka1.com/img/app-icon.png",
-        favorite: false,
-        type: "",
-        /*
-				tagGroups: [
-						{
-							"id": 12,
-							"title": "<string>",
-							"size": <float>,
-							“icon”: “http://gg.svg”
-						},
-						<tag_grou_id>,
-				],*/
-        minOrder: 0,
-        description: {
-          title: "",
-          description: ""
-        },
-        bestPlates: [] /*
-				promo: {
-						id: <int>,
-						title: <string>,
-						description: <html>
-				},*/,
-        menu: {},
-        time: "",
-        averageBill: 0,
-        minBill: 0,
-        web: ""
-        /*discount: <float>*/
-      },
+      data: this.props.navigation.state.params.restaurant,
       favourite: false
     };
   }
 
   componentWillMount = async () => {
-    let fav = false;
+    const { id } = this.props.navigation.state.params.restaurant;
+    const { restaurants } = this.props.favourite;
+    let fav = restaurants[id] != undefined;
+    this.state.favourite = fav;
 
-    for (let i = 0; i < this.props.favourite.restaurants.length; i++) {
-      let rest = this.props.favourite.restaurants[i];
-      if (rest === this.state.data.id) {
-        fav = true;
-      }
-    }
+    // for (let i = 0; i < this.props.favourite.restaurants.length; i++) {
+    //   let rest = this.props.favourite.restaurants[i];
+    //   if (rest === this.state.data.id) {
+    //     fav = true;
+    //   }
+    // }
 
-    const restaurantId = this.props.navigation.state
-      ? this.props.navigation.state.params.id
-      : (-1).toString();
+    // const restaurantId = this.props.navigation.state
+    //   ? this.props.navigation.state.params.id
+    //   : (-1).toString();
 
-    let restaurantResponseJson = await fetchJson(
-      `${host}/restaurant?restaurantId=${restaurantId}`
-    );
+    // let restaurantResponseJson = await fetchJson(
+    //   `${host}/restaurant?restaurantId=${restaurantId}`
+    // );
 
-    if (restaurantResponseJson.data === undefined) {
-      Alert.alert("Ошибка", "Ошибка запроса");
-      throw Error("Упс...");
-    }
+    // if (restaurantResponseJson.data === undefined) {
+    //   Alert.alert("Ошибка", "Ошибка запроса");
+    //   throw Error("Упс...");
+    // }
 
     this.props.navigation.setParams({
       favourite: fav,
-      title: restaurantResponseJson.data.result.title,
+      title: this.props.navigation.state.params.restaurant.title,
       onHeartPress: () => {
         if (!this.state.favourite) {
-          this.props.addToFav({
-            id: this.props.navigation.state.params.id
-          });
+          this.props.addToFav(this.props.navigation.state.params.restaurant);
         } else {
-          this.props.removeFromFav({
-            id: this.props.navigation.state.params.id
-          });
+          this.props.removeFromFav(
+            this.props.navigation.state.params.restaurant
+          );
         }
       }
     });
 
-    this.state.favourite = fav;
-    this.state.data = restaurantResponseJson.data.result;
+    // this.state.data = this.props.navigation.state.params.restaurant;
     // this.setState({
     //   favourite: fav,
     //   data: restaurantResponseJson.data.result
     // });
   };
 
-  componentWillReceiveProps = async () => {
-    let fav = false;
-
-    for (let i = 0; i < this.props.favourite.restaurants.length; i++) {
-      let rest = this.props.favourite.restaurants[i];
-      if (rest === this.state.data.id) {
-        fav = true;
-      }
-    }
+  componentWillReceiveProps = async newProps => {
+    const { id } = newProps.navigation.state.params.restaurant;
+    const { restaurants } = newProps.favourite;
+    let fav = restaurants[id] != undefined;
 
     if (fav != this.state.favourite) {
       this.props.navigation.setParams({
@@ -201,13 +162,11 @@ class Restaurant extends React.Component {
       title: this.state.data.title,
       onHeartPress: () => {
         if (!this.state.favourite) {
-          this.props.addToFav({
-            id: this.props.navigation.state.params.id
-          });
+          this.props.addToFav(this.props.navigation.state.params.restaurant);
         } else {
-          this.props.removeFromFav({
-            id: this.props.navigation.state.params.id
-          });
+          this.props.removeFromFav(
+            this.props.navigation.state.params.restaurant
+          );
         }
       }
     });
@@ -739,8 +698,8 @@ Restaurant.propTypes = {
 };
 
 export default connect(
-  state => ({
-    favourite: state.favourite
+  ({ favourite }) => ({
+    favourite: favourite
   }),
   dispatch => ({
     addToFav: data => {

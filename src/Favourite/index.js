@@ -21,324 +21,72 @@ import { getStatusBarHeight } from "react-native-status-bar-height";
 import propTypes from "prop-types";
 import PriceButton from "../PriceButton";
 import IconD from "../IconD";
+import { getFirstItem, fetchJson } from "../utils";
 import { host } from "../etc";
-import { fetchJson } from "../etc";
+import { getCartTotalCount, getCartItemCount } from "../utils";
 const { width: viewportWidth } = Dimensions.get("window");
 
-/**
- * Возвращает колличество блюд plate в корзине
- * @param {Object} cart
- * @param {Object} plate
- */
-function getCount(cart, plate) {
-  var i = 0;
-  while (i < cart.length) {
-    let equalTitle = plate.title == cart[i].plate.title;
-    let equalRestaurant = plate.restourant == cart[i].plate.restourant;
-    if (equalTitle && equalRestaurant) {
-      return cart[i].count;
-    }
-    i++;
-  }
-  return 0;
-}
-
 class Favourite extends React.Component {
+  static propTypes = {
+    favourite: propTypes.shape({
+      plates: propTypes.object,
+      collections: propTypes.object,
+      restaurants: propTypes.object
+    }),
+    cart: propTypes.object,
+    onDeletePlate: propTypes.func,
+    onAddPlate: propTypes.func,
+    onRemovePlate: propTypes.func,
+    open: propTypes.func,
+    navigation: propTypes.object,
+    onDeleteRestaurant: propTypes.func,
+    deletePlate: propTypes.func,
+    globalStore: propTypes.array
+  };
   constructor(props) {
     super(props);
     this.state = {
       selectedView: 0,
-      restaurans: [],
+      restaurans: {},
       canNav: true,
       favourite: {
-        plates: [],
-        collections: [],
-        restaurants: []
-      },
-      favouriteIds: {
-        plates: [],
-        collections: [],
-        restaurants: []
+        plates: {},
+        collections: {},
+        restaurants: {}
       }
     };
   }
 
-  getCount = plate => {
-    var i = 0;
-    while (i < this.props.cart.length) {
-      let equalTitle = plate.title == this.props.cart[i].plate.title;
-      let equalRestaurant =
-        plate.restourant == this.props.cart[i].plate.restourant;
-      if (equalTitle && equalRestaurant) {
-        return this.props.cart[i].count;
-      }
-      i++;
-    }
-    return 0;
-  };
-
-  _renderSinglePlate = (item, index) => {
-    /* Разметка */
-    const SLIDER_WIDTH = viewportWidth - adaptWidth(2 * 20, 2 * 24, 26);
-    const SLIDER_MARGIN = adaptWidth(10, 11.7, 13.2) / 2;
-    const SLIDER_HEIGHT = SLIDER_WIDTH * 1.32;
-
-    /* Стили карточки */
-    const itemStyles = StyleSheet.create({
-      containerSlider: {
-        margin: SLIDER_MARGIN,
-        height: SLIDER_HEIGHT,
-        width: SLIDER_WIDTH
-      },
-      viewSlider: {
-        flex: 1,
-        padding: 20,
-
-        width: SLIDER_WIDTH,
-        height: SLIDER_HEIGHT,
-        justifyContent: "space-between",
-        backgroundColor: "#272833",
-        borderRadius: 10,
-        elevation: 4,
-        shadowColor: "#000",
-        shadowOffset: { width: 2, height: 2 },
-        shadowOpacity: 0.5,
-        shadowRadius: 5
-      },
-      BG_IMAGE: {
-        width: SLIDER_WIDTH,
-        top: item.image.indexOf(".png") > 0 ? SLIDER_HEIGHT * 0.5 / 3 : 0,
-        height:
-          item.image.indexOf(".png") > 0
-            ? SLIDER_HEIGHT * 2 / 3
-            : SLIDER_HEIGHT,
-        borderRadius: 10,
-        position: "absolute",
-        backgroundColor: "transparent"
-      },
-      GRADIENT_STYLE: {
-        height: SLIDER_HEIGHT + 0.5,
-        top: -0.5,
-        position: "absolute",
-        width: SLIDER_WIDTH + 0.5,
-        left: -0.5,
-        borderRadius: 10
-      },
-      titleTextStyle: {
-        flexDirection: "row",
-        backgroundColor: "transparent",
-        fontSize: 20,
-        color: "#ffffff",
-        fontFamily: "Stem-Medium",
-        maxWidth: viewportWidth - 100
-      },
-      restourantTextStyle: {
-        flexDirection: "row",
-        backgroundColor: "transparent",
-        fontSize: 12,
-        color: "#dcc49c",
-        letterSpacing: 0.5,
-        fontFamily: "Stem-Medium"
-      },
-      weightTextStyle: {
-        flexDirection: "row",
-        backgroundColor: "transparent",
-        fontSize: 12,
-        color: "rgb(119, 122, 136)",
-        letterSpacing: 0.5,
-        fontFamily: "Stem-Medium"
-      },
-      topViewStyle: {
-        flexDirection: "row",
-        justifyContent: "space-between"
-      }
-    });
-
-    const GRADIENT_COLORS = [
-      "rgba(0,0,0, 0.8)",
-      "transparent",
-      "rgba(0,0,0, 0.8)"
-    ];
-
-    // Компонент с названием блюда
-    var titleText = <Text style={itemStyles.titleTextStyle}>{item.title}</Text>;
-
-    // Компонент с названием ресторана
-    var restourantText = (
-      <Text style={itemStyles.restourantTextStyle}>{item.restourant}</Text>
-    );
-
-    // Компонент с весом блюда
-    var weightText = (
-      <Text style={itemStyles.weightTextStyle}>{item.weight}</Text>
-    );
-
-    // Компонент с кнопкой добавить в избранное
-    var heartButton = (
-      <View>
-        <Touchable
-          hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
-          background={Touchable.SelectableBackgroundBorderless()}
-          onPress={() => {
-            this.props.onDeletePlate(item);
-          }}
-        >
-          <View style={{ backgroundColor: "transparent" }}>
-            <IconD name={"trash"} size={18} color="#dcc49c" />
-          </View>
-        </Touchable>
-      </View>
-    );
-    // Верхняя половина карточки
-    var topView = (
-      <View style={itemStyles.topViewStyle}>
-        <View>
-          <Touchable
-            activeOpacity={0.8}
-            onPress={() => {
-              this.nav(index);
-            }}
-          >
-            <View>
-              {/* Название блюда */}
-              {titleText}
-
-              {/* Название ресторана */}
-              {restourantText}
-
-              {/* Вес блюда */}
-              {weightText}
-            </View>
-          </Touchable>
-        </View>
-
-        {heartButton}
-      </View>
-    );
-    var logo = (
-      <Image
-        onLoadEnd={() => {
-          this.setState({});
-        }}
-        resizeMode="contain"
-        style={{
-          width: SLIDER_WIDTH / 3,
-          height: SLIDER_WIDTH / 3
-        }}
-        source={{
-          uri: this.state.restaurans[index]
-            ? "http:" + this.state.restaurans[index].logoImage
-            : "http://dostavka1.com/img/app-icon.png"
-        }}
-      />
-    );
-    var itemCount = getCount(this.props.cart, item);
-    var bottomView = (
-      <View
-        pointerEvents="box-none"
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "flex-end",
-          height: SLIDER_WIDTH / 3
-        }}
-      >
-        <Touchable
-          activeOpacity={0.8}
-          onPress={() => {
-            this.nav(index);
-          }}
-        >
-          {logo}
-        </Touchable>
-        <PriceButton
-          count={itemCount}
-          pressed={itemCount != 0}
-          value={item.price}
-          onPress={() => {
-            if (this.props.cart.length > 0) {
-              if (
-                this.props.cart[this.props.cart.length - 1].plate.restaurant !==
-                item.restaurant
-              )
-                Alert.alert(
-                  "Вы уверенны?",
-                  "Вы добавили блюдо из другого ресторана. Ваша корзина из предыдущего ресторана будет очищена.",
-                  [
-                    {
-                      text: "OK",
-                      onPress: () => {
-                        this.props.onAddPlate(item);
-                        this.props.open(item);
-                      }
-                    },
-                    { text: "Отмена", onPress: null, style: "cancel" }
-                  ],
-                  { cancelable: false }
-                );
-              else {
-                this.props.onAddPlate(item);
-                this.props.open(item);
-              }
-            } else {
-              this.props.onAddPlate(item);
-              this.props.open(item);
-            }
-          }}
-        />
-      </View>
-    );
-
-    return (
-      <View key={index} style={itemStyles.containerSlider}>
-        <View style={itemStyles.viewSlider}>
-          {/* Задний фон карточки */}
-          <Touchable
-            activeOpacity={0.8}
-            foreground={Touchable.SelectableBackgroundBorderless()}
-            style={{
-              position: "absolute",
-              height: SLIDER_HEIGHT,
-              width: SLIDER_WIDTH,
-              borderRadius: 10
-            }}
-            onPress={() => {
-              this.nav(index);
-            }}
-          >
-            <View>
-              <Image
-                resizeMode={
-                  item.image.indexOf(".png") < 0 ? "cover" : "contain"
-                }
-                style={itemStyles.BG_IMAGE}
-                source={{ uri: "http:" + item.image }}
-              />
-
-              {/* Градиент */}
-              <LinearGradient
-                colors={GRADIENT_COLORS}
-                style={itemStyles.GRADIENT_STYLE}
-              />
-            </View>
-          </Touchable>
-
-          {topView}
-
-          {bottomView}
-        </View>
-      </View>
-    );
-  };
-
-  renderPlates = () => {
-    return this._renderContent(this.state.favourite.plates);
-  };
+  /**
+   * Возвращает jsx компонент,
+   * содержащий все блюда из избранного
+   *
+   * @memberof Favourite
+   */
+  // renderPlates = () => {
+  //   const { favourite } = this.state;
+  //   const { plates } = favourite;
+  //   const platesIds = Object.keys(plates);
+  //   return platesIds.map((id, index) =>
+  //     this._renderSinglePlate(plates[id], index)
+  //   );
+  // };
 
   nav = () => {};
 
+  /**
+   * Возвращает jsx компонент,
+   * содержащий все рестораны из избранного
+   *
+   * @memberof Favourite
+   */
   renderRestaurants = () => {
-    return this.state.favourite.restaurants.map(this._renderSingleRestaurant);
+    const { favourite } = this.state;
+    const { restaurants } = favourite;
+    const restaurantsIds = Object.keys(restaurants);
+    return restaurantsIds.map((id, index) => {
+      return this._renderSingleRestaurant(restaurants[id], index);
+    });
   };
 
   _renderSingleRestaurant = (item, index) => {
@@ -367,7 +115,10 @@ class Favourite extends React.Component {
             height: SLIDER_WIDTH
           }}
           onPress={() =>
-            this.props.navigation.navigate("Restaurant", { id: item.id })
+            this.props.navigation.navigate("Loader", {
+              id: item.id,
+              action: "navigateToRestaurant"
+            })
           }
         >
           <View>
@@ -377,7 +128,10 @@ class Favourite extends React.Component {
                 styles.itemBackgroundImage,
                 { width: SLIDER_WIDTH, height: SLIDER_WIDTH }
               ]}
-              source={{ uri: "http:" + item.image }}
+              source={{
+                uri:
+                  "http:" + (item.image != undefined ? item.image : item.photo)
+              }}
             />
             <LinearGradient
               colors={["rgba(0,0,0, 0.8)", "transparent", "rgba(0,0,0, 0.8)"]}
@@ -401,7 +155,7 @@ class Favourite extends React.Component {
               color: '#292b37',
               }}>{item.discount}</Text>
             </View>*/}
-          <View>{this.renderHeart(index)}</View>
+          <View>{this.renderHeart(item)}</View>
         </View>
         <View
           pointerEvents="none"
@@ -411,7 +165,9 @@ class Favourite extends React.Component {
             backgroundColor: "transparent"
           }}
         >
-          {this.renderLogo(item.logoImage)}
+          {this.renderLogo(
+            item.logoImage != undefined ? item.logoImage : item.restourantLogo
+          )}
           <Text
             style={{
               color: "white",
@@ -422,7 +178,7 @@ class Favourite extends React.Component {
               letterSpacing: 0.4
             }}
           >
-            {item.title}
+            {item.title != undefined ? item.title : item.restourantName}
           </Text>
         </View>
       </View>
@@ -430,7 +186,6 @@ class Favourite extends React.Component {
   };
 
   fav = () => {
-    //this.state.favourite.restaurants[index].favourite = !this.state.favourite.restaurants[index].favourite;
     this.setState({});
   };
 
@@ -453,15 +208,12 @@ class Favourite extends React.Component {
     return result;
   };
 
-  renderHeart(index) {
+  renderHeart = restaurant => {
     return (
       <TouchableOpacity
         hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
         onPress={() => {
-          this.props.onDeleteRestaurant(
-            this.state.favourite.restaurants[index]
-          );
-          this.fav(index);
+          this.props.onDeleteRestaurant(restaurant);
         }}
       >
         <View style={{ backgroundColor: "transparent" }}>
@@ -469,14 +221,18 @@ class Favourite extends React.Component {
         </View>
       </TouchableOpacity>
     );
-  }
+  };
 
+  /**
+   * Возвращает jsx компонент,
+   * содержащий логотип ресторана
+   *
+   * @param {String} logo – url на изображение
+   * @returns
+   * @memberof Favourite
+   */
   renderLogo(logo) {
-    const screen =
-      viewportWidth >= 320 && viewportWidth < 375
-        ? 0
-        : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
-    const SLIDER_WIDTH = screen == 0 ? 280 : screen == 1 ? 328.1 : 362.3;
+    const SLIDER_WIDTH = adaptWidth(280, 328.1, 362.3);
 
     return (
       <Image
@@ -488,39 +244,24 @@ class Favourite extends React.Component {
         }}
         source={{ uri: "http:" + logo }}
       />
-    ); /*
-      return <View style={{ height: SLIDER_WIDTH / 3 }}>
-        <WebView
-          bounces={false}
-          scrollEnabled={false}
-          source={{
-            html: `<img 
-              src="` + logo + `"
-              style="
-              width:100%;">`
-          }}
-          style={{
-            width: SLIDER_WIDTH / 3,
-            height: SLIDER_WIDTH / 3,
-            backgroundColor: 'transparent',
-          }} />
-      </View>*/
+    );
   }
 
   renderCollections = () => {
     return null;
   };
 
-  _renderContent = plates => {
-    const imageHeight =
-      viewportWidth >= 320 && viewportWidth < 375
-        ? 100
-        : viewportWidth >= 375 && viewportWidth < 414 ? 117 : 130;
-    //const textMarginRight = (viewportWidth >= 320 && viewportWidth < 375) ? 40 : (viewportWidth >= 375 && viewportWidth < 414) ? 117 : 130;
+  renderPlates = () => {
+    const imageHeight = adaptWidth(100, 117, 130);
+    const { favourite } = this.state;
+    const { plates } = favourite;
+    const platesIds = Object.keys(plates);
+    const { cart } = this.props;
     return (
       <View style={{ flexDirection: "column", width: viewportWidth }}>
-        {plates.map((e, i) => {
-          const itemCount = this.getCount(e);
+        {platesIds.map((id, i) => {
+          const e = plates[id];
+          const itemCount = getCartItemCount(cart, e);
           return (
             <Touchable
               key={i}
@@ -586,7 +327,7 @@ class Favourite extends React.Component {
                     hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
                     foreground={Touchable.SelectableBackgroundBorderless()}
                     onPress={() => {
-                      this.props.deletePlate(e);
+                      this.props.onDeletePlate(e);
                       this.setState({});
                     }}
                   >
@@ -640,11 +381,8 @@ class Favourite extends React.Component {
                       pressed={itemCount !== 0}
                       count={itemCount}
                       onPress={async () => {
-                        if (this.props.cart.length > 0) {
-                          if (
-                            this.props.cart[this.props.cart.length - 1].plate
-                              .restaurant !== e.restaurant
-                          )
+                        if (Object.keys(cart).length > 0) {
+                          if (cart[e.id].plate.restaurant !== e.restaurant)
                             Alert.alert(
                               "Вы уверенны?",
                               "Вы добавили блюдо из другого ресторана. Ваша корзина из предыдущего ресторана будет очищена.",
@@ -717,36 +455,22 @@ class Favourite extends React.Component {
   componentWillReceiveProps = async newProps => {
     await AsyncStorage.setItem("fav", JSON.stringify(newProps.favourite));
 
-    this.state.favouriteIds.plates = newProps.favourite.plates;
-    this.state.favouriteIds.restaurants = newProps.favourite.restaurants;
-
-    this.state.favouriteIds.plates = [];
-    this.state.favourite.plates = [];
-    this.state.restaurans = [];
-    for (let i = 0; i < newProps.favourite.plates.length; i++) {
-      let plate = newProps.favourite.plates[i];
-
-      let responseJson = await fetchJson(`${host}/plate?plate=${plate}`);
-      this.state.favourite.plates.push(responseJson.data[0]);
-      let responsePlateRestJson = await fetchJson(
-        `${host}/restaurant?restaurantId=${responseJson.data[0].restaurant}`
-      );
-      if (responsePlateRestJson.data != undefined)
-        if (responsePlateRestJson.data.result != undefined)
-          this.state.restaurans.push(responsePlateRestJson.data.result);
-    }
-
-    this.state.favouriteIds.restaurants = [];
-    this.state.favourite.restaurants = [];
-    for (let i = 0; i < newProps.favourite.restaurants.length; i++) {
-      let restaurant = newProps.favourite.restaurants[i];
-      let responseRestJson = await fetchJson(
+    const platesIds = Object.keys(newProps.favourite.plates);
+    const restauransOfPlates = this.state.restaurans;
+    for (let i = 0; i < platesIds.length; i++) {
+      let { restaurant } = newProps.favourite.plates[platesIds[i]];
+      let response = await fetchJson(
         `${host}/restaurant?restaurantId=${restaurant}`
       );
-      if (responseRestJson.data.result != undefined)
-        this.state.favourite.restaurants.push(responseRestJson.data.result);
+      if (response.data != undefined)
+        if (response.data.result != undefined)
+          if (restauransOfPlates[response.data.result.id] == undefined)
+            restauransOfPlates[response.data.result.id] = response.data.result;
     }
-    this.setState({});
+    this.setState({
+      favourite: newProps.favourite,
+      restaurans: restauransOfPlates
+    });
   };
 
   render = () => {
@@ -828,10 +552,10 @@ class Favourite extends React.Component {
   };
 }
 export default connect(
-  state => ({
-    favourite: state.favourite,
-    cart: state.cart,
-    modal: state.modalController
+  ({ favourite, cart, modalController }) => ({
+    favourite: favourite,
+    cart: cart,
+    modal: modalController
   }),
   dispatch => ({
     onDeletePlate: fav =>
@@ -856,19 +580,6 @@ export default connect(
     }
   })
 )(Favourite);
-
-Favourite.propTypes = {
-  favourite: propTypes.object,
-  cart: propTypes.array,
-  onDeletePlate: propTypes.func,
-  onAddPlate: propTypes.func,
-  onRemovePlate: propTypes.func,
-  open: propTypes.func,
-  navigation: propTypes.object,
-  onDeleteRestaurant: propTypes.func,
-  deletePlate: propTypes.func,
-  globalStore: propTypes.array
-};
 
 const styles = StyleSheet.create({
   tabStyle: {

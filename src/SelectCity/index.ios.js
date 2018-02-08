@@ -17,7 +17,7 @@ const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
 
-class SelectCity extends React.Component {
+export default class SelectCity extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -96,7 +96,7 @@ class SelectCity extends React.Component {
 
   async componentWillMount() {
     //var city = await AsyncStorage.getItem('city');
-    if (0) this.props.navigation.navigate("Main");
+    // this.props.navigation.navigate("Main");
     fetch(`${host}/classificator/cities`)
       .then(response => response.json())
       .then(responseJson => {
@@ -258,13 +258,6 @@ class SelectCity extends React.Component {
     );
   }
 }
-
-export default connect(
-  state => ({}),
-  dispatch => ({
-    open: () => dispatch({ type: "OPEN_MODAL" })
-  })
-)(SelectCity);
 
 const styles = StyleSheet.create({
   text: {

@@ -5,7 +5,6 @@ import {
   View,
   TouchableOpacity,
   Dimensions,
-  ActivityIndicator,
   AsyncStorage,
   Alert
 } from "react-native";
@@ -21,25 +20,31 @@ import { host, adaptWidth } from "../etc";
 const { width: viewportWidth } = Dimensions.get("window");
 
 class SelectAddress extends React.Component {
+  static propTypes = {
+    navigation: propTypes.object,
+    lastViewed: propTypes.object,
+    saveAddress: propTypes.func,
+    showSpinner: propTypes.func,
+    hideSpinner: propTypes.func
+  };
   constructor(props) {
     super(props);
     this.state = {
-      active: false,
       canNav: true,
       showAutocomplete: true,
-      hidePrevious: false,
       restaurantName: "",
       history: [],
       recomededAddresses: [],
-      deliver: false,
+      deliver: undefined,
       address: "",
       house: ""
     };
     if (
       this.props.navigation.state.params.id === this.props.lastViewed.restaurant
     )
-      this.props.navigation.navigate("RestaurantMenu", {
-        id: this.props.navigation.state.params.id
+      this.props.navigation.navigate("Loader", {
+        id: this.props.navigation.state.params.id,
+        action: "navigateToMenu"
       });
   }
 
@@ -120,6 +125,8 @@ class SelectAddress extends React.Component {
   };
 
   checkForAviability = () => {
+    if (this.state.address == "" || this.state.house == "") return null;
+    if (this.state.deliver === undefined) return null;
     if (!this.state.deliver)
       return (
         <View style={{ padding: 20 }}>
@@ -174,17 +181,17 @@ class SelectAddress extends React.Component {
 
   validateAddress = async () => {
     if (this.state.address == "" || this.state.house == "") {
-      this.setState({ deliver: false });
+      this.setState({ deliver: undefined });
       return -1;
     }
-    this.setState({ active: true });
+    this.props.showSpinner();
     const responseJson = await fetchJson(
       `${host}/address?cityId=36&street=${this.state.address}&house=${
         this.state.house
       }&restaurantId=${this.props.navigation.state.params.id}`,
       {}
     );
-    this.setState({ active: false });
+    this.props.hideSpinner();
     if (responseJson["errors"] != undefined) {
       // Alert.alert(responseJson["errors"]["title"] + ' ' + responseJson["errors"]["code"], responseJson["errors"]["detail"]);
       this.setState({ deliver: false });
@@ -222,8 +229,9 @@ class SelectAddress extends React.Component {
           street: this.state.address,
           house: this.state.house
         });
-        this.props.navigation.navigate("RestaurantMenu", {
-          id: this.props.navigation.state.params.id
+        this.props.navigation.navigate("Loader", {
+          id: this.props.navigation.state.params.id,
+          action: "navigateToMenu"
         });
         this.setState({ canNav: false });
         setTimeout(() => {
@@ -352,12 +360,12 @@ class SelectAddress extends React.Component {
                 if (this.state.address.length > 3)
                   await this.getAutocomplete({
                     street: address,
-                    house: this.state.house
+                    house: this.state.house,
+                    deliver: undefined
                   });
               }}
               onBlur={() => {
                 this.validateAddress();
-                this.setState({ hidePrevious: true });
               }}
             />
           </View>
@@ -378,10 +386,11 @@ class SelectAddress extends React.Component {
               }}
               label="Дом доставки"
               value={this.state.house}
-              onChangeText={address => this.setState({ house: address })}
+              onChangeText={address =>
+                this.setState({ house: address, deliver: undefined })
+              }
               onBlur={() => {
                 this.validateAddress();
-                this.setState({ hidePrevious: true });
               }}
             />
           </View>
@@ -391,16 +400,6 @@ class SelectAddress extends React.Component {
           {this.state.address != "" && this.state.house != ""
             ? this.checkForAviability(this.state.address)
             : null}
-          {!this.state.active ? null : (
-            <ActivityIndicator
-              size="large"
-              style={{
-                position: "absolute",
-                alignSelf: "center",
-                top: 300
-              }}
-            />
-          )}
           <View
             style={{
               position: "absolute",
@@ -442,18 +441,15 @@ class SelectAddress extends React.Component {
   };
 }
 
-SelectAddress.propTypes = {
-  navigation: propTypes.object,
-  lastViewed: propTypes.object,
-  saveAddress: propTypes.func
-};
-
 export default connect(
-  state => ({
-    lastViewed: state.lastViewed
+  ({ lastViewed }) => ({
+    lastViewed: lastViewed
   }),
   dispatch => ({
-    saveAddress: address => dispatch({ type: "SAVE_ADDRESS", payload: address })
+    saveAddress: address =>
+      dispatch({ type: "SAVE_ADDRESS", payload: address }),
+    showSpinner: () => dispatch({ type: "SHOW_SPINNER" }),
+    hideSpinner: () => dispatch({ type: "HIDE_SPINNER" })
   })
 )(SelectAddress);
 

@@ -4,11 +4,7 @@ const initialState = {};
 
 export default function user(state = initialState, action) {
   if (action.type === "AUTH") {
-    AsyncStorage.setItem(
-      "lastToken",
-      JSON.stringify(action.payload.data.token),
-      () => {}
-    );
+    AsyncStorage.setItem("lastToken", action.payload.data.token, () => {});
     return action.payload.data;
   }
   if (action.type === "REGISTRATION_ERROR") {
@@ -16,11 +12,7 @@ export default function user(state = initialState, action) {
     return state;
   }
   if (action.type === "LOGOUT") {
-    AsyncStorage.setItem(
-      "lastToken",
-      JSON.stringify(null),
-      () => {}
-    );
+    AsyncStorage.setItem("lastToken", JSON.stringify(null), () => {});
     return initialState;
   }
   return state;

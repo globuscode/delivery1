@@ -301,8 +301,8 @@ SetCard.propTypes = {
 };
 
 export default connect(
-  state => ({
-    user: state.user
+  ({ user }) => ({
+    user: user
   }),
   dispatch => ({
     addCard: card => dispatch({ type: "ADD_CREDIT_CARD", payload: card })

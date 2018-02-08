@@ -24,6 +24,7 @@ import IconD from "../IconD";
 import Touchable from "react-native-platform-touchable";
 import { host } from "../etc";
 import { fetchJson } from "../etc";
+import { getCartItemCount } from "../utils";
 function onlyUnique(value, index, self) {
   return self.indexOf(value) === index;
 }
@@ -130,13 +131,10 @@ class Plate extends React.Component {
       userTastes: tastesJson
     });
 
-    for (let i = 0; i < this.props.favourite.plates.length; i++) {
-      if (this.props.favourite.plates[i] === this.state.plate.id) {
-        this.state.favourite = true;
-        break;
-      }
-    }
+    this.state.favourite =
+      this.props.favourite.plates[this.state.plate.id] != undefined;
     this.state.plate.tags = this.state.plate.tags.filter(onlyUnique);
+
     this.setState({});
   };
 
@@ -305,8 +303,9 @@ class Plate extends React.Component {
 
   nav = () => {
     if (this.state.canNav) {
-      this.props.navigation.navigate("Restaurant", {
-        id: this.state.restaurant.id
+      this.props.navigation.navigate("Loader", {
+        id: this.state.restaurant.id,
+        action: "navigateToRestaurant"
       });
       this.setState({ canNav: false });
       setTimeout(() => {
@@ -317,29 +316,14 @@ class Plate extends React.Component {
 
   componentWillReceiveProps = newProps => {
     this.props = newProps;
-    let fav = false;
-    for (let i = 0; i < this.props.favourite.plates.length; i++) {
-      if (this.props.favourite.plates[i] === this.state.plate.id) {
-        this.setState({ favourite: true });
-        fav = true;
-        break;
-      }
-    }
-    if (!fav) {
-      this.setState({ favourite: false });
-    }
+    this.setState({
+      favourite: this.props.favourite.plates[this.state.plate.id] != undefined
+    });
   };
 
   render() {
-    /*Storage.subscribe(() => {
-			this.setState({});
-		  });*/
-    let inCart = false;
-    var i = 0;
-    while (i < this.props.globalStore.length && !inCart) {
-      inCart = this.props.globalStore[i].plate.title == this.state.plate.title;
-      i++;
-    }
+    const { cart } = this.props;
+    let inCart = getCartItemCount(cart, this.state.plate) != 0;
     return (
       <View>
         <ScrollView
@@ -493,15 +477,14 @@ class Plate extends React.Component {
 
           <PriceButton
             value={this.props.navigation.state.params.plate.price}
-            count={inCart ? this.props.globalStore[i - 1].count : null}
+            count={inCart ? cart[this.state.plate.id].count : null}
             pressed={inCart}
             onPress={() => {
               let item = this.state.plate;
-              if (this.props.globalStore.length > 0) {
-                if (
-                  this.props.globalStore[this.props.globalStore.length - 1]
-                    .plate.restaurant !== item.restaurant
-                )
+              const { cart } = this.props;
+              if (Object.keys(cart).length > 0) {
+                const firstItemId = Object.keys(cart)[0];
+                if (cart[firstItemId].plate.restaurant !== item.restaurant)
                   Alert.alert(
                     "Вы уверенны?",
                     "Вы добавили блюдо из другого ресторана. Ваша корзина из предыдущего ресторана будет очищена.",
@@ -519,7 +502,8 @@ class Plate extends React.Component {
                   );
                 else {
                   this.props.onAddPlate(item);
-                  this.props.openModal(item);
+                  if (cart[this.state.plate.id] != undefined)
+                    this.props.openModal(item);
                 }
               } else {
                 this.props.onAddPlate(item);
@@ -765,7 +749,7 @@ class Plate extends React.Component {
 Plate.propTypes = {
   navigation: propTypes.object,
   favourite: propTypes.object,
-  globalStore: propTypes.array,
+  cart: propTypes.object,
   removeFromFav: propTypes.func,
   addToFav: propTypes.func,
   onAddPlate: propTypes.func,
@@ -773,10 +757,10 @@ Plate.propTypes = {
 };
 
 export default connect(
-  state => ({
-    globalStore: state.cart,
-    modal: state.modalController,
-    favourite: state.favourite
+  ({ cart, modalController, favourite }) => ({
+    cart: cart,
+    modal: modalController,
+    favourite: favourite
   }),
   dispatch => ({
     onAddPlate: plate => {

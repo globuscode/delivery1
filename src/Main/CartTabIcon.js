@@ -1,18 +1,21 @@
 import React from "react";
 import { View, Text, Platform } from "react-native";
 import { connect } from "react-redux";
+import propTypes from "prop-types";
+
 import IconD from "../IconD";
+import { getCartTotalCount } from "../utils";
 
 class TabIcon extends React.Component {
-  getItemsCount = () => {
-    let result = 0;
-    this.props.cart.forEach(element => {
-      result += element.count;
-    });
-    return result;
+  static propTypes = {
+    cart: propTypes.object,
+    focused: propTypes.bool
   };
 
   renderBadge = () => {
+    const { cart } = this.props;
+    const count = getCartTotalCount(cart);
+
     return (
       <View
         style={{
@@ -28,26 +31,24 @@ class TabIcon extends React.Component {
         <Text
           style={{
             color: "black",
-            fontSize: parseInt(this.getItemsCount()) < 20 ? 8 : 7,
+            fontSize: parseInt(count) < 20 ? 8 : 7,
             textAlign: "center",
             position: "absolute",
             width: 10,
-            top:
-              Platform.OS === "ios"
-                ? parseInt(this.getItemsCount()) < 20 ? 1 : 2
-                : 0,
+            top: Platform.OS === "ios" ? (parseInt(count) < 20 ? 1 : 2) : 0,
             fontFamily: "Stem-Medium",
             backgroundColor: "transparent"
           }}
         >
-          {this.getItemsCount()}
+          {count}
         </Text>
       </View>
     );
   };
 
   render = () => {
-    if (this.props.cart.length > 0) {
+    const { cart, focused } = this.props;
+    if (Object.keys(cart).length > 0) {
       return (
         <View
           style={{
@@ -57,7 +58,7 @@ class TabIcon extends React.Component {
         >
           <IconD
             size={24}
-            name={this.props.focused ? "cart-fill" : "cart"}
+            name={focused ? "cart-fill" : "cart"}
             color={"rgb(225, 199, 155)"}
           />
           {this.renderBadge()}
@@ -73,7 +74,7 @@ class TabIcon extends React.Component {
       >
         <IconD
           size={24}
-          name={this.props.focused ? "cart-fill" : "cart"}
+          name={focused ? "cart-fill" : "cart"}
           color={"rgb(225, 199, 155)"}
         />
       </View>
@@ -82,8 +83,8 @@ class TabIcon extends React.Component {
 }
 
 export default connect(
-  state => ({
-    cart: state.cart
+  ({ cart }) => ({
+    cart: cart
   }),
-  dispatch => ({})
+  () => ({})
 )(TabIcon);

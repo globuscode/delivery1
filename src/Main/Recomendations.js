@@ -15,12 +15,13 @@ import { connect } from "react-redux";
 import Touchable from "react-native-platform-touchable";
 import propTypes from "prop-types";
 
-import { host } from "../etc";
+import { host, adaptWidth } from "../etc";
 import { LeftAlignedImage } from "../components/LeftAlignedImage";
 import Storage from "../Reducers";
 import PriceButton from "../PriceButton";
 import IconD from "../IconD";
 import { fetchJson } from "../etc";
+import { getCartItemCount } from "../utils";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -36,21 +37,24 @@ class Recomendations extends React.Component {
     };
     if (this.props.data) {
       this.state.entries = this.props.data;
-      this.state.entries.forEach(element => {
-        this.props.favourite.plates.forEach(plate => {
-          if (plate === element.id) {
-            this.state.favourites.push(true);
-          } else this.state.favourites.push(false);
-        });
-      });
+      for (let i = 0; i < this.state.entries.length; i++) {
+        let { id } = this.state.entries[i];
+        this.state.favourites.push(
+          this.props.favourite.plates[id] != undefined
+        );
+      }
     }
     this.fav = this.fav.bind(this);
   }
 
   static propTypes = {
     navigation: propTypes.object,
-    favourite: propTypes.object,
-    globalStore: propTypes.array,
+    favourite: propTypes.shape({
+      plates: propTypes.object,
+      collections: propTypes.object,
+      restaurants: propTypes.object
+    }),
+    cart: propTypes.object,
     data: propTypes.array,
     onAddPlate: propTypes.func,
     removeFromFav: propTypes.func,
@@ -99,16 +103,8 @@ class Recomendations extends React.Component {
 
   _renderNewItem = ({ item, index }) => {
     /* Разметка */
-    const screen =
-      viewportWidth >= 320 && viewportWidth < 375
-        ? 0
-        : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
-    const SLIDER_WIDTH =
-      screen == 0
-        ? viewportWidth - 2 * 20
-        : screen == 1 ? viewportWidth - 2 * 24 : viewportWidth - 26;
-    const SLIDER_MARGIN =
-      screen == 0 ? 10 / 2 : screen == 1 ? 11.7 / 2 : 13.2 / 2;
+    const SLIDER_WIDTH = viewportWidth - 2 * adaptWidth(20, 24, 13);
+    const SLIDER_MARGIN = adaptWidth(10, 11.7, 13.2) / 2;
     const SLIDER_HEIGHT = SLIDER_WIDTH * 1.32;
 
     /* Стили карточки */
@@ -206,10 +202,10 @@ class Recomendations extends React.Component {
         foreground={Touchable.SelectableBackgroundBorderless()}
         onPress={() => {
           if (this.state.favourites[index]) {
-            this.fav(index);
+            this.fav(item);
             this.props.removeFromFav(item);
           } else {
-            this.fav(index);
+            this.fav(item);
             this.props.addToFav(item);
           }
           this.setState({});
@@ -287,7 +283,8 @@ class Recomendations extends React.Component {
         />
       </View>
     );
-    var itemCount = getCount(this.props.globalStore, item);
+    const { cart } = this.props;
+    const itemCount = getCartItemCount(cart, item);
     var bottomView = (
       <View
         pointerEvents="box-none"
@@ -311,11 +308,9 @@ class Recomendations extends React.Component {
           pressed={itemCount != 0}
           value={item.price}
           onPress={() => {
-            if (this.props.globalStore.length > 0) {
-              if (
-                this.props.globalStore[this.props.globalStore.length - 1].plate
-                  .restaurant !== item.restaurant
-              )
+            if (Object.keys(cart).length > 0) {
+              let firstItemId = Object.keys(cart)[0];
+              if (cart[firstItemId].plate.restaurant !== item.restaurant)
                 Alert.alert(
                   "Вы уверенны?",
                   "Вы добавили блюдо из другого ресторана. Ваша корзина из предыдущего ресторана будет очищена.",
@@ -388,21 +383,14 @@ class Recomendations extends React.Component {
 
   componentWillReceiveProps = newProps => {
     this.props = newProps;
-    this.state.favourites = [];
-    this.state.entries.forEach(element => {
-      let fav = false;
-      for (let i = 0; i < this.props.favourite.plates.length; i++) {
-        let rest = this.props.favourite.plates[i];
-        if (rest === element.id) {
-          fav = true;
-        }
-      }
-      if (fav) this.state.favourites.push(true);
-      else this.state.favourites.push(false);
-
-      this.setState({});
-    });
-    this.setState({});
+    const newFavourites = [];
+    for (let i = 0; i < this.state.entries.length; i++) {
+      let { id } = this.state.entries[i];
+      let fav = newProps.favourite.plates[id] != undefined;
+      if (fav) newFavourites.push(true);
+      else newFavourites.push(false);
+    }
+    this.setState({ favourites: newFavourites });
   };
 
   render() {
@@ -415,16 +403,12 @@ class Recomendations extends React.Component {
       }
     });
 
-    const screen =
-      viewportWidth >= 320 && viewportWidth < 375
-        ? 0
-        : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
-    let slideW =
-      screen == 0
-        ? viewportWidth - 2 * 20
-        : screen == 1 ? viewportWidth - 2 * 24 : viewportWidth - 26;
-    const SLIDER_MARGIN =
-      screen == 0 ? 10 / 2 : screen == 1 ? 11.7 / 2 : 13.2 / 2;
+    let slideW = adaptWidth(
+      viewportWidth - 2 * 20,
+      viewportWidth - 2 * 24,
+      viewportWidth - 26
+    );
+    const SLIDER_MARGIN = adaptWidth(10, 11.7, 13.2) / 2;
     return (
       <View>
         <Carousel
@@ -480,29 +464,11 @@ class Recomendations extends React.Component {
   }
 }
 
-/**
- * Возвращает колличество блюд plate в корзине
- * @param {Object} cart
- * @param {Object} plate
- */
-function getCount(cart, plate) {
-  var i = 0;
-  while (i < cart.length) {
-    let equalTitle = plate.title == cart[i].plate.title;
-    let equalRestaurant = plate.restourant == cart[i].plate.restourant;
-    if (equalTitle && equalRestaurant) {
-      return cart[i].count;
-    }
-    i++;
-  }
-  return 0;
-}
-
 export default connect(
-  state => ({
-    globalStore: state.cart,
-    favourite: state.favourite,
-    modal: state.modalController
+  ({ cart, favourite, modalController }) => ({
+    cart: cart,
+    favourite: favourite,
+    modal: modalController
   }),
   dispatch => ({
     onAddPlate: plate => {

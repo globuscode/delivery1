@@ -9,6 +9,7 @@ import Counter from "./Counter";
 import ButtonD from "./ButtonD";
 import IconD from "./IconD";
 import Store from "./Reducers";
+import { getCartTotalPrice } from "./utils";
 
 const { width: viewportWidth } = Dimensions.get("window");
 const screen =
@@ -16,26 +17,9 @@ const screen =
     ? 0
     : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
 
-import { host } from "./etc";
+import { host, adaptWidth } from "./etc";
 import { fetchJson } from "./etc";
 
-/**
- * Возвращает колличество блюд plate в корзине
- * @param {Object} cart
- * @param {Object} plate
- */
-function getCount(cart, plate) {
-  var i = 0;
-  while (i < cart.length) {
-    let equalTitle = plate.title == cart[i].plate.title;
-    let equalRestaurant = plate.restourant == cart[i].plate.restourant;
-    if (equalTitle && equalRestaurant) {
-      return cart[i].count;
-    }
-    i++;
-  }
-  return 0;
-}
 class Popup extends React.Component {
   constructor(props) {
     super(props);
@@ -101,19 +85,20 @@ class Popup extends React.Component {
     }
   };
 
-  getTotalPrice = () => {
-    let result = 0;
-    for (let i = 0; i < this.props.cart.length; i++)
-      result += this.props.cart[i].count * this.props.cart[i].plate.price;
-    return result;
-  };
-
   render = () => {
-    var itemCount = getCount(this.props.cart, this.state.plate);
-    let freeDelivery =
-      itemCount * this.state.plate.price < this.state.freeDelivery;
-    if (this.props.cart.length === 0) return null;
-    const popupWidth = screen == 0 ? 290 : screen == 1 ? 340 : 375;
+    const { cart } = this.props;
+    const { plate } = this.state;
+
+    let itemCount = 0;
+    if (cart[this.props.modal.plate.id] != undefined) {
+      itemCount = cart[this.props.modal.plate.id].count;
+    }
+    const totalPrice = getCartTotalPrice(cart);
+
+    const freeDelivery = itemCount * plate.price < this.state.freeDelivery;
+    if (Object.keys(cart).length === 0) return null;
+    const popupWidth = adaptWidth(290, 340, 375);
+
     return (
       <View
         style={{
@@ -125,7 +110,7 @@ class Popup extends React.Component {
           borderColor: "rgb(255,199,155)",
           alignSelf: "center",
           backgroundColor: "rgb(37, 38, 46)",
-          paddingTop: screen == 0 ? 15 : screen == 1 ? 17 : 20,
+          paddingTop: adaptWidth(15, 17, 20),
           paddingHorizontal: 12,
           width: popupWidth
         }}
@@ -165,7 +150,7 @@ class Popup extends React.Component {
               color: "#fff"
             }}
           >
-            {this.state.plate.title}
+            {plate.title}
           </Text>
           {/*<Text style={{
                 fontFamily: "OpenSans",
@@ -176,16 +161,17 @@ class Popup extends React.Component {
                 marginTop: 10,
                 marginBottom: screen == 0 ? 31 : screen == 1 ? 66 : 79,
                 color: 'rgb(135, 136, 140)'
-            }}>{this.state.plate.description}</Text>*/}
+            }}>{plate.description}</Text>*/}
           <View
             style={{
               marginTop: 10,
+              height: 50,
               marginBottom: screen == 0 ? 31 : screen == 1 ? 66 : 79,
               alignSelf: "stretch"
             }}
           >
             <HTMLView
-              value={`<p>${this.state.plate.description}</p>`}
+              value={`<p>${plate.description}</p>`}
               stylesheet={styles}
             />
           </View>
@@ -211,14 +197,14 @@ class Popup extends React.Component {
                 large
                 value={itemCount}
                 onRemovePress={async () => {
-                  this.props.removePlate(this.state.plate);
+                  this.props.removePlate(plate);
                   if (itemCount == 1) {
                     this.props.hide();
                   }
                   this.setState({});
                 }}
                 onAddPress={() => {
-                  this.props.addPlate(this.state.plate);
+                  this.props.addPlate(plate);
                   this.setState({});
                 }}
               />
@@ -249,7 +235,7 @@ class Popup extends React.Component {
                   color: "#fff"
                 }}
               >
-                {`${this.state.plate.price} руб.`}
+                {`${plate.price} руб.`}
               </Text>
             </View>
           </View>
@@ -286,7 +272,7 @@ class Popup extends React.Component {
           >
             <View>
               <Bar
-                progress={this.getTotalPrice() / this.state.freeDelivery}
+                progress={totalPrice / this.state.freeDelivery}
                 width={popupWidth - 24 - 40}
                 animated
                 height={3}
@@ -326,7 +312,7 @@ class Popup extends React.Component {
                   alignItems: "center",
                   backgroundColor: "transparent",
                   left: freeDelivery
-                    ? this.getTotalPrice() /
+                    ? totalPrice /
                         this.state.freeDelivery *
                         (popupWidth - 24 - 40) -
                       20
@@ -343,7 +329,7 @@ class Popup extends React.Component {
                     paddingBottom: 4,
                     maxWidth: 56
                   }}
-                >{`Заказ на\n${this.getTotalPrice()} ₽`}</Text>
+                >{`Заказ на\n${totalPrice} ₽`}</Text>
                 <View
                   style={{
                     backgroundColor: "rgb(37, 38, 46)"
@@ -367,7 +353,7 @@ class Popup extends React.Component {
 }
 
 Popup.propTypes = {
-  cart: propTypes.array,
+  cart: propTypes.object,
   removePlate: propTypes.func,
   hide: propTypes.func,
   addPlate: propTypes.func,
@@ -384,9 +370,9 @@ const styles = StyleSheet.create({
 });
 
 export default connect(
-  state => ({
-    modal: state.modalController,
-    cart: state.cart
+  ({ modalController, cart }) => ({
+    modal: modalController,
+    cart: cart
   }),
   dispatch => ({
     removePlate: plate =>

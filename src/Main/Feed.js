@@ -4,26 +4,39 @@ import {
   Text,
   View,
   TouchableOpacity,
-  AsyncStorage,
   Dimensions,
-  ScrollView,
-  Image
+  ScrollView
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
-import Icon from "react-native-vector-icons/Ionicons";
 import Recomendations from "./Recomendations";
 import RestouransOfTheWeek from "./RestouransOfTheWeek";
-import Collections from "./Collections";
 import { connect } from "react-redux";
-import Storage from "../Reducers";
+import propTypes from "prop-types";
 
 import IconD from "../IconD";
 
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
-  "window"
-);
+const { width: viewportWidth } = Dimensions.get("window");
 
 class Feed extends React.Component {
+  static propTypes = {
+    recomendations: propTypes.shape({
+      plates: propTypes.array,
+      popular: propTypes.array,
+      collections: propTypes.array,
+      restaurants: propTypes.array
+    }),
+    navigation: propTypes.shape({
+      navigate: propTypes.func
+    }),
+    userData: propTypes.shape({
+      user: propTypes.shape({
+        firstName: propTypes.string,
+        lastName: propTypes.string
+      })
+    }),
+    changeTab: propTypes.func
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -37,15 +50,28 @@ class Feed extends React.Component {
 
   componentWillMount = () => {
     if (this.props.recomendations) {
+      let newState = {};
       if (this.props.recomendations.plates != [])
-        this.state.plates = this.props.recomendations.plates;
+        newState = {
+          ...newState,
+          plates: this.props.recomendations.plates
+        };
       if (this.props.recomendations.popular != [])
-        this.state.popular = this.props.recomendations.popular;
+        newState = {
+          ...newState,
+          popular: this.props.recomendations.popular
+        };
       if (this.props.recomendations.collections != [])
-        this.state.collections = this.props.recomendations.collections;
+        newState = {
+          ...newState,
+          collections: this.props.recomendations.collections
+        };
       if (this.props.recomendations.restaurants != [])
-        this.state.restaurants = this.props.recomendations.restaurants;
-      this.setState({});
+        newState = {
+          ...newState,
+          restaurants: this.props.recomendations.restaurants
+        };
+      this.setState(newState);
     }
   };
 
@@ -80,9 +106,9 @@ class Feed extends React.Component {
           onPress={() => {
             if (this.state.canNav) {
               this.props.navigation.navigate(nav);
-              this.state.canNav = false;
+              this.setState({ canNav: false });
               setTimeout(() => {
-                this.state.canNav = true;
+                this.setState({ canNav: true });
               }, 1500);
             }
           }}
@@ -147,9 +173,9 @@ class Feed extends React.Component {
               if (this.state.canNav) {
                 if (!isAuth) this.props.navigation.navigate("Login");
                 else this.props.navigation.navigate("Profile");
-                this.state.canNav = false;
+                this.setState({ canNav: false });
                 setTimeout(() => {
-                  this.state.canNav = true;
+                  this.setState({ canNav: true });
                 }, 1500);
               }
             }}
@@ -253,11 +279,11 @@ class Feed extends React.Component {
 }
 
 export default connect(
-  state => ({
-    userData: state.user,
-    recomendations: state.recomendations
+  ({ user, recomendations }) => ({
+    userData: user,
+    recomendations: recomendations
   }),
-  dispatch => ({})
+  () => ({})
 )(Feed);
 
 const styles = StyleSheet.create({

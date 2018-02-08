@@ -30,8 +30,8 @@ export default class AllRestourans extends React.Component {
       types: ["Все кухни"],
       maxIndex: 0,
       restaurans: [],
-      restauransShort: [],
       selectedType: 0,
+      page: 1,
       updating: false
     };
   }
@@ -41,11 +41,11 @@ export default class AllRestourans extends React.Component {
   };
 
   componentWillMount = async () => {
-    const responseJson = await fetchJson(
+    const responseJsonTag = await fetchJson(
       `${host}/classificator/tag-groups?cityId=36`
     );
 
-    responseJson.data.forEach(element => {
+    responseJsonTag.data.forEach(element => {
       this.state.types.push(element.titleTag);
     });
   };
@@ -81,41 +81,20 @@ export default class AllRestourans extends React.Component {
   };
 
   updateResults = async () => {
+    const { page } = this.state;
+    const tag = this.state.types[this.state.selectedType];
     this.setState({ updating: true });
-    const responseJson = await fetchJson(
-      `${host}/restaurants?cityId=36&tag=${
-        this.state.types[this.state.selectedType]
-      }`
+    let responseJson = await fetchJson(
+      `${host}/restaurants?cityId=36&tag=${tag}&page=${page}&results=1`
     );
-
-    this.state.restaurans = responseJson.data.restaurants;
-
-    // let rests = [];
-    // let i = 0;
-    // while (i < this.state.maxIndex) {
-    //   if (this.state.restaurants[i] != undefined) {
-    //     if (this.state.selectedType === 0) {
-    //       rests.push(this.state.restaurants[i]);
-    //     }
-    //     else {
-    //       this.state.restaurants[i].restourantTags.forEach((e) => {
-    //         if (e == this.state.types[this.state.selectedType]) {
-    //           rests.push(this.state.restaurants[i]);
-    //         }
-    //       });
-    //     }
-    //   }
-    //   else
-    //     break;
-    //   i += 1;
-    // }
-
     this.setState({
+      restaurans: [...this.state.restaurans, ...responseJson.data.restaurants],
+      page: this.state.page + 1,
       updating: false
     });
   };
 
-  render() {
+  render = () => {
     //ios - contact - outline
     return (
       <Drawer
@@ -151,9 +130,17 @@ export default class AllRestourans extends React.Component {
               <TouchableOpacity
                 onPress={() => {
                   //this.selectedType = 0;
-                  this.setState({ selectedType: this.state.preSelectedType });
-                  this.updateResults();
-                  this._drawer.close();
+                  this.setState(
+                    {
+                      selectedType: this.state.preSelectedType,
+                      restaurans: [],
+                      page: 1
+                    },
+                    async () => {
+                      await this.updateResults();
+                      this._drawer.close();
+                    }
+                  );
                 }}
                 style={{ paddingVertical: 10 }}
               >
@@ -251,12 +238,16 @@ export default class AllRestourans extends React.Component {
                 />
               </TouchableOpacity>
             </View>
-            {/*<RestouransOfTheWeek data={this.state.restauransShort} navigation={this.props.navigation} />*/}
             <FlatList
+              keyExtractor={item => item.id}
               data={this.state.restaurans}
               renderItem={({ item, index }) =>
                 this.renderRestaurant(item, index)
               }
+              onEndReachedThreshold={0.1}
+              onEndReached={() => {
+                if (!this.state.updating) this.updateResults();
+              }}
             />
             <View style={{ height: 20 }} />
             {this.state.updating ? (
@@ -293,7 +284,7 @@ export default class AllRestourans extends React.Component {
         </View>
       </Drawer>
     );
-  }
+  };
 }
 
 const styles = StyleSheet.create({

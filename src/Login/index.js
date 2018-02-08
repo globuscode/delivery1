@@ -281,8 +281,8 @@ function validateEmail(email) {
 }
 
 export default connect(
-  state => ({
-    userData: state.user
+  ({ user }) => ({
+    userData: user
   }),
   dispatch => ({
     login: data => {

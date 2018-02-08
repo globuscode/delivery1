@@ -361,8 +361,8 @@ Registration.propTypes = {
 };
 
 export default connect(
-  state => ({
-    globalStore: state.user
+  ({ user }) => ({
+    globalStore: user
   }),
   dispatch => ({
     auth: data => dispatch({ type: "AUTH", payload: data })

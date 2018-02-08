@@ -1,6 +1,7 @@
 import React from "react";
 import { StatusBar, View, AsyncStorage } from "react-native";
 import { Provider, connect } from "react-redux";
+import Spinner from "react-native-loading-spinner-overlay";
 
 import Reducer from "./src/Reducers";
 import A from "./ScreenReducer";
@@ -48,13 +49,22 @@ class ModalComponent extends React.Component {
       >
         <PopupCart />
       </PopupDialog>
+
+      <Spinner
+        color="#dcc49c"
+        overlayColor="rgba(37, 38, 46, 0.9)"
+        animation="fade"
+        visible={this.props.spinnerController.show}
+        textStyle={{ color: "#FFF" }}
+      />
     </View>
   );
 }
 
 const M = connect(
-  state => ({
-    modal: state.modalController
+  ({ modalController, spinnerController }) => ({
+    modal: modalController,
+    spinnerController: spinnerController
   }),
   dispatch => ({
     open: () => dispatch({ type: "OPEN_MODAL" }),

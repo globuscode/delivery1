@@ -772,9 +772,9 @@ Forms.propTypes = {
 };
 
 export default connect(
-  state => ({
-    user: state.user,
-    address: state.address
+  ({ user, address }) => ({
+    user: user,
+    address: address
   }),
   dispatch => ({
     onAddPlate: plate => {

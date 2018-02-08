@@ -1,9 +1,21 @@
-import React, { Component } from "react";
-import { View, Dimensions, AsyncStorage, Text, Image, ScrollView, ActivityIndicator} from "react-native";
+import React from "react";
+import { View, Text, Image, ScrollView, ActivityIndicator } from "react-native";
 import Touchable from "react-native-platform-touchable";
 import { connect } from "react-redux";
-import { host } from '../etc';
+import propTypes from "prop-types";
+
+import { host } from "../etc";
+
 class MyOrders extends React.Component {
+  static propTypes = {
+    user: {
+      token: propTypes.string
+    },
+    navigation: {
+      navigate: propTypes.func
+    }
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -12,36 +24,41 @@ class MyOrders extends React.Component {
     };
   }
   componentDidMount = async () => {
-    const response = await fetch(`${host}/cart/orders?token=${this.props.user.token}`);
+    const response = await fetch(
+      `${host}/cart/orders?token=${this.props.user.token}`
+    );
     const responseJson = await response.json();
     this.state.history = responseJson["data"];
     for (var i = 0; i < this.state.history.length; i++) {
-      if (this.state.history[i].restaurantId != '') {
+      if (this.state.history[i].restaurantId != "") {
         var restRaw = await fetch(
-          `${host}/restaurant?restaurantId=${this.state.history[i].restaurantId}`
+          `${host}/restaurant?restaurantId=${
+            this.state.history[i].restaurantId
+          }`
         );
         var restaurant = await restRaw.json();
         this.state.logos.push(restaurant.data.result.logoImage);
-      }
-      else this.state.logos.push("//dostavka1.com/img/app-icon.png");
+      } else this.state.logos.push("//dostavka1.com/img/app-icon.png");
     }
     this.setState({});
-    /*var h = JSON.parse(await AsyncStorage.getItem('ORDERS_HISTORY'));
-        if (h != null)
-            this.setState({history: h});*/
   };
   render = () => {
     if (this.state.history === null)
       return (
-        <View style={{flex: 1, justifyContent: 'center'}}>
-          <ActivityIndicator size='large' style={{alignSelf: 'center'}} />
+        <View style={{ flex: 1, justifyContent: "center" }}>
+          <ActivityIndicator size="large" style={{ alignSelf: "center" }} />
         </View>
       );
     var history = this.state.history.map((element, index) => {
       return (
         <Touchable
           key={index}
-          onPress={() => this.props.navigation.navigate("MyOrderDetail", {order: element, restaurantLogo: this.state.logos[index]})}
+          onPress={() =>
+            this.props.navigation.navigate("MyOrderDetail", {
+              order: element,
+              restaurantLogo: this.state.logos[index]
+            })
+          }
         >
           <View
             style={{
@@ -60,10 +77,13 @@ class MyOrders extends React.Component {
                   fontSize: 14,
                   color: "#fff"
                 }}
-              >{`Заказ на ${element.deliveryTime ? element.deliveryTime : element.orderTime}\nСумма заказа ${element.total} ₽`}</Text>
+              >{`Заказ на ${
+                  element.deliveryTime ? element.deliveryTime : element.orderTime
+                }\nСумма заказа ${element.total} ₽`}</Text>
               <Text
                 style={{
-                  fontFamily: "OpenSans", fontWeight: "600",
+                  fontFamily: "OpenSans",
+                  fontWeight: "600",
                   fontSize: 13,
                   color: "rgb(225, 199, 155)",
                   marginTop: 11
@@ -76,7 +96,7 @@ class MyOrders extends React.Component {
             <Image
               resizeMode="contain"
               source={{
-                uri: 'http:' + this.state.logos[index]
+                uri: "http:" + this.state.logos[index]
               }}
               style={{
                 height: 50,
@@ -91,8 +111,6 @@ class MyOrders extends React.Component {
   };
 }
 
-export default connect(
-  state => ({
-    user: state.user
-  }),
-)(MyOrders);
+export default connect(({ user }) => ({
+  user: user
+}))(MyOrders);
