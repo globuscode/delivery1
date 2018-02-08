@@ -168,7 +168,7 @@ class Cart extends React.Component {
   nav = () => {
     if (this.state.canNav) {
       this.props.navigation.navigate("Loader", {
-        action: "navigateToRestaurant",
+        action: "navigateToMenu",
         id: this.state.restaurant.id
       });
       this.setState({ canNav: false });
