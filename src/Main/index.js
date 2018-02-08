@@ -302,7 +302,7 @@ export default TabNavigator(
         }
       }
     },
-    /* Second: {
+    Second: {
       screen: SecondScreen,
       navigationOptions: {
         tabBarLabel:
@@ -322,7 +322,7 @@ export default TabNavigator(
           );
         }
       }
-    }, */
+    },
     Third: {
       screen: ThirdScreen,
       navigationOptions: {
