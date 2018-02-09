@@ -102,6 +102,7 @@ class Loader extends React.Component {
 
   render() {
     let kitchenPhoto = require("../assets/img/kitchen.jpg");
+    const { action } = this.props.navigation.state.params;
     return (
       <ImageBackground
         resizeMode="cover"
@@ -126,6 +127,20 @@ class Loader extends React.Component {
           >
             <IconD name="dostavka" color="#dcc49c" size={90} />
           </View>
+          {action !== "navigateToMenu" ? null : (
+            <Text
+              style={{
+                color: "#ffffff",
+                width: viewportWidth * 0.4,
+                textAlign: "center",
+                fontSize: 16,
+                fontWeight: "bold",
+                backgroundColor: "transparent"
+              }}
+            >
+              {"Загружаем меню ресторана"}
+            </Text>
+          )}
         </View>
       </ImageBackground>
     );
