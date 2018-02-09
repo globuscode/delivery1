@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Dimensions,
   ScrollView,
+  Platform,
   AsyncStorage
 } from "react-native";
 import Touchable from "react-native-platform-touchable";
@@ -14,6 +15,7 @@ import propTypes from "prop-types";
 const { width: viewportWidth } = Dimensions.get("window");
 
 import { host } from "../etc";
+import { getStatusBarHeight } from "react-native-status-bar-height";
 
 class SelectTags extends React.Component {
   constructor(props) {
@@ -279,7 +281,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingTop: 20,
+    paddingTop: Platform.OS === "ios" ? 0 : getStatusBarHeight(),
     backgroundColor: "#292b37",
     justifyContent: "space-between",
     alignItems: "center"

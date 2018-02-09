@@ -9,7 +9,8 @@ import {
   ActivityIndicator,
   ScrollView,
   AsyncStorage,
-  WebView
+  WebView,
+  Platform
 } from "react-native";
 import { generateCircles } from "./circles";
 import Bubble from "./Bubble";
@@ -23,6 +24,7 @@ const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
 import { host } from "../etc";
+import { getStatusBarHeight } from "react-native-status-bar-height";
 
 var centersOfCircles = [];
 
@@ -286,6 +288,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    paddingTop: Platform.OS === "ios" ? 0 : getStatusBarHeight(),
     backgroundColor: "#292b37",
     justifyContent: "flex-start",
     alignItems: "center"
