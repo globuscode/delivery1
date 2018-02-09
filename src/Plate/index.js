@@ -482,6 +482,7 @@ class Plate extends React.Component {
             onPress={() => {
               let item = this.state.plate;
               const { cart } = this.props;
+              const { fromMenu } = this.props.navigation.state.params;
               if (Object.keys(cart).length > 0) {
                 const firstItemId = Object.keys(cart)[0];
                 if (cart[firstItemId].plate.restaurant !== item.restaurant)
@@ -493,7 +494,8 @@ class Plate extends React.Component {
                         text: "OK",
                         onPress: () => {
                           this.props.onAddPlate(item);
-                          this.props.openModal(item);
+                          if (fromMenu === undefined)
+                            this.props.openModal(item);
                         }
                       },
                       { text: "Отмена", onPress: null, style: "cancel" }
@@ -502,12 +504,13 @@ class Plate extends React.Component {
                   );
                 else {
                   this.props.onAddPlate(item);
-                  if (cart[this.state.plate.id] != undefined)
-                    this.props.openModal(item);
+                  if (fromMenu === undefined)
+                    if (cart[item.id] !== undefined)
+                      this.props.openModal(item);
                 }
               } else {
                 this.props.onAddPlate(item);
-                this.props.openModal(item);
+                if (fromMenu === undefined) this.props.openModal(item);
               }
             }}
           />
