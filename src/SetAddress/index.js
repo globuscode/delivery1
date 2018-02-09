@@ -244,12 +244,11 @@ class SelectAddress extends React.Component {
     return (
       <View style={styles.container}>
         <KeyboardAwareScrollView
-          extraHeight={200}
-          extraScrollHeight={100}
+          extraHeight={100}
+          extraScrollHeight={150}
           enableAutoAutomaticScroll
           enableOnAndroid
-          style={{ flex: 1, alignSelf: "stretch" }}
-          contentContainerStyle={{ flex: 1, alignSelf: "stretch" }}
+          behavior="position"
         >
           {/*<Header
 					leftComponent={{ icon: 'ios-arrow-back', type: 'ionicon', color: '#dcc49c',  }}
@@ -400,7 +399,9 @@ class SelectAddress extends React.Component {
           {this.state.address != "" && this.state.house != ""
             ? this.checkForAviability(this.state.address)
             : null}
-          <View
+        </KeyboardAwareScrollView>
+
+        <View
             style={{
               position: "absolute",
               alignSelf: "center",
@@ -435,7 +436,6 @@ class SelectAddress extends React.Component {
               </Text>
             </Touchable>
           </View>
-        </KeyboardAwareScrollView>
       </View>
     );
   };
@@ -468,10 +468,10 @@ const styles = StyleSheet.create({
     fontFamily: "Stem-Regular"
   },
   container: {
-    flex: 2,
+    flex: 1,
     elevation: 0,
     backgroundColor: "#292b37",
-    justifyContent: "flex-start",
-    alignItems: "center"
+    justifyContent: "space-between",
+    alignItems: "stretch"
   }
 });
