@@ -6,12 +6,15 @@ import {
   StyleSheet,
   Keyboard,
   KeyboardAvoidingView,
-  Text
+  Text,
+  Alert
 } from "react-native";
 import { TextField } from "react-native-material-textfield";
 import { connect } from "react-redux";
 import Touchable from "react-native-platform-touchable";
 import propTypes from "prop-types";
+import VKLogin from "react-native-vkontakte-login";
+import IconD from "../IconD";
 
 import { host, adaptWidth } from "../etc";
 import { fetchJson } from "../etc";
@@ -38,6 +41,58 @@ class Login extends React.Component {
     login: propTypes.func
   };
 
+  componentWillMount = async () => {
+    await VKLogin.initialize(6365999);
+  };
+
+  authOnServer = async body => {
+    if (body.length === undefined) body = [body];
+
+    let form = new FormData();
+    for (let i = 0; i < body.length; i++)
+      form.append(body[i].key, body[i].value);
+    let data = await fetchJson(`${host}/auth/auth/`, {
+      method: "POST",
+      body: form
+    });
+    if (data.errors) {
+      let { code, title, detail } = data.errors;
+      Alert.alert(`${title} ${code}`, detail);
+    } else {
+      this.props.login(data);
+      this.props.navigation.navigate("Feed");
+    }
+  };
+
+  vkAuth = async () => {
+    const authResult = await VKLogin.login(["email", "photos"]);
+    if (authResult.access_token != undefined) {
+      this.authOnServer({ key: "vkToken", value: authResult.access_token });
+    }
+  };
+
+  fbAuth = async () => {};
+
+  twitterAuth = async () => {};
+
+  renderAuthButton = (name, callback, index) => {
+    return (
+      <Touchable
+        key={index}
+        onPress={callback}
+        style={{
+          borderRadius: (25 + 16) / 2,
+          width: 25 + 16,
+          height: 25 + 16,
+          justifyContent: "center",
+          alignItems: "center"
+        }}
+      >
+        <IconD name={name} size={20} color="rgb(225, 199, 155)" />
+      </Touchable>
+    );
+  };
+
   renderStatus = () => {
     return "Рады видеть вас снова";
   };
@@ -47,7 +102,83 @@ class Login extends React.Component {
    * @memberof Login
    */
   renderForms = () => {
-    return;
+    return (
+      <View
+        style={{
+          flexDirection: "column",
+          paddingHorizontal: screen == 0 ? 20 : screen == 1 ? 27 : 30
+        }}
+      >
+        <TextField
+          onBlur={() => {
+            Keyboard.dismiss();
+          }}
+          error={this.state.emailInputError}
+          tintColor="#dcc49c"
+          baseColor="rgb( 87, 88, 98)"
+          textColor="white"
+          returnKeyType="send"
+          style={{
+            alignItems: "center",
+            textAlign: "center"
+          }}
+          keyboardType="email-address"
+          inputContainerStyle={{
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center"
+          }}
+          label="E-mail адрес"
+          value={this.state.email}
+          onChangeText={address => {
+            this.setState({
+              emailInputError: null,
+              email: address
+            });
+          }}
+        />
+        <View
+          style={{ height: (screen == 0 ? 34 : screen == 1 ? 42 : 48) - 10 }}
+        />
+        <TextField
+          onBlur={() => {
+            Keyboard.dismiss();
+          }}
+          error={this.state.passwordInputError}
+          secureTextEntry
+          tintColor="#dcc49c"
+          baseColor="rgb( 87, 88, 98)"
+          textColor="white"
+          returnKeyType="send"
+          style={{
+            alignItems: "center",
+            textAlign: "center"
+          }}
+          inputContainerStyle={{
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center"
+          }}
+          label="Пароль"
+          value={this.state.password}
+          onChangeText={password => {
+            this.setState({
+              passwordInputError: null,
+              password: password
+            });
+          }}
+        />
+      </View>
+    );
+  };
+  renderSocialButtons = () => {
+    return [
+      { name: "vk", callback: this.vkAuth },
+      { name: "fb", callback: this.vkAuth },
+      { name: "twitter", callback: this.vkAuth }
+    ].map(({ name, callback }, index) =>
+      this.renderAuthButton(name, callback, index)
+    );
   };
   /**
    * Возвращает компонент
@@ -92,8 +223,8 @@ class Login extends React.Component {
               fontSize: 14,
               alignSelf: "center",
               color: "rgb( 225, 199, 155)",
-              marginTop: screen == 0 ? 7 : screen == 1 ? 11 : 14,
-              marginBottom: screen == 0 ? 20 : screen == 1 ? 25 : 28
+              marginTop: adaptWidth(7, 11, 14),
+              marginBottom: adaptWidth(20, 25, 28)
             }}
           >
             {"РЕГИСТРАЦИЯ"}
@@ -125,74 +256,18 @@ class Login extends React.Component {
         >
           {this.renderStatus()}
         </Text>
+
+        {this.renderForms()}
         <View
           style={{
-            flexDirection: "column",
-            paddingHorizontal: screen == 0 ? 20 : screen == 1 ? 27 : 30
+            flexDirection: "row",
+            justifyContent: "center",
+            width: viewportWidth,
+            alignSelf: "stretch"
           }}
         >
-          <TextField
-            onBlur={() => {
-              Keyboard.dismiss();
-            }}
-            error={this.state.emailInputError}
-            tintColor="#dcc49c"
-            baseColor="rgb( 87, 88, 98)"
-            textColor="white"
-            returnKeyType="send"
-            style={{
-              alignItems: "center",
-              textAlign: "center"
-            }}
-            keyboardType="email-address"
-            inputContainerStyle={{
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center"
-            }}
-            label="E-mail адрес"
-            value={this.state.email}
-            onChangeText={address => {
-              this.setState({
-                emailInputError: null,
-                email: address
-              });
-            }}
-          />
-          <View
-            style={{ height: (screen == 0 ? 34 : screen == 1 ? 42 : 48) - 10 }}
-          />
-          <TextField
-            onBlur={() => {
-              Keyboard.dismiss();
-            }}
-            error={this.state.passwordInputError}
-            secureTextEntry
-            tintColor="#dcc49c"
-            baseColor="rgb( 87, 88, 98)"
-            textColor="white"
-            returnKeyType="send"
-            style={{
-              alignItems: "center",
-              textAlign: "center"
-            }}
-            inputContainerStyle={{
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center"
-            }}
-            label="Пароль"
-            value={this.state.password}
-            onChangeText={password => {
-              this.setState({
-                passwordInputError: null,
-                password: password
-              });
-            }}
-          />
+          {this.renderSocialButtons()}
         </View>
-        {this.renderForms()}
-
         <View
           style={{
             position: "absolute",
@@ -243,24 +318,13 @@ class Login extends React.Component {
    * @memberof Login
    */
   next = async () => {
-    if (validateEmail(this.state.email)) {
-      if (this.state.password.length > 6) {
-        var form = new FormData();
-        form.append("userName", this.state.email);
-        form.append("password", this.state.password);
-        let data = await fetchJson(`${host}/auth/auth/`, {
-          method: "POST",
-          body: form
-        });
-        if (data.errors) {
-          if (data.errors.code != 200) {
-            this.setState({ emailInputError: "Email введен неверно " });
-            this.setState({ passwordInputError: "Пароль введен неверно " });
-          }
-        } else {
-          this.props.login(data);
-          this.props.navigation.navigate("Feed");
-        }
+    let { email, password } = this.state;
+    if (validateEmail(email)) {
+      if (password.length > 6) {
+        this.authOnServer([
+          { key: "userName", value: email },
+          { key: "password", value: password }
+        ]);
       } else {
         this.setState({ passwordInputError: "Пароль слишком короткий" });
       }
