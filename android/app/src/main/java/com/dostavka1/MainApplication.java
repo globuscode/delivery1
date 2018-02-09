@@ -3,6 +3,7 @@ package com.dostavka1;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import camp.kuznetsov.rn.vkontakte.VKAuthPackage;
 import com.zyu.ReactNativeWheelPickerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
@@ -26,6 +27,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new VKAuthPackage(),
             new ReactNativeWheelPickerPackage(),
             new VectorIconsPackage(),
             new LinearGradientPackage()

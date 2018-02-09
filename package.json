@@ -48,6 +48,7 @@
     "react-native-snap-carousel": "^3.5.0",
     "react-native-status-bar-height": "^2.0.0",
     "react-native-vector-icons": "^4.5.0",
+    "react-native-vkontakte-login": "^0.3.18",
     "react-native-wheel-picker": "^1.2.0",
     "react-navigation": "^1.0.0-beta.27",
     "react-redux": "^5.0.6",
