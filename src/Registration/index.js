@@ -25,6 +25,22 @@ export default class Login extends React.Component {
     };
   }
 
+  componentDidMount = () => {
+    const { params } = this.props.navigation.state;
+    if (params != undefined) {
+      console.warn(params);
+      const { firstName, lastName, email } = params;
+      this.setState({
+        firstName: firstName,
+        firstNameError: null,
+        secondName: lastName,
+        secondNameError: null,
+        email: email,
+        emailInputError: null
+      });
+    }
+  };
+
   render = () => {
     return (
       <View style={{ flex: 1, justifyContent: "space-between" }}>
@@ -164,41 +180,6 @@ export default class Login extends React.Component {
                 height: (screen == 0 ? 34 : screen == 1 ? 42 : 48) - 25
               }}
             />
-
-            <TextField
-              ref={c => {
-                this.password = c;
-              }}
-              secureTextEntry
-              tintColor="#dcc49c"
-              baseColor="rgb( 87, 88, 98)"
-              textColor="white"
-              returnKeyType="send"
-              error={this.state.passwordInputError}
-              style={{
-                alignItems: "center",
-                textAlign: "center"
-              }}
-              inputContainerStyle={{
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center"
-              }}
-              label="Пароль"
-              value={this.state.password}
-              onEndEditing={() => {
-                if (this.state.password)
-                  if (this.state.password.length <= 6)
-                    this.setState({
-                      passwordInputError:
-                        "Пароль должен состоять минимум 7 символов"
-                    });
-                  else this.setState({ passwordInputError: null });
-                else
-                  this.setState({ passwordInputError: "Это поле обязательно" });
-              }}
-              onChangeText={psw => this.setState({ password: psw })}
-            />
           </View>
         </KeyboardAwareScrollView>
         <View
@@ -241,12 +222,13 @@ export default class Login extends React.Component {
   };
 
   next = () => {
+    const { params } = this.props.navigation.state;
     if (this.state.firstName == null || this.state.firstName == "")
       this.setState({ firstNameError: "Это поле обязательно" });
     if (this.state.secondName == null || this.state.secondName == "")
       this.setState({ secondNameError: "Это поле обязательно" });
-    if (this.state.password == null || this.state.password == "")
-      this.setState({ passwordInputError: "Это поле обязательно" });
+    // if (this.state.password == null || this.state.password == "")
+    //   this.setState({ passwordInputError: "Это поле обязательно" });
     if (this.state.email == null || this.state.email == "")
       this.setState({ emailInputError: "Это поле обязательно" });
     if (this.state.canNav && this.isNext()) {
@@ -256,7 +238,8 @@ export default class Login extends React.Component {
         middleName: this.state.firstName,
         lastName: this.state.secondName,
         email: this.state.email,
-        password: this.state.password,
+        type: params != undefined ? params.type : null,
+        // password: this.state.password,
         loginKey: this.props.navigation.state.key
       });
       this.setState({ canNav: false });
@@ -268,10 +251,10 @@ export default class Login extends React.Component {
 
   isNext = () => {
     return (
-      this.state.password &&
+      // this.state.password &&
       this.state.firstName &&
       this.state.secondName &&
-      this.state.passwordInputError == null &&
+      // this.state.passwordInputError == null &&
       this.state.emailInputError == null
     );
   };

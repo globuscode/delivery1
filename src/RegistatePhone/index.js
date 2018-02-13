@@ -297,24 +297,22 @@ class Registration extends React.Component {
       }
 
       if (validationResponseJson.status === true) {
+        const {
+          userName,
+          firstName,
+          middleName,
+          lastName,
+          email,
+          type
+        } = this.props.navigation.state.params;
         var payload = {
-          userName: this.props.navigation.state.params.userName
-            ? this.props.navigation.state.params.userName
-            : "null",
-          firstName: this.props.navigation.state.params.firstName
-            ? this.props.navigation.state.params.firstName
-            : "null",
-          middleName: this.props.navigation.state.params.middleName
-            ? this.props.navigation.state.params.middleName
-            : "null",
-          lastName: this.props.navigation.state.params.lastName
-            ? this.props.navigation.state.params.lastName
-            : "null",
-          email: this.props.navigation.state.params.email
-            ? this.props.navigation.state.params.email
-            : "null",
+          userName: userName ? userName : "null",
+          firstName: firstName ? firstName : "null",
+          middleName: middleName ? middleName : "null",
+          lastName: lastName ? lastName : "null",
+          email: email ? email : "null",
           phone: this.state.phone ? this.state.phone : "null",
-          password: this.props.navigation.state.params.password
+          type: type
         };
         const response = await fetch(`${host}/auth/register/`, {
           method: "POST",

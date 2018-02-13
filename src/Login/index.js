@@ -2,6 +2,7 @@ import React from "react";
 import {
   View,
   TouchableOpacity,
+  Platform,
   Dimensions,
   StyleSheet,
   Keyboard,
@@ -12,6 +13,7 @@ import {
 import { TextField } from "react-native-material-textfield";
 import { connect } from "react-redux";
 import Touchable from "react-native-platform-touchable";
+import { TextInputMask } from "react-native-masked-text";
 import propTypes from "prop-types";
 import VKLogin from "react-native-vkontakte-login";
 import IconD from "../IconD";
@@ -20,8 +22,14 @@ import { host, adaptWidth } from "../etc";
 import { fetchJson } from "../etc";
 
 const { width: viewportWidth } = Dimensions.get("window");
-
+const vk = "https://api.vk.com/method";
 const screen = adaptWidth(0, 1, 2);
+
+async function sendPhone(phone) {
+  const result = await fetch(`${host}/sms/?action=send_code&phone=${phone}`);
+  const resultJson = await result.json();
+  return resultJson.status;
+}
 
 class Login extends React.Component {
   navigationOptions = {
@@ -32,6 +40,7 @@ class Login extends React.Component {
     super(props);
     this.state = {
       rang: 2,
+      phone: "",
       canNav: true
     };
   }
@@ -45,13 +54,16 @@ class Login extends React.Component {
     await VKLogin.initialize(6365999);
   };
 
-  authOnServer = async body => {
+  authOnServer = async (body, suffix = "") => {
+    if (suffix === undefined || suffix === null) {
+      suffix = "";
+    }
     if (body.length === undefined) body = [body];
 
     let form = new FormData();
     for (let i = 0; i < body.length; i++)
       form.append(body[i].key, body[i].value);
-    let data = await fetchJson(`${host}/auth/auth/`, {
+    let data = await fetchJson(`${host}/auth/auth/${suffix}`, {
       method: "POST",
       body: form
     });
@@ -65,9 +77,29 @@ class Login extends React.Component {
   };
 
   vkAuth = async () => {
+    const { navigate } = this.props.navigation;
     const authResult = await VKLogin.login(["email", "photos"]);
     if (authResult.access_token != undefined) {
-      this.authOnServer({ key: "vkToken", value: authResult.access_token });
+      let { access_token, user_id } = authResult;
+      let vkProfileResponse = await fetch(
+        `${vk}/users.get?user_ids=${user_id}&?fields=photo_100&access_token=${
+          authResult.access_token
+        }&v=V`
+      );
+      let vkProfile = await vkProfileResponse.json();
+      let { email } = authResult;
+      let { first_name, last_name } = vkProfile.response[0];
+
+      const registarionBody = {
+        type: "vk",
+        firstName: first_name,
+        lastName: last_name,
+        email: email,
+        access_token: access_token,
+        user_id: user_id
+      };
+
+      navigate("Registration", registarionBody);
     }
   };
 
@@ -93,6 +125,10 @@ class Login extends React.Component {
     );
   };
 
+  isNext = () => {
+    return this.state.phone.replace(/\D+/g, "").length > 10;
+  };
+
   renderStatus = () => {
     return "Рады видеть вас снова";
   };
@@ -109,7 +145,38 @@ class Login extends React.Component {
           paddingHorizontal: screen == 0 ? 20 : screen == 1 ? 27 : 30
         }}
       >
-        <TextField
+        <TextInputMask
+          ref={c => (this.phone = c)}
+          error={this.state.phoneError}
+          type={"custom"}
+          customTextInputProps={{
+            tintColor: "#dcc49c",
+            baseColor: "rgb( 87, 88, 98)",
+            textColor: "white",
+            returnKeyType: "send",
+            keyboardType: "phone-pad",
+            style: {
+              alignItems: "center",
+              textAlign: "center"
+            },
+            inputContainerStyle: {
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center"
+            },
+            label: "Введите номер телефона"
+          }}
+          value={this.state.phone}
+          options={{
+            mask: "+7 999 999 99-99"
+          }}
+          customTextInput={TextField}
+          onChangeText={phone =>
+            this.setState({ phone: phone, phoneError: null })
+          }
+          onBlur={() => this.setState({ hidePrevious: true })}
+        />
+        {/* <TextField
           onBlur={() => {
             Keyboard.dismiss();
           }}
@@ -136,11 +203,60 @@ class Login extends React.Component {
               email: address
             });
           }}
-        />
+        /> */}
         <View
           style={{ height: (screen == 0 ? 34 : screen == 1 ? 42 : 48) - 10 }}
         />
         <TextField
+          ref={c => (this.codeInput = c)}
+          error={this.state.codeError}
+          tintColor={this.isNext() ? "#dcc49c" : "rgb(87, 88, 98)"}
+          baseColor={this.isNext() ? "#dcc49c" : "rgb(87, 88, 98)"}
+          textColor={"white"}
+          returnKeyType={"send"}
+          keyboardType={"phone-pad"}
+          value={this.state.code}
+          onChangeText={async code => {
+            this.setState({ code: code, codeError: null });
+            if (code.length === 4) {
+              this.props.showSpinner();
+              let form = new FormData();
+              form.append("code", code);
+              form.append("phone", this.state.phone.replace(/\D+/g, ""));
+
+              const authResponse = await fetchJson(`${host}/auth/auth/`, {
+                method: "POST",
+                body: form
+              });
+              this.props.hideSpinner();
+              if (authResponse.errors) {
+                let { code, title, detail } = authResponse.errors;
+                Alert.alert(`${title} ${code}`, detail);
+              } else {
+                this.props.login(authResponse);
+                this.props.navigation.navigate("Feed");
+              }
+            }
+          }}
+          style={{
+            alignItems: "center",
+            textAlign: "center"
+          }}
+          containerStyle={{
+            width: (Platform.OS === "ios" ? 0 : 20) + adaptWidth(136, 160, 177),
+            alignSelf: "center",
+            alignContent: "center",
+            justifyContent: "center"
+          }}
+          inputContainerStyle={{
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            alignSelf: "center"
+          }}
+          label={"Код подтверждения"}
+        />
+        {/* <TextField
           onBlur={() => {
             Keyboard.dismiss();
           }}
@@ -167,15 +283,14 @@ class Login extends React.Component {
               password: password
             });
           }}
-        />
+        /> */}
       </View>
     );
   };
   renderSocialButtons = () => {
     return [
       { name: "vk", callback: this.vkAuth },
-      { name: "fb", callback: this.vkAuth },
-      { name: "twitter", callback: this.vkAuth }
+      { name: "fb", callback: this.fbAuth }
     ].map(({ name, callback }, index) =>
       this.renderAuthButton(name, callback, index)
     );
@@ -298,14 +413,11 @@ class Login extends React.Component {
               style={[
                 styles.nextButtonText,
                 {
-                  color:
-                    this.state.email && this.state.password
-                      ? "rgb(225, 199, 155)"
-                      : "#575862"
+                  color: this.isNext() ? "rgb(225, 199, 155)" : "#575862"
                 }
               ]}
             >
-              Далее
+              {this.isNext() ? "Выслать код" : "Введите номер телефона"}
             </Text>
           </Touchable>
         </View>
@@ -318,18 +430,8 @@ class Login extends React.Component {
    * @memberof Login
    */
   next = async () => {
-    let { email, password } = this.state;
-    if (validateEmail(email)) {
-      if (password.length > 6) {
-        this.authOnServer([
-          { key: "userName", value: email },
-          { key: "password", value: password }
-        ]);
-      } else {
-        this.setState({ passwordInputError: "Пароль слишком короткий" });
-      }
-    } else {
-      this.setState({ emailInputError: "Email введен неверно " });
+    if (this.isNext()) {
+      sendPhone(this.state.phone.replace(/\D+/g, ""));
     }
   };
 }
@@ -351,7 +453,9 @@ export default connect(
   dispatch => ({
     login: data => {
       dispatch({ type: "AUTH", payload: data });
-    }
+    },
+    showSpinner: () => dispatch({ type: "SHOW_SPINNER" }),
+    hideSpinner: () => dispatch({ type: "HIDE_SPINNER" })
   })
 )(Login);
 
