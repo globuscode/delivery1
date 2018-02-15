@@ -54,6 +54,7 @@ class Recomendations extends React.Component {
       collections: propTypes.object,
       restaurants: propTypes.object
     }),
+    hideArrow: propTypes.bool,
     cart: propTypes.object,
     data: propTypes.array,
     onAddPlate: propTypes.func,
@@ -451,14 +452,16 @@ class Recomendations extends React.Component {
             paddingBottom: 10
           }}
         />
-        <TouchableOpacity onPress={this.props.onNextButtonPress}>
-          <Icon
-            name="ios-arrow-down"
-            size={30}
-            style={{ alignSelf: "center", opacity: 0.4, marginBottom: 20 }}
-            color="white"
-          />
-        </TouchableOpacity>
+        {this.props.hideArrow ? null : (
+          <TouchableOpacity onPress={this.props.onNextButtonPress}>
+            <Icon
+              name="ios-arrow-down"
+              size={30}
+              style={{ alignSelf: "center", opacity: 0.4, marginBottom: 20 }}
+              color="white"
+            />
+          </TouchableOpacity>
+        )}
       </View>
     );
   }
