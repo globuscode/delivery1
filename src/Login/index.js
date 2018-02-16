@@ -26,7 +26,9 @@ const vk = "https://api.vk.com/method";
 const screen = adaptWidth(0, 1, 2);
 
 async function sendPhone(phone) {
-  const result = await fetch(`${host}/auth/phone?&phone=${phone}`);
+  const result = await fetch(
+    `${host}/sms/?action=send_code&type=auth&phone=${phone}`
+  );
   const resultJson = await result.json();
   return resultJson.status;
 }
@@ -289,8 +291,8 @@ class Login extends React.Component {
   };
   renderSocialButtons = () => {
     return [
-      { name: "vk", callback: this.vkAuth },
-      { name: "fb", callback: this.fbAuth }
+      { name: "vk", callback: this.vkAuth }
+      /* { name: "fb", callback: this.fbAuth } */
     ].map(({ name, callback }, index) =>
       this.renderAuthButton(name, callback, index)
     );

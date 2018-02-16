@@ -22,7 +22,9 @@ import IconD from "../IconD";
 const { width: viewportWidth } = Dimensions.get("window");
 
 async function sendPhone(phone) {
-  const result = await fetch(`${host}/sms/?action=send_code&phone=${phone}`);
+  const result = await fetch(
+    `${host}/sms/?action=send_code&type=reg&phone=${phone}`
+  );
   const resultJson = await result.json();
   return resultJson.status;
 }
@@ -283,7 +285,7 @@ class Registration extends React.Component {
       this.setState({ phoneError: "Это поле обязательно " });
     if (this.isNext()) {
       const validationResponse = await fetch(
-        `${host}/sms/?action=check_code&phone=${this.state.phone.replace(
+        `${host}/sms/?action=check_code&type=reg&phone=${this.state.phone.replace(
           /\D+/g,
           ""
         )}&code=${this.state.code}`,
