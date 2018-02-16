@@ -11,6 +11,7 @@ import SpecialScreen from "../SpecialScreen";
 import Restaurant from "../Restaurant";
 import RestaurantMenu from "../RestaurantMenu";
 import Favoutite from "../Favourite";
+import Collection from "../Collection";
 import Cart from "../Cart";
 
 import CartTabIcon from "./CartTabIcon";
@@ -41,6 +42,13 @@ const headerStyleIOS = () => ({
 
 const FirstScreen = StackNavigator(
   {
+    Collection: {
+      screen: Collection,
+      navigationOptions: {
+        header: null,
+        gesturesEnabled: true
+      }
+    },
     Feed: {
       screen: Feed,
       navigationOptions: {
