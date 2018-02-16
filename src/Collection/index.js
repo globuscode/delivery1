@@ -11,11 +11,13 @@ import {
 } from "react-native";
 import propTypes from "prop-types";
 import HTMLView from "react-native-htmlview";
+import Icon from "react-native-vector-icons/Ionicons";
+import { getStatusBarHeight } from "react-native-status-bar-height";
 import LinearGradient from "react-native-linear-gradient";
 import { connect } from "react-redux";
 import Touchable from "react-native-platform-touchable";
 
-import { adaptWidth } from "../etc";
+import { adaptWidth, fetchJson, host } from "../etc";
 import PriceButton from "../PriceButton";
 import Plates from "../Main/Recomendations";
 import IconD from "../IconD";
@@ -226,6 +228,30 @@ class Collection extends React.Component {
     };
   }
 
+  componentWillReceiveProps = async props => {
+    const { collections } = props.favourite;
+    const { id } = this.state.collection;
+    this.setState({ favourite: collections[id] != undefined });
+
+    const { params } = props.navigation.state;
+    if (params.id != undefined) {
+      const collectionResponse = await fetchJson(`${host}/collection?id=${id}`);
+      if (collectionResponse.errors === undefined) {
+        this.setState({ collection: collectionResponse.data });
+      }
+    }
+  };
+
+  componentWillMount = () => {
+    const { collections } = this.props.favourite;
+    const { id } = this.state.collection;
+    this.setState({ favourite: collections[id] != undefined });
+  };
+
+  isInFav = ({ id }) => {
+    return this.props.favourite.plates[id] != undefined;
+  };
+
   _renderHead = () => {
     const styles = StyleSheet.create({
       title: {
@@ -290,6 +316,49 @@ class Collection extends React.Component {
           >
             <Text style={styles.subtitle}>{subtitle}</Text>
           </View>
+        </View>
+        <View
+          style={{
+            position: "absolute",
+            justifyContent: "space-between",
+            flexDirection: "row",
+            alignSelf: "stretch",
+            marginTop: getStatusBarHeight(),
+            width: viewportWidth,
+            paddingHorizontal: 21,
+            paddingVertical: 10
+          }}
+        >
+          <Touchable onPress={() => this.props.navigation.goBack()}>
+            <Icon
+              name="md-arrow-round-back"
+              size={20}
+              color="rgb(255, 255, 255)"
+              style={{ backgroundColor: "transparent" }}
+            />
+          </Touchable>
+
+          <View style={{ flexDirection: "column", justifyContent: "center" }} />
+
+          <Touchable
+            onPress={() => {
+              if (this.state.favourite) {
+                this.props.removeFromFav(this.state.collection);
+                this.setState({ favourite: false });
+              } else {
+                this.props.addToFav(this.state.collection);
+                this.setState({ favourite: true });
+              }
+            }}
+          >
+            <View style={{ backgroundColor: "transparent" }}>
+              <IconD
+                name={this.state.favourite ? "heart_full" : "heart_empty"}
+                size={20}
+                color="rgb(255, 255, 255)"
+              />
+            </View>
+          </Touchable>
         </View>
       </ImageBackground>
     );
@@ -372,9 +441,9 @@ class Collection extends React.Component {
               foreground={Touchable.SelectableBackgroundBorderless()}
               onPress={() => {
                 if (this.isInFav(e)) {
-                  this.props.removeFromFav(e);
+                  this.props.deletePlateFromFav(e);
                 } else {
-                  this.props.addToFav(e);
+                  this.props.onAddPlateToFav(e);
                 }
                 // this.setState({})
               }}
@@ -645,21 +714,23 @@ class Collection extends React.Component {
 
   render = () => {
     return (
-      <ScrollView style={{ flex: 1 }}>
-        {this._renderHead()}
-        <Text
-          style={{
-            fontFamily: "OpenSans",
-            fontSize: 13,
-            lineHeight: 17,
-            color: "rgb(225, 199, 155)",
-            paddingHorizontal: 20,
-            paddingBottom: 50
-          }}
-        >
-          {this.state.collection.text}
-        </Text>
-        {this._renderBlocks()}
+      <View style={{ flex: 1 }}>
+        <ScrollView style={{ flex: 1 }}>
+          {this._renderHead()}
+          <Text
+            style={{
+              fontFamily: "OpenSans",
+              fontSize: 13,
+              lineHeight: 17,
+              color: "rgb(225, 199, 155)",
+              paddingHorizontal: 20,
+              paddingBottom: 50
+            }}
+          >
+            {this.state.collection.text}
+          </Text>
+          {this._renderBlocks()}
+        </ScrollView>
         <View
           pointerEvents="none"
           style={{
@@ -686,7 +757,7 @@ class Collection extends React.Component {
             }}
           />
         </View>
-      </ScrollView>
+      </View>
     );
   };
 }
@@ -703,13 +774,19 @@ export default connect(
     deletePlate: plate => {
       dispatch({ type: "REMOVE_PLATE_BY_OBJECT", payload: plate });
     },
+    onAddPlateToFav: plate => {
+      dispatch({ type: "ADD_PLATE_TO_FAV", payload: plate });
+    },
+    deletePlateFromFav: plate => {
+      dispatch({ type: "DELETE_PLATE", payload: plate });
+    },
     setLastViewed: id =>
       dispatch({ type: "SET_VIEWED_RESTAURANT", payload: id }),
     addToFav: data => {
-      dispatch({ type: "ADD_PLATE_TO_FAV", payload: data });
+      dispatch({ type: "ADD_COLLECTION_TO_FAV", payload: data });
     },
     removeFromFav: data => {
-      dispatch({ type: "DELETE_PLATE", payload: data });
+      dispatch({ type: "DELETE_COLLECTION_FROM_FAV", payload: data });
     },
     addRestToFav: data => {
       dispatch({ type: "ADD_RESTAURANT_TO_FAV", payload: data });
