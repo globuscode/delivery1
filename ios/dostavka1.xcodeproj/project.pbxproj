@@ -13,6 +13,7 @@
 		00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* dostavka1Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* dostavka1Tests.m */; };
+		0E9BA02B20396C6F00C6729E /* libRNVkontakteLogin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E9BA01220396AD200C6729E /* libRNVkontakteLogin.a */; };
 		0F3F909897444D22A025EF08 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0818422B96A54A1C97362C3A /* SimpleLineIcons.ttf */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
@@ -37,7 +38,6 @@
 		625F58EC675E4BEBB10CF0A9 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 648CDCB45A8D4D4DBB538AE8 /* Entypo.ttf */; };
 		6B4131170BFD483B81FD94D8 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B0335A96C12C44E89DE10349 /* Feather.ttf */; };
 		6E3FE8E86C1D4E82BF3B6EA5 /* VKSdkFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C156C3E717446B990660213 /* VKSdkFramework.framework */; };
-		7477361C4A8C444D876B1013 /* libRNVkontakteLogin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CA24ED97CEAE416ABE2E7FEC /* libRNVkontakteLogin.a */; };
 		7A31EF0C2589690170991492 /* libPods-dostavka1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CF156F4815F8A79E3B46BADC /* libPods-dostavka1.a */; };
 		7F6D56CCEBAD4771A76E8E08 /* Stem-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5663819B52F47CCA8FA262C /* Stem-Medium.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
@@ -180,9 +180,16 @@
 			remoteGlobalIDString = 9936F32F1F5F2E5B0010BF04;
 			remoteInfo = "privatedata-tvOS";
 		};
-		0E9556AB20395A740066AB53 /* PBXContainerItemProxy */ = {
+		0E9BA01120396AD200C6729E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = B130A0F89E884B09AC179057 /* RNVkontakteLogin.xcodeproj */;
+			containerPortal = 0E9B9FE620396AD100C6729E /* RNVkontakteLogin.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNVkontakteLogin;
+		};
+		0E9BA01720396B4500C6729E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0E9BA01320396B4500C6729E /* RNVkontakteLogin.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNVkontakteLogin;
@@ -363,6 +370,8 @@
 		036FC87F8D9E6073771F88E4 /* Pods-dostavka1.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dostavka1.debug.xcconfig"; path = "Pods/Target Support Files/Pods-dostavka1/Pods-dostavka1.debug.xcconfig"; sourceTree = "<group>"; };
 		07C806C2088649DAA5B91C8E /* icomoon.woff */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = icomoon.woff; path = ../assets/icons/fonts/icomoon.woff; sourceTree = "<group>"; };
 		0818422B96A54A1C97362C3A /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
+		0E9B9FE620396AD100C6729E /* RNVkontakteLogin.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNVkontakteLogin.xcodeproj; path = "../node_modules/react-native-vkontakte-login/ios/RNVkontakteLogin.xcodeproj"; sourceTree = "<group>"; };
+		0E9BA01320396B4500C6729E /* RNVkontakteLogin.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNVkontakteLogin.xcodeproj; path = "../node_modules/react-native-vkontakte-login/ios/RNVkontakteLogin.xcodeproj"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* dostavka1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dostavka1.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -394,10 +403,8 @@
 		915576939535450EA80E2146 /* OpenSans_Semibold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = OpenSans_Semibold.ttf; path = ../assets/fonts/OpenSans_Semibold.ttf; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		B0335A96C12C44E89DE10349 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
-		B130A0F89E884B09AC179057 /* RNVkontakteLogin.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVkontakteLogin.xcodeproj; path = "../node_modules/react-native-vkontakte-login/ios/RNVkontakteLogin.xcodeproj"; sourceTree = "<group>"; };
 		B3583A80F8654AF0BF322FBA /* Stem-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Stem-Regular.ttf"; path = "../assets/fonts/Stem-Regular.ttf"; sourceTree = "<group>"; };
 		B3A90FE10FA8402DB92581D5 /* icomoon.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = icomoon.ttf; path = ../assets/icons/fonts/icomoon.ttf; sourceTree = "<group>"; };
-		CA24ED97CEAE416ABE2E7FEC /* libRNVkontakteLogin.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVkontakteLogin.a; sourceTree = "<group>"; };
 		CF156F4815F8A79E3B46BADC /* libPods-dostavka1.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-dostavka1.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB9254241786484292EBBCAF /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 		E05969FBFF84CDEAFC261141 /* Pods-dostavka1.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dostavka1.release.xcconfig"; path = "Pods/Target Support Files/Pods-dostavka1/Pods-dostavka1.release.xcconfig"; sourceTree = "<group>"; };
@@ -422,6 +429,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E9BA02B20396C6F00C6729E /* libRNVkontakteLogin.a in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
@@ -437,7 +445,6 @@
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				F82F963587254DAEAF8C7B46 /* libBVLinearGradient.a in Frameworks */,
 				17F4B9B1E2EC45C697F6FCE2 /* libRNVectorIcons.a in Frameworks */,
-				7477361C4A8C444D876B1013 /* libRNVkontakteLogin.a in Frameworks */,
 				6E3FE8E86C1D4E82BF3B6EA5 /* VKSdkFramework.framework in Frameworks */,
 				7A31EF0C2589690170991492 /* libPods-dostavka1.a in Frameworks */,
 			);
@@ -510,7 +517,6 @@
 			children = (
 				7FBEE43C737345A3ABCEBF6C /* libBVLinearGradient.a */,
 				DB9254241786484292EBBCAF /* libRNVectorIcons.a */,
-				CA24ED97CEAE416ABE2E7FEC /* libRNVkontakteLogin.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -532,10 +538,18 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		0E9556A820395A740066AB53 /* Products */ = {
+		0E9B9FE720396AD100C6729E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				0E9556AC20395A740066AB53 /* libRNVkontakteLogin.a */,
+				0E9BA01220396AD200C6729E /* libRNVkontakteLogin.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0E9BA01420396B4500C6729E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0E9BA01820396B4500C6729E /* libRNVkontakteLogin.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -666,7 +680,6 @@
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				56CB6DA4EBD74F90BBE8A844 /* BVLinearGradient.xcodeproj */,
 				70BE7C7396A843D5A372D552 /* RNVectorIcons.xcodeproj */,
-				B130A0F89E884B09AC179057 /* RNVkontakteLogin.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -683,6 +696,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				0E9BA01320396B4500C6729E /* RNVkontakteLogin.xcodeproj */,
 				13B07FAE1A68108700A75B9A /* dostavka1 */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* dostavka1Tests */,
@@ -718,6 +732,7 @@
 		DE34E94C6DF7DFC4A48BE14E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
+				0E9B9FE620396AD100C6729E /* RNVkontakteLogin.xcodeproj */,
 				036FC87F8D9E6073771F88E4 /* Pods-dostavka1.debug.xcconfig */,
 				E05969FBFF84CDEAFC261141 /* Pods-dostavka1.release.xcconfig */,
 				FBD0AADB0B4F30CD4CE01C17 /* Pods-dostavka1Tests.debug.xcconfig */,
@@ -861,8 +876,12 @@
 					ProjectRef = 70BE7C7396A843D5A372D552 /* RNVectorIcons.xcodeproj */;
 				},
 				{
-					ProductGroup = 0E9556A820395A740066AB53 /* Products */;
-					ProjectRef = B130A0F89E884B09AC179057 /* RNVkontakteLogin.xcodeproj */;
+					ProductGroup = 0E9B9FE720396AD100C6729E /* Products */;
+					ProjectRef = 0E9B9FE620396AD100C6729E /* RNVkontakteLogin.xcodeproj */;
+				},
+				{
+					ProductGroup = 0E9BA01420396B4500C6729E /* Products */;
+					ProjectRef = 0E9BA01320396B4500C6729E /* RNVkontakteLogin.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -993,11 +1012,18 @@
 			remoteRef = 0E9556A420395A740066AB53 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		0E9556AC20395A740066AB53 /* libRNVkontakteLogin.a */ = {
+		0E9BA01220396AD200C6729E /* libRNVkontakteLogin.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRNVkontakteLogin.a;
-			remoteRef = 0E9556AB20395A740066AB53 /* PBXContainerItemProxy */;
+			remoteRef = 0E9BA01120396AD200C6729E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0E9BA01820396B4500C6729E /* libRNVkontakteLogin.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNVkontakteLogin.a;
+			remoteRef = 0E9BA01720396B4500C6729E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		139105C11AF99BAD00B5F7CC /* libRCTSettings.a */ = {
@@ -1359,17 +1385,11 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
-					"$(SRCROOT)/../node_modules/react-native-vkontakte-login/ios/**",
 				);
 				INFOPLIST_FILE = dostavka1Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -1394,17 +1414,11 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
-					"$(SRCROOT)/../node_modules/react-native-vkontakte-login/ios/**",
 				);
 				INFOPLIST_FILE = dostavka1Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -1428,7 +1442,6 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
-					"$(SRCROOT)/../node_modules/react-native-vkontakte-login/ios/**",
 				);
 				INFOPLIST_FILE = dostavka1/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1458,7 +1471,6 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
-					"$(SRCROOT)/../node_modules/react-native-vkontakte-login/ios/**",
 				);
 				INFOPLIST_FILE = dostavka1/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
