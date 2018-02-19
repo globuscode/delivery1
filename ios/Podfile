@@ -7,6 +7,8 @@ target 'dostavka1' do
 
   # Pods for dostavka1
 
+  pod 'react-native-vkontakte-login', :path => '../node_modules/react-native-vkontakte-login'
+
   target 'dostavka1Tests' do
     inherit! :search_paths
     # Pods for testing

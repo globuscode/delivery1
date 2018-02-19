@@ -53,7 +53,7 @@ class Login extends React.Component {
   };
 
   componentWillMount = async () => {
-    await VKLogin.initialize(6365999);
+    // await VKLogin.initialize(6365999);
   };
 
   authOnServer = async (body, suffix = "") => {

@@ -20,6 +20,8 @@
 	<string>1.0.22</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>VK_APP_ID</key>
+	<integer>6365999</integer>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -56,12 +58,6 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>vk</string>
-		<string>vk-share</string>
-		<string>vkauthorize</string>
-	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string/>
 	<key>UIAppFonts</key>
