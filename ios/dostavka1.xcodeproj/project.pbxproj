@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -12,7 +13,6 @@
 		00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* dostavka1Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* dostavka1Tests.m */; };
-		0E9BA02B20396C6F00C6729E /* libRNVkontakteLogin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E9BA01220396AD200C6729E /* libRNVkontakteLogin.a */; };
 		0F3F909897444D22A025EF08 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0818422B96A54A1C97362C3A /* SimpleLineIcons.ttf */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
@@ -36,7 +36,6 @@
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		625F58EC675E4BEBB10CF0A9 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 648CDCB45A8D4D4DBB538AE8 /* Entypo.ttf */; };
 		6B4131170BFD483B81FD94D8 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B0335A96C12C44E89DE10349 /* Feather.ttf */; };
-		6E3FE8E86C1D4E82BF3B6EA5 /* VKSdkFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C156C3E717446B990660213 /* VKSdkFramework.framework */; };
 		7A31EF0C2589690170991492 /* libPods-dostavka1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CF156F4815F8A79E3B46BADC /* libPods-dostavka1.a */; };
 		7F6D56CCEBAD4771A76E8E08 /* Stem-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5663819B52F47CCA8FA262C /* Stem-Medium.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
@@ -182,13 +181,6 @@
 		0E9BA01120396AD200C6729E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0E9B9FE620396AD100C6729E /* RNVkontakteLogin.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 134814201AA4EA6300B7C361;
-			remoteInfo = RNVkontakteLogin;
-		};
-		0E9BA01720396B4500C6729E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0E9BA01320396B4500C6729E /* RNVkontakteLogin.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNVkontakteLogin;
@@ -370,7 +362,6 @@
 		07C806C2088649DAA5B91C8E /* icomoon.woff */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = icomoon.woff; path = ../assets/icons/fonts/icomoon.woff; sourceTree = "<group>"; };
 		0818422B96A54A1C97362C3A /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		0E9B9FE620396AD100C6729E /* RNVkontakteLogin.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNVkontakteLogin.xcodeproj; path = "../node_modules/react-native-vkontakte-login/ios/RNVkontakteLogin.xcodeproj"; sourceTree = "<group>"; };
-		0E9BA01320396B4500C6729E /* RNVkontakteLogin.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNVkontakteLogin.xcodeproj; path = "../node_modules/react-native-vkontakte-login/ios/RNVkontakteLogin.xcodeproj"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* dostavka1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dostavka1.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -428,7 +419,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0E9BA02B20396C6F00C6729E /* libRNVkontakteLogin.a in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
@@ -444,7 +434,6 @@
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				F82F963587254DAEAF8C7B46 /* libBVLinearGradient.a in Frameworks */,
 				17F4B9B1E2EC45C697F6FCE2 /* libRNVectorIcons.a in Frameworks */,
-				6E3FE8E86C1D4E82BF3B6EA5 /* VKSdkFramework.framework in Frameworks */,
 				7A31EF0C2589690170991492 /* libPods-dostavka1.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -541,14 +530,6 @@
 			isa = PBXGroup;
 			children = (
 				0E9BA01220396AD200C6729E /* libRNVkontakteLogin.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		0E9BA01420396B4500C6729E /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				0E9BA01820396B4500C6729E /* libRNVkontakteLogin.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -695,7 +676,6 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				0E9BA01320396B4500C6729E /* RNVkontakteLogin.xcodeproj */,
 				13B07FAE1A68108700A75B9A /* dostavka1 */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* dostavka1Tests */,
@@ -878,10 +858,6 @@
 					ProductGroup = 0E9B9FE720396AD100C6729E /* Products */;
 					ProjectRef = 0E9B9FE620396AD100C6729E /* RNVkontakteLogin.xcodeproj */;
 				},
-				{
-					ProductGroup = 0E9BA01420396B4500C6729E /* Products */;
-					ProjectRef = 0E9BA01320396B4500C6729E /* RNVkontakteLogin.xcodeproj */;
-				},
 			);
 			projectRoot = "";
 			targets = (
@@ -1016,13 +992,6 @@
 			fileType = archive.ar;
 			path = libRNVkontakteLogin.a;
 			remoteRef = 0E9BA01120396AD200C6729E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		0E9BA01820396B4500C6729E /* libRNVkontakteLogin.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNVkontakteLogin.a;
-			remoteRef = 0E9BA01720396B4500C6729E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		139105C11AF99BAD00B5F7CC /* libRCTSettings.a */ = {
