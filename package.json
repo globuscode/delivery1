@@ -54,6 +54,7 @@
     "react-navigation": "^1.0.0-beta.27",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
-    "util": "^0.10.3"
+    "util": "^0.10.3",
+    "util.promisify": "^1.0.0"
   }
 }
