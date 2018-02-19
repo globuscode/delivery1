@@ -15,7 +15,7 @@ import { connect } from "react-redux";
 import Touchable from "react-native-platform-touchable";
 import { TextInputMask } from "react-native-masked-text";
 import propTypes from "prop-types";
-import VKLogin from "react-native-vkontakte-login";
+// import VKLogin from "react-native-vkontakte-login";
 import IconD from "../IconD";
 
 import { host, adaptWidth } from "../etc";
@@ -80,7 +80,7 @@ class Login extends React.Component {
 
   vkAuth = async () => {
     const { navigate } = this.props.navigation;
-    const authResult = await VKLogin.login(["email", "photos"]);
+    const authResult = null; // await VKLogin.login(["email", "photos"]);
     if (authResult.access_token != undefined) {
       let { access_token, user_id } = authResult;
       let vkProfileResponse = await fetch(
