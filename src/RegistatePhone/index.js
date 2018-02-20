@@ -28,7 +28,7 @@ async function sendPhone(phone) {
   const resultJson = await result.json();
   if (resultJson.errors != undefined) {
     if (resultJson.errors.code != 0) {
-      const {title, detail} = resultJson.errors;
+      const { title, detail } = resultJson.errors;
       Alert.alert(title, detail);
     }
   }

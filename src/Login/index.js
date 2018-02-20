@@ -6,7 +6,7 @@ import {
   Dimensions,
   StyleSheet,
   Keyboard,
-  KeyboardAvoidingView,
+  KeyboardAwareScrollView,
   Text,
   Alert
 } from "react-native";
@@ -316,7 +316,7 @@ class Login extends React.Component {
    */
   render = () => {
     return (
-      <KeyboardAvoidingView
+      <KeyboardAwareScrollView
         behavior="position"
         style={styles.container}
         contentContainerStyle={{ flex: 1 }}
@@ -435,7 +435,7 @@ class Login extends React.Component {
             </Text>
           </Touchable>
         </View>
-      </KeyboardAvoidingView>
+      </KeyboardAwareScrollView>
     );
   };
   /**
