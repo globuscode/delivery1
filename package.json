@@ -12,8 +12,7 @@
     "react-test-renderer": "16.0.0"
   },
   "scripts": {
-    "postlink":
-      "cat ./node_modules/react-native-vkontakte-login/scripts/postinstall.js",
+    "postlink": "cat ./node_modules/react-native-vkontakte-login/scripts/postinstall.js",
     "start": "react-native start",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
@@ -21,7 +20,10 @@
     "version": "./version-ios.sh"
   },
   "rnpm": {
-    "assets": ["./assets/fonts/", "./assets/icons/fonts"]
+    "assets": [
+      "./assets/fonts/",
+      "./assets/icons/fonts"
+    ]
   },
   "jest": {
     "preset": "jest-expo"
@@ -29,6 +31,7 @@
   "dependencies": {
     "react": "^16.0.0",
     "react-native": "^0.50.3",
+    "react-native-android-sms-listener": "^0.5.0",
     "react-native-animatable": "^1.2.4",
     "react-native-button": "^2.2.0",
     "react-native-collapsible": "^0.10.0",
