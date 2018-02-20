@@ -17,6 +17,7 @@
 
 
 
+
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 
@@ -54,6 +55,7 @@
     [VKSdk processOpenURL:url fromApplication:sourceApplication];
     return YES;
 }
+
 
 
 
