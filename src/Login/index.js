@@ -5,7 +5,6 @@ import {
   Platform,
   Dimensions,
   StyleSheet,
-  Keyboard,
   Text,
   Alert
 } from "react-native";
@@ -57,13 +56,15 @@ class Login extends React.Component {
 
   static propTypes = {
     navigation: propTypes.object,
-    login: propTypes.func
+    login: propTypes.func,
+    showSpinner: propTypes.func,
+    hideSpinner: propTypes.func
   };
 
   componentWillMount = async () => {
     await VKLogin.initialize(6365999);
     SmsListener.addListener(({ body }) => {
-      if (body.length === 4) this.setState({ code: body });
+      this.setState({ code: body });
     });
   };
 
@@ -448,16 +449,6 @@ class Login extends React.Component {
       sendPhone(this.state.phone.replace(/\D+/g, ""));
     }
   };
-}
-/**
- * Возвращает true, если строка является email'ом
- *
- * @param {String} email
- * @returns {bool}
- */
-function validateEmail(email) {
-  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(email);
 }
 
 export default connect(
