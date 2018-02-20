@@ -26,6 +26,12 @@ async function sendPhone(phone) {
     `${host}/sms/?action=send_code&type=reg&phone=${phone}`
   );
   const resultJson = await result.json();
+  if (resultJson.errors != undefined) {
+    if (resultJson.errors.code != 0) {
+      const {title, detail} = resultJson.errors;
+      Alert.alert(title, detail);
+    }
+  }
   return resultJson.status;
 }
 

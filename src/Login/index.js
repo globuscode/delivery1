@@ -15,8 +15,10 @@ import { connect } from "react-redux";
 import Touchable from "react-native-platform-touchable";
 import { TextInputMask } from "react-native-masked-text";
 import propTypes from "prop-types";
-// import VKLogin from "react-native-vkontakte-login";
+import VKLogin from "react-native-vkontakte-login";
 import IconD from "../IconD";
+
+import SmsListener from "react-native-android-sms-listener";
 
 import { host, adaptWidth } from "../etc";
 import { fetchJson } from "../etc";
@@ -30,6 +32,12 @@ async function sendPhone(phone) {
     `${host}/sms/?action=send_code&type=auth&phone=${phone}`
   );
   const resultJson = await result.json();
+  if (resultJson.errors != undefined) {
+    if (resultJson.errors.code != 0) {
+      const { title, detail } = resultJson.errors;
+      Alert.alert(title, detail);
+    }
+  }
   return resultJson.status;
 }
 
@@ -53,7 +61,10 @@ class Login extends React.Component {
   };
 
   componentWillMount = async () => {
-    // await VKLogin.initialize(6365999);
+    await VKLogin.initialize(6365999);
+    SmsListener.addListener(({ body }) => {
+      if (body.length === 4) this.setState({ code: body });
+    });
   };
 
   authOnServer = async (body, suffix = "") => {
@@ -80,7 +91,8 @@ class Login extends React.Component {
 
   vkAuth = async () => {
     const { navigate } = this.props.navigation;
-    const authResult = null; // await VKLogin.login(["email", "photos"]);
+    const authResult = null;
+    await VKLogin.login(["email", "photos"]);
     if (authResult.access_token != undefined) {
       let { access_token, user_id } = authResult;
       let vkProfileResponse = await fetch(
@@ -230,7 +242,6 @@ class Login extends React.Component {
                 method: "POST",
                 body: form
               });
-              this.props.hideSpinner();
               if (authResponse.errors) {
                 let { code, title, detail } = authResponse.errors;
                 Alert.alert(`${title} ${code}`, detail);
@@ -238,6 +249,7 @@ class Login extends React.Component {
                 this.props.login(authResponse);
                 this.props.navigation.navigate("Feed");
               }
+              this.props.hideSpinner();
             }
           }}
           style={{
