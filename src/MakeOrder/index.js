@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { NavigationActions } from "react-navigation";
 import propTypes from "prop-types";
+import { PaymentRequest } from "react-native-payments";
 
 import IconD from "../IconD";
 import { connect } from "react-redux";
@@ -22,6 +23,40 @@ const resetAction = NavigationActions.reset({
     NavigationActions.navigate({ routeName: "MyOrders" })
   ]
 });
+
+const togglePayment = cart => {
+  let totalPrice = 0;
+  for (let i = 0; i < cart.length; i++) {
+    totalPrice += cart[i].count * cart[i].plate.price;
+  }
+  const METHOD_DATA = [
+    {
+      supportedMethods: ["apple-pay"],
+      data: {
+        merchantIdentifier: "merchant.com.delivery1.payment",
+        supportedNetworks: ["visa", "mastercard"],
+        countryCode: "RU",
+        currencyCode: "RUB"
+      }
+    }
+  ];
+  const DETAILS = {
+    id: "basic-example",
+    displayItems: cart.map(({ plate, count }) => ({
+      label: plate.title,
+      amount: { currency: "RUB", value: (count * plate.price).toString() }
+    })),
+    total: {
+      label: "Merchant Name",
+      amount: { currency: "RUB", value: totalPrice.toString() }
+    }
+  };
+  const paymentRequest = new PaymentRequest(METHOD_DATA, DETAILS);
+  paymentRequest
+    .show()
+    .then(() => {})
+    .catch(() => {});
+};
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
@@ -60,7 +95,7 @@ class MakeOrder extends React.Component {
   }
 
   static propTypes = {
-    cart: propTypes.array,
+    cart: propTypes.object,
     userStore: propTypes.object,
     navigation: propTypes.object,
     makeOrder: propTypes.func
@@ -145,6 +180,7 @@ class MakeOrder extends React.Component {
             null
           )}
           {this.renderMenuItem("credit-card", "Наличными курьеру", null)}
+          {this.renderMenuItem("credit-card", "Apple Pay", null)}
         </View>
         {!this.state.fetching ? null : (
           <ActivityIndicator
@@ -179,6 +215,9 @@ class MakeOrder extends React.Component {
                     qty: cart[id].count
                   };
                 });
+                if (this.state.selected === "Apple Pay") {
+                  togglePayment(Object.keys(cart).map(id => cart[id]));
+                }
                 let body = {
                   token: this.props.userStore.token,
                   items: cartForRequest,
