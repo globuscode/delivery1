@@ -365,7 +365,8 @@ export default TabNavigator(
     tabBarOptions: {
       style: {
         backgroundColor: "rgba(39, 40, 48, 1)",
-        borderTopColor: "rgba(0, 0, 0, 0)"
+        borderTopColor: "rgba(0, 0, 0, 0)",
+        paddingTop: 8
       },
       tabStyle: {
         justifyContent: "space-around",
