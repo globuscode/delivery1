@@ -77,7 +77,7 @@ class Login extends React.Component {
     let form = new FormData();
     for (let i = 0; i < body.length; i++)
       form.append(body[i].key, body[i].value);
-    let data = await fetchJson(`${host}/auth/auth/${suffix}`, {
+    let data = await fetchJson(`https://dostavka1.com/v1/auth/auth/${suffix}`, {
       method: "POST",
       body: form
     });
@@ -239,10 +239,13 @@ class Login extends React.Component {
               form.append("code", code);
               form.append("phone", this.state.phone.replace(/\D+/g, ""));
 
-              const authResponse = await fetchJson(`${host}/auth/auth/`, {
-                method: "POST",
-                body: form
-              });
+              const authResponse = await fetchJson(
+                "https://dostavka1.com/v1/auth/auth/",
+                {
+                  method: "POST",
+                  body: form
+                }
+              );
               if (authResponse.errors) {
                 let { code, title, detail } = authResponse.errors;
                 Alert.alert(`${title} ${code}`, detail);

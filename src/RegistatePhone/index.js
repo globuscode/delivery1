@@ -322,10 +322,13 @@ class Registration extends React.Component {
           phone: this.state.phone ? this.state.phone : "null",
           type: type
         };
-        const response = await fetch(`${host}/auth/register/`, {
-          method: "POST",
-          body: JSON.stringify(payload)
-        });
+        const response = await fetch(
+          "https://dostavka1.com/v1/auth/register/",
+          {
+            method: "POST",
+            body: JSON.stringify(payload)
+          }
+        );
         const data = await response.json();
         if (data) {
           if (data.errors) {
