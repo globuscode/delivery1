@@ -5,6 +5,7 @@ import {
   Platform,
   Dimensions,
   StyleSheet,
+  Keyboard,
   Text,
   Alert
 } from "react-native";
@@ -297,6 +298,7 @@ class Login extends React.Component {
           onChangeText={async code => {
             this.setState({ code: code, codeError: null });
             if (code.length === 4) {
+              Keyboard.dismiss();
               this.props.showSpinner();
               let form = new FormData();
               form.append("code", code);
