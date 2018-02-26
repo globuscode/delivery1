@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Dimensions, Platform, StatusBar } from "react-native";
+import { View, Dimensions, Platform } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import AllRestourans from "../AllRestourans";
 import { StackNavigator, TabNavigator, TabBarBottom } from "react-navigation";
@@ -42,13 +42,6 @@ const headerStyleIOS = () => ({
 
 const FirstScreen = StackNavigator(
   {
-    Collection: {
-      screen: Collection,
-      navigationOptions: {
-        header: null,
-        gesturesEnabled: true
-      }
-    },
     Feed: {
       screen: Feed,
       navigationOptions: {
@@ -56,7 +49,13 @@ const FirstScreen = StackNavigator(
         gesturesEnabled: false
       }
     },
-
+    Collection: {
+      screen: Collection,
+      navigationOptions: {
+        header: null,
+        gesturesEnabled: true
+      }
+    },
     SpecialScreen: {
       screen: SpecialScreen,
       navigationOptions: {

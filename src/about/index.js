@@ -1,22 +1,10 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  Dimensions,
-  WebView,
-  PixelRatio
-} from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
+import { StyleSheet, Text, View, Image, Dimensions } from "react-native";
+import propTypes from "prop-types";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import Touchable from "react-native-platform-touchable";
 
-import IconD from "../IconD";
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
-  "window"
-);
+const { width: viewportWidth } = Dimensions.get("window");
 
 export default class SelectCity extends React.Component {
   constructor(props) {
@@ -51,6 +39,10 @@ export default class SelectCity extends React.Component {
     };
   }
 
+  static propTypes = {
+    navigation: propTypes.object
+  };
+
   async componentWillMount() {
     this.state.svgs = [
       await require("./slide1.png"),
@@ -64,9 +56,9 @@ export default class SelectCity extends React.Component {
     //this.setTags();
     if (this.state.canNav) {
       this.props.navigation.navigate("SelectTags");
-      this.state.canNav = false;
+      this.setState({ canNav: false });
       setTimeout(() => {
-        this.state.canNav = true;
+        this.setState({ canNav: true });
       }, 1500);
     }
   };
@@ -263,7 +255,6 @@ const styles = StyleSheet.create({
   },
   afterHeader2: {
     color: "#dcc49c",
-    fontWeight: "bold",
     fontSize: 25,
     fontFamily: "OpenSans",
     fontWeight: "600"

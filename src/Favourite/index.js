@@ -21,9 +21,9 @@ import { getStatusBarHeight } from "react-native-status-bar-height";
 import propTypes from "prop-types";
 import PriceButton from "../PriceButton";
 import IconD from "../IconD";
-import { getFirstItem, fetchJson } from "../utils";
+import { fetchJson } from "../utils";
 import { host } from "../etc";
-import { getCartTotalCount, getCartItemCount } from "../utils";
+import { getCartItemCount } from "../utils";
 const { width: viewportWidth } = Dimensions.get("window");
 
 class Favourite extends React.Component {
