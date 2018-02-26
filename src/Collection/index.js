@@ -10,14 +10,15 @@ import {
   Text
 } from "react-native";
 import propTypes from "prop-types";
-import HTMLView from "react-native-htmlview";
 import Icon from "react-native-vector-icons/Ionicons";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import LinearGradient from "react-native-linear-gradient";
 import { connect } from "react-redux";
 import Touchable from "react-native-platform-touchable";
+import Carousel from "react-native-snap-carousel";
 
 import { adaptWidth, fetchJson, host } from "../etc";
+import { LeftAlignedImage } from "../components/LeftAlignedImage";
 import PriceButton from "../PriceButton";
 import Plates from "../Main/Recomendations";
 import IconD from "../IconD";
@@ -29,7 +30,17 @@ const { width: viewportWidth } = Dimensions.get("window");
 class Collection extends React.Component {
   static propTypes = {
     navigation: propTypes.object,
+    favourite: propTypes.shape({
+      plates: propTypes.object,
+      collections: propTypes.object,
+      restaurants: propTypes.object
+    }),
     cart: propTypes.object,
+    addToFav: propTypes.func,
+    removeFromFav: propTypes.func,
+    deletePlateFromFav: propTypes.func,
+    onAddPlateToFav: propTypes.func,
+    deletePlate: propTypes.func,
     onDeletePlate: propTypes.func,
     onAddPlate: propTypes.func,
     onRemovePlate: propTypes.func
@@ -59,7 +70,25 @@ class Collection extends React.Component {
             title: "string",
             type: "PROMO_TEXT",
             meta: {
-              text: "string"
+              text: "string",
+              promo: [
+                {
+                  title: "Акция!",
+                  logo:
+                    "//dostavka1.com/upload/iblock/b33/b33f317eec5926301fef1ac16d9af8f6.png",
+                  image:
+                    "//dostavka1.com/upload/iblock/541/5410721de1214a826acad06180f5dd7d.jpg",
+                  restaurant: "ДжонДжоли"
+                },
+                {
+                  title: "Акция!",
+                  logo:
+                    "//dostavka1.com/upload/iblock/b33/b33f317eec5926301fef1ac16d9af8f6.png",
+                  image:
+                    "//dostavka1.com/upload/iblock/541/5410721de1214a826acad06180f5dd7d.jpg",
+                  restaurant: "ДжонДжоли"
+                }
+              ]
             }
           },
           {
@@ -586,6 +615,179 @@ class Collection extends React.Component {
     return plates.map(this._renderPlate);
   };
 
+  _renderPromo = ({ item, index }) => {
+    /* Разметка */
+    const SLIDER_WIDTH = viewportWidth - 2 * adaptWidth(20, 24, 13);
+    const SLIDER_MARGIN = adaptWidth(10, 11.7, 13.2) / 2;
+    const SLIDER_HEIGHT = SLIDER_WIDTH;
+
+    /* Стили карточки */
+    const itemStyles = StyleSheet.create({
+      containerSlider: {
+        marginHorizontal: SLIDER_MARGIN,
+        height: SLIDER_HEIGHT,
+        width: SLIDER_WIDTH
+      },
+      viewSlider: {
+        flex: 1,
+        padding: 20,
+
+        width: SLIDER_WIDTH,
+        height: SLIDER_HEIGHT,
+        justifyContent: "space-between",
+        backgroundColor: "#272833",
+        borderRadius: 10,
+        elevation: 4,
+        shadowColor: "#000",
+        shadowOffset: { width: 2, height: 2 },
+        shadowOpacity: 0.5,
+        shadowRadius: 5
+      },
+      BG_IMAGE: {
+        width: SLIDER_WIDTH,
+        top: item.image.indexOf(".png") > 0 ? SLIDER_HEIGHT * 0.5 / 3 : 0,
+        height:
+          item.image.indexOf(".png") > 0
+            ? SLIDER_HEIGHT * 2 / 3
+            : SLIDER_HEIGHT,
+        borderRadius: 10,
+        position: "absolute",
+        backgroundColor: "transparent"
+      },
+      GRADIENT_STYLE: {
+        height: SLIDER_HEIGHT + 0.5,
+        top: -0.5,
+        position: "absolute",
+        width: SLIDER_WIDTH + 0.5,
+        left: -0.5,
+        borderRadius: 10
+      },
+      titleTextStyle: {
+        flexDirection: "row",
+        backgroundColor: "transparent",
+        fontSize: 20,
+        color: "#ffffff",
+        fontFamily: "Stem-Medium",
+        maxWidth: viewportWidth - 120
+      },
+      restourantTextStyle: {
+        flexDirection: "row",
+        backgroundColor: "transparent",
+        fontSize: 12,
+        color: "#dcc49c",
+        letterSpacing: 0.5,
+        fontFamily: "Stem-Medium"
+      },
+      weightTextStyle: {
+        flexDirection: "row",
+        backgroundColor: "transparent",
+        fontSize: 12,
+        color: "rgb(119, 122, 136)",
+        letterSpacing: 0.5,
+        fontFamily: "Stem-Medium"
+      },
+      topViewStyle: {}
+    });
+
+    const GRADIENT_COLORS = [
+      "rgba(0,0,0, 0.8)",
+      "transparent",
+      "rgba(0,0,0, 0.8)"
+    ];
+
+    // Компонент с названием блюда
+    var titleText = <Text style={itemStyles.titleTextStyle}>{item.title}</Text>;
+
+    // Верхняя половина карточки
+    var topView = (
+      <View style={itemStyles.topViewStyle}>
+        <View style={{ position: "absolute", left: 0, top: 0 }}>
+          <Touchable
+            activeOpacity={0.8}
+            onPress={() => {
+              this.nav(index);
+            }}
+          >
+            <View>
+              {/* Название блюда */}
+              {titleText}
+            </View>
+          </Touchable>
+        </View>
+      </View>
+    );
+
+    const logo = (
+      <View
+        style={{
+          width: SLIDER_WIDTH / 2,
+          height: SLIDER_WIDTH / 3
+        }}
+      >
+        <LeftAlignedImage
+          height={SLIDER_WIDTH / 3}
+          width={SLIDER_WIDTH / 2}
+          resizeMode={"center"}
+          source={{
+            uri: "http:" + item.logo
+          }}
+        />
+      </View>
+    );
+    var bottomView = (
+      <View
+        pointerEvents="box-none"
+        style={{
+          flexDirection: "column",
+          justifyContent: "flex-end",
+          alignItems: "flex-start",
+          height: SLIDER_WIDTH / 2
+        }}
+      >
+        {logo}
+        <Text style={itemStyles.titleTextStyle}>{item.restaurant}</Text>
+      </View>
+    );
+
+    return (
+      <View key={index} style={itemStyles.containerSlider}>
+        <View style={itemStyles.viewSlider}>
+          {/* Задний фон карточки */}
+          <Touchable
+            activeOpacity={0.8}
+            foreground={Touchable.SelectableBackgroundBorderless()}
+            style={{
+              position: "absolute",
+              height: SLIDER_HEIGHT,
+              width: SLIDER_WIDTH,
+              borderRadius: 10
+            }}
+          >
+            <View>
+              <Image
+                resizeMode={
+                  item.image.indexOf(".png") < 0 ? "cover" : "contain"
+                }
+                style={itemStyles.BG_IMAGE}
+                source={{ uri: "http:" + item.image }}
+              />
+
+              {/* Градиент */}
+              <LinearGradient
+                colors={GRADIENT_COLORS}
+                style={itemStyles.GRADIENT_STYLE}
+              />
+            </View>
+          </Touchable>
+
+          {topView}
+
+          {bottomView}
+        </View>
+      </View>
+    );
+  };
+
   _renderBlock = (block, index) => {
     const styles = StyleSheet.create({
       header: {
@@ -626,6 +828,34 @@ class Collection extends React.Component {
           >
             {text}
           </Text>
+        </View>
+      );
+    }
+    if (block.type === "PROMO_TEXT") {
+      const { promo } = block.meta;
+      let slideW = adaptWidth(
+        viewportWidth - 2 * 20,
+        viewportWidth - 2 * 24,
+        viewportWidth - 26
+      );
+      const SLIDER_MARGIN = adaptWidth(10, 11.7, 13.2) / 2;
+      return (
+        <View>
+          <Carousel
+            data={promo}
+            renderItem={this._renderPromo}
+            inactiveSlideScale={1}
+            inactiveSlideOpacity={1}
+            sliderWidth={viewportWidth}
+            sliderHeight={slideW * 1.32}
+            itemWidth={slideW + SLIDER_MARGIN * 2}
+            onSnapToItem={index => this.setState({ activeSlide: index })}
+            slideStyle={{
+              marginVertical: 15,
+
+              backgroundColor: "transparent"
+            }}
+          />
         </View>
       );
     }
