@@ -6,23 +6,23 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
-  PixelRatio,
-  AsyncStorage,
   WebView
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import IconD from "../IconD";
+import Touchable from "react-native-platform-touchable";
 import Carousel, { Pagination } from "react-native-snap-carousel";
+import propTypes from "prop-types";
 import LinearGradient from "react-native-linear-gradient";
 
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
-  "window"
-);
+import IconD from "../IconD";
+
+const { width: viewportWidth } = Dimensions.get("window");
 
 export default class Recomendations extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      canNav: true,
       activeSlide: 0,
       entries: [
         {
@@ -60,13 +60,18 @@ export default class Recomendations extends React.Component {
     this.fav = this.fav.bind(this);
   }
 
+  static propTypes = {
+    navigation: propTypes.object,
+    onNextButtonPress: propTypes.func
+  };
+
   fav(index) {
-    this.state.entries[index].favourite = !this.state.entries[index].favourite;
-    this.setState({});
+    let newEntries = this.state.entries;
+    newEntries[index].favourite = !this.state.entries[index].favourite;
+    this.setState({ entries: newEntries });
   }
 
   _renderItem = ({ item, index }) => {
-    f = this.fav;
     const screen =
       viewportWidth >= 320 && viewportWidth < 375
         ? 0
@@ -179,6 +184,19 @@ export default class Recomendations extends React.Component {
       </View>
     );
   };
+
+  nav = i => {
+    if (this.state.canNav) {
+      this.props.navigation.navigate("Collection", {
+        collection: this.state.entries[i]
+      });
+      this.setState({ canNav: false });
+      setTimeout(() => {
+        this.setState({ canNav: true });
+      }, 1500);
+    }
+  };
+
   _renderNewItem = ({ item, index }) => {
     /* Разметка */
     const screen =
@@ -193,14 +211,14 @@ export default class Recomendations extends React.Component {
     /* Стили карточки */
     const itemStyles = StyleSheet.create({
       containerSlider: {
-        margin: SLIDER_MARGIN,
+        marginHorizontal: SLIDER_MARGIN,
         height: SLIDER_HEIGHT,
         width: SLIDER_WIDTH
       },
       viewSlider: {
         flex: 1,
         padding: 20,
-
+        flexDirection: "row",
         width: SLIDER_WIDTH,
         height: SLIDER_HEIGHT,
         justifyContent: "space-between",
@@ -255,48 +273,15 @@ export default class Recomendations extends React.Component {
       "rgba(0,0,0, 0.8)"
     ];
 
-    // Компонент с названием блюда
-    var titleText = <Text style={itemStyles.titleTextStyle}>{item.title}</Text>;
-
-    // Компонент с названием ресторана
-    var restourantText = (
-      <Text style={itemStyles.restourantTextStyle}>{item.restourant}</Text>
-    );
-
-    // Компонент с весом блюда
-    var weightText = (
-      <Text style={itemStyles.weightTextStyle}>{item.weight}</Text>
-    );
-
-    // Компонент с кнопкой добавить в избранное
-    var heartButton = (
-      <View>
-        <TouchableOpacity onPress={() => this.fav(index)}>
-          <View style={{ backgroundColor: "transparent" }}>
-            <IconD
-              name={item.favourite ? "heart_full" : "heart_empty"}
-              size={18}
-              color="#dcc49c"
-            />
-          </View>
-        </TouchableOpacity>
-      </View>
-    );
-
     // Верхняя половина карточки
     var topView = (
       <View style={[itemStyles.topViewStyle, { height: SLIDER_WIDTH / 2 }]}>
         <View>
-          <WebView
+          <Image
             bounces={false}
             scrollEnabled={false}
             source={{
-              html:
-                `<img 
-          src="` +
-                item.restourantLogo +
-                `"
-          style="width:100%; ">`
+              url: item.restourantLogo
             }}
             style={{
               width: SLIDER_WIDTH / 2,
@@ -356,18 +341,40 @@ export default class Recomendations extends React.Component {
     return (
       <View style={itemStyles.containerSlider}>
         <View style={itemStyles.viewSlider}>
-          {/* Задний фон карточки */}
-          <Image style={itemStyles.BG_IMAGE} source={{ uri: item.image }} />
+          <Touchable
+            activeOpacity={0.8}
+            foreground={Touchable.SelectableBackgroundBorderless()}
+            style={{
+              position: "absolute",
+              height: SLIDER_HEIGHT,
+              width: SLIDER_WIDTH,
+              borderRadius: 10
+            }}
+            onPress={() => {
+              this.nav(index);
+            }}
+          >
+            <View
+              style={{
+                padding: 20,
+                flex: 1,
+                justifyContent: "space-between"
+              }}
+            >
+              {/* Задний фон карточки */}
+              <Image style={itemStyles.BG_IMAGE} source={{ uri: item.image }} />
 
-          {/* Градиент */}
-          <LinearGradient
-            colors={GRADIENT_COLORS}
-            style={itemStyles.GRADIENT_STYLE}
-          />
+              {/* Градиент */}
+              <LinearGradient
+                colors={GRADIENT_COLORS}
+                style={itemStyles.GRADIENT_STYLE}
+              />
 
-          {topView}
+              {topView}
 
-          {bottomView}
+              {bottomView}
+            </View>
+          </Touchable>
         </View>
       </View>
     );
@@ -431,17 +438,3 @@ export default class Recomendations extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  text: {
-    color: "white",
-    fontSize: 16
-  },
-  container: {
-    flex: 1,
-    paddingTop: 20,
-    backgroundColor: "#292b37",
-    justifyContent: "space-between",
-    alignItems: "center"
-  }
-});
