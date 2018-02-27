@@ -5,16 +5,15 @@ import {
   Alert,
   View,
   Dimensions,
-  Image,
   ImageBackground,
   AsyncStorage
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import propTypes from "prop-types";
 
-import IconD from "../components/ui/IconD";
-import { host } from "../etc";
-var kitchenPhoto = require("../../assets/img/kitchen.jpg");
+import IconD from "../../../components/ui/IconD";
+import { host } from "../../../etc";
+var kitchenPhoto = require("../../../../assets/img/kitchen.jpg");
 
 const { width: viewportWidth } = Dimensions.get("window");
 class Screen extends React.Component {
@@ -23,7 +22,7 @@ class Screen extends React.Component {
   }
 
   async componentWillMount() {
-    kitchenPhoto = await require("../../assets/img/kitchen.jpg");
+    kitchenPhoto = await require("../../../../assets/img/kitchen.jpg");
   }
 
   async componentDidMount() {

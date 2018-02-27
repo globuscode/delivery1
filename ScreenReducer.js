@@ -12,7 +12,7 @@ import SelectTags from "./src/SelectTags";
 import SetAddress from "./src/SetAddress";
 import SelectTastes from "./src/SelectTastes";
 import About from "./src/about";
-import SpecialScreen from "./src/SpecialScreen";
+import SpecialScreen from "./src/screens/fullScreen/SpecialScreen";
 import LoadingScreen from "./src/LoadingScreen";
 import Main from "./src/Main";
 import Loader from "./src/screens/fullScreen/Loader";

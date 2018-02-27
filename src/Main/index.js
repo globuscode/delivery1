@@ -7,7 +7,6 @@ import Touchable from "react-native-platform-touchable";
 
 import Feed from "./Feed";
 import Plate from "../Plate";
-import SpecialScreen from "../SpecialScreen";
 import Restaurant from "../Restaurant";
 import RestaurantMenu from "../RestaurantMenu";
 import Favoutite from "../Favourite";
@@ -54,12 +53,6 @@ const FirstScreen = StackNavigator(
       navigationOptions: {
         header: null,
         gesturesEnabled: true
-      }
-    },
-    SpecialScreen: {
-      screen: SpecialScreen,
-      navigationOptions: {
-        gesturesEnabled: false
       }
     },
     Restaurant: {
