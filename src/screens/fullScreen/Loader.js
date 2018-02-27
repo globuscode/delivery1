@@ -100,7 +100,7 @@ class Loader extends React.Component {
   };
 
   render() {
-    let kitchenPhoto = require("../assets/img/kitchen.jpg");
+    let kitchenPhoto = require("../../../assets/img/kitchen.jpg");
     const { action } = this.props.navigation.state.params;
     return (
       <ImageBackground
