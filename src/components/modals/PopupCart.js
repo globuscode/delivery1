@@ -5,20 +5,18 @@ import { Bar } from "react-native-progress";
 import HTMLView from "react-native-htmlview";
 import propTypes from "prop-types";
 
-import Counter from "./ui/Counter";
-import ButtonD from "./ui/ButtonD";
-import IconD from "./ui/IconD";
-import Store from "../Reducers";
-import { getCartTotalPrice } from "./utils";
+import Counter from "../ui/Counter";
+import ButtonD from "../ui/ButtonD";
+import IconD from "../ui/IconD";
+import Store from "../../Reducers";
+import { getCartTotalPrice } from "../../utils";
+import { host, adaptWidth, fetchJson } from "../../etc";
 
 const { width: viewportWidth } = Dimensions.get("window");
 const screen =
   viewportWidth >= 320 && viewportWidth < 375
     ? 0
     : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
-
-import { host, adaptWidth } from "./etc";
-import { fetchJson } from "./etc";
 
 class Popup extends React.Component {
   constructor(props) {
