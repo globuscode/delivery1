@@ -2,7 +2,22 @@ import React, { Component } from "react";
 import propTypes from "prop-types";
 import { StyleSheet, Image, View, Dimensions } from "react-native";
 
-import { calcDim } from "./calculateDimensions";
+function calcDim(imageWidth, imageHeight, maxHeight, maxWidth) {
+  const imageRatio = imageWidth / imageHeight;
+
+  let newImageHeight = Math.min(maxHeight, imageHeight);
+  let newImageWidth = newImageHeight * imageRatio;
+
+  if (maxWidth > 0 && newImageWidth > maxWidth) {
+    newImageWidth = maxWidth;
+    newImageHeight = maxWidth / imageRatio;
+  }
+
+  return {
+    imageWidth: newImageWidth,
+    imageHeight: newImageHeight
+  };
+}
 
 export class LeftAlignedImage extends Component {
   static propTypes = {
