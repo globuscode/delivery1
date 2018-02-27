@@ -12,9 +12,8 @@ import propTypes from "prop-types";
 import LinearGradient from "react-native-linear-gradient";
 import { connect } from "react-redux";
 
-import { fetchJson } from "./utils";
 import IconD from "./IconD";
-import { host } from "./etc";
+import { host, fetchJson } from "./etc";
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
