@@ -354,6 +354,7 @@ class Popup extends React.Component {
 
 Popup.propTypes = {
   cart: propTypes.object,
+  modal: propTypes.object,
   removePlate: propTypes.func,
   hide: propTypes.func,
   addPlate: propTypes.func,
