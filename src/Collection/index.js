@@ -21,7 +21,7 @@ import { adaptWidth, fetchJson, host } from "../etc";
 import { LeftAlignedImage } from "../components/LeftAlignedImage";
 import PriceButton from "../PriceButton";
 import Plates from "../Main/Recomendations";
-import IconD from "../IconD";
+import IconD from "../components/ui/IconD";
 import ButtonD from "../components/ui/ButtonD";
 import { getCartItemCount } from "../utils";
 

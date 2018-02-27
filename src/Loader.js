@@ -12,7 +12,7 @@ import propTypes from "prop-types";
 import LinearGradient from "react-native-linear-gradient";
 import { connect } from "react-redux";
 
-import IconD from "./IconD";
+import IconD from "./components/ui/IconD";
 import { host, fetchJson } from "./etc";
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(

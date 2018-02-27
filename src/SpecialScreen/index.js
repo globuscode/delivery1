@@ -9,16 +9,14 @@ import {
   ImageBackground,
   AsyncStorage
 } from "react-native";
-import LinearGradient from 'react-native-linear-gradient';
+import LinearGradient from "react-native-linear-gradient";
 import propTypes from "prop-types";
 
-import IconD from "../IconD";
+import IconD from "../components/ui/IconD";
 import { host } from "../etc";
 var kitchenPhoto = require("../../assets/img/kitchen.jpg");
 
-const { width: viewportWidth } = Dimensions.get(
-  "window"
-);
+const { width: viewportWidth } = Dimensions.get("window");
 class Screen extends React.Component {
   constructor(props) {
     super(props);
@@ -45,10 +43,11 @@ class Screen extends React.Component {
 
   render() {
     return (
-      <ImageBackground style={styles.backgroundImage}
+      <ImageBackground
+        style={styles.backgroundImage}
         source={kitchenPhoto}
         resizeMode="cover"
-        >
+      >
         <View style={styles.container}>
           <LinearGradient
             colors={["rgba(0, 0, 0, 0.9)", "transparent"]}
@@ -103,7 +102,7 @@ const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
     width: null,
-    height: null,
+    height: null
   },
   text: {
     color: "white",

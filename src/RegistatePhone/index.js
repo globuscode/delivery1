@@ -17,7 +17,7 @@ import propTypes from "prop-types";
 
 import { adaptWidth } from "../etc";
 import { host } from "../etc";
-import IconD from "../IconD";
+import IconD from "../components/ui/IconD";
 
 const { width: viewportWidth } = Dimensions.get("window");
 

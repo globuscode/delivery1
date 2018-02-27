@@ -15,7 +15,7 @@ import Collection from "../Collection";
 import Cart from "../Cart";
 
 import CartTabIcon from "./CartTabIcon";
-import IconD from "../IconD";
+import IconD from "../components/ui/IconD";
 import { adaptWidth } from "../etc";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 

@@ -11,7 +11,7 @@ import propTypes from "prop-types";
 import Touchable from "react-native-platform-touchable";
 import LinearGradient from "react-native-linear-gradient";
 
-import IconD from "../../IconD";
+import IconD from "../../components/ui/IconD";
 import { adaptWidth } from "../../etc";
 import { LeftAlignedImage } from "../../components/LeftAlignedImage";
 

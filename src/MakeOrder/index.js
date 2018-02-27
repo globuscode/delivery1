@@ -10,7 +10,7 @@ import { NavigationActions } from "react-navigation";
 import propTypes from "prop-types";
 import { PaymentRequest } from "react-native-payments";
 
-import IconD from "../IconD";
+import IconD from "../components/ui/IconD";
 import { connect } from "react-redux";
 import { host } from "../etc";
 import { fetchJson } from "../etc";

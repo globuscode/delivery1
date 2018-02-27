@@ -12,7 +12,7 @@ import {
 import Icon from "react-native-vector-icons/Ionicons";
 import { connect } from "react-redux";
 
-import IconD from "../IconD";
+import IconD from "../components/ui/IconD";
 
 const screen =
   viewportWidth >= 320 && viewportWidth < 375

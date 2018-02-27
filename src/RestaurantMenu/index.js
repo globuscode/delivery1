@@ -21,7 +21,7 @@ import PropTypes from "prop-types";
 import * as Animatable from "react-native-animatable";
 
 import Recomendations from "../Main/Recomendations";
-import IconD from "../IconD";
+import IconD from "../components/ui/IconD";
 import { adaptWidth } from "../etc";
 import { fetchJson } from "../etc";
 import { host } from "../etc";

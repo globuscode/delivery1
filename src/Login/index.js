@@ -22,7 +22,7 @@ import {
 import { TextInputMask } from "react-native-masked-text";
 import propTypes from "prop-types";
 import VKLogin from "react-native-vkontakte-login";
-import IconD from "../IconD";
+import IconD from "../components/ui/IconD";
 
 import SmsListener from "react-native-android-sms-listener";
 

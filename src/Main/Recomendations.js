@@ -19,7 +19,7 @@ import { host, adaptWidth } from "../etc";
 import { LeftAlignedImage } from "../components/LeftAlignedImage";
 import Storage from "../Reducers";
 import PriceButton from "../PriceButton";
-import IconD from "../IconD";
+import IconD from "../components/ui/IconD";
 import { fetchJson } from "../etc";
 import { getCartItemCount } from "../utils";
 

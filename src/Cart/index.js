@@ -16,7 +16,7 @@ import propTypes from "prop-types";
 
 import Counter from "../components/ui/Counter";
 import { adaptWidth } from "../etc";
-import IconD from "../IconD";
+import IconD from "../components/ui/IconD";
 import ButtonD from "../components/ui/ButtonD";
 import { host } from "../etc";
 import { fetchJson } from "../etc";

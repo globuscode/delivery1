@@ -20,7 +20,7 @@ import propTypes from "prop-types";
 import PriceButton from "../PriceButton";
 import { connect } from "react-redux";
 import { adaptWidth } from "../etc";
-import IconD from "../IconD";
+import IconD from "../components/ui/IconD";
 import Touchable from "react-native-platform-touchable";
 import { host } from "../etc";
 import { fetchJson } from "../etc";

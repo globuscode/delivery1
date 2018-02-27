@@ -13,7 +13,7 @@ import { connect } from "react-redux";
 import { LeftAlignedImage } from "../components/LeftAlignedImage";
 import propTypes from "prop-types";
 
-import IconD from "../IconD";
+import IconD from "../components/ui/IconD";
 import { host, adaptWidth } from "../etc";
 import { fetchJson } from "../etc";
 

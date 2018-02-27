@@ -9,7 +9,7 @@ import {
   ImageBackground
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
-import IconD from "../IconD";
+import IconD from "../components/ui/IconD";
 import { NavigationActions } from "react-navigation";
 import { connect } from "react-redux";
 import { host } from "../etc";

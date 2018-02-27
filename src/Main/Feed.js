@@ -14,7 +14,7 @@ import { connect } from "react-redux";
 import propTypes from "prop-types";
 
 import Collections from "./Collections";
-import IconD from "../IconD";
+import IconD from "../components/ui/IconD";
 
 const { width: viewportWidth } = Dimensions.get("window");
 

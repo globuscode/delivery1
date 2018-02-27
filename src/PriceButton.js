@@ -3,7 +3,7 @@ import { View, Dimensions, Platform, Text } from "react-native";
 import Touchable from "react-native-platform-touchable";
 import PropTypes from "prop-types";
 
-import IconD from "./IconD";
+import IconD from "./components/ui/IconD";
 import { adaptWidth } from "./etc";
 
 const { width: viewportWidth } = Dimensions.get("window");

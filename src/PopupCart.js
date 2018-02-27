@@ -7,7 +7,7 @@ import propTypes from "prop-types";
 
 import Counter from "./components/ui/Counter";
 import ButtonD from "./components/ui/ButtonD";
-import IconD from "./IconD";
+import IconD from "./components/ui/IconD";
 import Store from "./Reducers";
 import { getCartTotalPrice } from "./utils";
 

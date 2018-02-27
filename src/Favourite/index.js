@@ -20,7 +20,7 @@ import propTypes from "prop-types";
 
 import CollectionCard from "../components/cards/CollectionCard";
 import PriceButton from "../PriceButton";
-import IconD from "../IconD";
+import IconD from "../components/ui/IconD";
 import { getCartItemCount } from "../utils";
 import { adaptWidth, host, fetchJson } from "../etc";
 const { width: viewportWidth } = Dimensions.get("window");
