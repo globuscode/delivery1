@@ -1,4 +1,4 @@
-import { StatusBar, Platform } from "react-native";
+import { Platform } from "react-native";
 import { StackNavigator } from "react-navigation";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 
@@ -15,7 +15,7 @@ import About from "./src/about";
 import SpecialScreen from "./src/SpecialScreen";
 import LoadingScreen from "./src/LoadingScreen";
 import Main from "./src/Main";
-import Loader from "./src/Loader";
+import Loader from "./src/screens/fullScreen/Loader";
 import Profile from "./src/Profile";
 import MakeOrder from "./src/MakeOrder";
 import MyOrders from "./src/MyOrders";
