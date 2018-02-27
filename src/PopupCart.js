@@ -5,7 +5,7 @@ import { Bar } from "react-native-progress";
 import HTMLView from "react-native-htmlview";
 import propTypes from "prop-types";
 
-import Counter from "./Counter";
+import Counter from "./components/ui/Counter";
 import ButtonD from "./components/ui/ButtonD";
 import IconD from "./IconD";
 import Store from "./Reducers";

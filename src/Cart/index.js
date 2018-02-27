@@ -14,7 +14,7 @@ import Touchable from "react-native-platform-touchable";
 import { connect } from "react-redux";
 import propTypes from "prop-types";
 
-import Counter from "../Counter";
+import Counter from "../components/ui/Counter";
 import { adaptWidth } from "../etc";
 import IconD from "../IconD";
 import ButtonD from "../components/ui/ButtonD";
