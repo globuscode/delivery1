@@ -1,9 +1,14 @@
 import React, { Component } from "react";
+import propTypes from "prop-types";
 import { StyleSheet, Image, View, Dimensions } from "react-native";
 
 import { calcDim } from "./calculateDimensions";
 
 export class LeftAlignedImage extends Component {
+  static propTypes = {
+    top: propTypes.bool
+  };
+
   constructor(props) {
     super(props);
 
@@ -43,7 +48,7 @@ export class LeftAlignedImage extends Component {
 
   render() {
     const { source, height, width, imageWidth, imageHeight } = this.state;
-
+    const { top } = this.props;
     const localStyle = height
       ? {
         height: height,
@@ -52,7 +57,17 @@ export class LeftAlignedImage extends Component {
       : {};
 
     return (
-      <View style={[styles.container, localStyle]}>
+      <View
+        style={[
+          styles.container,
+          localStyle,
+          top
+            ? {
+              justifyContent: "flex-start"
+            }
+            : {}
+        ]}
+      >
         {source ? (
           <Image
             style={{ width: imageWidth, height: imageHeight }}

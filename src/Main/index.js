@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Dimensions, Platform, StatusBar } from "react-native";
+import { View, Dimensions, Platform } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import AllRestourans from "../AllRestourans";
 import { StackNavigator, TabNavigator, TabBarBottom } from "react-navigation";
@@ -11,6 +11,7 @@ import SpecialScreen from "../SpecialScreen";
 import Restaurant from "../Restaurant";
 import RestaurantMenu from "../RestaurantMenu";
 import Favoutite from "../Favourite";
+import Collection from "../Collection";
 import Cart from "../Cart";
 
 import CartTabIcon from "./CartTabIcon";
@@ -48,7 +49,13 @@ const FirstScreen = StackNavigator(
         gesturesEnabled: false
       }
     },
-
+    Collection: {
+      screen: Collection,
+      navigationOptions: {
+        header: null,
+        gesturesEnabled: true
+      }
+    },
     SpecialScreen: {
       screen: SpecialScreen,
       navigationOptions: {
