@@ -6,7 +6,7 @@ import HTMLView from "react-native-htmlview";
 import propTypes from "prop-types";
 
 import Counter from "./Counter";
-import ButtonD from "./ButtonD";
+import ButtonD from "./components/ui/ButtonD";
 import IconD from "./IconD";
 import Store from "./Reducers";
 import { getCartTotalPrice } from "./utils";

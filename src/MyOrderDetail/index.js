@@ -14,7 +14,7 @@ import HTMLView from "react-native-htmlview";
 import propTypes from "prop-types";
 
 import PriceButton from "../PriceButton";
-import ButtonD from "../ButtonD";
+import ButtonD from "../components/ui/ButtonD";
 import { host, adaptWidth } from "../etc";
 import { getCartItemCount } from "../utils";
 

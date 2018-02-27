@@ -21,8 +21,8 @@ import propTypes from "prop-types";
 import CollectionCard from "../components/cards/CollectionCard";
 import PriceButton from "../PriceButton";
 import IconD from "../IconD";
-import { fetchJson, getCartItemCount } from "../utils";
-import { adaptWidth, host } from "../etc";
+import { getCartItemCount } from "../utils";
+import { adaptWidth, host, fetchJson } from "../etc";
 const { width: viewportWidth } = Dimensions.get("window");
 
 class Favourite extends React.Component {

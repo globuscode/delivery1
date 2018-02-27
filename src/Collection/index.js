@@ -22,7 +22,7 @@ import { LeftAlignedImage } from "../components/LeftAlignedImage";
 import PriceButton from "../PriceButton";
 import Plates from "../Main/Recomendations";
 import IconD from "../IconD";
-import ButtonD from "../ButtonD";
+import ButtonD from "../components/ui/ButtonD";
 import { getCartItemCount } from "../utils";
 
 const { width: viewportWidth } = Dimensions.get("window");

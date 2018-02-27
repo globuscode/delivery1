@@ -13,7 +13,7 @@ import propTypes from "prop-types";
 import Counter from "../Counter";
 import { adaptWidth } from "../etc";
 import IconD from "../IconD";
-import ButtonD from "../ButtonD";
+import ButtonD from "../components/ui/ButtonD";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
