@@ -15,9 +15,9 @@ import Touchable from "react-native-platform-touchable";
 import { connect } from "react-redux";
 import propTypes from "prop-types";
 
-import { adaptWidth } from "../etc";
-import { host } from "../etc";
-import IconD from "../components/ui/IconD";
+import { adaptWidth } from "../../../etc";
+import { host } from "../../../etc";
+import IconD from "../../../components/ui/IconD";
 
 const { width: viewportWidth } = Dimensions.get("window");
 

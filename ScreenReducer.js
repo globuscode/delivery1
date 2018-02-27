@@ -6,7 +6,7 @@ import { adaptWidth } from "./src/etc";
 
 import Login from "./src/screens/fullScreen/Login";
 import Registration from "./src/screens/fullScreen/Registration";
-import RegistratePhone from "./src/RegistatePhone";
+import RegistratePhone from "./src/screens/fullScreen/RegistatePhone";
 import SelectCity from "./src/SelectCity";
 import SelectTags from "./src/SelectTags";
 import SetAddress from "./src/SetAddress";
