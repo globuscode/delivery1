@@ -50,7 +50,7 @@ class Collection extends React.Component {
     super(props);
     this.state = {
       collection: {
-        id: 0,
+        id: 1,
         title: "string",
         subtitle: "string",
         image:
@@ -371,12 +371,11 @@ class Collection extends React.Component {
 
           <Touchable
             onPress={() => {
+              const { collection } = this.props.navigation.state.params;
               if (this.state.favourite) {
-                this.props.removeFromFav(this.state.collection);
-                this.setState({ favourite: false });
+                this.props.removeFromFav(collection);
               } else {
-                this.props.addToFav(this.state.collection);
-                this.setState({ favourite: true });
+                this.props.addToFav(collection);
               }
             }}
           >
@@ -1016,7 +1015,7 @@ export default connect(
       dispatch({ type: "ADD_COLLECTION_TO_FAV", payload: data });
     },
     removeFromFav: data => {
-      dispatch({ type: "DELETE_COLLECTION_FROM_FAV", payload: data });
+      dispatch({ type: "DELETE_COLLECTION", payload: data });
     },
     addRestToFav: data => {
       dispatch({ type: "ADD_RESTAURANT_TO_FAV", payload: data });

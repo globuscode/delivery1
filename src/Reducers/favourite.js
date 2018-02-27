@@ -22,11 +22,11 @@ export default function favourite(state = initialState, action) {
   if (
     type == "DELETE_PLATE" ||
     type == "DELETE_RESTAURANT" ||
-    type == "DELETE_COLLECTION_FROM_FAV"
+    type == "DELETE_COLLECTION"
   ) {
     const { id } = action.payload;
     if (type == "DELETE_PLATE") delete state.plates[id];
-    else if (type == "DELETE_COLLECTION_FROM_FAV") delete state.collections[id];
+    else if (type == "DELETE_COLLECTION") delete state.collections[id];
     else delete state.restaurants[id];
     return {
       ...state

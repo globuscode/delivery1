@@ -5,184 +5,99 @@ import {
   View,
   Image,
   TouchableOpacity,
-  Dimensions,
-  WebView
+  Dimensions
 } from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
-import Touchable from "react-native-platform-touchable";
-import Carousel, { Pagination } from "react-native-snap-carousel";
 import propTypes from "prop-types";
+import Icon from "react-native-vector-icons/Ionicons";
+import { connect } from "react-redux";
+import Carousel, { Pagination } from "react-native-snap-carousel";
+import Touchable from "react-native-platform-touchable";
 import LinearGradient from "react-native-linear-gradient";
 
 import IconD from "../IconD";
+import { adaptWidth } from "../etc";
+import { LeftAlignedImage } from "../components/LeftAlignedImage";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
-export default class Recomendations extends React.Component {
+class Collections extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      canNav: true,
       activeSlide: 0,
+      canNav: true,
+      favourites: [],
       entries: [
         {
+          id: 1,
           image:
             "http://shop.web01.widgets.vigbo.com/storage/shops/7776/products/313707/images/2-8606f84da77c5a05532ee2d3f1d9e351.jpg",
           title: "Что такое настоящий стейк?",
           author: "Павел Антонов\nБренд-шеф Meatless",
-          restourantLogo: "https://image.ibb.co/fPo4vm/meatless_logo.png",
+          restaurantLogo: "https://image.ibb.co/fPo4vm/meatless_logo.png",
           favourite: false
         },
         {
+          id: 2,
           image: "https://i.ytimg.com/vi/KJ0R-703COE/maxresdefault.jpg",
           title: "Что такое настоящий дошик?",
           author: "Антон Павлов \nСтудент",
-          restourantLogo: "https://image.ibb.co/fPo4vm/meatless_logo.png",
+          restaurantLogo: "https://image.ibb.co/fPo4vm/meatless_logo.png",
           favourite: false
         },
         {
+          id: 3,
           image:
             "http://shop.web01.widgets.vigbo.com/storage/shops/7776/products/313707/images/2-8606f84da77c5a05532ee2d3f1d9e351.jpg",
           title: "Что такое настоящий стейк?",
           author: "Павел Антонов\nБренд-шеф Meatless",
-          restourantLogo: "https://image.ibb.co/fPo4vm/meatless_logo.png",
+          restaurantLogo: "https://image.ibb.co/fPo4vm/meatless_logo.png",
           favourite: false
         },
         {
+          id: 4,
           image: "https://i.ytimg.com/vi/KJ0R-703COE/maxresdefault.jpg",
           title: "Что такое настоящий дошик?",
           author: "Антон Павлов \nСтудент",
-          restourantLogo: "https://image.ibb.co/fPo4vm/meatless_logo.png",
+          restaurantLogo: "https://image.ibb.co/fPo4vm/meatless_logo.png",
           favourite: false
         }
       ]
     };
-    this.fav = this.fav.bind(this);
   }
 
-  static propTypes = {
-    navigation: propTypes.object,
-    onNextButtonPress: propTypes.func
+  fav = index => {
+    if (this.state.favourites[index])
+      this.props.removeColletionFromFav(this.state.entries[index]);
+    else this.props.addCollectionToFav(this.state.entries[index]);
   };
 
-  fav(index) {
-    let newEntries = this.state.entries;
-    newEntries[index].favourite = !this.state.entries[index].favourite;
-    this.setState({ entries: newEntries });
-  }
+  static propTypes = {
+    onNextButtonPress: propTypes.func,
+    favourite: propTypes.shape({
+      collections: propTypes.object
+    }),
+    navigation: propTypes.shape({
+      navigate: propTypes.func
+    }),
+    addCollectionToFav: propTypes.func,
+    removeColletionFromFav: propTypes.func
+  };
 
-  _renderItem = ({ item, index }) => {
-    const screen =
-      viewportWidth >= 320 && viewportWidth < 375
-        ? 0
-        : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
-    const SLIDER_WIDTH = screen == 0 ? 280 : screen == 1 ? 328.1 : 362.3;
-    return (
-      <View
-        style={{
-          flex: 1,
-          padding: 16,
-          paddingTop: 13,
-          paddingHorizontal: 18,
-          justifyContent: "space-between"
-        }}
-      >
-        <Image
-          style={{
-            width: viewportWidth - 40,
-            height: (viewportWidth - 40) * 1.32,
-            borderRadius: 10,
-            position: "absolute",
-            borderColor: "rgba(0,0,0, 0.8)",
-            backgroundColor: "transparent"
-          }}
-          source={{ uri: item.image }}
-        />
-        <LinearGradient
-          colors={["rgba(0,0,0, 0.8)", "transparent", "rgba(0,0,0, 0.8)"]}
-          style={{
-            height: (viewportWidth - 40) * 1.32 + 0.5,
-            top: -0.5,
-            position: "absolute",
-            width: viewportWidth - 39,
-            left: -0.5,
-            borderRadius: 10
-          }}
-        />
+  componentWillReceiveProps = newProps => {
+    this.props = newProps;
+    const newFavourites = [];
+    for (let i = 0; i < this.state.entries.length; i++) {
+      let { id } = this.state.entries[i];
+      let fav = newProps.favourite.collections[id] != undefined;
+      if (fav) newFavourites.push(true);
+      else newFavourites.push(false);
+    }
+    this.setState({ favourites: newFavourites });
+  };
 
-        <View
-          style={{
-            flexDirection: "row",
-            height: SLIDER_WIDTH / 2,
-            justifyContent: "space-between"
-          }}
-        >
-          <View>
-            <WebView
-              bounces={false}
-              scrollEnabled={false}
-              source={{
-                html:
-                  `<img 
-                  src="` +
-                  item.restourantLogo +
-                  `"
-                  style="width:100%; background-color: red;">`
-              }}
-              style={{
-                width: SLIDER_WIDTH / 2,
-                height: SLIDER_WIDTH / 2,
-                backgroundColor: "transparent"
-              }}
-            />
-          </View>
-
-          <View>
-            <TouchableOpacity onPress={() => this.fav(index)}>
-              <View style={{ backgroundColor: "transparent" }}>
-                <IconD
-                  name={item.favourite ? "heart_full" : "heart_empty"}
-                  size={18}
-                  color="#dcc49c"
-                />
-              </View>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        <View
-          style={{
-            flexDirection: "column"
-          }}
-        >
-          <Text
-            style={{
-              backgroundColor: "transparent",
-              fontSize: 25,
-              fontFamily: "Stem-Medium",
-              lineHeight: 30,
-              top: 5,
-              color: "white",
-              flexDirection: "row"
-            }}
-          >
-            {item.title}
-          </Text>
-          <Text
-            style={{
-              backgroundColor: "transparent",
-              fontSize: 13,
-              fontFamily: "OpenSans",
-              fontWeight: "600",
-              color: "#dcc49c",
-              flexDirection: "row"
-            }}
-          >
-            {item.author}
-          </Text>
-        </View>
-      </View>
-    );
+  componentDidMount = () => {
+    this.componentWillReceiveProps(this.props);
   };
 
   nav = i => {
@@ -198,27 +113,23 @@ export default class Recomendations extends React.Component {
   };
 
   _renderNewItem = ({ item, index }) => {
+    // const { collections } = {};
     /* Разметка */
-    const screen =
-      viewportWidth >= 320 && viewportWidth < 375
-        ? 0
-        : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
-    const SLIDER_WIDTH = screen == 0 ? 280 : screen == 1 ? 328.1 : 362.3;
-    const SLIDER_MARGIN =
-      screen == 0 ? 10 / 2 : screen == 1 ? 11.7 / 2 : 13.2 / 2;
+    const SLIDER_WIDTH = adaptWidth(280, 328.1, 362.3);
+    const SLIDER_MARGIN = adaptWidth(10, 11.7, 13.2) / 2;
     const SLIDER_HEIGHT = SLIDER_WIDTH * 1.32;
 
     /* Стили карточки */
     const itemStyles = StyleSheet.create({
       containerSlider: {
-        marginHorizontal: SLIDER_MARGIN,
+        margin: SLIDER_MARGIN,
         height: SLIDER_HEIGHT,
         width: SLIDER_WIDTH
       },
       viewSlider: {
         flex: 1,
         padding: 20,
-        flexDirection: "row",
+
         width: SLIDER_WIDTH,
         height: SLIDER_HEIGHT,
         justifyContent: "space-between",
@@ -277,16 +188,15 @@ export default class Recomendations extends React.Component {
     var topView = (
       <View style={[itemStyles.topViewStyle, { height: SLIDER_WIDTH / 2 }]}>
         <View>
-          <Image
-            bounces={false}
-            scrollEnabled={false}
+          <LeftAlignedImage
+            top
+            height={SLIDER_WIDTH / 3}
+            width={SLIDER_WIDTH / 2}
+            resizeMode={"center"}
             source={{
-              url: item.restourantLogo
-            }}
-            style={{
-              width: SLIDER_WIDTH / 2,
-              height: SLIDER_WIDTH / 2,
-              backgroundColor: "transparent"
+              uri: item.restaurantLogo
+                ? item.restaurantLogo
+                : "http://dostavka1.com/img/app-icon.png"
             }}
           />
         </View>
@@ -295,7 +205,9 @@ export default class Recomendations extends React.Component {
           <TouchableOpacity onPress={() => this.fav(index)}>
             <View style={{ backgroundColor: "transparent" }}>
               <IconD
-                name={item.favourite ? "heart_full" : "heart_empty"}
+                name={
+                  this.state.favourites[index] ? "heart_full" : "heart_empty"
+                }
                 size={18}
                 color="#dcc49c"
               />
@@ -339,48 +251,33 @@ export default class Recomendations extends React.Component {
     );
 
     return (
-      <View style={itemStyles.containerSlider}>
-        <View style={itemStyles.viewSlider}>
-          <Touchable
-            activeOpacity={0.8}
-            foreground={Touchable.SelectableBackgroundBorderless()}
-            style={{
-              position: "absolute",
-              height: SLIDER_HEIGHT,
-              width: SLIDER_WIDTH,
-              borderRadius: 10
-            }}
-            onPress={() => {
-              this.nav(index);
-            }}
-          >
-            <View
-              style={{
-                padding: 20,
-                flex: 1,
-                justifyContent: "space-between"
-              }}
-            >
-              {/* Задний фон карточки */}
-              <Image style={itemStyles.BG_IMAGE} source={{ uri: item.image }} />
+      <Touchable
+        activeOpacity={0.8}
+        onPress={() => {
+          this.nav(index);
+        }}
+      >
+        <View style={itemStyles.containerSlider}>
+          <View style={itemStyles.viewSlider}>
+            {/* Задний фон карточки */}
+            <Image style={itemStyles.BG_IMAGE} source={{ uri: item.image }} />
 
-              {/* Градиент */}
-              <LinearGradient
-                colors={GRADIENT_COLORS}
-                style={itemStyles.GRADIENT_STYLE}
-              />
+            {/* Градиент */}
+            <LinearGradient
+              colors={GRADIENT_COLORS}
+              style={itemStyles.GRADIENT_STYLE}
+            />
 
-              {topView}
+            {topView}
 
-              {bottomView}
-            </View>
-          </Touchable>
+            {bottomView}
+          </View>
         </View>
-      </View>
+      </Touchable>
     );
   };
 
-  render() {
+  render = () => {
     const screen =
       viewportWidth >= 320 && viewportWidth < 375
         ? 0
@@ -436,5 +333,15 @@ export default class Recomendations extends React.Component {
         </TouchableOpacity>
       </View>
     );
-  }
+  };
 }
+
+export default connect(
+  state => ({ favourite: state.favourite }),
+  dispatch => ({
+    addCollectionToFav: collection =>
+      dispatch({ type: "ADD_COLLECTION_TO_FAV", payload: collection }),
+    removeColletionFromFav: collection =>
+      dispatch({ type: "DELETE_COLLECTION", payload: collection })
+  })
+)(Collections);
