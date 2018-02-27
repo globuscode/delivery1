@@ -19,15 +19,13 @@ import {
   GraphRequestManager,
   AccessToken
 } from "react-native-fbsdk";
+import SmsListener from "react-native-android-sms-listener";
 import { TextInputMask } from "react-native-masked-text";
 import propTypes from "prop-types";
 import VKLogin from "react-native-vkontakte-login";
-import IconD from "../components/ui/IconD";
 
-import SmsListener from "react-native-android-sms-listener";
-
-import { host, adaptWidth } from "../etc";
-import { fetchJson } from "../etc";
+import IconD from "../../../components/ui/IconD";
+import { host, adaptWidth, fetchJson } from "../../../etc";
 
 const { width: viewportWidth } = Dimensions.get("window");
 const vk = "https://api.vk.com/method";

@@ -4,7 +4,7 @@ import { getStatusBarHeight } from "react-native-status-bar-height";
 
 import { adaptWidth } from "./src/etc";
 
-import Login from "./src/Login";
+import Login from "./src/screens/fullScreen/Login";
 import Registration from "./src/Registration";
 import RegistratePhone from "./src/RegistatePhone";
 import SelectCity from "./src/SelectCity";
