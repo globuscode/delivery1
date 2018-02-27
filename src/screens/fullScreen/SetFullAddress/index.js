@@ -16,7 +16,7 @@ import { connect } from "react-redux";
 import PopupDialog, { SlideAnimation } from "react-native-popup-dialog";
 import propTypes from "prop-types";
 
-import { adaptWidth } from "../etc";
+import { adaptWidth } from "../../../etc";
 
 const { width: viewportWidth } = Dimensions.get("window");
 

@@ -13,10 +13,10 @@ import { connect } from "react-redux";
 import HTMLView from "react-native-htmlview";
 import propTypes from "prop-types";
 
-import PriceButton from "../components/ui/PriceButton";
-import ButtonD from "../components/ui/ButtonD";
-import { host, adaptWidth } from "../etc";
-import { getCartItemCount } from "../utils";
+import PriceButton from "../../../components/ui/PriceButton";
+import ButtonD from "../../../components/ui/ButtonD";
+import { host, adaptWidth } from "../../../etc";
+import { getCartItemCount } from "../../../utils";
 
 const { width: viewportWidth } = Dimensions.get("window");
 const screen =

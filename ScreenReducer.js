@@ -19,9 +19,9 @@ import Loader from "./src/screens/fullScreen/Loader";
 import Profile from "./src/Profile";
 import MakeOrder from "./src/MakeOrder";
 import MyOrders from "./src/screens/fullScreen/MyOrders";
-import MyOrderDetail from "./src/MyOrderDetail";
+import MyOrderDetail from "./src/screens/fullScreen/MyOrderDetail";
 import PersonalInformation from "./src/PersonalInformation";
-import SetFullAddress from "./src/SetFullAddress";
+import SetFullAddress from "./src/screens/fullScreen/SetFullAddress";
 import SetCard from "./src/SetCard";
 
 const headerStyleIOS = title => ({
