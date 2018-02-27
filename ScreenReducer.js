@@ -18,7 +18,7 @@ import Main from "./src/Main";
 import Loader from "./src/screens/fullScreen/Loader";
 import Profile from "./src/Profile";
 import MakeOrder from "./src/MakeOrder";
-import MyOrders from "./src/MyOrders";
+import MyOrders from "./src/screens/fullScreen/MyOrders";
 import MyOrderDetail from "./src/MyOrderDetail";
 import PersonalInformation from "./src/PersonalInformation";
 import SetFullAddress from "./src/SetFullAddress";

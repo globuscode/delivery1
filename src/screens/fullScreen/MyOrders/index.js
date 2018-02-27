@@ -4,16 +4,16 @@ import Touchable from "react-native-platform-touchable";
 import { connect } from "react-redux";
 import propTypes from "prop-types";
 
-import { host } from "../etc";
+import { host } from "../../../etc";
 
 class MyOrders extends React.Component {
   static propTypes = {
-    user: {
+    user: propTypes.shape({
       token: propTypes.string
-    },
-    navigation: {
+    }),
+    navigation: propTypes.shape({
       navigate: propTypes.func
-    }
+    })
   };
 
   constructor(props) {
