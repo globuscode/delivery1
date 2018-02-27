@@ -9,7 +9,7 @@ import Registration from "./src/screens/fullScreen/Registration";
 import RegistratePhone from "./src/screens/fullScreen/RegistatePhone";
 import SelectCity from "./src/SelectCity";
 import SelectTags from "./src/SelectTags";
-import SetAddress from "./src/SetAddress";
+import SetAddress from "./src/screens/fullScreen/SetAddress";
 import SelectTastes from "./src/SelectTastes";
 import About from "./src/about";
 import SpecialScreen from "./src/screens/fullScreen/SpecialScreen";

@@ -14,8 +14,7 @@ import Touchable from "react-native-platform-touchable";
 import { connect } from "react-redux";
 import propTypes from "prop-types";
 
-import { fetchJson } from "../etc";
-import { host, adaptWidth } from "../etc";
+import { fetchJson, host, adaptWidth } from "../../../etc";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -402,40 +401,40 @@ class SelectAddress extends React.Component {
         </KeyboardAwareScrollView>
 
         <View
+          style={{
+            position: "absolute",
+            alignSelf: "center",
+            width: viewportWidth - 30,
+            bottom: 0,
+            height: 49,
+            borderTopWidth: 2,
+            borderColor: this.state.deliver ? "#dcc49c" : "#575862",
+            flexDirection: "row",
+            justifyContent: "center"
+          }}
+        >
+          <Touchable
+            background={Touchable.Ripple("gray")}
+            onPress={this.next}
             style={{
-              position: "absolute",
-              alignSelf: "center",
-              width: viewportWidth - 30,
-              bottom: 0,
-              height: 49,
-              borderTopWidth: 2,
-              borderColor: this.state.deliver ? "#dcc49c" : "#575862",
-              flexDirection: "row",
-              justifyContent: "center"
+              alignSelf: "stretch",
+              flexDirection: "column",
+              justifyContent: "center",
+              width: viewportWidth
             }}
           >
-            <Touchable
-              background={Touchable.Ripple("gray")}
-              onPress={this.next}
-              style={{
-                alignSelf: "stretch",
-                flexDirection: "column",
-                justifyContent: "center",
-                width: viewportWidth
-              }}
+            <Text
+              style={[
+                styles.nextButtonText,
+                {
+                  color: this.state.deliver ? "#dcc49c" : "#575862"
+                }
+              ]}
             >
-              <Text
-                style={[
-                  styles.nextButtonText,
-                  {
-                    color: this.state.deliver ? "#dcc49c" : "#575862"
-                  }
-                ]}
-              >
-                Далее
-              </Text>
-            </Touchable>
-          </View>
+              Далее
+            </Text>
+          </Touchable>
+        </View>
       </View>
     );
   };
