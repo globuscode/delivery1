@@ -13,7 +13,7 @@ import SetAddress from "./src/SetAddress";
 import SelectTastes from "./src/SelectTastes";
 import About from "./src/about";
 import SpecialScreen from "./src/screens/fullScreen/SpecialScreen";
-import LoadingScreen from "./src/LoadingScreen";
+import LoadingScreen from "./src/screens/fullScreen/LoadingScreen";
 import Main from "./src/Main";
 import Loader from "./src/screens/fullScreen/Loader";
 import Profile from "./src/Profile";

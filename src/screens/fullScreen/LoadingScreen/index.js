@@ -9,12 +9,13 @@ import {
   ImageBackground
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
-import IconD from "../components/ui/IconD";
 import { NavigationActions } from "react-navigation";
+import propTypes from "prop-types";
 import { connect } from "react-redux";
-import { host } from "../etc";
-import { fetchJson } from "../etc";
-var kitchenPhoto = require("../../assets/img/kitchen.jpg");
+
+import IconD from "../../../components/ui/IconD";
+import { host, fetchJson } from "../../../etc";
+var kitchenPhoto = require("../../../../assets/img/kitchen.jpg");
 
 const resetAction = NavigationActions.reset({
   index: 0,
@@ -26,6 +27,11 @@ const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
 );
 
 class Loading extends React.Component {
+  static propTypes = {
+    navigation: propTypes.object,
+    auth: propTypes.func,
+    loadRecomendations: propTypes.func
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -34,7 +40,7 @@ class Loading extends React.Component {
   }
 
   componentWillMount() {
-    kitchenPhoto = require("../../assets/img/kitchen.jpg");
+    kitchenPhoto = require("../../../../assets/img/kitchen.jpg");
   }
 
   async componentDidMount() {
@@ -104,7 +110,7 @@ class Loading extends React.Component {
   }
 
   render() {
-    kitchenPhoto = require("../../assets/img/kitchen.jpg");
+    kitchenPhoto = require("../../../../assets/img/kitchen.jpg");
     return (
       <ImageBackground
         resizeMode="cover"
