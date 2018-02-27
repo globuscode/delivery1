@@ -5,10 +5,10 @@ import { Bar } from "react-native-progress";
 import HTMLView from "react-native-htmlview";
 import propTypes from "prop-types";
 
-import Counter from "./components/ui/Counter";
-import ButtonD from "./components/ui/ButtonD";
-import IconD from "./components/ui/IconD";
-import Store from "./Reducers";
+import Counter from "./ui/Counter";
+import ButtonD from "./ui/ButtonD";
+import IconD from "./ui/IconD";
+import Store from "../Reducers";
 import { getCartTotalPrice } from "./utils";
 
 const { width: viewportWidth } = Dimensions.get("window");

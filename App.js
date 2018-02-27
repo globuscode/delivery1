@@ -5,7 +5,7 @@ import Spinner from "react-native-loading-spinner-overlay";
 
 import Reducer from "./src/Reducers";
 import A from "./ScreenReducer";
-import PopupCart from "./src/PopupCart";
+import PopupCart from "./src/components/modals/PopupCart";
 
 import PopupDialog, { SlideAnimation } from "react-native-popup-dialog";
 
