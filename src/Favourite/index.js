@@ -19,7 +19,7 @@ import { getStatusBarHeight } from "react-native-status-bar-height";
 import propTypes from "prop-types";
 
 import CollectionCard from "../components/cards/CollectionCard";
-import PriceButton from "../PriceButton";
+import PriceButton from "../components/ui/PriceButton";
 import IconD from "../components/ui/IconD";
 import { getCartItemCount } from "../utils";
 import { adaptWidth, host, fetchJson } from "../etc";

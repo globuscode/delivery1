@@ -18,7 +18,7 @@ import propTypes from "prop-types";
 import { host, adaptWidth } from "../etc";
 import { LeftAlignedImage } from "../components/LeftAlignedImage";
 import Storage from "../Reducers";
-import PriceButton from "../PriceButton";
+import PriceButton from "../components/ui/PriceButton";
 import IconD from "../components/ui/IconD";
 import { fetchJson } from "../etc";
 import { getCartItemCount } from "../utils";

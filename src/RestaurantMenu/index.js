@@ -25,7 +25,7 @@ import IconD from "../components/ui/IconD";
 import { adaptWidth } from "../etc";
 import { fetchJson } from "../etc";
 import { host } from "../etc";
-import PriceButton from "../PriceButton";
+import PriceButton from "../components/ui/PriceButton";
 import { getCartItemCount } from "../utils";
 
 const { width: viewportWidth } = Dimensions.get("window");
