@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Dimensions, StyleSheet, Text } from "react-native";
+import propTypes from "prop-types";
 import { TextField } from "react-native-material-textfield";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Touchable from "react-native-platform-touchable";
@@ -15,6 +16,12 @@ export default class Login extends React.Component {
   navigationOptions = {
     title: "Авторизация"
   };
+  static propTypes = {
+    navigation: propTypes.shape({
+      state: propTypes.object,
+      navigate: propTypes.func
+    })
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -28,7 +35,6 @@ export default class Login extends React.Component {
   componentDidMount = () => {
     const { params } = this.props.navigation.state;
     if (params != undefined) {
-      console.warn(params);
       const { firstName, lastName, email } = params;
       this.setState({
         firstName: firstName,
