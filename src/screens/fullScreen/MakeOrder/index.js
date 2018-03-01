@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Alert,
   View,
   Text,
   TouchableOpacity,
@@ -10,11 +11,11 @@ import { NavigationActions } from "react-navigation";
 import propTypes from "prop-types";
 import { PaymentRequest } from "react-native-payments";
 
-import IconD from "../components/ui/IconD";
+import IconD from "../../../components/ui/IconD";
 import { connect } from "react-redux";
-import { host } from "../etc";
-import { fetchJson } from "../etc";
-import { getCartTotalPrice } from "../utils";
+import { host } from "../../../etc";
+import { fetchJson } from "../../../etc";
+import { getCartTotalPrice } from "../../../utils";
 
 const resetAction = NavigationActions.reset({
   index: 1,
@@ -27,7 +28,7 @@ const resetAction = NavigationActions.reset({
 const togglePayment = cart => {
   let totalPrice = 0;
   for (let i = 0; i < cart.length; i++) {
-    totalPrice += cart[i].count * cart[i].plate.price;
+    if (cart[i] != undefined) totalPrice += cart[i].count * cart[i].plate.price;
   }
   const METHOD_DATA = [
     {
@@ -47,15 +48,22 @@ const togglePayment = cart => {
       amount: { currency: "RUB", value: (count * plate.price).toString() }
     })),
     total: {
-      label: "Merchant Name",
+      label: "Доставка №1",
       amount: { currency: "RUB", value: totalPrice.toString() }
     }
   };
   const paymentRequest = new PaymentRequest(METHOD_DATA, DETAILS);
   paymentRequest
     .show()
-    .then(() => {})
-    .catch(() => {});
+    .then(paymentResponse => {
+      // const { transactionIdentifier, paymentData } = paymentResponse.details;
+
+      paymentResponse.complete("success");
+      return paymentResponse;
+    })
+    .catch(error => {
+      Alert.alert(error.message);
+    });
 };
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
@@ -215,8 +223,9 @@ class MakeOrder extends React.Component {
                     qty: cart[id].count
                   };
                 });
+                let cartArray = Object.keys(cart).map(id => cart[id]);
                 if (this.state.selected === "Apple Pay") {
-                  togglePayment(Object.keys(cart).map(id => cart[id]));
+                  togglePayment(cartArray);
                 }
                 let body = {
                   token: this.props.userStore.token,
@@ -227,7 +236,7 @@ class MakeOrder extends React.Component {
                     navitagionParams.deliveryDate == null
                       ? getOrderDate()
                       : navitagionParams.deliveryDate,
-                  restaurantId: cart[0].plate.restaurant,
+                  restaurantId: cartArray[0].plate.restaurant,
                   persons: navitagionParams.persons,
                   orderStart: getOrderDate()
                 };

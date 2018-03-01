@@ -17,7 +17,7 @@ import LoadingScreen from "./src/screens/fullScreen/LoadingScreen";
 import Main from "./src/Main";
 import Loader from "./src/screens/fullScreen/Loader";
 import Profile from "./src/Profile";
-import MakeOrder from "./src/MakeOrder";
+import MakeOrder from "./src/screens/fullScreen/MakeOrder";
 import MyOrders from "./src/screens/fullScreen/MyOrders";
 import MyOrderDetail from "./src/screens/fullScreen/MyOrderDetail";
 import PersonalInformation from "./src/PersonalInformation";
