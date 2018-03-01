@@ -20,7 +20,7 @@ const scale = 5;
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
-import { host } from "../etc";
+import { host } from "../../../etc";
 
 var centersOfCircles = [];
 
