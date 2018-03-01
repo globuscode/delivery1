@@ -43,16 +43,16 @@ class Loader extends React.Component {
       let response = await fetchJson(
         `${host}/restaurantMenu?restaurantId=${id}`
       );
-      if (response["data"]) {
-        if (response["data"]["result"]) {
-          for (let i = 0; i < response["data"]["result"].length; i++) {
-            for (let j = 0; j < response.data.result[i].plates.length; j++) {
-              let { image } = response.data.result[i].plates[j];
-              Image.prefetch(`http:${image}`);
-            }
-          }
-        }
-      }
+      // if (response["data"]) {
+      //   if (response["data"]["result"]) {
+      //     for (let i = 0; i < response["data"]["result"].length; i++) {
+      //       for (let j = 0; j < response.data.result[i].plates.length; j++) {
+      //         let { image } = response.data.result[i].plates[j];
+      //         Image.prefetch(`http:${image}`);
+      //       }
+      //     }
+      //   }
+      // }
 
       let responseRestaurant = await fetchJson(
         `${host}/restaurant?restaurantId=${id}`
