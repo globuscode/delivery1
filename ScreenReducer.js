@@ -11,7 +11,7 @@ import SelectCity from "./src/SelectCity";
 import SelectTags from "./src/SelectTags";
 import SetAddress from "./src/screens/fullScreen/SetAddress";
 import SelectTastes from "./src/SelectTastes";
-import About from "./src/about";
+import About from "./src/screens/fullScreen/about";
 import SpecialScreen from "./src/screens/fullScreen/SpecialScreen";
 import LoadingScreen from "./src/screens/fullScreen/LoadingScreen";
 import Main from "./src/Main";
