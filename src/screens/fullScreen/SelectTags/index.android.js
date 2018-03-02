@@ -23,7 +23,7 @@ const scale = 5;
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
-import { host } from "../etc";
+import { host } from "../../../etc";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 
 var centersOfCircles = [];
