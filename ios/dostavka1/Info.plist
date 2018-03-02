@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.22</string>
+	<string>1.0.23</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -40,7 +40,11 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>6</string>
+	<string>7</string>
+	<key>FacebookAppID</key>
+	<string>415070325601102</string>
+	<key>FacebookDisplayName</key>
+	<string>Delivery1</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>
@@ -67,7 +71,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>OpenSans_Bold.ttf</string>
@@ -103,9 +107,5 @@
 	<false/>
 	<key>VK_APP_ID</key>
 	<integer>6365999</integer>
-	<key>FacebookAppID</key>
-	<string>415070325601102</string>
-	<key>FacebookDisplayName</key>
-	<string>Delivery1</string>
 </dict>
 </plist>
