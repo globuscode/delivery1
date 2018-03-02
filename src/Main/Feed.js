@@ -13,7 +13,8 @@ import RestouransOfTheWeek from "./RestouransOfTheWeek";
 import { connect } from "react-redux";
 import propTypes from "prop-types";
 
-import IconD from "../IconD";
+import Collections from "./Collections";
+import IconD from "../components/ui/IconD";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -217,7 +218,7 @@ class Feed extends React.Component {
           </TouchableOpacity>
           {/*<TouchableOpacity style={{width: 30, justifyContent: 'center'}}><IconD name='find' color='#dcc49c' size={15} /></TouchableOpacity>*/}
         </View>
-        <ScrollView ref="scroll" horizontal={false}>
+        <ScrollView ref={scroll => (this.scroll = scroll)} horizontal={false}>
           {this.renderCardHeader(
             "Рекомендуем",
             "cutlery",
@@ -228,12 +229,22 @@ class Feed extends React.Component {
             data={this.state.plates}
             navigation={this.props.navigation}
             onNextButtonPress={() => {
-              this.refs["scroll"].scrollTo({ y: 580, animated: true });
+              this.scroll.scrollTo({ y: 580, animated: true });
             }}
           />
 
-          {/*this.renderCardHeader('Подборки', 'settings', 'Настроить\nподборки', 'SelectTastes')
-					<Collections data={this.state.collections} onNextButtonPress={() => { this.refs['scroll'].scrollTo({ y: 1130, animated: true }) }}/>*/}
+          {this.renderCardHeader(
+            "Подборки",
+            "settings",
+            "Настроить\nподборки",
+            "SelectTastes"
+          )}
+          <Collections
+            navigation={this.props.navigation}
+            onNextButtonPress={() => {
+              this.scroll.scrollTo({ y: 1130, animated: true });
+            }}
+          />
 
           {this.renderCardHeader(
             "Рестораны недели",

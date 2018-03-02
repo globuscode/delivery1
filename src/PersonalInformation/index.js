@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 
-import IconD from "../IconD";
+import IconD from "../components/ui/IconD";
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"

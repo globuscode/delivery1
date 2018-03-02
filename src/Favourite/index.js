@@ -12,18 +12,17 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import HTMLView from "react-native-htmlview";
-import { adaptWidth } from "../etc";
 import SegmentedControlTab from "react-native-segmented-control-tab";
 import Touchable from "react-native-platform-touchable";
 import LinearGradient from "react-native-linear-gradient";
 import { getStatusBarHeight } from "react-native-status-bar-height";
-
 import propTypes from "prop-types";
-import PriceButton from "../PriceButton";
-import IconD from "../IconD";
-import { getFirstItem, fetchJson } from "../utils";
-import { host } from "../etc";
-import { getCartTotalCount, getCartItemCount } from "../utils";
+
+import CollectionCard from "../components/cards/CollectionCard";
+import PriceButton from "../components/ui/PriceButton";
+import IconD from "../components/ui/IconD";
+import { getCartItemCount } from "../utils";
+import { adaptWidth, host, fetchJson } from "../etc";
 const { width: viewportWidth } = Dimensions.get("window");
 
 class Favourite extends React.Component {
@@ -41,6 +40,7 @@ class Favourite extends React.Component {
     navigation: propTypes.object,
     onDeleteRestaurant: propTypes.func,
     deletePlate: propTypes.func,
+    onDeleteColletion: propTypes.func,
     globalStore: propTypes.array
   };
   constructor(props) {
@@ -247,8 +247,25 @@ class Favourite extends React.Component {
     );
   }
 
+  _renderSingleCollection = (item, index) => {
+    return (
+      <CollectionCard
+        key={index}
+        data={item}
+        favicon="trash"
+        onPress={() => this.nav(index)}
+        onFavPress={() => this.props.onDeleteColletion(item)}
+      />
+    );
+  };
+
   renderCollections = () => {
-    return null;
+    const { favourite } = this.state;
+    const { collections } = favourite;
+    const restaurantsIds = Object.keys(collections);
+    return restaurantsIds.map((id, index) => {
+      return this._renderSingleCollection(collections[id], index);
+    });
   };
 
   renderPlates = () => {
@@ -501,7 +518,7 @@ class Favourite extends React.Component {
               tabTextStyle={styles.tabTextStyle}
               activeTabStyle={styles.activeTabStyle}
               activeTabTextStyle={styles.activeTabTextStyle}
-              values={["Блюда", "Рестораны" /*'Подборки'*/]}
+              values={["Блюда", "Рестораны", "Подборки"]}
               selectedIndex={this.state.selectedView}
               onTabPress={index => this.setState({ selectedView: index })}
             />
@@ -516,7 +533,7 @@ class Favourite extends React.Component {
           >
             {this.state.selectedView != 0 ? null : this.renderPlates()}
             {this.state.selectedView != 1 ? null : this.renderRestaurants()}
-            {this.state.selectedView != 3 ? null : this.renderCollections()}
+            {this.state.selectedView != 2 ? null : this.renderCollections()}
           </View>
 
           <View style={{ height: 70 }} />
@@ -577,7 +594,9 @@ export default connect(
     open: data => dispatch({ type: "OPEN_MODAL", payload: data }),
     changeModal: data => {
       dispatch({ type: "CHANGE_CONTENT", payload: data });
-    }
+    },
+    onDeleteColletion: data =>
+      dispatch({ type: "DELETE_COLLECTION", payload: data })
   })
 )(Favourite);
 

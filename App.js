@@ -2,10 +2,11 @@ import React from "react";
 import { StatusBar, View, AsyncStorage } from "react-native";
 import { Provider, connect } from "react-redux";
 import Spinner from "react-native-loading-spinner-overlay";
+import propTypes from "prop-types";
 
 import Reducer from "./src/Reducers";
 import A from "./ScreenReducer";
-import PopupCart from "./src/PopupCart";
+import PopupCart from "./src/components/modals/PopupCart";
 
 import PopupDialog, { SlideAnimation } from "react-native-popup-dialog";
 
@@ -18,8 +19,8 @@ const slide = new SlideAnimation({
 });
 
 class ModalComponent extends React.Component {
-  componentWillReceiveProps = () => {
-    //this.setState({});
+  static propTypes = {
+    spinnerController: propTypes.object
   };
   render = () => (
     <View style={{ flex: 1 }}>

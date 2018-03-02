@@ -1,27 +1,27 @@
-import { StatusBar, Platform } from "react-native";
+import { Platform } from "react-native";
 import { StackNavigator } from "react-navigation";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 
 import { adaptWidth } from "./src/etc";
 
-import Login from "./src/Login";
-import Registration from "./src/Registration";
-import RegistratePhone from "./src/RegistatePhone";
-import SelectCity from "./src/SelectCity";
-import SelectTags from "./src/SelectTags";
-import SetAddress from "./src/SetAddress";
+import Login from "./src/screens/fullScreen/Login";
+import Registration from "./src/screens/fullScreen/Registration";
+import RegistratePhone from "./src/screens/fullScreen/RegistatePhone";
+import SelectCity from "./src/screens/fullScreen/SelectCity";
+import SelectTags from "./src/screens/fullScreen/SelectTags";
+import SetAddress from "./src/screens/fullScreen/SetAddress";
 import SelectTastes from "./src/SelectTastes";
-import About from "./src/about";
-import SpecialScreen from "./src/SpecialScreen";
-import LoadingScreen from "./src/LoadingScreen";
+import About from "./src/screens/fullScreen/about";
+import SpecialScreen from "./src/screens/fullScreen/SpecialScreen";
+import LoadingScreen from "./src/screens/fullScreen/LoadingScreen";
 import Main from "./src/Main";
-import Loader from "./src/Loader";
+import Loader from "./src/screens/fullScreen/Loader";
 import Profile from "./src/Profile";
-import MakeOrder from "./src/MakeOrder";
-import MyOrders from "./src/MyOrders";
-import MyOrderDetail from "./src/MyOrderDetail";
+import MakeOrder from "./src/screens/fullScreen/MakeOrder";
+import MyOrders from "./src/screens/fullScreen/MyOrders";
+import MyOrderDetail from "./src/screens/fullScreen/MyOrderDetail";
 import PersonalInformation from "./src/PersonalInformation";
-import SetFullAddress from "./src/SetFullAddress";
+import SetFullAddress from "./src/screens/fullScreen/SetFullAddress";
 import SetCard from "./src/SetCard";
 
 const headerStyleIOS = title => ({

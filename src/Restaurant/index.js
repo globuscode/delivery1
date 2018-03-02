@@ -20,7 +20,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 import Recomendations from "../Main/Recomendations";
-import IconD from "../IconD";
+import IconD from "../components/ui/IconD";
 import { fetchJson } from "../etc";
 
 const { width: viewportWidth } = Dimensions.get("window");

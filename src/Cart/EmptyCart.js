@@ -10,10 +10,10 @@ import {
 import LinearGradient from "react-native-linear-gradient";
 import propTypes from "prop-types";
 
-import Counter from "../Counter";
+import Counter from "../components/ui/Counter";
 import { adaptWidth } from "../etc";
-import IconD from "../IconD";
-import ButtonD from "../ButtonD";
+import IconD from "../components/ui/IconD";
+import ButtonD from "../components/ui/ButtonD";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
