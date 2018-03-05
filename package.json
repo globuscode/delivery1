@@ -29,6 +29,8 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "adm-zip": "^0.4.7",
+    "plist": "^2.1.0",
     "react": "^16.0.0",
     "react-native": "^0.50.3",
     "react-native-android-sms-listener": "^0.5.0",
@@ -58,6 +60,7 @@
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
     "util": "^0.10.3",
-    "util.promisify": "^1.0.0"
+    "util.promisify": "^1.0.0",
+    "xcode": "^1.0.0"
   }
 }
