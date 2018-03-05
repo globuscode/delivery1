@@ -3,6 +3,7 @@ package com.dostavka1;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.reactnativepayments.ReactNativePaymentsPackage;
 import com.centaurwarchief.smslistener.SmsListenerPackage;
 import camp.kuznetsov.rn.vkontakte.VKAuthPackage;
@@ -30,6 +31,7 @@ public class MainApplication extends Application implements ReactApplication {
       
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new FBSDKPackage(),
             new ReactNativePaymentsPackage(),
             new SmsListenerPackage(),
             new VKAuthPackage(),

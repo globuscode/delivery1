@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   Dimensions,
+  Platform,
   ActivityIndicator
 } from "react-native";
 import { NavigationActions } from "react-navigation";
@@ -156,9 +157,70 @@ class MakeOrder extends React.Component {
     );
   };
 
-  render = () => {
+  endPayment = () => {
+    this.props.makeOrder();
+    this.props.navigation.dispatch(resetAction);
+    this.setState({ fetching: false, canNav: true });
+  };
+
+  handlePayment = async () => {
     const { cart } = this.props;
+    const { token } = this.props.userStore;
+    const { selected } = this.state;
     const navitagionParams = this.props.navigation.state.params;
+
+    this.setState({
+      fetching: true,
+      canNav: false
+    });
+    // Подготавливает массив блюд заказа
+    const cartForRequest = Object.keys(cart).map(id => {
+      return {
+        plateId: cart[id].plate.id,
+        qty: cart[id].count
+      };
+    });
+
+    let cartArray = Object.keys(cart).map(id => cart[id]);
+    let result = await fetchJson(
+      `${host}/order/create/index.php?token=${token}`,
+      {
+        method: "post",
+        body: JSON.stringify({
+          token: this.props.userStore.token,
+          items: cartForRequest,
+          address: navitagionParams.address,
+          client: navitagionParams.client,
+          paymentType: selected === "Apple Pay" ? 2 : 1,
+          deliveryDate:
+            navitagionParams.deliveryDate == null
+              ? getOrderDate()
+              : navitagionParams.deliveryDate,
+          restaurantId: cartArray[0].plate.restaurant,
+          persons: navitagionParams.persons,
+          orderStart: getOrderDate()
+        })
+      }
+    );
+
+    if (result.errors === undefined) {
+      if (selected === "Apple Pay") {
+        togglePayment(cartArray, async paymentData => {
+          const paymentResponse = await fetchJson(`${host}/pay`, {
+            body: JSON.stringify({
+              token: this.props.userStore.token,
+              system: "apple",
+              cart: result.data.cartId,
+              data: paymentData
+            })
+          });
+          if (paymentResponse.errors === undefined) this.endPayment();
+        });
+      } else this.endPayment();
+    }
+  };
+
+  render = () => {
     return (
       <View style={{ flex: 1 }}>
         <View
@@ -188,7 +250,7 @@ class MakeOrder extends React.Component {
             null
           )}
           {this.renderMenuItem("credit-card", "Наличными курьеру", null)}
-          {this.renderMenuItem("credit-card", "Apple Pay", null)}
+          {Platform.OS === "ios" ? this.renderMenuItem("credit-card", "Apple Pay", null) : null}
         </View>
         {!this.state.fetching ? null : (
           <ActivityIndicator
@@ -216,62 +278,7 @@ class MakeOrder extends React.Component {
           <TouchableOpacity
             onPress={async () => {
               if (this.state.canNav) {
-                this.state.canNav = false;
-                const cartForRequest = Object.keys(cart).map(id => {
-                  return {
-                    plateId: cart[id].plate.id,
-                    qty: cart[id].count
-                  };
-                });
-                let cartArray = Object.keys(cart).map(id => cart[id]);
-                let body = {
-                  token: this.props.userStore.token,
-                  items: cartForRequest,
-                  address: navitagionParams.address,
-                  client: navitagionParams.client,
-                  deliveryDate:
-                    navitagionParams.deliveryDate == null
-                      ? getOrderDate()
-                      : navitagionParams.deliveryDate,
-                  restaurantId: cartArray[0].plate.restaurant,
-                  persons: navitagionParams.persons,
-                  orderStart: getOrderDate()
-                };
-                this.setState({ fetching: true });
-                let result = await fetchJson(
-                  `${host}/order/create/index.php?token=${
-                    this.props.userStore.token
-                  }`,
-                  {
-                    method: "post",
-                    body: JSON.stringify(body)
-                  }
-                );
-                if (result.errors === undefined) {
-                  if (this.state.selected === "Apple Pay") {
-                    togglePayment(cartArray, async paymentData => {
-                      const paymentResponse = await fetchJson(`${host}/pay`, {
-                        body: JSON.stringify({
-                          token: this.props.userStore.token,
-                          system: "apple",
-                          cart: result.data.cartId,
-                          data: paymentData
-                        })
-                      });
-                      if (paymentResponse.errors === undefined) {
-                        this.props.makeOrder();
-                        this.props.navigation.dispatch(resetAction);
-                        this.state.canNav = true;
-                      }
-                      this.setState({ fetching: false });
-                    });
-                  } else {
-                    this.props.makeOrder();
-                    this.props.navigation.dispatch(resetAction);
-                    this.state.canNav = true;
-                    this.setState({ fetching: false });
-                  }
-                }
+                this.handlePayment();
               }
             }}
             style={{

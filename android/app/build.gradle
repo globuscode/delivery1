@@ -148,6 +148,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-fbsdk')
     compile project(':react-native-payments')
     compile project(':react-native-android-sms-listener')
     compile project(':react-native-vkontakte-login')
