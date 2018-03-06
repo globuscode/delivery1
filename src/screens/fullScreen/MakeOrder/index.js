@@ -25,7 +25,7 @@ const resetAction = NavigationActions.reset({
   ]
 });
 
-const togglePayment = cart => {
+const togglePayment = (cart, callback) => {
   let totalPrice = 0;
   for (let i = 0; i < cart.length; i++) {
     if (cart[i] != undefined) totalPrice += cart[i].count * cart[i].plate.price;
@@ -56,9 +56,9 @@ const togglePayment = cart => {
   paymentRequest
     .show()
     .then(paymentResponse => {
-      // const { transactionIdentifier, paymentData } = paymentResponse.details;
-
+      const { paymentData } = paymentResponse.details;
       paymentResponse.complete("success");
+      callback(paymentData);
       return paymentResponse;
     })
     .catch(error => {
@@ -224,9 +224,6 @@ class MakeOrder extends React.Component {
                   };
                 });
                 let cartArray = Object.keys(cart).map(id => cart[id]);
-                if (this.state.selected === "Apple Pay") {
-                  togglePayment(cartArray);
-                }
                 let body = {
                   token: this.props.userStore.token,
                   items: cartForRequest,
@@ -241,7 +238,7 @@ class MakeOrder extends React.Component {
                   orderStart: getOrderDate()
                 };
                 this.setState({ fetching: true });
-                await fetchJson(
+                let result = await fetchJson(
                   `${host}/order/create/index.php?token=${
                     this.props.userStore.token
                   }`,
@@ -250,12 +247,31 @@ class MakeOrder extends React.Component {
                     body: JSON.stringify(body)
                   }
                 );
-                //Alert.alert(JSON.stringify(responseJson));
-                this.setState({ fetching: false });
-                this.props.makeOrder();
-                this.props.navigation.dispatch(resetAction);
-                //this.props.navigation.goBack(null);
-                this.state.canNav = true;
+                if (result.errors === undefined) {
+                  if (this.state.selected === "Apple Pay") {
+                    togglePayment(cartArray, async paymentData => {
+                      const paymentResponse = await fetchJson(`${host}/pay`, {
+                        body: JSON.stringify({
+                          token: this.props.userStore.token,
+                          system: "apple",
+                          cart: result.data.cartId,
+                          data: paymentData
+                        })
+                      });
+                      if (paymentResponse.errors === undefined) {
+                        this.props.makeOrder();
+                        this.props.navigation.dispatch(resetAction);
+                        this.state.canNav = true;
+                      }
+                      this.setState({ fetching: false });
+                    });
+                  } else {
+                    this.props.makeOrder();
+                    this.props.navigation.dispatch(resetAction);
+                    this.state.canNav = true;
+                    this.setState({ fetching: false });
+                  }
+                }
               }
             }}
             style={{
