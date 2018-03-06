@@ -125,61 +125,63 @@ class Login extends React.Component {
 
   fbAuth = async () => {
     const { navigate } = this.props.navigation;
-    LoginManager.logInWithReadPermissions(["public_profile", "email"]).then(
-      result => {
-        if (result.isCancelled) {
-          Alert.alert("Login cancelled");
-        } else {
-          Alert.alert(
-            "Login success with permissions: " +
-              result.grantedPermissions.toString()
-          );
-
-          AccessToken.getCurrentAccessToken().then(data => {
-            let accessToken = data.accessToken;
-            Alert.alert(accessToken.toString());
-
-            const responseInfoCallback = (error, result) => {
-              if (error) {
-                Alert.alert("Error fetching data: " + error.toString());
-              } else {
-                const { first_name, last_name, email, id } = result;
-                const registarionBody = {
-                  type: "fb",
-                  firstName: first_name,
-                  lastName: last_name,
-                  email: email,
-                  access_token: accessToken.toString(),
-                  user_id: id
-                };
-
-                navigate("Registration", registarionBody);
-                Alert.alert("Success fetching data: " + result.toString());
-              }
-            };
-
-            const infoRequest = new GraphRequest(
-              "/me",
-              {
-                accessToken: accessToken,
-                parameters: {
-                  fields: {
-                    string: "email,name,first_name,middle_name,last_name"
-                  }
-                }
-              },
-              responseInfoCallback
+    if (LoginManager.logInWithReadPermissions != undefined) {
+      LoginManager.logInWithReadPermissions(["public_profile", "email"]).then(
+        result => {
+          if (result.isCancelled) {
+            Alert.alert("Login cancelled");
+          } else {
+            Alert.alert(
+              "Login success with permissions: " +
+                result.grantedPermissions.toString()
             );
 
-            // Start the graph request.
-            new GraphRequestManager().addRequest(infoRequest).start();
-          });
+            AccessToken.getCurrentAccessToken().then(data => {
+              let accessToken = data.accessToken;
+              Alert.alert(accessToken.toString());
+
+              const responseInfoCallback = (error, result) => {
+                if (error) {
+                  Alert.alert("Error fetching data: " + error.toString());
+                } else {
+                  const { first_name, last_name, email, id } = result;
+                  const registarionBody = {
+                    type: "fb",
+                    firstName: first_name,
+                    lastName: last_name,
+                    email: email,
+                    access_token: accessToken.toString(),
+                    user_id: id
+                  };
+
+                  navigate("Registration", registarionBody);
+                  Alert.alert("Success fetching data: " + result.toString());
+                }
+              };
+
+              const infoRequest = new GraphRequest(
+                "/me",
+                {
+                  accessToken: accessToken,
+                  parameters: {
+                    fields: {
+                      string: "email,name,first_name,middle_name,last_name"
+                    }
+                  }
+                },
+                responseInfoCallback
+              );
+
+              // Start the graph request.
+              new GraphRequestManager().addRequest(infoRequest).start();
+            });
+          }
+        },
+        function(error) {
+          Alert.alert("Login fail with error: " + error);
         }
-      },
-      function(error) {
-        Alert.alert("Login fail with error: " + error);
-      }
-    );
+      );
+    }
   };
 
   twitterAuth = async () => {};
@@ -369,10 +371,13 @@ class Login extends React.Component {
     );
   };
   renderSocialButtons = () => {
-    return [
-      { name: "vk", callback: this.vkAuth },
-      { name: "fb", callback: this.fbAuth }
-    ].map(({ name, callback }, index) =>
+    const buttons = [{ name: "vk", callback: this.vkAuth }];
+    if (Object.keys(LoginManager).length > 0)
+      buttons.push({
+        name: "fb",
+        callback: this.fbAuth
+      });
+    return buttons.map(({ name, callback }, index) =>
       this.renderAuthButton(name, callback, index)
     );
   };
