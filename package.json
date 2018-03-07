@@ -18,7 +18,6 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "eject": "react-native eject",
-    "preinstall": "./npmpreinstall.sh",
     "version": "./version-ios.sh"
   },
   "rnpm": {
