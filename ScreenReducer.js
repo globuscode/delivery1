@@ -23,6 +23,7 @@ import MyOrderDetail from "./src/screens/fullScreen/MyOrderDetail";
 import PersonalInformation from "./src/PersonalInformation";
 import SetFullAddress from "./src/screens/fullScreen/SetFullAddress";
 import SetCard from "./src/SetCard";
+import SetCreditCard from "./src/screens/fullScreen/SetCreditCard";
 
 const headerStyleIOS = title => ({
   title: title,
@@ -75,6 +76,10 @@ export default StackNavigator(
     },
     SetFullAddress: {
       screen: SetFullAddress,
+      navigationOptions: headerStyleIOS("Адрес доставки")
+    },
+    SetCreditCard: {
+      screen: SetCreditCard,
       navigationOptions: headerStyleIOS("Адрес доставки")
     },
     SelectCity: {
