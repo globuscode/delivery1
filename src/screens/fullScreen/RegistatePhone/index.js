@@ -9,6 +9,7 @@ import {
   Platform
 } from "react-native";
 import { TextField } from "react-native-material-textfield";
+import SmsListener from "react-native-android-sms-listener";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { TextInputMask } from "react-native-masked-text";
 import Touchable from "react-native-platform-touchable";
@@ -48,6 +49,12 @@ class Registration extends React.Component {
       phone: ""
     };
   }
+
+  componentWillMount = () => {
+    SmsListener.addListener(async ({ code }) => {
+      this.setState({ code: code, codeError: null });
+    });
+  };
 
   renderButton = (title, callback) => {
     return (
@@ -337,9 +344,9 @@ class Registration extends React.Component {
             }
             this.props.navigation.goBack();
           } else {
-            Alert.alert("Регистрация прошла успешно");
-            this.props.auth(data);
-            this.props.navigation.navigate("Feed");
+            // Alert.alert("Регистрация прошла успешно");
+            // this.props.auth(data);
+            this.props.navigation.navigate("SetCreditCard");
           }
         } else {
           this.codeInput.props.error = validationResponseJson.errors.title;
