@@ -1,7 +1,7 @@
 import React from "react";
 import {
-  Alert,
   View,
+  Platform,
   Text,
   TouchableOpacity,
   Dimensions,
@@ -24,47 +24,6 @@ const resetAction = NavigationActions.reset({
     NavigationActions.navigate({ routeName: "MyOrders" })
   ]
 });
-
-const togglePayment = (cart, callback) => {
-  let totalPrice = 0;
-  for (let i = 0; i < cart.length; i++) {
-    if (cart[i] != undefined) totalPrice += cart[i].count * cart[i].plate.price;
-  }
-  const METHOD_DATA = [
-    {
-      supportedMethods: ["apple-pay"],
-      data: {
-        merchantIdentifier: "merchant.com.delivery1.payment",
-        supportedNetworks: ["visa", "mastercard"],
-        countryCode: "RU",
-        currencyCode: "RUB"
-      }
-    }
-  ];
-  const DETAILS = {
-    id: "basic-example",
-    displayItems: cart.map(({ plate, count }) => ({
-      label: plate.title,
-      amount: { currency: "RUB", value: (count * plate.price).toString() }
-    })),
-    total: {
-      label: "Доставка №1",
-      amount: { currency: "RUB", value: totalPrice.toString() }
-    }
-  };
-  const paymentRequest = new PaymentRequest(METHOD_DATA, DETAILS);
-  paymentRequest
-    .show()
-    .then(paymentResponse => {
-      const { paymentData } = paymentResponse.details;
-      paymentResponse.complete("success");
-      callback(paymentData);
-      return paymentResponse;
-    })
-    .catch(error => {
-      Alert.alert(error.message);
-    });
-};
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
@@ -107,6 +66,73 @@ class MakeOrder extends React.Component {
     userStore: propTypes.object,
     navigation: propTypes.object,
     makeOrder: propTypes.func
+  };
+
+  togglePayment = (cart, callback) => {
+    let totalPrice = 0;
+    for (let i = 0; i < cart.length; i++) {
+      if (cart[i] != undefined)
+        totalPrice += cart[i].count * cart[i].plate.price;
+    }
+    let METHOD_DATA = [
+      {
+        supportedMethods: ["apple-pay"],
+        data: {
+          merchantIdentifier: "merchant.com.delivery1.payment",
+          supportedNetworks: ["visa", "mastercard"],
+          countryCode: "RU",
+          currencyCode: "RUB"
+        }
+      }
+    ];
+    if (Platform.OS !== "ios")
+      METHOD_DATA = [
+        {
+          supportedMethods: ["android-pay"],
+          data: {
+            supportedNetworks: ["visa", "mastercard"],
+            currencyCode: "RUB",
+            environment: "TEST", // defaults to production
+            paymentMethodTokenizationParameters: {
+              tokenizationType: "NETWORK_TOKEN",
+              parameters: {
+                publicKey:
+                  "BIglErm9R5rgNnnieL7lLN5zycYv6h7L9R+xDNc3cWX1HvmvAumhsZIzg8qsKi3UUxD4HETdtX4VhKxUdrHx+AM="
+              }
+            }
+          }
+        }
+      ];
+    const DETAILS = {
+      id: "basic-example",
+      displayItems: cart.map(({ plate, count }) => ({
+        label: plate.title,
+        amount: { currency: "RUB", value: (count * plate.price).toString() }
+      })),
+      total: {
+        label: "Доставка №1",
+        amount: { currency: "RUB", value: totalPrice.toString() }
+      }
+    };
+    const paymentRequest = new PaymentRequest(METHOD_DATA, DETAILS);
+    paymentRequest
+      .show()
+      .then(paymentResponse => {
+        if (Platform.OS === "ios") {
+          const { paymentData } = paymentResponse.details;
+          paymentResponse.complete("success");
+          callback(paymentData);
+          return paymentResponse;
+        } else {
+          const { getPaymentToken } = paymentResponse.details;
+          paymentResponse.complete("success");
+          return getPaymentToken().then(callback);
+        }
+      })
+      .catch(error => {
+        paymentResponse.complete("fail");
+        console.warn(error);
+      });
   };
 
   renderMenuItem = (icon, title) => {
@@ -188,7 +214,11 @@ class MakeOrder extends React.Component {
             null
           )}
           {this.renderMenuItem("credit-card", "Наличными курьеру", null)}
-          {this.renderMenuItem("credit-card", "Apple Pay", null)}
+          {this.renderMenuItem(
+            "credit-card",
+            Platform.OS === "ios" ? "Apple" : "Google" + " Pay",
+            null
+          )}
         </View>
         {!this.state.fetching ? null : (
           <ActivityIndicator
@@ -248,16 +278,20 @@ class MakeOrder extends React.Component {
                   }
                 );
                 if (result.errors === undefined) {
-                  if (this.state.selected === "Apple Pay") {
-                    togglePayment(cartArray, async paymentData => {
+                  if (
+                    this.state.selected === "Apple Pay" ||
+                    this.state.selected === "Google Pay"
+                  ) {
+                    this.togglePayment(cartArray, async paymentData => {
                       const paymentResponse = await fetchJson(`${host}/pay`, {
                         body: JSON.stringify({
                           token: this.props.userStore.token,
-                          system: "apple",
+                          system: Platform.OS === "ios" ? "apple" : "android",
                           cart: result.data.cartId,
                           data: paymentData
                         })
                       });
+
                       if (paymentResponse.errors === undefined) {
                         this.props.makeOrder();
                         this.props.navigation.dispatch(resetAction);
@@ -265,6 +299,7 @@ class MakeOrder extends React.Component {
                       }
                       this.setState({ fetching: false });
                     });
+                    this.setState({ fetching: false });
                   } else {
                     this.props.makeOrder();
                     this.props.navigation.dispatch(resetAction);
