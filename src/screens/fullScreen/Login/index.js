@@ -68,8 +68,28 @@ class Login extends React.Component {
 
   componentWillMount = async () => {
     await VKLogin.initialize(6365999);
-    SmsListener.addListener(({ body }) => {
+    SmsListener.addListener(async ({ body }) => {
       this.setState({ code: body });
+      this.props.showSpinner();
+      let form = new FormData();
+      form.append("code", body);
+      form.append("phone", this.state.phone.replace(/\D+/g, ""));
+
+      const authResponse = await fetchJson(
+        "https://dostavka1.com/v1/auth/auth/",
+        {
+          method: "POST",
+          body: form
+        }
+      );
+      if (authResponse.errors) {
+        let { code, title, detail } = authResponse.errors;
+        Alert.alert(`${title} ${code}`, detail);
+      } else {
+        this.props.login(authResponse);
+        this.props.navigation.navigate("Feed");
+      }
+      this.props.hideSpinner();
     });
   };
 
