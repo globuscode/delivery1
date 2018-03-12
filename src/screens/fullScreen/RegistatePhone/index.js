@@ -345,8 +345,10 @@ class Registration extends React.Component {
             this.props.navigation.goBack();
           } else {
             // Alert.alert("Регистрация прошла успешно");
-            // this.props.auth(data);
-            this.props.navigation.navigate("SetCreditCard");
+            this.props.auth(data);
+            this.props.navigation.navigate("SetCreditCard", {
+              url: `${host}/payture/add?token=${data.data.token}`
+            });
           }
         } else {
           this.codeInput.props.error = validationResponseJson.errors.title;
