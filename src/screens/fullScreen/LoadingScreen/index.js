@@ -22,6 +22,11 @@ const resetAction = NavigationActions.reset({
   actions: [NavigationActions.navigate({ routeName: "Tabs" })]
 });
 
+const noCard = NavigationActions.reset({
+  index: 0,
+  actions: [NavigationActions.navigate({ routeName: "SetCreditCard" })]
+});
+
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
@@ -92,7 +97,9 @@ class Loading extends React.Component {
     );
     if (responseJson.data != undefined) {
       this.setState({ text: "Изучаем манускрипты в поисках крутых рецептов" });
-      this.props.auth();
+      this.props.auth(() => {
+        this.props.navigation.dispatch(noCard);
+      });
       for (let i = 0; i < responseJson.data.plates.length; i++) {
         let { image } = responseJson.data.plates[i];
         await Image.prefetch("http:" + image);
@@ -161,7 +168,7 @@ export default connect(
   dispatch => ({
     loadRecomendations: data =>
       dispatch({ type: "SET_RECOMENDATIONS", payload: data }),
-    auth: () => {
+    auth: callback => {
       AsyncStorage.getItem("lastToken", async (error, token) => {
         // token = JSON.parse(token);
         var formData = new FormData();
@@ -175,6 +182,9 @@ export default connect(
           if (data.errors) {
             if (data.errors.code != 200) {
               //Alert.alert(data.errors.title, "Авторизируйтесь повторно");
+            }
+            if (data.errors.code === 206) {
+              callback();
             }
           } else {
             dispatch({ type: "AUTH", payload: data });
