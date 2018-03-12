@@ -233,18 +233,26 @@ class Feed extends React.Component {
             }}
           />
 
-          {this.renderCardHeader(
-            "Подборки",
-            "settings",
-            "Настроить\nподборки",
-            "SelectTastes"
-          )}
-          <Collections
-            navigation={this.props.navigation}
-            onNextButtonPress={() => {
-              this.scroll.scrollTo({ y: 1130, animated: true });
-            }}
-          />
+          {this.state.collections === null
+            ? null
+            : this.state.collections.length === 0
+              ? null
+              : this.renderCardHeader(
+                "Подборки",
+                "settings",
+                "Настроить\nподборки",
+                "SelectTastes"
+              )}
+          {this.state.collections === null ? null : this.state.collections
+            .length === 0 ? null : (
+              <Collections
+                data={this.state.collections}
+                navigation={this.props.navigation}
+                onNextButtonPress={() => {
+                  this.scroll.scrollTo({ y: 1130, animated: true });
+                }}
+              />
+            )}
 
           {this.renderCardHeader(
             "Рестораны недели",
