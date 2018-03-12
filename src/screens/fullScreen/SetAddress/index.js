@@ -73,9 +73,11 @@ class SelectAddress extends React.Component {
     let responseJson = await fetchJson(
       `${host}/address/autocomplete/?cityId=36&street=${address.street}&house=${
         address.house
-      }&restaurantId=${this.props.navigation.state.params.id}`
+      }&restaurantId=${this.props.navigation.state.params.id}`,
+      {
+        method: "POST"
+      }
     );
-
     if (responseJson.data === undefined) {
       if (responseJson.errors === undefined) {
         Alert.alert("Ошибка", "Ошибка запроса");
@@ -188,7 +190,9 @@ class SelectAddress extends React.Component {
       `${host}/address?cityId=36&street=${this.state.address}&house=${
         this.state.house
       }&restaurantId=${this.props.navigation.state.params.id}`,
-      {}
+      {
+        method: "POST"
+      }
     );
     this.props.hideSpinner();
     if (responseJson["errors"] != undefined) {
