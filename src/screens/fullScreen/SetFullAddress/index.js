@@ -16,7 +16,7 @@ import { connect } from "react-redux";
 import PopupDialog, { SlideAnimation } from "react-native-popup-dialog";
 import propTypes from "prop-types";
 
-import { adaptWidth } from "../../../etc";
+import { adaptWidth, fetchJson, host } from "../../../etc";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -85,7 +85,7 @@ class Forms extends React.Component {
     return 1;
   };
 
-  next = () => {
+  next = async () => {
     if (this.state.firstName == null || this.state.firstName == "")
       this.setState({ firstNameError: "Это поле обязательно" });
     if (this.state.secondName == null || this.state.secondName == "")
@@ -105,6 +105,11 @@ class Forms extends React.Component {
       this.setState({ entranceError: "Это поле обязательно" });
 
     if (this.isNext()) {
+      const cardsResponse = await fetchJson(
+        `${host}/user/getCards/?token=${this.props.user.token}`
+      );
+      const cards =
+        cardsResponse.errors === undefined ? cardsResponse.data : [];
       const date = this.state.date.getDate();
       const month = this.state.date.getMonth() + 1;
       const year = this.state.date.getFullYear();
@@ -138,7 +143,8 @@ class Forms extends React.Component {
           secondName: this.state.secondName,
           phone: this.state.phone,
           deliveryDate: this.state.selected == 1 ? dateString : null
-        }
+        },
+        cards: cards
       });
     }
   };
