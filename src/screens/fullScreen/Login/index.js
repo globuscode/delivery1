@@ -86,12 +86,19 @@ class Login extends React.Component {
         let { code, title, detail } = authResponse.errors;
         Alert.alert(`${title} ${code}`, detail);
       } else {
-        this.props.login(authResponse);
-        this.props.navigation.navigate("Feed");
+        this.login(authResponse);
       }
       this.props.hideSpinner();
     });
   };
+
+  login = data => {
+    this.props.login(data);
+    this.props.navigation.navigate("Feed");
+    // this.props.navigation.navigate("SetCreditCard", {
+    //   url: `${host}/payture/add?token=${data.data.token}`
+    // });
+  }
 
   authOnServer = async (body, suffix = "") => {
     if (suffix === undefined || suffix === null) {
@@ -110,8 +117,7 @@ class Login extends React.Component {
       let { code, title, detail } = data.errors;
       Alert.alert(`${title} ${code}`, detail);
     } else {
-      this.props.login(data);
-      this.props.navigation.navigate("Feed");
+      this.login(data);
     }
   };
 
@@ -335,8 +341,7 @@ class Login extends React.Component {
                 let { code, title, detail } = authResponse.errors;
                 Alert.alert(`${title} ${code}`, detail);
               } else {
-                this.props.login(authResponse);
-                this.props.navigation.navigate("Feed");
+                this.login(authResponse);
               }
               this.props.hideSpinner();
             }
