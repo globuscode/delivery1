@@ -6,6 +6,9 @@ import { fetchJson } from "../../../etc";
 export default class SetCreditCard extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      htmlBody: ""
+    };
   }
 
   static propTypes = {
@@ -13,10 +16,32 @@ export default class SetCreditCard extends React.Component {
       navigate: propTypes.func,
       state: propTypes.shape({
         params: propTypes.shape({
-          url: propTypes.string
+          sessionId: propTypes.string
         })
       })
     })
+  };
+
+  componentDidMount = () => {
+    const { sessionId } = this.props.navigation.state.params;
+    const form = new FormData();
+    const headers = new Headers();
+
+    form.append("SessionId", sessionId);
+    headers.append(("Content-Type": "multipart/form-data"));
+    const options = {
+      // headers: { "Content-Type": "multipart/form-data" },
+      // body: "SessionId:" + sessionId,
+      headers: headers,
+      body: form,
+      method: "post"
+    };
+    fetch("https://sandbox2.payture.com/vwapi/Add", options).then(
+      async response => {
+        const text = await response.text();
+        this.setState({ htmlBody: text });
+      }
+    );
   };
 
   _check = async () => {
@@ -31,11 +56,13 @@ export default class SetCreditCard extends React.Component {
   };
 
   render = () => {
-    const { url } = this.props.navigation.state.params;
+    // console.warn("SessionId:" + sessionId);
     return (
       <WebView
         onLoadEnd={this._check}
-        source={{ uri: url }}
+        source={{
+          html: this.state.htmlBody
+        }}
         style={{ flex: 1 }}
       />
     );

@@ -16,7 +16,7 @@ import Touchable from "react-native-platform-touchable";
 import { connect } from "react-redux";
 import propTypes from "prop-types";
 
-import { adaptWidth } from "../../../etc";
+import { adaptWidth, fetchJson } from "../../../etc";
 import { host } from "../../../etc";
 import IconD from "../../../components/ui/IconD";
 
@@ -345,9 +345,12 @@ class Registration extends React.Component {
             this.props.navigation.goBack();
           } else {
             // Alert.alert("Регистрация прошла успешно");
+            const session = await fetchJson(
+              `${host}/payture/add?token=${data.data.token}`
+            );
             this.props.auth(data);
             this.props.navigation.navigate("SetCreditCard", {
-              url: `${host}/payture/add?token=${data.data.token}`
+              sessionId: session.data.SessionId
             });
           }
         } else {
