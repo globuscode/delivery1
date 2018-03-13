@@ -120,8 +120,9 @@ class MakeOrder extends React.Component {
       .then(paymentResponse => {
         if (Platform.OS === "ios") {
           const { paymentData } = paymentResponse.details;
-          paymentResponse.complete("success");
-          callback(paymentData);
+          paymentResponse.complete("success").then(() => {
+            callback(paymentData);
+          });
           return paymentResponse;
         } else {
           const { getPaymentToken } = paymentResponse.details;
@@ -129,17 +130,19 @@ class MakeOrder extends React.Component {
           return getPaymentToken().then(callback);
         }
       })
-      .catch(error => {
-        paymentResponse.complete("fail");
-        console.warn(error);
+      .catch(() => {
+        // console.warn(error);
       });
   };
 
-  renderMenuItem = (icon, title) => {
+  renderMenuItem = (icon, title, callback) => {
     return (
       <TouchableOpacity
         onPress={() => {
-          this.setState({ selected: title });
+          this.setState({
+            selected: title
+          });
+          callback();
         }}
         style={{
           flexDirection: "row",
@@ -211,13 +214,32 @@ class MakeOrder extends React.Component {
           {this.renderMenuItem(
             "credit-card",
             "Банковской картой курьеру",
-            null
+            () => {
+              this.setState({
+                selectedCard: undefined
+              });
+            }
           )}
-          {this.renderMenuItem("credit-card", "Наличными курьеру", null)}
+          {this.renderMenuItem("credit-card", "Наличными курьеру", () => {
+            this.setState({
+              selectedCard: undefined
+            });
+          })}
+          {navitagionParams.cards.map(card =>
+            this.renderMenuItem("credit-card", card.cardName, () => {
+              this.setState({
+                selectedCard: card.cardId
+              });
+            })
+          )}
           {this.renderMenuItem(
             "credit-card",
-            Platform.OS === "ios" ? "Apple" : "Google" + " Pay",
-            null
+            (Platform.OS === "ios" ? "Apple" : "Google") + " Pay",
+            () => {
+              this.setState({
+                selectedCard: undefined
+              });
+            }
           )}
         </View>
         {!this.state.fetching ? null : (
@@ -278,6 +300,7 @@ class MakeOrder extends React.Component {
                   }
                 );
                 if (result.errors === undefined) {
+                  // Обрабатывает Apple и Google Pay
                   if (
                     this.state.selected === "Apple Pay" ||
                     this.state.selected === "Google Pay"
@@ -300,7 +323,24 @@ class MakeOrder extends React.Component {
                       this.setState({ fetching: false });
                     });
                     this.setState({ fetching: false });
+                  } else if (this.state.selectedCard !== undefined) {
+                    // обрабатывает оплату через payture
+                    const paymentResponse = await fetchJson(`${host}/pay`, {
+                      body: JSON.stringify({
+                        token: this.props.userStore.token,
+                        system: "payture",
+                        cart: result.data.cartId,
+                        data: this.state.selectedCard
+                      })
+                    });
+
+                    if (paymentResponse.errors === undefined) {
+                      this.props.makeOrder();
+                      this.props.navigation.dispatch(resetAction);
+                      this.state.canNav = true;
+                    }
                   } else {
+                    // обрабатывает оплату курьеру
                     this.props.makeOrder();
                     this.props.navigation.dispatch(resetAction);
                     this.state.canNav = true;
