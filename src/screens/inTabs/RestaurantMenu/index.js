@@ -20,7 +20,7 @@ import HTMLView from "react-native-htmlview";
 import PropTypes from "prop-types";
 import * as Animatable from "react-native-animatable";
 
-import Recomendations from "../../../Main/Recomendations";
+import PlatesCarousel from "../../../Main/PlatesCarousel";
 import IconD from "../../../components/ui/IconD";
 import { adaptWidth } from "../../../etc";
 import { fetchJson } from "../../../etc";
@@ -844,7 +844,7 @@ class RestaurantMenu extends React.Component {
           )}
           {this.state.data.bestPlates == undefined ? null : (
             <View style={{ height: (viewportWidth - 40) * 1.32 + 130 }}>
-              <Recomendations
+              <PlatesCarousel
                 data={this.state.data.bestPlates}
                 navigation={this.props.navigation}
               />

@@ -17,7 +17,7 @@ import Touchable from "react-native-platform-touchable";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import Recomendations from "../../../Main/Recomendations";
+import PlatesCarousel from "../../../Main/PlatesCarousel";
 import IconD from "../../../components/ui/IconD";
 
 const { width: viewportWidth } = Dimensions.get("window");
@@ -482,7 +482,7 @@ class Restaurant extends React.Component {
                 </Text>
               </View>
               <View style={{ height: (viewportWidth - 40) * 1.32 + 130 }}>
-                <Recomendations
+                <PlatesCarousel
                   data={this.state.data.bestPlates}
                   navigation={this.props.navigation}
                 />

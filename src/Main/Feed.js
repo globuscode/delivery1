@@ -8,7 +8,7 @@ import {
   ScrollView
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
-import Recomendations from "./Recomendations";
+import PlatesCarousel from "./PlatesCarousel";
 import RestouransOfTheWeek from "./RestouransOfTheWeek";
 import { connect } from "react-redux";
 import propTypes from "prop-types";
@@ -225,7 +225,7 @@ class Feed extends React.Component {
             "Изменить\nсвои вкусы",
             "SelectTags"
           )}
-          <Recomendations
+          <PlatesCarousel
             data={this.state.plates}
             navigation={this.props.navigation}
             onNextButtonPress={() => {

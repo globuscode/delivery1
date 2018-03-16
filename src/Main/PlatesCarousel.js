@@ -25,7 +25,7 @@ import { getCartItemCount } from "../utils";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
-class Recomendations extends React.Component {
+class PlatesCarousel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -488,4 +488,4 @@ export default connect(
       dispatch({ type: "DELETE_PLATE", payload: data });
     }
   })
-)(Recomendations);
+)(PlatesCarousel);
