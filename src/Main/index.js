@@ -11,7 +11,7 @@ import Restaurant from "../screens/inTabs/Restaurant";
 import RestaurantMenu from "../screens/inTabs/RestaurantMenu";
 import Favoutite from "../screens/inTabs/Favourite";
 import Collection from "../screens/inTabs/Collection";
-import Cart from "../Cart";
+import Cart from "../screens/fullScreen/Cart";
 
 import CartTabIcon from "./CartTabIcon";
 import IconD from "../components/ui/IconD";
