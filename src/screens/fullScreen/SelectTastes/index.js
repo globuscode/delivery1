@@ -14,7 +14,7 @@ import propTypes from "prop-types";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
-import { host } from "../etc";
+import { host } from "../../../etc";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 
 class SelectTags extends React.Component {
