@@ -1,70 +1,86 @@
 import React from "react";
 import { WebView } from "react-native";
 import propTypes from "prop-types";
-import { fetchJson } from "../../../etc";
+import { connect } from "react-redux";
+import { fetchJson, host } from "../../../etc";
 
-export default class SetCreditCard extends React.Component {
+class SetCreditCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      htmlBody: ""
+      htmlBody: "",
+      canNav: true,
+      cardsCount: 0
     };
   }
 
   static propTypes = {
     navigation: propTypes.shape({
       navigate: propTypes.func,
+      goBack: propTypes.func,
       state: propTypes.shape({
         params: propTypes.shape({
-          sessionId: propTypes.string
+          nextScreen: propTypes.string,
+          token: propTypes.string
         })
       })
     })
   };
 
-  componentDidMount = () => {
-    const { sessionId } = this.props.navigation.state.params;
-    const form = new FormData();
-    const headers = new Headers();
-
-    form.append("SessionId", sessionId);
-    headers.append(("Content-Type": "multipart/form-data"));
-    const options = {
-      // headers: { "Content-Type": "multipart/form-data" },
-      // body: "SessionId:" + sessionId,
-      headers: headers,
-      body: form,
-      method: "post"
-    };
-    fetch("https://sandbox2.payture.com/vwapi/Add", options).then(
-      async response => {
-        const text = await response.text();
-        this.setState({ htmlBody: text });
-      }
-    );
-  };
-
   _check = async () => {
+    const cardsResponse = await fetchJson(
+      `${host}/user/getCards/?token=${this.props.navigation.state.params.token}`
+    );
+    const cards = cardsResponse.errors === undefined ? cardsResponse.data : [];
     let response = await fetchJson(
-      "https://dostavka1.com/v1/payture/checkCardAdd"
+      "https://dostavka1.com/v1/payture/checkCardAdd?cardsCount=" +
+        cards.length +
+        "&token=" +
+        this.props.navigation.state.params.token
     );
     if (response.data.result) {
-      this.props.navigation.navigate("Feed");
+      if (this.state.canNav) {
+        this.setState({ canNav: false });
+        if (this.props.navigation.state.params.nextScreen === "makeOrder") {
+          // Обновляет карты
+          const cardsResponse = await fetchJson(
+            `${host}/user/getCards/?token=${
+              this.props.navigation.state.params.token
+            }`
+          );
+          const cards =
+            cardsResponse.errors === undefined ? cardsResponse.data : [];
+          this.props.updateCards(cards);
+
+          this.props.navigation.goBack();
+        } else this.props.navigation.navigate("Feed");
+        setTimeout(() => {
+          this.setState({ canNav: true });
+        }, 2000);
+      }
       return 0;
     }
     setTimeout(this._check, 10000);
   };
 
   render = () => {
-    // console.warn("SessionId:" + sessionId);
     return (
       <WebView
         onLoadEnd={this._check}
         source={{
-          html: this.state.htmlBody
+          uri:
+            "https://dostavka1.com/v1/payture/add/?token=" +
+            this.props.navigation.state.params.token
         }}
         style={{ flex: 1 }}
       />
     );
   };
 }
+
+export default connect(
+  () => ({}),
+  dispatch => ({
+    updateCards: cards => dispatch({ type: "UPDATE_CARDS", payload: cards })
+  })
+)(SetCreditCard);
