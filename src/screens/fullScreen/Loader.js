@@ -97,6 +97,28 @@ class Loader extends React.Component {
         restaurant: restaurant
       });
     }
+
+    if (navigation.state.params.action === "navigateToCollection") {
+      const { props } = this;
+      const { params } = props.navigation.state;
+      if (params.collection != undefined) {
+        const response = await fetchJson(
+          `${host}/collection?id=${params.collection.id}`
+        );
+        if (response.errors === undefined) {
+          // console.log(response);
+          navigation.navigate("Collection", {
+            id: params.collection.id,
+            collection: response
+          });
+        }
+        if (response.errors != undefined) {
+          let { title, detail, code } = response.errors;
+          Alert.alert(`${title} ${code}`, detail);
+          return -1;
+        }
+      }
+    }
   };
 
   render() {

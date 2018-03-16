@@ -17,7 +17,7 @@ class Collections extends React.Component {
       activeSlide: 0,
       canNav: true,
       favourites: [],
-      entries: []
+      entries: props.data
     };
   }
 
@@ -29,6 +29,7 @@ class Collections extends React.Component {
 
   static propTypes = {
     onNextButtonPress: propTypes.func,
+    data: propTypes.array,
     favourite: propTypes.shape({
       collections: propTypes.object
     }),
@@ -57,8 +58,9 @@ class Collections extends React.Component {
 
   nav = i => {
     if (this.state.canNav) {
-      this.props.navigation.navigate("Collection", {
-        collection: this.state.entries[i]
+      this.props.navigation.navigate("Loader", {
+        collection: this.state.entries[i],
+        action: "navigateToCollection"
       });
       this.setState({ canNav: false });
       setTimeout(() => {
