@@ -6,7 +6,7 @@ import {
   Dimensions,
   StyleSheet
 } from "react-native";
-import { adaptWidth } from "../etc";
+import { adaptWidth } from "../../../etc";
 
 const { width: viewportWidth } = Dimensions.get("window");
 const styles = StyleSheet.create({

@@ -14,14 +14,14 @@ import Touchable from "react-native-platform-touchable";
 import { connect } from "react-redux";
 import propTypes from "prop-types";
 
-import Counter from "../components/ui/Counter";
-import { adaptWidth } from "../etc";
-import IconD from "../components/ui/IconD";
-import ButtonD from "../components/ui/ButtonD";
-import { host } from "../etc";
-import { fetchJson } from "../etc";
+import Counter from "../../../components/ui/Counter";
+import { adaptWidth } from "../../../etc";
+import IconD from "../../../components/ui/IconD";
+import ButtonD from "../../../components/ui/ButtonD";
+import { host } from "../../../etc";
+import { fetchJson } from "../../../etc";
 import renderButton from "./mockup";
-import { getCartTotalPrice, getCartTotalCount } from "../utils";
+import { getCartTotalPrice, getCartTotalCount } from "../../../utils";
 import SummaryItem from "./SummaryItem";
 import EmptyCart from "./EmptyCart";
 
