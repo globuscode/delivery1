@@ -5,8 +5,8 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { connect } from "react-redux";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 
-import { CollectionCard } from "../components/cards";
-import { adaptWidth } from "../etc";
+import { CollectionCard } from "../../components/cards";
+import { adaptWidth } from "../../etc";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
