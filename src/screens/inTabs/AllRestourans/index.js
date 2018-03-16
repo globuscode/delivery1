@@ -17,7 +17,7 @@ import propTypes from "prop-types";
 
 import Picker from "../../../Picker";
 import { host, fetchJson } from "../../../etc";
-import RestouransOfTheWeek from "../../../Main/RestouransOfTheWeek";
+import RestaurantList from "../../../Main/RestaurantList";
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
@@ -57,7 +57,7 @@ export default class AllRestourans extends React.Component {
   renderRestaurant = (restaurant, index) => {
     if (this.state.selectedType === 0)
       return (
-        <RestouransOfTheWeek
+        <RestaurantList
           key={index}
           data={[restaurant]}
           navigation={this.props.navigation}
@@ -69,7 +69,7 @@ export default class AllRestourans extends React.Component {
         this.state.types[this.state.selectedType]
       ) {
         return (
-          <RestouransOfTheWeek
+          <RestaurantList
             key={restaurant.id}
             data={[restaurant]}
             navigation={this.props.navigation}

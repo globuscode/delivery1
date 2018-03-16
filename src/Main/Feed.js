@@ -9,11 +9,11 @@ import {
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import PlatesCarousel from "../components/cards/PlatesCarousel";
-import RestouransOfTheWeek from "./RestouransOfTheWeek";
+import RestaurantList from "./RestaurantList";
 import { connect } from "react-redux";
 import propTypes from "prop-types";
 
-import CollectionCarousel from "./CollectionCarousel";
+import CollectionCarousel from "../components/cards/CollectionCarousel";
 import IconD from "../components/ui/IconD";
 
 const { width: viewportWidth } = Dimensions.get("window");
@@ -260,7 +260,7 @@ class Feed extends React.Component {
             "Смотреть \nвсе",
             "AllRestourans"
           )}
-          <RestouransOfTheWeek
+          <RestaurantList
             data={this.state.restaurants}
             navigation={this.props.navigation}
           />

@@ -19,7 +19,7 @@ import { fetchJson } from "../etc";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
-class Recomendations extends React.Component {
+class RestaurantList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -298,7 +298,7 @@ export default connect(
       dispatch({ type: "DELETE_RESTAURANT", payload: data });
     }
   })
-)(Recomendations);
+)(RestaurantList);
 
 const styles = StyleSheet.create({
   text: {
