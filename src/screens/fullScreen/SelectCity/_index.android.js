@@ -1,15 +1,6 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Dimensions,
-  requireNativeComponent,
-  AsyncStorage
-} from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
-import Picker from "../Picker";
+import { StyleSheet, Text, View, Dimensions, AsyncStorage } from "react-native";
+import Picker from "../../../components/ui/Picker";
 import Touchable from "react-native-platform-touchable";
 import { NavigationActions } from "react-navigation";
 
@@ -19,9 +10,7 @@ const resetAction = NavigationActions.reset({
   index: 0,
   actions: [NavigationActions.navigate({ routeName: "About" })]
 });
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
-  "window"
-);
+const { width: viewportWidth } = Dimensions.get("window");
 export default class SelectCity extends React.Component {
   constructor(props) {
     super(props);

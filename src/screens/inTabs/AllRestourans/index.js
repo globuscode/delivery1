@@ -15,7 +15,7 @@ import { getStatusBarHeight } from "react-native-status-bar-height";
 import Drawer from "react-native-drawer";
 import propTypes from "prop-types";
 
-import Picker from "../../../Picker";
+import Picker from "../../../components/ui/Picker";
 import { host, fetchJson } from "../../../etc";
 import RestaurantList from "../../../components/cards/RestaurantList";
 
