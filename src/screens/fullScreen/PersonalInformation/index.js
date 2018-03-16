@@ -12,7 +12,8 @@ import {
 import { connect } from "react-redux";
 import propTypes from "prop-types";
 
-import IconD from "../components/ui/IconD";
+import IconD from "../../../components/ui/IconD";
+import { fetchJson, host } from "../../../etc";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -31,7 +32,8 @@ class PersonalInfo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      canNav: true
+      canNav: true,
+      cards: []
     };
   }
 
@@ -40,6 +42,7 @@ class PersonalInfo extends React.Component {
       navigate: propTypes.func
     }),
     userData: propTypes.shape({
+      token: propTypes.string,
       user: propTypes.shape({
         firstName: propTypes.string,
         lastName: propTypes.string,
@@ -47,6 +50,15 @@ class PersonalInfo extends React.Component {
         phone: propTypes.string
       })
     })
+  };
+
+  componentDidMount = async () => {
+    const cardsResponse = await fetchJson(
+      `${host}/user/getCards/?token=${this.props.userData.token}`
+    );
+    const cards = cardsResponse.errors === undefined ? cardsResponse.data : [];
+    if (cards.length !== this.state.cards.length)
+      this.setState({ cards: cards });
   };
 
   renderMenuItem = (icon, title, nav) => {
@@ -150,18 +162,20 @@ class PersonalInfo extends React.Component {
             </Text>
           </View>
 
-          {/*<View
-            style={{
-              flexDirection: "column"
-            }}
-          >
-            <Text style={styles.smallHeader}>{"Карта оплаты"}</Text>
-            <Text style={[styles.smallHeader, { color: "rgb(225, 199, 155)" }]}>
-              {this.props.userData.user.cart
-                ? this.props.userData.user.cart
-                : "**** **** **** 0000"}
-            </Text>
-              </View>*/}
+          {this.state.cards.length === 0 ? null : (
+            <View
+              style={{
+                flexDirection: "column"
+              }}
+            >
+              <Text style={styles.smallHeader}>{"Карта оплаты"}</Text>
+              <Text
+                style={[styles.smallHeader, { color: "rgb(225, 199, 155)" }]}
+              >
+                {this.state.cards[0].cardName}
+              </Text>
+            </View>
+          )}
         </View>
         {this.renderMenuItem("phone", "Изменить номер телефона", "UpdatePhone")}
         {/*this.renderMenuItem("credit-card", "Привязать другую карту оплаты", "SetCard")*/}
