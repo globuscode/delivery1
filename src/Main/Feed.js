@@ -8,7 +8,7 @@ import {
   ScrollView
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
-import PlatesCarousel from "./PlatesCarousel";
+import PlatesCarousel from "../components/cards/PlatesCarousel";
 import RestouransOfTheWeek from "./RestouransOfTheWeek";
 import { connect } from "react-redux";
 import propTypes from "prop-types";

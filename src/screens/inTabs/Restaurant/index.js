@@ -17,7 +17,7 @@ import Touchable from "react-native-platform-touchable";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import PlatesCarousel from "../../../Main/PlatesCarousel";
+import PlatesCarousel from "../../../components/cards/PlatesCarousel";
 import IconD from "../../../components/ui/IconD";
 
 const { width: viewportWidth } = Dimensions.get("window");

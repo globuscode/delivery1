@@ -20,7 +20,7 @@ import Carousel from "react-native-snap-carousel";
 import { adaptWidth } from "../../../etc";
 import { LeftAlignedImage } from "../../../components/LeftAlignedImage";
 import PriceButton from "../../../components/ui/PriceButton";
-import Plates from "../../../Main/PlatesCarousel";
+import Plates from "../../../components/cards/PlatesCarousel";
 import IconD from "../../../components/ui/IconD";
 import ButtonD from "../../../components/ui/ButtonD";
 import { getCartItemCount } from "../../../utils";

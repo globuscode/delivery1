@@ -20,7 +20,7 @@ import HTMLView from "react-native-htmlview";
 import PropTypes from "prop-types";
 import * as Animatable from "react-native-animatable";
 
-import PlatesCarousel from "../../../Main/PlatesCarousel";
+import PlatesCarousel from "../../../components/cards/PlatesCarousel";
 import IconD from "../../../components/ui/IconD";
 import { adaptWidth } from "../../../etc";
 import { fetchJson } from "../../../etc";
@@ -88,9 +88,13 @@ class RestaurantMenu extends React.Component {
         title: this.state.data.title,
         onHeartPress: () => {
           if (!this.state.favourite) {
-            this.props.addRestToFav(this.props.navigation.state.params.restaurant);
+            this.props.addRestToFav(
+              this.props.navigation.state.params.restaurant
+            );
           } else {
-            this.props.removeRestFromFav(this.props.navigation.state.params.restaurant);
+            this.props.removeRestFromFav(
+              this.props.navigation.state.params.restaurant
+            );
           }
         }
       });
@@ -127,9 +131,13 @@ class RestaurantMenu extends React.Component {
       title: this.props.navigation.state.params.restaurant.title,
       onHeartPress: () => {
         if (!this.state.favourite) {
-          this.props.addRestToFav(this.props.navigation.state.params.restaurant);
+          this.props.addRestToFav(
+            this.props.navigation.state.params.restaurant
+          );
         } else {
-          this.props.removeRestFromFav(this.props.navigation.state.params.restaurant);
+          this.props.removeRestFromFav(
+            this.props.navigation.state.params.restaurant
+          );
         }
       }
     });
@@ -321,7 +329,7 @@ class RestaurantMenu extends React.Component {
                   this.props.navigation.navigate("Plate", {
                     plate: e,
                     restaurant: this.state.data,
-                    fromMenu: true,
+                    fromMenu: true
                   });
                   this.setState({ canNav: false });
                   setTimeout(() => {
@@ -965,7 +973,7 @@ RestaurantMenu.propTypes = {
 };
 
 export default connect(
-  ({cart, favourite}) => ({
+  ({ cart, favourite }) => ({
     cart: cart,
     favourite: favourite
   }),
