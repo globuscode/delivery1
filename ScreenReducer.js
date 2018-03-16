@@ -14,7 +14,7 @@ import SelectTastes from "./src/screens/fullScreen/SelectTastes";
 import About from "./src/screens/fullScreen/about";
 import SpecialScreen from "./src/screens/fullScreen/SpecialScreen";
 import LoadingScreen from "./src/screens/fullScreen/LoadingScreen";
-import Main from "./src/Main";
+import Main from "./src/screens/inTabs/Main";
 import Loader from "./src/screens/fullScreen/Loader";
 import Profile from "./src/screens/fullScreen/Profile";
 import MakeOrder from "./src/screens/fullScreen/MakeOrder";

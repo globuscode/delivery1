@@ -8,13 +8,13 @@ import {
   ScrollView
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
-import PlatesCarousel from "../components/cards/PlatesCarousel";
-import RestaurantList from "../components/cards/RestaurantList";
+import PlatesCarousel from "../../../components/cards/PlatesCarousel";
+import RestaurantList from "../../../components/cards/RestaurantList";
 import { connect } from "react-redux";
 import propTypes from "prop-types";
 
-import CollectionCarousel from "../components/cards/CollectionCarousel";
-import IconD from "../components/ui/IconD";
+import CollectionCarousel from "../../../components/cards/CollectionCarousel";
+import IconD from "../../../components/ui/IconD";
 
 const { width: viewportWidth } = Dimensions.get("window");
 

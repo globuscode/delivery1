@@ -1,21 +1,21 @@
 import React from "react";
 import { View, Dimensions, Platform } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import AllRestourans from "../screens/inTabs/AllRestourans";
+import AllRestourans from "../AllRestourans";
 import { StackNavigator, TabNavigator, TabBarBottom } from "react-navigation";
 import Touchable from "react-native-platform-touchable";
 
 import Feed from "./Feed";
-import Plate from "../screens/inTabs/Plate";
-import Restaurant from "../screens/inTabs/Restaurant";
-import RestaurantMenu from "../screens/inTabs/RestaurantMenu";
-import Favoutite from "../screens/inTabs/Favourite";
-import Collection from "../screens/inTabs/Collection";
-import Cart from "../screens/fullScreen/Cart";
+import Plate from "../Plate";
+import Restaurant from "../Restaurant";
+import RestaurantMenu from "../RestaurantMenu";
+import Favoutite from "../Favourite";
+import Collection from "../Collection";
+import Cart from "../../fullScreen/Cart";
 
 import CartTabIcon from "./CartTabIcon";
-import IconD from "../components/ui/IconD";
-import { adaptWidth } from "../etc";
+import IconD from "../../../components/ui/IconD";
+import { adaptWidth } from "../../../etc";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 
 const { width: viewportWidth } = Dimensions.get("window");

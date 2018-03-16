@@ -3,8 +3,8 @@ import { View, Text, Platform } from "react-native";
 import { connect } from "react-redux";
 import propTypes from "prop-types";
 
-import IconD from "../components/ui/IconD";
-import { getCartTotalCount } from "../utils";
+import IconD from "../../../components/ui/IconD";
+import { getCartTotalCount } from "../../../utils";
 
 class TabIcon extends React.Component {
   static propTypes = {
