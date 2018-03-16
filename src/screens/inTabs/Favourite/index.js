@@ -2,28 +2,23 @@ import React from "react";
 import {
   View,
   Text,
-  TouchableOpacity,
   StyleSheet,
   AsyncStorage,
   ScrollView,
   Dimensions,
-  Alert,
-  Image
+  Alert
 } from "react-native";
 import { connect } from "react-redux";
-import HTMLView from "react-native-htmlview";
 import SegmentedControlTab from "react-native-segmented-control-tab";
-import Touchable from "react-native-platform-touchable";
 import LinearGradient from "react-native-linear-gradient";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import propTypes from "prop-types";
 
 import CollectionCard from "../../../components/cards/CollectionCard";
-import PriceButton from "../../../components/ui/PriceButton";
 import RestaurantCard from "../../../components/cards/RestaurantCard";
-import IconD from "../../../components/ui/IconD";
 import { getCartItemCount } from "../../../utils";
 import { adaptWidth, host, fetchJson } from "../../../etc";
+import Plate from "../../../components/Plate";
 const { width: viewportWidth } = Dimensions.get("window");
 
 class Favourite extends React.Component {
@@ -60,23 +55,6 @@ class Favourite extends React.Component {
 
   /**
    * Возвращает jsx компонент,
-   * содержащий все блюда из избранного
-   *
-   * @memberof Favourite
-   */
-  // renderPlates = () => {
-  //   const { favourite } = this.state;
-  //   const { plates } = favourite;
-  //   const platesIds = Object.keys(plates);
-  //   return platesIds.map((id, index) =>
-  //     this._renderSinglePlate(plates[id], index)
-  //   );
-  // };
-
-  nav = () => {};
-
-  /**
-   * Возвращает jsx компонент,
    * содержащий все рестораны из избранного
    *
    * @memberof Favourite
@@ -105,68 +83,6 @@ class Favourite extends React.Component {
     });
   };
 
-  fav = () => {
-    this.setState({});
-  };
-
-  renderLevel = level => {
-    var result = [];
-    for (var i = 0; i < level; i++)
-      result.push(
-        <View
-          key={i}
-          style={{
-            width: 16,
-            height: 16,
-            backgroundColor: "rgb( 38, 39, 50)",
-            marginRight: 5
-          }}
-        >
-          <IconD name="dostavka" size={16} color={"#dcc49c"} />
-        </View>
-      );
-    return result;
-  };
-
-  renderHeart = restaurant => {
-    return (
-      <TouchableOpacity
-        hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
-        onPress={() => {
-          this.props.onDeleteRestaurant(restaurant);
-        }}
-      >
-        <View style={{ backgroundColor: "transparent" }}>
-          <IconD name={"trash"} size={18} color="#dcc49c" />
-        </View>
-      </TouchableOpacity>
-    );
-  };
-
-  /**
-   * Возвращает jsx компонент,
-   * содержащий логотип ресторана
-   *
-   * @param {String} logo – url на изображение
-   * @returns
-   * @memberof Favourite
-   */
-  renderLogo(logo) {
-    const SLIDER_WIDTH = adaptWidth(280, 328.1, 362.3);
-
-    return (
-      <Image
-        resizeMode="contain"
-        style={{
-          width: SLIDER_WIDTH / 3,
-          height: SLIDER_WIDTH / 3,
-          backgroundColor: "transparent"
-        }}
-        source={{ uri: "http:" + logo }}
-      />
-    );
-  }
-
   _renderSingleCollection = (item, index) => {
     return (
       <CollectionCard
@@ -194,7 +110,6 @@ class Favourite extends React.Component {
   };
 
   renderPlates = () => {
-    const imageHeight = adaptWidth(100, 117, 130);
     const { favourite } = this.state;
     const { plates } = favourite;
     const platesIds = Object.keys(plates);
@@ -205,185 +120,55 @@ class Favourite extends React.Component {
           const e = plates[id];
           const itemCount = getCartItemCount(cart, e);
           return (
-            <Touchable
+            <Plate
               key={i}
-              background={Touchable.Ripple("gray")}
+              data={e}
+              inFav
+              itemCount={itemCount}
               onPress={() => {
                 if (this.state.canNav) {
-                  this.props.navigation.navigate("Plate", { plate: e });
+                  this.props.navigation.navigate("Plate", {
+                    plate: e,
+                    restaurant: this.state.data,
+                    fromMenu: true
+                  });
                   this.setState({ canNav: false });
                   setTimeout(() => {
                     this.setState({ canNav: true });
                   }, 1500);
                 }
               }}
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginLeft: 10,
-                  width: viewportWidth - 10,
-                  marginTop: 10,
-                  justifyContent: "flex-start"
-                }}
-              >
-                <View
-                  styel={{
-                    width: imageHeight,
-                    height: imageHeight,
-                    borderWidth: e.image.indexOf(".png") > 0 ? 1.5 : 0,
-                    borderColor: "rgb(225, 199, 155)",
-                    borderRadius: 10
-                  }}
-                >
-                  <Image
-                    source={{
-                      uri: "http:" + e.image
-                    }}
-                    resizeMode={
-                      e.image.indexOf(".png") > 0 ? "contain" : "cover"
-                    }
-                    style={{
-                      width: imageHeight,
-                      height: imageHeight,
-                      borderWidth: e.image.indexOf(".png") > 0 ? 1.5 : 0,
-                      borderColor: "rgb(225, 199, 155)",
-                      borderRadius: 10
-                    }}
-                  />
-                  {e.image.indexOf(".png") > 0 ? null : (
-                    <LinearGradient
-                      colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.8)"]}
-                      start={{ x: 0, y: 1 }}
-                      end={{ x: 1, y: 0 }}
-                      style={{
-                        width: imageHeight,
-                        height: imageHeight,
-                        borderRadius: 10,
-                        position: "absolute"
-                      }}
-                    />
-                  )}
-                  <Touchable
-                    style={{ position: "absolute", right: 5, top: 5 }}
-                    hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
-                    foreground={Touchable.SelectableBackgroundBorderless()}
-                    onPress={() => {
-                      this.props.onDeletePlate(e);
-                      this.setState({});
-                    }}
-                  >
-                    <View style={{ backgroundColor: "transparent" }}>
-                      <IconD name={"trash"} size={18} color="#dcc49c" />
-                    </View>
-                  </Touchable>
-                </View>
-
-                <View
-                  style={{
-                    flexDirection: "column",
-                    marginLeft: 10,
-                    marginVertical: 5,
-                    flex: 1,
-                    justifyContent: "space-between",
-                    width: viewportWidth - 20 - 20 - imageHeight
-                  }}
-                >
-                  <View
-                    style={{
-                      flexDirection: "column"
-                    }}
-                  >
-                    <Text
-                      style={{
-                        color: "#fff",
-                        fontSize: 15,
-                        fontFamily: "Stem-Medium",
-                        top: 3,
-                        lineHeight: 18,
-                        letterSpacing: 1
-                      }}
-                    >
-                      {e.title}
-                    </Text>
-                    <View
-                      style={{
-                        marginBottom: 5
-                      }}
-                    >
-                      <HTMLView
-                        value={`<p>${e.description}</p>`}
-                        stylesheet={styles}
-                      />
-                    </View>
-                  </View>
-                  <View style={{ flexDirection: "row" }}>
-                    <PriceButton
-                      value={e.price}
-                      pressed={itemCount !== 0}
-                      count={itemCount}
-                      onPress={async () => {
-                        if (Object.keys(cart).length > 0) {
-                          if (cart[e.id].plate.restaurant !== e.restaurant)
-                            Alert.alert(
-                              "Вы уверенны?",
-                              "Вы добавили блюдо из другого ресторана. Ваша корзина из предыдущего ресторана будет очищена.",
-                              [
-                                {
-                                  text: "OK",
-                                  onPress: () => this.props.onAddPlate(e)
-                                },
-                                {
-                                  text: "Отмена",
-                                  onPress: null,
-                                  style: "cancel"
-                                }
-                              ],
-                              { cancelable: false }
-                            );
-                          else this.props.onAddPlate(e);
-                        } else this.props.onAddPlate(e);
-                      }}
-                    />
-                    {itemCount === 0 ? null : (
-                      <Touchable
-                        background={Touchable.SelectableBackground()}
-                        onPress={() => {
-                          this.props.onRemovePlate(e);
-                        }}
-                        style={{
-                          width: adaptWidth(28, 30, 34),
-                          marginLeft: 10,
-                          height: adaptWidth(28, 30, 34),
-                          borderRadius: 4,
-                          justifyContent: "center",
-                          backgroundColor: "#dcc49c",
-                          alignItems: "center"
-                        }}
-                      >
-                        <Text style={{ color: "rgba(41,43,55, 1)" }}>
-                          {"–"}
-                        </Text>
-                      </Touchable>
-                    )}
-                    <Text
-                      style={{
-                        color: "rgb(135, 136, 140)",
-                        marginLeft: 10,
-                        fontSize: 12,
-                        lineHeight: 14,
-                        maxWidth: 80,
-                        letterSpacing: 0.4,
-                        fontFamily: "OpenSans",
-                        fontWeight: "600"
-                      }}
-                    >
-                      {e.weight}
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </Touchable>
+              onFavPress={() => {
+                this.props.onDeletePlate(e);
+                this.setState({});
+              }}
+              onPriceButtonPress={async () => {
+                if (Object.keys(cart).length > 0) {
+                  const firstItemId = Object.keys(cart)[0];
+                  if (cart[firstItemId].plate.restaurant !== e.restaurant)
+                    Alert.alert(
+                      "Вы уверенны?",
+                      "Вы добавили блюдо из другого ресторана. Ваша корзина из предыдущего ресторана будет очищена.",
+                      [
+                        {
+                          text: "OK",
+                          onPress: () => this.props.onAddPlate(e)
+                        },
+                        {
+                          text: "Отмена",
+                          onPress: null,
+                          style: "cancel"
+                        }
+                      ],
+                      { cancelable: false }
+                    );
+                  else this.props.onAddPlate(e);
+                } else this.props.onAddPlate(e);
+              }}
+              onDeletePlatePress={() => {
+                this.props.deletePlate(e);
+              }}
+            />
           );
         })}
       </View>

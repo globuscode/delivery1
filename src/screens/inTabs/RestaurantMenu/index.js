@@ -22,10 +22,9 @@ import * as Animatable from "react-native-animatable";
 
 import PlatesCarousel from "../../../components/cards/PlatesCarousel";
 import IconD from "../../../components/ui/IconD";
-import { adaptWidth } from "../../../etc";
 import { fetchJson } from "../../../etc";
 import { host } from "../../../etc";
-import PriceButton from "../../../components/ui/PriceButton";
+import Plate from "../../../components/Plate";
 import { getCartItemCount } from "../../../utils";
 
 const { width: viewportWidth } = Dimensions.get("window");
@@ -308,7 +307,6 @@ class RestaurantMenu extends React.Component {
   };
 
   _renderContent = ({ plates }, id, isActive) => {
-    const imageHeight = adaptWidth(100, 117, 130);
     const { cart } = this.props;
     // const { imageCacher } = this.props;
     if (!isActive) return null;
@@ -321,9 +319,11 @@ class RestaurantMenu extends React.Component {
         {plates.map((e, i) => {
           const itemCount = getCartItemCount(cart, e);
           return (
-            <Touchable
+            <Plate
               key={i}
-              background={Touchable.Ripple("gray")}
+              fav={this.isInFav(e)}
+              data={e}
+              itemCount={itemCount}
               onPress={() => {
                 if (this.state.canNav) {
                   this.props.navigation.navigate("Plate", {
@@ -337,202 +337,40 @@ class RestaurantMenu extends React.Component {
                   }, 1500);
                 }
               }}
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginLeft: 10,
-                  width: viewportWidth - 10,
-                  marginTop: 10,
-                  justifyContent: "flex-start"
-                }}
-              >
-                <View
-                  styel={{
-                    width: imageHeight,
-                    height: imageHeight,
-                    borderWidth: e.image.indexOf(".png") > 0 ? 1.5 : 0,
-                    borderColor: "rgb(225, 199, 155)",
-                    borderRadius: 10
-                  }}
-                >
-                  <Image
-                    source={{
-                      uri: "http:" + e.image,
-                      cache: "force-cache"
-                    }}
-                    resizeMode={
-                      e.image.indexOf(".png") > 0 ? "contain" : "cover"
-                    }
-                    style={{
-                      width: imageHeight,
-                      height: imageHeight,
-                      borderWidth: e.image.indexOf(".png") > 0 ? 1.5 : 0,
-                      borderColor: "rgb(225, 199, 155)",
-                      borderRadius: 10
-                    }}
-                  />
-                  {e.image.indexOf(".png") > 0 ? null : (
-                    <LinearGradient
-                      colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.8)"]}
-                      start={{ x: 0, y: 1 }}
-                      end={{ x: 1, y: 0 }}
-                      style={{
-                        width: imageHeight,
-                        height: imageHeight,
-                        borderRadius: 10,
-                        position: "absolute"
-                      }}
-                    />
-                  )}
-                  <Touchable
-                    style={{ position: "absolute", right: 5, top: 5 }}
-                    hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
-                    foreground={Touchable.SelectableBackgroundBorderless()}
-                    onPress={() => {
-                      if (this.isInFav(e)) {
-                        this.props.removeFromFav(e);
-                      } else {
-                        this.props.addToFav(e);
-                      }
-                      // this.setState({})
-                    }}
-                  >
-                    <View style={{ backgroundColor: "transparent" }}>
-                      <IconD
-                        name={this.isInFav(e) ? "heart_full" : "heart_empty"}
-                        size={18}
-                        color="#dcc49c"
-                      />
-                    </View>
-                  </Touchable>
-                </View>
-
-                <View
-                  style={{
-                    flexDirection: "column",
-                    marginLeft: 10,
-                    marginBottom: 5,
-                    flex: 1,
-                    justifyContent: "space-between",
-                    width: viewportWidth - 20 - 20 - imageHeight
-                  }}
-                >
-                  <View
-                    style={{
-                      flexDirection: "column"
-                    }}
-                  >
-                    <Text
-                      numberOfLines={1}
-                      style={{
-                        color: "#fff",
-                        fontSize: 15,
-                        fontFamily: "Stem-Medium",
-                        top: 3,
-                        lineHeight: 18,
-                        letterSpacing: 1
-                      }}
-                    >
-                      {e.title}
-                    </Text>
-                    <View
-                      style={{
-                        marginBottom: 5
-                      }}
-                    >
-                      <Text
-                        numberOfLines={3}
-                        style={{
-                          color: "rgb(135, 136, 140)",
-                          fontSize: 12,
-                          lineHeight: 14,
-                          marginBottom: 5
-                        }}
-                      >
-                        {e.description
-                          .replace(/(<([^>]+)>)/gi, "")
-                          .replace(/  +/g, " ")}
-                      </Text>
-                      {/*<HTMLView
-                        textComponentProps={{
-                          numberOfLines: 1
-                        }}
-                        value={`<p>${e.description}</p>`}
-                        stylesheet={styles}
-                      />*/}
-                    </View>
-                  </View>
-                  <View style={{ flexDirection: "row" }}>
-                    <PriceButton
-                      value={e.price}
-                      pressed={itemCount !== 0}
-                      count={itemCount}
-                      onPress={async () => {
-                        if (Object.keys(cart).length > 0) {
-                          const firstItemId = Object.keys(cart)[0];
-                          if (
-                            cart[firstItemId].plate.restaurant !== e.restaurant
-                          )
-                            Alert.alert(
-                              "Вы уверенны?",
-                              "Вы добавили блюдо из другого ресторана. Ваша корзина из предыдущего ресторана будет очищена.",
-                              [
-                                {
-                                  text: "OK",
-                                  onPress: () => this.props.onAddPlate(e)
-                                },
-                                {
-                                  text: "Отмена",
-                                  onPress: null,
-                                  style: "cancel"
-                                }
-                              ],
-                              { cancelable: false }
-                            );
-                          else this.props.onAddPlate(e);
-                        } else this.props.onAddPlate(e);
-                      }}
-                    />
-                    {itemCount === 0 ? null : (
-                      <Touchable
-                        background={Touchable.SelectableBackground()}
-                        onPress={() => {
-                          this.props.deletePlate(e);
-                        }}
-                        style={{
-                          width: adaptWidth(28, 30, 34),
-                          marginLeft: 10,
-                          height: adaptWidth(28, 30, 34),
-                          borderRadius: 4,
-                          justifyContent: "center",
-                          backgroundColor: "#dcc49c",
-                          alignItems: "center"
-                        }}
-                      >
-                        <Text style={{ color: "rgba(41,43,55, 1)" }}>
-                          {"–"}
-                        </Text>
-                      </Touchable>
-                    )}
-                    <Text
-                      style={{
-                        color: "rgb(135, 136, 140)",
-                        marginLeft: 10,
-                        fontSize: 12,
-                        lineHeight: 14,
-                        maxWidth: 80,
-                        letterSpacing: 0.4,
-                        fontFamily: "OpenSans",
-                        fontWeight: "600"
-                      }}
-                    >
-                      {e.weight}
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </Touchable>
+              onFavPress={() => {
+                if (this.isInFav(e)) {
+                  this.props.removeFromFav(e);
+                } else {
+                  this.props.addToFav(e);
+                }
+              }}
+              onPriceButtonPress={async () => {
+                if (Object.keys(cart).length > 0) {
+                  const firstItemId = Object.keys(cart)[0];
+                  if (cart[firstItemId].plate.restaurant !== e.restaurant)
+                    Alert.alert(
+                      "Вы уверенны?",
+                      "Вы добавили блюдо из другого ресторана. Ваша корзина из предыдущего ресторана будет очищена.",
+                      [
+                        {
+                          text: "OK",
+                          onPress: () => this.props.onAddPlate(e)
+                        },
+                        {
+                          text: "Отмена",
+                          onPress: null,
+                          style: "cancel"
+                        }
+                      ],
+                      { cancelable: false }
+                    );
+                  else this.props.onAddPlate(e);
+                } else this.props.onAddPlate(e);
+              }}
+              onDeletePlatePress={() => {
+                this.props.deletePlate(e);
+              }}
+            />
           );
         })}
       </Animatable.View>
