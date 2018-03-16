@@ -1,3 +1,4 @@
+/* PS: нигде не используется */
 import React from "react";
 import {
   Dimensions,
@@ -9,12 +10,11 @@ import {
   TouchableOpacity
 } from "react-native";
 import { connect } from "react-redux";
+import propTypes from "prop-types";
 
 import IconD from "../components/ui/IconD";
 
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
-  "window"
-);
+const { width: viewportWidth } = Dimensions.get("window");
 
 const screen =
   viewportWidth >= 320 && viewportWidth < 375
@@ -28,10 +28,39 @@ const screen =
  * @extends {React.Component}
  */
 class PersonalInfo extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      canNav: true
+    };
+  }
+
+  static propTypes = {
+    navigation: propTypes.shape({
+      navigate: propTypes.func
+    }),
+    userData: propTypes.shape({
+      user: propTypes.shape({
+        firstName: propTypes.string,
+        lastName: propTypes.string,
+        email: propTypes.string,
+        phone: propTypes.string
+      })
+    })
+  };
+
   renderMenuItem = (icon, title, nav) => {
     return (
       <TouchableOpacity
-        onPress={() => this.props.navigation.navigate(nav)}
+        onPress={() => {
+          if (this.state.canNav) {
+            this.props.navigation.navigate(nav);
+            this.setState({ canNav: false });
+            setTimeout(() => {
+              this.setState({ canNav: true });
+            }, 1500);
+          }
+        }}
         style={{
           flexDirection: "row",
           marginTop: screen == 0 ? 22 : screen == 1 ? 28 : 33,
@@ -88,11 +117,21 @@ class PersonalInfo extends React.Component {
 
         <View style={{ height: screen == 0 ? 37 : screen == 1 ? 50 : 60 }} />
 
-        {/*<TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            if (this.state.canNav) {
+              this.props.navigation.navigate("UpdateProfile");
+              this.setState({ canNav: false });
+              setTimeout(() => {
+                this.setState({ canNav: true });
+              }, 1500);
+            }
+          }}
+        >
           <Text style={[styles.email, { opacity: 0.5 }]}>
             {"Изменить данные аккаунта"}
           </Text>
-        </TouchableOpacity>*/}
+        </TouchableOpacity>
 
         <View style={{ height: screen == 0 ? 17 : screen == 1 ? 21 : 24 }} />
 
@@ -124,7 +163,7 @@ class PersonalInfo extends React.Component {
             </Text>
               </View>*/}
         </View>
-        {/*this.renderMenuItem("phone", "Изменить номер телефона", null)*/}
+        {this.renderMenuItem("phone", "Изменить номер телефона", "UpdatePhone")}
         {/*this.renderMenuItem("credit-card", "Привязать другую карту оплаты", "SetCard")*/}
         {/*this.renderMenuItem("geotag", "Редактировать адреса доставки", null)}
             {this.renderMenuItem("lock", "Изменить пароль", null)*/}
