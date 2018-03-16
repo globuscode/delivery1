@@ -6,22 +6,19 @@ import {
   TouchableOpacity,
   Dimensions,
   Platform,
-  requireNativeComponent,
   AsyncStorage
 } from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
+import propTypes from "prop-types";
 import { connect } from "react-redux";
 
-import IconD from "../components/ui/IconD";
+import IconD from "../../../components/ui/IconD";
 
 const screen =
   viewportWidth >= 320 && viewportWidth < 375
     ? 0
     : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
 
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
-  "window"
-);
+const { width: viewportWidth } = Dimensions.get("window");
 class Profile extends React.Component {
   constructor(props) {
     super(props);
@@ -30,6 +27,18 @@ class Profile extends React.Component {
       count: 666
     };
   }
+
+  static propTypes = {
+    navigation: propTypes.shape({
+      navigate: propTypes.func
+    }),
+    userData: propTypes.shape({
+      user: propTypes.shape({
+        firstName: propTypes.string,
+        lastName: propTypes.string
+      })
+    })
+  };
 
   async componentWillMount() {
     var currentCity = await AsyncStorage.getItem("city");
@@ -43,15 +52,15 @@ class Profile extends React.Component {
   next = () => {
     if (this.state.canNav) {
       this.props.navigation.navigate("About");
-      this.state.canNav = false;
+      this.setState({ canNav: false });
       setTimeout(() => {
-        this.state.canNav = true;
+        this.setState({ canNav: true });
       }, 1500);
     }
   };
 
   renderStatus = level => {
-    result = [];
+    let result = [];
     for (var i = 0; i < level; i++)
       result.push(
         <View key={i} style={{ margin: 2 }}>
@@ -305,7 +314,6 @@ const styles = StyleSheet.create({
   },
   afterHeader2: {
     color: "#dcc49c",
-    fontWeight: "bold",
     fontSize: 25,
     fontFamily: "OpenSans",
     fontWeight: "600"
