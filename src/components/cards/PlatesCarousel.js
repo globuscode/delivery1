@@ -15,13 +15,13 @@ import { connect } from "react-redux";
 import Touchable from "react-native-platform-touchable";
 import propTypes from "prop-types";
 
-import { host, adaptWidth } from "../etc";
-import { LeftAlignedImage } from "../components/LeftAlignedImage";
-import Storage from "../Reducers";
-import PriceButton from "../components/ui/PriceButton";
-import IconD from "../components/ui/IconD";
-import { fetchJson } from "../etc";
-import { getCartItemCount } from "../utils";
+import { host, adaptWidth } from "../../etc";
+import { LeftAlignedImage } from "../../components/LeftAlignedImage";
+import Storage from "../../Reducers";
+import PriceButton from "../../components/ui/PriceButton";
+import IconD from "../../components/ui/IconD";
+import { fetchJson } from "../../etc";
+import { getCartItemCount } from "../../utils";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
