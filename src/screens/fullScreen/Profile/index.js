@@ -206,12 +206,21 @@ class Profile extends React.Component {
               >
                 {this.state.city}
               </Text>
-              {/*<TouchableOpacity onPress={()=>this.props.navigation.navigate('SelectCity')}><Text style={{
-                  fontFamily: "OpenSans", fontWeight: "600",
-                  fontSize: 12,
-                  opacity: 0.5,
-                  color: 'rgb( 225, 199, 155)'
-                }}>{'Изменить город'}</Text></TouchableOpacity>*/}
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate("SelectCity")}
+              >
+                <Text
+                  style={{
+                    fontFamily: "OpenSans",
+                    fontWeight: "600",
+                    fontSize: 12,
+                    opacity: 0.5,
+                    color: "rgb( 225, 199, 155)"
+                  }}
+                >
+                  {"Изменить город"}
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
 

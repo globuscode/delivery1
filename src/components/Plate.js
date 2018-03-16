@@ -145,13 +145,6 @@ class Plate extends React.Component {
                     .replace(/(<([^>]+)>)/gi, "")
                     .replace(/  +/g, " ")}
                 </Text>
-                {/*<HTMLView
-                    textComponentProps={{
-                      numberOfLines: 1
-                    }}
-                    value={`<p>${e.description}</p>`}
-                    stylesheet={styles}
-                  />*/}
               </View>
             </View>
             <View style={{ flexDirection: "row" }}>
