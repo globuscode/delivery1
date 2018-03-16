@@ -17,13 +17,13 @@ import { connect } from "react-redux";
 import Touchable from "react-native-platform-touchable";
 import Carousel from "react-native-snap-carousel";
 
-import { adaptWidth, fetchJson, host } from "../etc";
-import { LeftAlignedImage } from "../components/LeftAlignedImage";
-import PriceButton from "../components/ui/PriceButton";
-import Plates from "../Main/Recomendations";
-import IconD from "../components/ui/IconD";
-import ButtonD from "../components/ui/ButtonD";
-import { getCartItemCount } from "../utils";
+import { adaptWidth } from "../../../etc";
+import { LeftAlignedImage } from "../../../components/LeftAlignedImage";
+import PriceButton from "../../../components/ui/PriceButton";
+import Plates from "../../../Main/Recomendations";
+import IconD from "../../../components/ui/IconD";
+import ButtonD from "../../../components/ui/ButtonD";
+import { getCartItemCount } from "../../../utils";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -49,227 +49,34 @@ class Collection extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      collection: {
-        id: 1,
-        title: "string",
-        subtitle: "string",
-        image:
-          "//dostavka1.com/upload/iblock/541/5410721de1214a826acad06180f5dd7d.jpg",
-        text: "string",
-        blocks: [
-          {
-            title: "string",
-            type: "IMAGE_TEXT",
-            meta: {
-              text: "string",
-              image:
-                "//dostavka1.com/upload/iblock/541/5410721de1214a826acad06180f5dd7d.jpg"
-            }
-          },
-          {
-            title: "string",
-            type: "PROMO_TEXT",
-            meta: {
-              text: "string",
-              promo: [
-                {
-                  title: "Акция!",
-                  logo:
-                    "//dostavka1.com/upload/iblock/b33/b33f317eec5926301fef1ac16d9af8f6.png",
-                  image:
-                    "//dostavka1.com/upload/iblock/541/5410721de1214a826acad06180f5dd7d.jpg",
-                  restaurant: "ДжонДжоли"
-                },
-                {
-                  title: "Акция!",
-                  logo:
-                    "//dostavka1.com/upload/iblock/b33/b33f317eec5926301fef1ac16d9af8f6.png",
-                  image:
-                    "//dostavka1.com/upload/iblock/541/5410721de1214a826acad06180f5dd7d.jpg",
-                  restaurant: "ДжонДжоли"
-                }
-              ]
-            }
-          },
-          {
-            title: "string",
-            type: "SLIDER_TEXT",
-            meta: {
-              text: "string",
-              plates: [
-                {
-                  id: 69195,
-                  title: "Овощной салат по-грузински с зеленью **",
-                  favorite: false,
-                  tagGroup: 0,
-                  image:
-                    "//dostavka1.com/upload/iblock/c33/c334caac3d2aad248154cf495d0f55cf.jpg",
-                  price: 155,
-                  description:
-                    "Легкий салат: свежие огурцы, томаты, острый зеленый стручковый перец, красный лук с мелко рубленной петрушкой, кинзой и базиликом. <br/>(230 гр.)",
-                  tags: [],
-                  shortTitle: "Овощной салат по-грузински с зеленью **",
-                  weight: "",
-                  restaurant: 7985
-                },
-                {
-                  id: 69197,
-                  title: "Овощной салат по-грузински с орехами **",
-                  favorite: false,
-                  tagGroup: 0,
-                  image:
-                    "//dostavka1.com/upload/iblock/ee5/ee5b0a17a1e117c7ae06b7a8758fa201.jpg",
-                  price: 155,
-                  description:
-                    "Огурцы и томаты с красным луком, приправленные грецкими орехами, острым зеленым перцем и свежей зеленью. <br/>(260 гр.)",
-                  tags: [],
-                  shortTitle: "Овощной салат по-грузински с орехами **",
-                  weight: "",
-                  restaurant: 7985
-                },
-                {
-                  id: 69203,
-                  title: "Салат по-гальски **",
-                  favorite: false,
-                  tagGroup: 0,
-                  image:
-                    "//dostavka1.com/upload/iblock/486/48692030deef1fc20893f4571fc65fcb.jpg",
-                  price: 155,
-                  description:
-                    "Отварной картофель, томаты и огурчики с мясом цыпленка, заправленные майонезом. <br/>(200/10/0.5 гр.)",
-                  tags: [],
-                  shortTitle: "Салат по-гальски **",
-                  weight: "",
-                  restaurant: 7985
-                }
-              ]
-            }
-          },
-          {
-            title: "string",
-            type: "COLLECTION_TEXT",
-            meta: {
-              text: "string",
-              plates: [
-                {
-                  id: 69195,
-                  title: "Овощной салат по-грузински с зеленью **",
-                  favorite: false,
-                  tagGroup: 0,
-                  image:
-                    "//dostavka1.com/upload/iblock/c33/c334caac3d2aad248154cf495d0f55cf.jpg",
-                  price: 155,
-                  description:
-                    "Легкий салат: свежие огурцы, томаты, острый зеленый стручковый перец, красный лук с мелко рубленной петрушкой, кинзой и базиликом. <br/>(230 гр.)",
-                  tags: [],
-                  shortTitle: "Овощной салат по-грузински с зеленью **",
-                  weight: "",
-                  restaurant: 7985
-                },
-                {
-                  id: 69197,
-                  title: "Овощной салат по-грузински с орехами **",
-                  favorite: false,
-                  tagGroup: 0,
-                  image:
-                    "//dostavka1.com/upload/iblock/ee5/ee5b0a17a1e117c7ae06b7a8758fa201.jpg",
-                  price: 155,
-                  description:
-                    "Огурцы и томаты с красным луком, приправленные грецкими орехами, острым зеленым перцем и свежей зеленью. <br/>(260 гр.)",
-                  tags: [],
-                  shortTitle: "Овощной салат по-грузински с орехами **",
-                  weight: "",
-                  restaurant: 7985
-                },
-                {
-                  id: 69203,
-                  title: "Салат по-гальски **",
-                  favorite: false,
-                  tagGroup: 0,
-                  image:
-                    "//dostavka1.com/upload/iblock/486/48692030deef1fc20893f4571fc65fcb.jpg",
-                  price: 155,
-                  description:
-                    "Отварной картофель, томаты и огурчики с мясом цыпленка, заправленные майонезом. <br/>(200/10/0.5 гр.)",
-                  tags: [],
-                  shortTitle: "Салат по-гальски **",
-                  weight: "",
-                  restaurant: 7985
-                }
-              ]
-            }
-          },
-          {
-            title: "string",
-            type: "SET",
-            meta: {
-              plates: [
-                {
-                  id: 69195,
-                  title: "Овощной салат по-грузински с зеленью **",
-                  favorite: false,
-                  tagGroup: 0,
-                  image:
-                    "//dostavka1.com/upload/iblock/c33/c334caac3d2aad248154cf495d0f55cf.jpg",
-                  price: 155,
-                  description:
-                    "Легкий салат: свежие огурцы, томаты, острый зеленый стручковый перец, красный лук с мелко рубленной петрушкой, кинзой и базиликом. <br/>(230 гр.)",
-                  tags: [],
-                  shortTitle: "Овощной салат по-грузински с зеленью **",
-                  weight: "",
-                  restaurant: 7985
-                },
-                {
-                  id: 69197,
-                  title: "Овощной салат по-грузински с орехами **",
-                  favorite: false,
-                  tagGroup: 0,
-                  image:
-                    "//dostavka1.com/upload/iblock/ee5/ee5b0a17a1e117c7ae06b7a8758fa201.jpg",
-                  price: 155,
-                  description:
-                    "Огурцы и томаты с красным луком, приправленные грецкими орехами, острым зеленым перцем и свежей зеленью. <br/>(260 гр.)",
-                  tags: [],
-                  shortTitle: "Овощной салат по-грузински с орехами **",
-                  weight: "",
-                  restaurant: 7985
-                },
-                {
-                  id: 69203,
-                  title: "Салат по-гальски **",
-                  favorite: false,
-                  tagGroup: 0,
-                  image:
-                    "//dostavka1.com/upload/iblock/486/48692030deef1fc20893f4571fc65fcb.jpg",
-                  price: 155,
-                  description:
-                    "Отварной картофель, томаты и огурчики с мясом цыпленка, заправленные майонезом. <br/>(200/10/0.5 гр.)",
-                  tags: [],
-                  shortTitle: "Салат по-гальски **",
-                  weight: "",
-                  restaurant: 7985
-                }
-              ]
-            }
-          }
-        ]
-      }
+      collection: this.props.navigation.state.params.collection.data.collection
     };
   }
 
-  componentWillReceiveProps = async props => {
-    const { collections } = props.favourite;
-    const { id } = this.state.collection;
-    this.setState({ favourite: collections[id] != undefined });
-
-    const { params } = props.navigation.state;
-    if (params.id != undefined) {
-      const collectionResponse = await fetchJson(`${host}/collection?id=${id}`);
-      if (collectionResponse.errors === undefined) {
-        this.setState({ collection: collectionResponse.data });
+  componentWillReceiveProps = async newProps => {
+    const { params } = newProps.navigation.state;
+    if (params.collection != undefined) {
+      if (params.collection.errors === undefined) {
+        this.setState({ collection: params.collection.data.collection });
       }
     }
+    const { collections } = newProps.favourite;
+    const { id } = this.state.collection;
+    this.setState({ favourite: collections[id] != undefined });
   };
+
+  // componentDidMount = async () => {
+  //   const { props } = this;
+  //   const { params } = props.navigation.state;
+  //   if (params.collection != undefined) {
+  //     const collectionResponse = await fetchJson(
+  //       `${host}/collection?id=${params.collection.id}`
+  //     );
+  //     if (collectionResponse.errors === undefined) {
+  //       this.setState({ collection: collectionResponse.data.collection });
+  //     }
+  //   }
+  // };
 
   componentWillMount = () => {
     const { collections } = this.props.favourite;
@@ -298,6 +105,7 @@ class Collection extends React.Component {
         color: "rgb(255, 199, 155)",
         fontSize: 13,
         minWidth: adaptWidth(145, 195, 230),
+        maxWidth: adaptWidth(145, 195, 230),
         minHeight: 70
       }
     });
@@ -319,6 +127,15 @@ class Collection extends React.Component {
           uri: "http:" + image
         }}
       >
+        <LinearGradient
+          colors={["rgba(0,0,0, 1)", "rgba(34, 35, 39, 0)"]}
+          style={{
+            top: 0,
+            height: 200,
+            position: "absolute",
+            width: viewportWidth
+          }}
+        />
         <LinearGradient
           colors={["rgba(39, 40, 48, 0)", "rgba(39, 40, 48, 1)"]}
           style={{
@@ -831,7 +648,7 @@ class Collection extends React.Component {
       );
     }
     if (block.type === "PROMO_TEXT") {
-      const { promo } = block.meta;
+      const { promos } = block.meta;
       let slideW = adaptWidth(
         viewportWidth - 2 * 20,
         viewportWidth - 2 * 24,
@@ -841,7 +658,7 @@ class Collection extends React.Component {
       return (
         <View>
           <Carousel
-            data={promo}
+            data={promos}
             renderItem={this._renderPromo}
             inactiveSlideScale={1}
             inactiveSlideOpacity={1}

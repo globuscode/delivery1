@@ -18,11 +18,11 @@ import LinearGradient from "react-native-linear-gradient";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import propTypes from "prop-types";
 
-import CollectionCard from "../components/cards/CollectionCard";
-import PriceButton from "../components/ui/PriceButton";
-import IconD from "../components/ui/IconD";
-import { getCartItemCount } from "../utils";
-import { adaptWidth, host, fetchJson } from "../etc";
+import CollectionCard from "../../../components/cards/CollectionCard";
+import PriceButton from "../../../components/ui/PriceButton";
+import IconD from "../../../components/ui/IconD";
+import { getCartItemCount } from "../../../utils";
+import { adaptWidth, host, fetchJson } from "../../../etc";
 const { width: viewportWidth } = Dimensions.get("window");
 
 class Favourite extends React.Component {
@@ -253,7 +253,12 @@ class Favourite extends React.Component {
         key={index}
         data={item}
         favicon="trash"
-        onPress={() => this.nav(index)}
+        onPress={() => {
+          this.props.navigation.navigate("Loader", {
+            collection: item,
+            action: "navigateToCollection"
+          });
+        }}
         onFavPress={() => this.props.onDeleteColletion(item)}
       />
     );

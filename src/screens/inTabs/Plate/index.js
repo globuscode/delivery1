@@ -16,15 +16,14 @@ import Icon from "react-native-vector-icons/Ionicons";
 import HTMLView from "react-native-htmlview";
 import LinearGradient from "react-native-linear-gradient";
 import { getStatusBarHeight } from "react-native-status-bar-height";
-import propTypes from "prop-types";
-import PriceButton from "../components/ui/PriceButton";
 import { connect } from "react-redux";
-import { adaptWidth } from "../etc";
-import IconD from "../components/ui/IconD";
+import propTypes from "prop-types";
 import Touchable from "react-native-platform-touchable";
-import { host } from "../etc";
-import { fetchJson } from "../etc";
-import { getCartItemCount } from "../utils";
+
+import PriceButton from "../../../components/ui/PriceButton";
+import IconD from "../../../components/ui/IconD";
+import { host, fetchJson, adaptWidth } from "../../../etc";
+import { getCartItemCount } from "../../../utils";
 function onlyUnique(value, index, self) {
   return self.indexOf(value) === index;
 }
@@ -505,8 +504,7 @@ class Plate extends React.Component {
                 else {
                   this.props.onAddPlate(item);
                   if (fromMenu === undefined)
-                    if (cart[item.id] !== undefined)
-                      this.props.openModal(item);
+                    if (cart[item.id] !== undefined) this.props.openModal(item);
                 }
               } else {
                 this.props.onAddPlate(item);

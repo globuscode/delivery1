@@ -20,13 +20,13 @@ import HTMLView from "react-native-htmlview";
 import PropTypes from "prop-types";
 import * as Animatable from "react-native-animatable";
 
-import Recomendations from "../Main/Recomendations";
-import IconD from "../components/ui/IconD";
-import { adaptWidth } from "../etc";
-import { fetchJson } from "../etc";
-import { host } from "../etc";
-import PriceButton from "../components/ui/PriceButton";
-import { getCartItemCount } from "../utils";
+import Recomendations from "../../../Main/Recomendations";
+import IconD from "../../../components/ui/IconD";
+import { adaptWidth } from "../../../etc";
+import { fetchJson } from "../../../etc";
+import { host } from "../../../etc";
+import PriceButton from "../../../components/ui/PriceButton";
+import { getCartItemCount } from "../../../utils";
 
 const { width: viewportWidth } = Dimensions.get("window");
 const hr = (

@@ -15,9 +15,9 @@ import { getStatusBarHeight } from "react-native-status-bar-height";
 import Drawer from "react-native-drawer";
 import propTypes from "prop-types";
 
-import Picker from "../Picker";
-import { host, fetchJson } from "../etc";
-import RestouransOfTheWeek from "../Main/RestouransOfTheWeek";
+import Picker from "../../../Picker";
+import { host, fetchJson } from "../../../etc";
+import RestouransOfTheWeek from "../../../Main/RestouransOfTheWeek";
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
