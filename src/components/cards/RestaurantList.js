@@ -10,12 +10,12 @@ import {
 import LinearGradient from "react-native-linear-gradient";
 import Touchable from "react-native-platform-touchable";
 import { connect } from "react-redux";
-import { LeftAlignedImage } from "../components/LeftAlignedImage";
+import { LeftAlignedImage } from "../../components/LeftAlignedImage";
 import propTypes from "prop-types";
 
-import IconD from "../components/ui/IconD";
-import { host, adaptWidth } from "../etc";
-import { fetchJson } from "../etc";
+import IconD from "../../components/ui/IconD";
+import { host, adaptWidth } from "../../etc";
+import { fetchJson } from "../../etc";
 
 const { width: viewportWidth } = Dimensions.get("window");
 

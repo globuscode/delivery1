@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import PlatesCarousel from "../components/cards/PlatesCarousel";
-import RestaurantList from "./RestaurantList";
+import RestaurantList from "../components/cards/RestaurantList";
 import { connect } from "react-redux";
 import propTypes from "prop-types";
 
