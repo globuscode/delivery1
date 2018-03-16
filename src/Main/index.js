@@ -1,16 +1,16 @@
 import React from "react";
 import { View, Dimensions, Platform } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import AllRestourans from "../AllRestourans";
+import AllRestourans from "../screens/inTabs/AllRestourans";
 import { StackNavigator, TabNavigator, TabBarBottom } from "react-navigation";
 import Touchable from "react-native-platform-touchable";
 
 import Feed from "./Feed";
-import Plate from "../Plate";
-import Restaurant from "../Restaurant";
-import RestaurantMenu from "../RestaurantMenu";
-import Favoutite from "../Favourite";
-import Collection from "../Collection";
+import Plate from "../screens/inTabs/Plate";
+import Restaurant from "../screens/inTabs/Restaurant";
+import RestaurantMenu from "../screens/inTabs/RestaurantMenu";
+import Favoutite from "../screens/inTabs/Favourite";
+import Collection from "../screens/inTabs/Collection";
 import Cart from "../Cart";
 
 import CartTabIcon from "./CartTabIcon";
