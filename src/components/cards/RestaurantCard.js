@@ -12,6 +12,7 @@ import propTypes from "prop-types";
 import Touchable from "react-native-platform-touchable";
 import LinearGradient from "react-native-linear-gradient";
 
+import { LeftAlignedImage } from "../LeftAlignedImage";
 import IconD from "../ui/IconD";
 import { adaptWidth } from "../../etc";
 
@@ -21,24 +22,36 @@ class RestaurantCard extends React.Component {
   static propTypes = {
     onPress: propTypes.func,
     onFavPress: propTypes.func,
+    addToFav: propTypes.func,
+    removeFromFav: propTypes.func,
     key: propTypes.number,
+    favourite: propTypes.shape({
+      plates: propTypes.object,
+      collections: propTypes.object,
+      restaurants: propTypes.object
+    }),
     data: propTypes.object,
-    inFav: propTypes.bool
+    inFav: propTypes.bool,
+    fav: propTypes.bool
   };
 
   renderLogo(logo) {
     const SLIDER_WIDTH = adaptWidth(280, 328.1, 362.3);
 
     return (
-      <Image
-        resizeMode="contain"
+      <View
         style={{
-          width: SLIDER_WIDTH / 3,
-          height: SLIDER_WIDTH / 3,
-          backgroundColor: "transparent"
+          width: SLIDER_WIDTH - 100,
+          height: 110
         }}
-        source={{ uri: "http:" + logo }}
-      />
+      >
+        <LeftAlignedImage
+          height={110}
+          width={SLIDER_WIDTH - 100}
+          resizeMode={"center"}
+          source={{ uri: "http:" + logo }}
+        />
+      </View>
     );
   }
 
@@ -54,6 +67,21 @@ class RestaurantCard extends React.Component {
           </View>
         </TouchableOpacity>
       );
+
+    return (
+      <TouchableOpacity
+        hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+        onPress={this.props.onFavPress}
+      >
+        <View style={{ backgroundColor: "transparent" }}>
+          <IconD
+            name={this.props.fav ? "heart_full" : "heart_empty"}
+            size={18}
+            color="#dcc49c"
+          />
+        </View>
+      </TouchableOpacity>
+    );
   };
 
   render = () => {
@@ -140,13 +168,42 @@ class RestaurantCard extends React.Component {
           >
             {item.title != undefined ? item.title : item.restourantName}
           </Text>
+          <Text
+            style={{
+              color: "#dcc49c",
+              fontSize: 11,
+              lineHeight: 11,
+              fontFamily: "OpenSans"
+            }}
+          >
+            {item.restourantTags.length < 3
+              ? item.restourantTags.map(tag => tag + ", ")
+              : item.restourantTags[0] +
+                ", " +
+                item.restourantTags[1] +
+                " + " +
+                (item.restourantTags.length - 1).toString() +
+                " кухонь"}
+          </Text>
         </View>
       </View>
     );
   };
 }
 
-export default connect(null, null)(RestaurantCard);
+export default connect(
+  ({ favourite }) => ({
+    favourite: favourite
+  }),
+  dispatch => ({
+    addToFav: data => {
+      dispatch({ type: "ADD_RESTAURANT_TO_FAV", payload: data });
+    },
+    removeFromFav: data => {
+      dispatch({ type: "DELETE_RESTAURANT", payload: data });
+    }
+  })
+)(RestaurantCard);
 
 const styles = StyleSheet.create({
   tabStyle: {
