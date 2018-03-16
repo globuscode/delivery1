@@ -17,7 +17,7 @@ import propTypes from "prop-types";
 
 import Picker from "../../../Picker";
 import { host, fetchJson } from "../../../etc";
-import RestaurantList from "../../../Main/RestaurantList";
+import RestaurantList from "../../../components/cards/RestaurantList";
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
