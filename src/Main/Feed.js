@@ -13,7 +13,7 @@ import RestouransOfTheWeek from "./RestouransOfTheWeek";
 import { connect } from "react-redux";
 import propTypes from "prop-types";
 
-import Collections from "./Collections";
+import CollectionCarousel from "./CollectionCarousel";
 import IconD from "../components/ui/IconD";
 
 const { width: viewportWidth } = Dimensions.get("window");
@@ -245,7 +245,7 @@ class Feed extends React.Component {
               )}
           {this.state.collections === null ? null : this.state.collections
             .length === 0 ? null : (
-              <Collections
+              <CollectionCarousel
                 data={this.state.collections}
                 navigation={this.props.navigation}
                 onNextButtonPress={() => {

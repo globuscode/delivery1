@@ -10,7 +10,7 @@ import { adaptWidth } from "../etc";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
-class Collections extends React.Component {
+class CollectionCarousel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -146,4 +146,4 @@ export default connect(
     removeColletionFromFav: collection =>
       dispatch({ type: "DELETE_COLLECTION", payload: collection })
   })
-)(Collections);
+)(CollectionCarousel);
