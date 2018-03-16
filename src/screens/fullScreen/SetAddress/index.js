@@ -194,13 +194,18 @@ class SelectAddress extends React.Component {
         method: "POST"
       }
     );
-    this.props.hideSpinner();
     if (responseJson["errors"] != undefined) {
-      // Alert.alert(responseJson["errors"]["title"] + ' ' + responseJson["errors"]["code"], responseJson["errors"]["detail"]);
+      Alert.alert(
+        responseJson["errors"]["title"] + " " + responseJson["errors"]["code"],
+        responseJson["errors"]["detail"],
+        [{ text: "OK", onPress: this.props.hideSpinner }]
+      );
       this.setState({ deliver: false });
       return -1;
-    } else if (responseJson["data"] != undefined)
+    } else if (responseJson["data"] != undefined) {
+      this.props.hideSpinner();
       this.setState({ deliver: responseJson["data"]["result"] == 0 });
+    }
   };
 
   next = () => {
