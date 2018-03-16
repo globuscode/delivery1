@@ -1,6 +1,6 @@
 {
   "name": "dostavka1",
-  "version": "1.0.22",
+  "version": "1.0.25",
   "private": true,
   "devDependencies": {
     "babel-eslint": "^8.2.1",
@@ -12,8 +12,7 @@
     "react-test-renderer": "16.0.0"
   },
   "scripts": {
-    "postlink":
-      "cat ./node_modules/react-native-vkontakte-login/scripts/postinstall.js",
+    "postlink": "cat ./node_modules/react-native-vkontakte-login/scripts/postinstall.js",
     "start": "react-native start",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
@@ -21,7 +20,10 @@
     "version": "./version-ios.sh"
   },
   "rnpm": {
-    "assets": ["./assets/fonts/", "./assets/icons/fonts"]
+    "assets": [
+      "./assets/fonts/",
+      "./assets/icons/fonts"
+    ]
   },
   "jest": {
     "preset": "jest-expo"
