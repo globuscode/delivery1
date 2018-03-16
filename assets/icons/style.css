@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('fonts/icomoon.eot?fdjy77');
-  src:  url('fonts/icomoon.eot?fdjy77#iefix') format('embedded-opentype'),
-    url('fonts/icomoon.ttf?fdjy77') format('truetype'),
-    url('fonts/icomoon.woff?fdjy77') format('woff'),
-    url('fonts/icomoon.svg?fdjy77#icomoon') format('svg');
+  src:  url('fonts/icomoon.eot?25kzxg');
+  src:  url('fonts/icomoon.eot?25kzxg#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?25kzxg') format('truetype'),
+    url('fonts/icomoon.woff?25kzxg') format('woff'),
+    url('fonts/icomoon.svg?25kzxg#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -24,57 +24,21 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-twitter:before {
-  content: "\e91f";
-  color: #e1c79b;
+.icon-apple:before {
+  content: "\e923";
 }
-.icon-fb:before {
-  content: "\e920";
-  color: #e1c79b;
-}
-.icon-vk:before {
-  content: "\e921";
-  color: #e1c79b;
-}
-.icon-contact-bold:before {
-  content: "\e91e";
-  color: #e1c79b;
-}
-.icon-trash:before {
-  content: "\e91d";
-  color: #e1c79b;
-}
-.icon-alert:before {
-  content: "\e902";
-  color: #e1c79b;
-}
-.icon-multy-credit-card:before {
-  content: "\e91c";
-  color: #e1c79b;
-}
-.icon-credit-card:before {
-  content: "\e918";
-  color: #e1c79b;
-}
-.icon-geotag:before {
-  content: "\e919";
-  color: #e1c79b;
-}
-.icon-lock:before {
-  content: "\e91a";
-  color: #e1c79b;
-}
-.icon-phone:before {
-  content: "\e91b";
-  color: #e1c79b;
+.icon-google:before {
+  content: "\e922";
+  color: #1d87f8;
 }
 .icon-book-small:before {
   content: "\e900";
-  color: #e1c79b;
 }
 .icon-cart-small:before {
   content: "\e901";
-  color: #e1c79b;
+}
+.icon-alert:before {
+  content: "\e902";
 }
 .icon-coins:before {
   content: "\e903";
@@ -138,4 +102,34 @@
 }
 .icon-find:before {
   content: "\e917";
+}
+.icon-credit-card:before {
+  content: "\e918";
+}
+.icon-geotag:before {
+  content: "\e919";
+}
+.icon-lock:before {
+  content: "\e91a";
+}
+.icon-phone:before {
+  content: "\e91b";
+}
+.icon-multy-credit-card:before {
+  content: "\e91c";
+}
+.icon-trash:before {
+  content: "\e91d";
+}
+.icon-contact-bold:before {
+  content: "\e91e";
+}
+.icon-twitter:before {
+  content: "\e91f";
+}
+.icon-fb:before {
+  content: "\e920";
+}
+.icon-vk:before {
+  content: "\e921";
 }
