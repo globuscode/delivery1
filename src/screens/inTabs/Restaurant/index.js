@@ -22,6 +22,8 @@ import IconD from "../../../components/ui/IconD";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
+const USER_RANGS = ["Ранг 1", "Ранг 2", "Ранг 3"];
+
 const hr = (
   <View
     style={{
@@ -73,7 +75,7 @@ class Restaurant extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      rang: 0,
+      rang: this.props.navigation.state.params.restaurant.level,
       canNav: true,
       data: this.props.navigation.state.params.restaurant,
       favourite: false
@@ -85,26 +87,6 @@ class Restaurant extends React.Component {
     const { restaurants } = this.props.favourite;
     let fav = restaurants[id] != undefined;
     this.state.favourite = fav;
-
-    // for (let i = 0; i < this.props.favourite.restaurants.length; i++) {
-    //   let rest = this.props.favourite.restaurants[i];
-    //   if (rest === this.state.data.id) {
-    //     fav = true;
-    //   }
-    // }
-
-    // const restaurantId = this.props.navigation.state
-    //   ? this.props.navigation.state.params.id
-    //   : (-1).toString();
-
-    // let restaurantResponseJson = await fetchJson(
-    //   `${host}/restaurant?restaurantId=${restaurantId}`
-    // );
-
-    // if (restaurantResponseJson.data === undefined) {
-    //   Alert.alert("Ошибка", "Ошибка запроса");
-    //   throw Error("Упс...");
-    // }
 
     this.props.navigation.setParams({
       favourite: fav,
@@ -119,12 +101,6 @@ class Restaurant extends React.Component {
         }
       }
     });
-
-    // this.state.data = this.props.navigation.state.params.restaurant;
-    // this.setState({
-    //   favourite: fav,
-    //   data: restaurantResponseJson.data.result
-    // });
   };
 
   componentWillReceiveProps = async newProps => {
@@ -311,21 +287,34 @@ class Restaurant extends React.Component {
           </View>
           <View style={{ height: 70 - 20 }} />
 
-          {/* Ранг пользователя
-			<View style={[styles.row, {justifyContent: 'center'}]}>
-				<Text style={{ color: '#dcc49c', fontFamily: "OpenSans", fontWeight: "600", fontSize: 11 }}>{'Новичок'}</Text>
-			</View>
-			<View style={[styles.row, { justifyContent: 'center' }]}>
-				{[1, 2, 3].map(e => 
-					<View
-						key={ e }
-						style={{margin: 3.3}}>
-							<IconD
-								name='dostavka'
-								color={e <= this.state.rang ? '#dcc49c' : 'rgb(87, 88, 98)'}
-								size={16}/>
-					</View>)}
-			</View> */}
+          {/* Ранг пользователя */}
+          {this.state.rang === undefined ? null : (
+            <View style={[styles.row, { justifyContent: "center" }]}>
+              <Text
+                style={{
+                  color: "#dcc49c",
+                  fontFamily: "OpenSans",
+                  fontWeight: "600",
+                  fontSize: 11
+                }}
+              >
+                {USER_RANGS[this.state.rang]}
+              </Text>
+            </View>
+          )}
+          {this.state.rang === undefined ? null : (
+            <View style={[styles.row, { justifyContent: "center" }]}>
+              {[1, 2, 3].map(e => (
+                <View key={e} style={{ margin: 3.3 }}>
+                  <IconD
+                    name="dostavka"
+                    color={e <= this.state.rang ? "#dcc49c" : "rgb(87, 88, 98)"}
+                    size={16}
+                  />
+                </View>
+              ))}
+            </View>
+          )}
 
           {/* Кнопка Хочу скидку 
 			<View style={[styles.row, { justifyContent: 'center' }]}>
