@@ -20,6 +20,7 @@ import propTypes from "prop-types";
 
 import CollectionCard from "../../../components/cards/CollectionCard";
 import PriceButton from "../../../components/ui/PriceButton";
+import RestaurantCard from "../../../components/cards/RestaurantCard";
 import IconD from "../../../components/ui/IconD";
 import { getCartItemCount } from "../../../utils";
 import { adaptWidth, host, fetchJson } from "../../../etc";
@@ -85,104 +86,23 @@ class Favourite extends React.Component {
     const { restaurants } = favourite;
     const restaurantsIds = Object.keys(restaurants);
     return restaurantsIds.map((id, index) => {
-      return this._renderSingleRestaurant(restaurants[id], index);
-    });
-  };
-
-  _renderSingleRestaurant = (item, index) => {
-    const screen =
-      viewportWidth >= 320 && viewportWidth < 375
-        ? 0
-        : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
-    const SLIDER_WIDTH =
-      screen == 0
-        ? viewportWidth - 2 * 20
-        : screen == 1 ? viewportWidth - 2 * 24 : viewportWidth - 26;
-    return (
-      <View
-        key={index}
-        style={[
-          styles.itemContainer,
-          { width: SLIDER_WIDTH, height: SLIDER_WIDTH }
-        ]}
-      >
-        <Touchable
-          foreground={Touchable.SelectableBackgroundBorderless()}
-          activeOpacity={0.8}
-          style={{
-            position: "absolute",
-            width: SLIDER_WIDTH,
-            height: SLIDER_WIDTH
-          }}
+      return (
+        <RestaurantCard
+          inFav
+          data={restaurants[id]}
+          key={index}
           onPress={() =>
             this.props.navigation.navigate("Loader", {
-              id: item.id,
+              id: restaurants[id].id,
               action: "navigateToRestaurant"
             })
           }
-        >
-          <View>
-            <Image
-              onLoadEnd={() => this.setState({})}
-              style={[
-                styles.itemBackgroundImage,
-                { width: SLIDER_WIDTH, height: SLIDER_WIDTH }
-              ]}
-              source={{
-                uri:
-                  "http:" + (item.image != undefined ? item.image : item.photo)
-              }}
-            />
-            <LinearGradient
-              colors={["rgba(0,0,0, 0.8)", "transparent", "rgba(0,0,0, 0.8)"]}
-              style={[
-                styles.itemGradientStyle,
-                { width: SLIDER_WIDTH + 1, height: SLIDER_WIDTH + 1 }
-              ]}
-            />
-          </View>
-        </Touchable>
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          {/*<View style={{ flexDirection: 'row', alignSelf: 'flex-start'  }}>
-            {this.renderLevel(item.level)}                
-            <Text style={{
-              paddingHorizontal: 5,
-              maxWidth: 150,
-              //fontFamily: 'Stem-Medium',
-              fontWeight: 'bold',
-              fontSize: 13,
-              backgroundColor: '#dcc49c',
-              color: '#292b37',
-              }}>{item.discount}</Text>
-            </View>*/}
-          <View>{this.renderHeart(item)}</View>
-        </View>
-        <View
-          pointerEvents="none"
-          style={{
-            flexDirection: "column",
-            justifyContent: "flex-end",
-            backgroundColor: "transparent"
+          onFavPress={() => {
+            this.props.onDeleteRestaurant(restaurants[id]);
           }}
-        >
-          {this.renderLogo(
-            item.logoImage != undefined ? item.logoImage : item.restourantLogo
-          )}
-          <Text
-            style={{
-              color: "white",
-              fontSize: 14,
-              lineHeight: 22,
-              fontFamily: "Stem-Medium",
-              alignItems: "flex-end",
-              letterSpacing: 0.4
-            }}
-          >
-            {item.title != undefined ? item.title : item.restourantName}
-          </Text>
-        </View>
-      </View>
-    );
+        />
+      );
+    });
   };
 
   fav = () => {
