@@ -3,6 +3,7 @@ import {
   View,
   Platform,
   Text,
+  Alert,
   TouchableOpacity,
   Dimensions,
   ActivityIndicator
@@ -63,6 +64,7 @@ class MakeOrder extends React.Component {
 
   static propTypes = {
     cart: propTypes.object,
+    cards: propTypes.array,
     userStore: propTypes.object,
     navigation: propTypes.object,
     makeOrder: propTypes.func
@@ -120,6 +122,7 @@ class MakeOrder extends React.Component {
       .then(paymentResponse => {
         if (Platform.OS === "ios") {
           const { paymentData } = paymentResponse.details;
+          callback(paymentData);
           paymentResponse.complete("success").then(() => {
             callback(paymentData);
           });
@@ -220,12 +223,21 @@ class MakeOrder extends React.Component {
               });
             }
           )}
+          {this.renderMenuItem("card", "Добавить новую карту", () => {
+            this.setState({
+              selectedCard: undefined
+            });
+            this.props.navigation.navigate("SetCreditCard", {
+              token: this.props.userStore.token,
+              nextScreen: "makeOrder"
+            });
+          })}
           {this.renderMenuItem("credit-card", "Наличными курьеру", () => {
             this.setState({
               selectedCard: undefined
             });
           })}
-          {navitagionParams.cards.map(card =>
+          {this.props.cards.map(card =>
             this.renderMenuItem("credit-card", card.cardName, () => {
               this.setState({
                 selectedCard: card.cardId
@@ -233,7 +245,7 @@ class MakeOrder extends React.Component {
             })
           )}
           {this.renderMenuItem(
-            "credit-card",
+            Platform.OS === "ios" ? "apple" : "google",
             (Platform.OS === "ios" ? "Apple" : "Google") + " Pay",
             () => {
               this.setState({
@@ -306,33 +318,52 @@ class MakeOrder extends React.Component {
                     this.state.selected === "Google Pay"
                   ) {
                     this.togglePayment(cartArray, async paymentData => {
-                      const paymentResponse = await fetchJson(`${host}/pay`, {
-                        body: JSON.stringify({
-                          token: this.props.userStore.token,
-                          system: Platform.OS === "ios" ? "apple" : "android",
-                          cart: result.data.cartId,
-                          data: paymentData
-                        })
-                      });
+                      let form = new FormData();
+                      form.append("token", this.props.userStore.token);
+                      form.append(
+                        "system",
+                        Platform.OS === "ios" ? "apple" : "android"
+                      );
+                      form.append("cart", result.data.cartId);
+                      form.append("tokenPay", JSON.stringify(paymentData));
+                      const paymentResponse = await fetchJson(
+                        `${host}/pay/index.php`,
+                        {
+                          method: "POST",
+                          body: form
+                        }
+                      );
 
                       if (paymentResponse.errors === undefined) {
                         this.props.makeOrder();
                         this.props.navigation.dispatch(resetAction);
                         this.state.canNav = true;
+                      } else {
+                        Alert.alert(paymentResponse.errors.title);
                       }
                       this.setState({ fetching: false });
                     });
                     this.setState({ fetching: false });
                   } else if (this.state.selectedCard !== undefined) {
                     // обрабатывает оплату через payture
-                    const paymentResponse = await fetchJson(`${host}/pay`, {
-                      body: JSON.stringify({
-                        token: this.props.userStore.token,
-                        system: "payture",
-                        cart: result.data.cartId,
-                        data: this.state.selectedCard
+                    let form = new FormData();
+                    form.append("token", this.props.userStore.token);
+                    form.append("system", "payture");
+                    form.append("cart", result.data.cartId);
+                    form.append(
+                      "data",
+                      JSON.stringify({
+                        cardId: this.state.selectedCard,
+                        ammount: result.data.total
                       })
-                    });
+                    );
+                    const paymentResponse = await fetchJson(
+                      `${host}/pay/index.php`,
+                      {
+                        method: "POST",
+                        body: form
+                      }
+                    );
 
                     if (paymentResponse.errors === undefined) {
                       this.props.makeOrder();
@@ -376,9 +407,10 @@ class MakeOrder extends React.Component {
 }
 
 export default connect(
-  ({ cart, user }) => ({
+  ({ cart, user, cards }) => ({
     cart: cart,
-    userStore: user
+    userStore: user,
+    cards: cards
   }),
   dispatch => ({
     makeOrder: () => dispatch({ type: "MAKE_ORDER" })
