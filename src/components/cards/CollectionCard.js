@@ -221,7 +221,10 @@ export default class Collection extends React.Component {
         <View style={itemStyles.containerSlider}>
           <View style={itemStyles.viewSlider}>
             {/* Задний фон карточки */}
-            <Image style={itemStyles.BG_IMAGE} source={{ uri: item.image }} />
+            <Image
+              style={itemStyles.BG_IMAGE}
+              source={{ uri: "http:" + item.image }}
+            />
 
             {/* Градиент */}
             <LinearGradient
