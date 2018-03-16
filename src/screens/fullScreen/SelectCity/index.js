@@ -1,23 +1,18 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Dimensions,
-  requireNativeComponent,
-  AsyncStorage
-} from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
+import { StyleSheet, Text, View, Dimensions, AsyncStorage } from "react-native";
 import Picker from "react-native-wheel-picker";
-import Touchable from "react-native-platform-touchable";
-import { connect } from "react-redux";
+import propTypes from "prop-types";
+
 import { host } from "../../../etc";
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
-  "window"
-);
+import BottomButton from "../../../components/ui/BottomButton";
+const { width: viewportWidth } = Dimensions.get("window");
 
 export default class SelectCity extends React.Component {
+  static propTypes = {
+    navigation: propTypes.shape({
+      navigate: propTypes.func
+    }).isRequired
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -129,9 +124,9 @@ export default class SelectCity extends React.Component {
     this.setCity(JSON.stringify(this.state.selectedCity));
     if (this.state.canNav) {
       this.props.navigation.navigate("About");
-      this.state.canNav = false;
+      this.setState({ canNav: false });
       setTimeout(() => {
-        this.state.canNav = true;
+        this.setState({ canNav: true });
       }, 1500);
     }
   };
@@ -228,32 +223,9 @@ export default class SelectCity extends React.Component {
             {"Все партнеры компании проходят \nстрогую проверку качества"}
           </Text>
         </View>
-
-        <View
-          style={{
-            position: "absolute",
-            alignSelf: "center",
-            width: viewportWidth - 30,
-            height: 49,
-            bottom: 0,
-            borderTopWidth: 2,
-            borderColor: "#dcc49c",
-            flexDirection: "row",
-            justifyContent: "center"
-          }}
-        >
-          <Touchable
-            onPress={this.next}
-            style={{
-              alignSelf: "stretch",
-              flexDirection: "column",
-              justifyContent: "center",
-              width: viewportWidth
-            }}
-          >
-            <Text style={styles.nextButtonText}>Далее</Text>
-          </Touchable>
-        </View>
+        <BottomButton onPress={this.next}>
+          <Text style={styles.nextButtonText}>Далее</Text>
+        </BottomButton>
       </View>
     );
   }
@@ -281,7 +253,6 @@ const styles = StyleSheet.create({
   },
   afterHeader2: {
     color: "#dcc49c",
-    fontWeight: "bold",
     fontSize: 25,
     fontFamily: "OpenSans",
     fontWeight: "600"

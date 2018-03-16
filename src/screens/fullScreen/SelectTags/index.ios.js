@@ -7,42 +7,18 @@ import {
   TouchableOpacity,
   Dimensions,
   ActivityIndicator,
-  ScrollView,
   AsyncStorage,
   WebView
 } from "react-native";
+import propTypes from "prop-types";
 
-import Touchable from "react-native-platform-touchable";
 var webapp = require("./BallPool.html");
-
-const scale = 5;
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
 import { host } from "../../../etc";
-
-var centersOfCircles = [];
-
-function distance(a, b) {
-  return (a.x - b.x) ^ (2 + (a.y - b.y)) ^ 2 ^ (1 / 2);
-}
-
-function generateCircles(count, radius) {
-  var result = [];
-
-  for (var i = 0; i < count / 3; i++) {
-    for (var j = 0; j < 3; j++) {
-      if (i * j < count)
-        result.push({
-          x: 2 * radius * j + 120 + (i % 2) * 80,
-          y: 2 * radius * i
-        });
-    }
-  }
-
-  return result;
-}
+import BottomButton from "../../../components/ui/BottomButton";
 
 export default class SelectTags extends React.Component {
   constructor(props) {
@@ -61,6 +37,17 @@ export default class SelectTags extends React.Component {
       positions: [[0, 20], [10, 20], [0, 20], [10, 20], [0, 20]]
     };
   }
+
+  static propTypes = {
+    navigation: propTypes.shape({
+      state: propTypes.shape({
+        params: propTypes.shape({
+          next: propTypes.string
+        })
+      }),
+      navigate: propTypes.func
+    })
+  };
 
   async componentWillMount() {
     let tagsStr = await AsyncStorage.getItem("tags");
@@ -85,7 +72,7 @@ export default class SelectTags extends React.Component {
       Alert.alert("Ошибка", "Не верный ответ с сервера");
 
     this.state.kitchens = [];
-    for (name in responseJson.data) {
+    for (let name in responseJson.data) {
       responseJson.data[name].selected = false;
       for (let j = 0; j < tags.length; j++) {
         if (tags[j].title === responseJson.data[name].title) {
@@ -112,9 +99,12 @@ export default class SelectTags extends React.Component {
 
   getSelectedTags() {
     let result = [];
-    selectedKitchens = this.state.kitchens.map((element, index) => {
+    for (let i = 0; i < this.state.kitchens.length; i++) {
+      let element = this.state.kitchens[i];
       if (element.selected === true) result.push(element);
-    });
+    }
+    // let selectedKitchens = this.state.kitchens.map((element, index) => {
+    // });
     return result;
   }
 
@@ -131,9 +121,9 @@ export default class SelectTags extends React.Component {
           if (this.props.navigation.state.params.next === "LoadingScreen")
             this.props.navigation.navigate("LoadingScreen");
         } else this.props.navigation.navigate("SelectTastes");
-        this.state.canNav = false;
+        this.setState({ canNav: false });
         setTimeout(() => {
-          this.state.canNav = true;
+          this.setState({ canNav: true });
         }, 1500);
       }
   };
@@ -156,7 +146,7 @@ export default class SelectTags extends React.Component {
    * Обработчик сообщений из WebView
    */
   onMessage = event => {
-    data = JSON.parse(event.nativeEvent.data);
+    let data = JSON.parse(event.nativeEvent.data);
     if (data.index >= 0) {
       var index = parseInt(data.index);
       this.state.kitchens[index].selected = !this.state.kitchens[index]
@@ -255,7 +245,6 @@ export default class SelectTags extends React.Component {
                 this.setState({ spinner: false });
               }, 1000);
             }}
-            domStorageEnabled={true}
             style={{
               backgroundColor: "transparent",
               height: viewportHeight - 193,
@@ -263,42 +252,21 @@ export default class SelectTags extends React.Component {
             }}
           />
         </View>
-
-        <View
-          style={{
-            position: "absolute",
-            alignSelf: "center",
-            width: viewportWidth - 30,
-            bottom: 0,
-            height: 49,
-            borderTopWidth: 2,
-            borderColor: this.isNext() ? "#dcc49c" : "#575862",
-            flexDirection: "row",
-            justifyContent: "center"
-          }}
+        <BottomButton
+          onPress={this.next}
+          borderColor={this.isNext() ? "#dcc49c" : "#575862"}
         >
-          <Touchable
-            background={Touchable.Ripple("gray")}
-            onPress={this.next}
-            style={{
-              alignSelf: "stretch",
-              flexDirection: "column",
-              justifyContent: "center",
-              width: viewportWidth
-            }}
+          <Text
+            style={[
+              styles.nextButtonText,
+              {
+                color: this.isNext() ? "#dcc49c" : "#575862"
+              }
+            ]}
           >
-            <Text
-              style={[
-                styles.nextButtonText,
-                {
-                  color: this.isNext() ? "#dcc49c" : "#575862"
-                }
-              ]}
-            >
-              Далее
-            </Text>
-          </Touchable>
-        </View>
+            {"Далее"}
+          </Text>
+        </BottomButton>
       </View>
     );
     return result;

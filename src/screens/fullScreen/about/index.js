@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View, Image, Dimensions } from "react-native";
 import propTypes from "prop-types";
 import Carousel, { Pagination } from "react-native-snap-carousel";
-import Touchable from "react-native-platform-touchable";
+import BottomButton from "../../../components/ui/BottomButton";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -191,32 +191,9 @@ export default class SelectCity extends React.Component {
                   : viewportWidth >= 375 && viewportWidth < 414 ? -50 : -50
             }}
           />
-          <View
-            style={{
-              position: "absolute",
-              alignSelf: "center",
-              width: viewportWidth - 30,
-              bottom: 0,
-              height: 49,
-              borderTopWidth: 2,
-              borderColor: "#dcc49c",
-              flexDirection: "row",
-              justifyContent: "center"
-            }}
-          >
-            <Touchable
-              background={Touchable.Ripple("gray")}
-              onPress={this.next}
-              style={{
-                alignSelf: "stretch",
-                flexDirection: "column",
-                justifyContent: "center",
-                width: viewportWidth
-              }}
-            >
-              <Text style={styles.nextButtonText}>Далее</Text>
-            </Touchable>
-          </View>
+          <BottomButton onPress={this.next}>
+            <Text style={styles.nextButtonText}>Далее</Text>
+          </BottomButton>
         </View>
       );
     else return null;

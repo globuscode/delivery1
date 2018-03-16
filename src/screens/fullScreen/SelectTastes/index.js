@@ -16,6 +16,7 @@ const { width: viewportWidth } = Dimensions.get("window");
 
 import { host } from "../../../etc";
 import { getStatusBarHeight } from "react-native-status-bar-height";
+import BottomButton from "../../../components/ui/BottomButton";
 
 class SelectTags extends React.Component {
   constructor(props) {
@@ -222,47 +223,21 @@ class SelectTags extends React.Component {
         </ScrollView>
         <View style={{ height: 55 }} />
 
-        <View
-          style={{
-            position: "absolute",
-            alignSelf: "center",
-            width: viewportWidth - 30,
-            bottom: 0,
-            height: 49,
-            borderTopWidth: 2,
-            borderColor:
-              this.state.selected.length != 0
-                ? "rgb(225, 199, 155)"
-                : "#575862",
-            flexDirection: "row",
-            justifyContent: "center"
-          }}
+        <BottomButton
+          onPress={this.next}
+          borderColor={this.state.selected.length != 0 ? "#dcc49c" : "#575862"}
         >
-          <Touchable
-            background={Touchable.SelectableBackgroundBorderless()}
-            onPress={this.next}
-            style={{
-              alignSelf: "stretch",
-              flexDirection: "column",
-              justifyContent: "center",
-              width: viewportWidth
-            }}
+          <Text
+            style={[
+              styles.nextButtonText,
+              {
+                color: this.state.selected.length != 0 ? "#dcc49c" : "#575862"
+              }
+            ]}
           >
-            <Text
-              style={[
-                styles.nextButtonText,
-                {
-                  color:
-                    this.state.selected.length != 0
-                      ? "rgb(225, 199, 155)"
-                      : "#575862"
-                }
-              ]}
-            >
-              Далее
-            </Text>
-          </Touchable>
-        </View>
+            {"Далее"}
+          </Text>
+        </BottomButton>
       </View>
     );
   }
