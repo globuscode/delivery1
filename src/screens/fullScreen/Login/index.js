@@ -84,21 +84,27 @@ class Login extends React.Component {
       );
       if (authResponse.errors) {
         let { code, title, detail } = authResponse.errors;
-        Alert.alert(`${title} ${code}`, detail);
+        Alert.alert(`${title} ${code}`, detail, [
+          { text: "OK", onPress: this.props.hideSpinner }
+        ]);
       } else {
+        this.props.hideSpinner();
         this.login(authResponse);
       }
-      this.props.hideSpinner();
+      // this.props.hideSpinner();
     });
   };
 
   login = data => {
     this.props.login(data);
+    // if (this.props.navigation.state.params.nextScreen === "SetFullAddress")
+    //   this.props.navigation.navigate("Cart");
+    // else
     this.props.navigation.navigate("Feed");
     // this.props.navigation.navigate("SetCreditCard", {
     //   url: `${host}/payture/add?token=${data.data.token}`
     // });
-  }
+  };
 
   authOnServer = async (body, suffix = "") => {
     if (suffix === undefined || suffix === null) {
@@ -123,8 +129,7 @@ class Login extends React.Component {
 
   vkAuth = async () => {
     const { navigate } = this.props.navigation;
-    const authResult = null;
-    await VKLogin.login(["email", "photos"]);
+    const authResult = await VKLogin.login(["email", "photos"]);
     if (authResult.access_token != undefined) {
       let { access_token, user_id } = authResult;
       let vkProfileResponse = await fetch(
@@ -337,13 +342,24 @@ class Login extends React.Component {
                   body: form
                 }
               );
+              // this.props.hideSpinner();
+              this.setState({ code: null, codeError: null });
               if (authResponse.errors) {
-                let { code, title, detail } = authResponse.errors;
-                Alert.alert(`${title} ${code}`, detail);
+                if (authResponse.errors.code != 206) {
+                  let { code, title, detail } = authResponse.errors;
+                  Alert.alert(`${title} ${code}`, detail, [
+                    { text: "OK", onPress: this.props.hideSpinner }
+                  ]);
+                } else {
+                  this.login(authResponse);
+                  this.props.navigation.navigate("SetCreditCard", {
+                    token: authResponse.data.token
+                  });
+                }
               } else {
+                this.props.hideSpinner();
                 this.login(authResponse);
               }
-              this.props.hideSpinner();
             }
           }}
           style={{
@@ -484,7 +500,7 @@ class Login extends React.Component {
         </Text>
 
         {this.renderForms()}
-        <View
+        {/* <View
           style={{
             flexDirection: "row",
             justifyContent: "center",
@@ -493,7 +509,7 @@ class Login extends React.Component {
           }}
         >
           {this.renderSocialButtons()}
-        </View>
+        </View> */}
         <View
           style={{
             position: "absolute",
