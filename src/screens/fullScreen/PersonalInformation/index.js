@@ -172,7 +172,7 @@ class PersonalInfo extends React.Component {
               <Text
                 style={[styles.smallHeader, { color: "rgb(225, 199, 155)" }]}
               >
-                {this.state.cards[0].cardName}
+                {this.state.cards[this.state.cards.length - 1].cardName}
               </Text>
             </View>
           )}
