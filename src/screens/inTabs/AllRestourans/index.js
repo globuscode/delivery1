@@ -14,6 +14,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import Drawer from "react-native-drawer";
 import propTypes from "prop-types";
+import { connect } from "react-redux";
 
 import Picker from "../../../components/ui/Picker";
 import { host, fetchJson } from "../../../etc";
@@ -23,7 +24,7 @@ const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
 
-export default class AllRestourans extends React.Component {
+class AllRestourans extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -37,7 +38,10 @@ export default class AllRestourans extends React.Component {
   }
 
   static propTypes = {
-    navigation: propTypes.object
+    navigation: propTypes.object,
+    user: propTypes.shape({
+      token: propTypes.string
+    })
   };
 
   componentWillMount = async () => {
@@ -85,7 +89,9 @@ export default class AllRestourans extends React.Component {
     const tag = this.state.types[this.state.selectedType];
     this.setState({ updating: true });
     let responseJson = await fetchJson(
-      `${host}/restaurants?cityId=36&tag=${tag}&page=${page}&results=1`
+      `${host}/restaurants?cityId=36&tag=${tag}&page=${page}&results=1&token=${
+        this.props.user.token
+      }`
     );
     this.setState({
       restaurans: [...this.state.restaurans, ...responseJson.data.restaurants],
@@ -286,6 +292,8 @@ export default class AllRestourans extends React.Component {
     );
   };
 }
+
+export default connect(({ user }) => ({ user: user }), null)(AllRestourans);
 
 const styles = StyleSheet.create({
   backgroundImage: {

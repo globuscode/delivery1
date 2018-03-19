@@ -35,6 +35,9 @@ class RestaurantList extends React.Component {
       collections: propTypes.object,
       restaurants: propTypes.object
     }),
+    user: propTypes.shape({
+      token: propTypes.string
+    }),
     data: propTypes.array,
     addToFav: propTypes.func,
     removeFromFav: propTypes.func
@@ -42,7 +45,9 @@ class RestaurantList extends React.Component {
 
   componentWillMount = async () => {
     if (!this.props.data) {
-      let responseJson = await fetchJson(`${host}/restaurants`);
+      let responseJson = await fetchJson(
+        `${host}/restaurants?token=${this.props.user.token}`
+      );
       if (responseJson["data"]["restaurants"])
         this.state.restourans = responseJson["data"]["restaurants"];
     }
@@ -123,8 +128,9 @@ class RestaurantList extends React.Component {
 }
 
 export default connect(
-  ({ favourite }) => ({
-    favourite: favourite
+  ({ favourite, user }) => ({
+    favourite: favourite,
+    user: user
   }),
   dispatch => ({
     addToFav: data => {
