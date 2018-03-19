@@ -67,8 +67,10 @@ class Cart extends React.Component {
 
     this.state = {
       sales: 0,
-      change: 0,
+      promoDiscount: 0,
+      price: 0,
       totalPrice: 0,
+      change: 0,
       promocode: "",
       withSales: 0,
       persons: 1,
@@ -95,7 +97,7 @@ class Cart extends React.Component {
 
       this.state.totalPrice = getCartTotalPrice(cart);
       this.setState({ change: this.state.totalPrice });
-      // await this.getSalesPrice(newProps);
+      await this.getSalesPrice(newProps);
       this.setState({ change: this.change() });
     }
   };
@@ -113,7 +115,7 @@ class Cart extends React.Component {
           restaurant: restJson["data"]["result"]
         });
       }
-      // await this.getSalesPrice(this.props);
+      await this.getSalesPrice(this.props);
       this.setState({
         totalPrice: getCartTotalPrice(cart)
       });
@@ -184,26 +186,35 @@ class Cart extends React.Component {
    * @memberof Cart
    */
   getSalesPrice = async ({ cart }) => {
-    if (cart.length == 0) return 0;
-    const cart_request = cart.map(element => {
+    // if (cart.length == 0) return 0;
+    // for (let i=0; i<cart.length; i++) {
+    // }
+
+    const cart_request = Object.keys(cart).map(element => {
       return {
-        plateId: element.plate.id,
-        qty: element.count
+        plateId: cart[element].plate.id,
+        qty: cart[element].count
       };
     });
-    this.setState({ sales: this.state.totalPrice });
-    let restJson;
-    restJson = await fetchJson(`${host}/cart/create/`, {
+    let restJson = await fetchJson(`${host}/cart/create/`, {
       method: "post",
-      body: JSON.stringify({ items: cart_request })
+      body: JSON.stringify({
+        items: cart_request,
+        token: this.props.user.token,
+        restaurantId: this.state.restaurant.id
+      })
     });
-    let result = 0;
-    for (let i = 0; i < restJson["data"]["items"].length; i++) {
-      result += parseInt(restJson["data"]["items"][i].price);
-    }
-
-    this.setState({ sales: result });
-    return result;
+    this.setState({
+      sales: restJson.data.rangDiscount,
+      price: restJson.data.price,
+      totalPrice: restJson.data.totalPrice,
+      promoDiscount: restJson.data.promoDiscount
+    });
+    return {
+      sales: restJson.rangDiscount,
+      price: restJson.price,
+      totalPrice: restJson.totalPrice
+    };
   };
 
   /**
@@ -249,7 +260,7 @@ class Cart extends React.Component {
    * @returns {JSX.Element}
    * @memberof Cart
    */
-  _renderContent = (e, index) => {
+  _renderContent = e => {
     const imageHeight = adaptWidth(100, 117, 130);
     const isInFav = this.isInFav(e.plate);
     return (
@@ -379,7 +390,7 @@ class Cart extends React.Component {
                 fontFamily: "Stem-Medium"
               }}
             >
-              {e.plate.price.toString() + " ₽"}
+              {e.plate.price + " ₽"}
             </Text>
           </View>
         </View>
@@ -490,7 +501,7 @@ class Cart extends React.Component {
                 {"Ресторан установил ограничение \nна минимальную сумму заказа " +
                   this.state.restaurant.minOrder +
                   ".\nВам осталось выбрать еще на " +
-                  (-change).toString() +
+                  -change +
                   " ₽"}
               </Text>
             )}
@@ -527,10 +538,7 @@ class Cart extends React.Component {
                 letterSpacing: 0.8
               }}
             >
-              {totalCount.toString() +
-                " позиции на сумму " +
-                this.state.totalPrice +
-                "₽"}
+              {totalCount + " позиции на сумму " + this.state.totalPrice + "₽"}
             </Text>
             {Object.keys(cart).map((id, index) => {
               return (
@@ -561,17 +569,15 @@ class Cart extends React.Component {
                 }}
               />
             </SummaryItem>
-            <SummaryItem
-              label="Сумма заказа"
-              text={this.state.totalPrice.toString() + " ₽"}
-            />
+            <SummaryItem label="Сумма заказа" text={this.state.price + " ₽"} />
             {/*this.renderPromoCode()*/}
-            {/*<SummaryItem
-              label="Скидка"
-              text={
-                (this.state.totalPrice - this.state.sales).toString() + " ₽"
-              }
-            />*/}
+            {this.state.promoDiscount === undefined ? null : (
+              <SummaryItem
+                label="Скидка по акции"
+                text={this.state.promoDiscount + " ₽"}
+              />
+            )}
+            <SummaryItem label="Скидка" text={this.state.sales + " ₽"} />
             <SummaryItem
               label="Доставка"
               text={
@@ -582,7 +588,7 @@ class Cart extends React.Component {
             />
             <SummaryItem
               label="Итоговая сумма заказа"
-              text={this.state.sales + " ₽"}
+              text={this.state.totalPrice + " ₽"}
             />
             <View style={{ height: 60 }} />
             <View
