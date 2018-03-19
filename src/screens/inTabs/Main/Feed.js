@@ -13,6 +13,7 @@ import RestaurantList from "../../../components/cards/RestaurantList";
 import { connect } from "react-redux";
 import propTypes from "prop-types";
 
+import GuideButton from "../../../components/ui/GuideButton";
 import CollectionCarousel from "../../../components/cards/CollectionCarousel";
 import IconD from "../../../components/ui/IconD";
 
@@ -219,6 +220,9 @@ class Feed extends React.Component {
           {/*<TouchableOpacity style={{width: 30, justifyContent: 'center'}}><IconD name='find' color='#dcc49c' size={15} /></TouchableOpacity>*/}
         </View>
         <ScrollView ref={scroll => (this.scroll = scroll)} horizontal={false}>
+          <GuideButton
+            onPress={() => this.props.navigation.navigate("Guide")}
+          />
           {this.renderCardHeader(
             "Рекомендуем",
             "cutlery",
