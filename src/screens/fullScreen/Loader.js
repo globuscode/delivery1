@@ -44,7 +44,6 @@ class Loader extends React.Component {
 
     if (navigation.state.params.action === "navigateToMenu") {
       const { id } = navigation.state.params;
-      console.log(`${host}/restaurantMenu?restaurantId=${id}&token=${token}`);
       let response = await fetchJson(
         `${host}/restaurantMenu?restaurantId=${id}&token=${token}`
       );
