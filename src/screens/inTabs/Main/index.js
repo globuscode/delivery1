@@ -12,6 +12,7 @@ import RestaurantMenu from "../RestaurantMenu";
 import Favoutite from "../Favourite";
 import Collection from "../Collection";
 import Guide from "../Guide";
+import Promo from "../Promo";
 import Cart from "../../fullScreen/Cart";
 
 import CartTabIcon from "./CartTabIcon";
@@ -50,6 +51,10 @@ const FirstScreen = StackNavigator(
         header: null,
         gesturesEnabled: false
       }
+    },
+    Promo: {
+      screen: Promo,
+      navigationOptions: headerStyleIOS()
     },
     Collection: {
       screen: Collection,
