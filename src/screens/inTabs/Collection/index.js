@@ -223,11 +223,6 @@ class Collection extends React.Component {
         background={Touchable.Ripple("gray")}
         onPress={() => {
           if (this.state.canNav) {
-            this.props.navigation.navigate("Plate", {
-              plate: e,
-              restaurant: this.state.data,
-              fromMenu: true
-            });
             this.setState({ canNav: false });
             setTimeout(() => {
               this.setState({ canNav: true });
@@ -571,6 +566,17 @@ class Collection extends React.Component {
           {/* Задний фон карточки */}
           <Touchable
             activeOpacity={0.8}
+            onPress={() => {
+              // if (this.state.canNav) {
+              //   this.props.navigation.navigate("Loader", {
+              //     restaurant: this.state,
+              //   });
+              //   this.setState({ canNav: false });
+              //   setTimeout(() => {
+              //     this.setState({ canNav: true });
+              //   }, 1500);
+              // }
+            }}
             foreground={Touchable.SelectableBackgroundBorderless()}
             style={{
               position: "absolute",
