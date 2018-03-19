@@ -175,7 +175,7 @@ class Guide extends React.Component {
               fontFamily: "OpenSans",
               fontSize: 13,
               marginTop: 35,
-              color: "#fff"
+              color: "rgb(216, 216, 216)"
             }}
           >
             {block.detail}
