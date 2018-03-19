@@ -30,6 +30,12 @@ class RestaurantCard extends React.Component {
       collections: propTypes.object,
       restaurants: propTypes.object
     }),
+    user: propTypes.shape({
+      token: propTypes.string,
+      user: propTypes.shape({
+        rang: propTypes.string
+      })
+    }),
     data: propTypes.object,
     inFav: propTypes.bool,
     fav: propTypes.bool
@@ -84,6 +90,18 @@ class RestaurantCard extends React.Component {
     );
   };
 
+  renderLevel = () => {
+    const level = this.props.user.user.rang;
+    let result = [];
+    for (var i = 0; i < level; i++)
+      result.push(
+        <View key={i} style={{ margin: 2 }}>
+          <IconD name="dostavka" color="#dcc49c" size={15} />
+        </View>
+      );
+    return result;
+  };
+
   render = () => {
     const item = this.props.data;
     const index = this.props.key;
@@ -131,18 +149,22 @@ class RestaurantCard extends React.Component {
           </View>
         </Touchable>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          {/*<View style={{ flexDirection: 'row', alignSelf: 'flex-start'  }}>
-                {this.renderLevel(item.level)}                
-                <Text style={{
-                  paddingHorizontal: 5,
-                  maxWidth: 150,
-                  //fontFamily: 'Stem-Medium',
-                  fontWeight: 'bold',
-                  fontSize: 13,
-                  backgroundColor: '#dcc49c',
-                  color: '#292b37',
-                  }}>{item.discount}</Text>
-                </View>*/}
+          <View style={{ flexDirection: "row", alignSelf: "flex-start" }}>
+            {this.renderLevel()}
+            <Text
+              style={{
+                paddingHorizontal: 5,
+                maxWidth: 150,
+                //fontFamily: 'Stem-Medium',
+                fontWeight: "bold",
+                fontSize: 13,
+                backgroundColor: "#dcc49c",
+                color: "#292b37"
+              }}
+            >
+              {item.discount}
+            </Text>
+          </View>
           <View>{this.renderHeart()}</View>
         </View>
         <View
@@ -192,8 +214,9 @@ class RestaurantCard extends React.Component {
 }
 
 export default connect(
-  ({ favourite }) => ({
-    favourite: favourite
+  ({ favourite, user }) => ({
+    favourite: favourite,
+    user: user
   }),
   dispatch => ({
     addToFav: data => {
