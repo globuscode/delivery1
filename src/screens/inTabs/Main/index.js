@@ -11,6 +11,7 @@ import Restaurant from "../Restaurant";
 import RestaurantMenu from "../RestaurantMenu";
 import Favoutite from "../Favourite";
 import Collection from "../Collection";
+import Guide from "../Guide";
 import Cart from "../../fullScreen/Cart";
 
 import CartTabIcon from "./CartTabIcon";
@@ -20,7 +21,7 @@ import { getStatusBarHeight } from "react-native-status-bar-height";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
-const headerStyleIOS = () => ({
+const headerStyleIOS = (design = false) => ({
   headerTruncatedBackTitle: "Назад",
   headerTitleStyle: {
     fontFamily: "Stem-Medium",
@@ -35,7 +36,9 @@ const headerStyleIOS = () => ({
   headerStyle: {
     marginTop: Platform.OS === "ios" ? 0 : getStatusBarHeight(),
     backgroundColor: "#292b37",
-    paddingHorizontal: Platform.OS === "ios" ? adaptWidth(16, 18, 24) : -3
+    paddingHorizontal: Platform.OS === "ios" ? adaptWidth(16, 18, 24) : -3,
+    marginHorizontal: design ? (Platform.OS === "ios" ? 20 : -3) : undefined,
+    borderBottomColor: design ? "rgb(87, 88, 98)" : undefined
   }
 });
 
@@ -58,6 +61,10 @@ const FirstScreen = StackNavigator(
     Restaurant: {
       screen: Restaurant,
       navigationOptions: headerStyleIOS()
+    },
+    Guide: {
+      screen: Guide,
+      navigationOptions: headerStyleIOS(true)
     },
     Plate: {
       screen: Plate,
@@ -87,6 +94,10 @@ const FirstScreen = StackNavigator(
     }
   },
   {
+    headerMode: "screen",
+    headerStyle: {
+      backcroundColor: "#292b37"
+    },
     navigationOptions: {
       headerBackTitle: "Назад",
       headerTruncatedBackTitle: "Назад"
