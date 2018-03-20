@@ -1,58 +1,75 @@
 import React from "react";
-import { Font } from "expo";
-import Expo from "expo";
-import { StatusBar, Platform, View, AsyncStorage } from "react-native";
-import { StackNavigator } from "react-navigation";
+import { StatusBar, View, AsyncStorage } from "react-native";
 import { Provider, connect } from "react-redux";
+import Spinner from "react-native-loading-spinner-overlay";
+import propTypes from "prop-types";
 
-import IconD from "./src/IconD";
 import Reducer from "./src/Reducers";
 import A from "./ScreenReducer";
-import PopupCart from "./src/PopupCart";
+import PopupCart from "./src/components/modals/PopupCart";
 
-import PopupDialog, {
-  SlideAnimation
-} from 'react-native-popup-dialog';
+import PopupDialog, { SlideAnimation } from "react-native-popup-dialog";
 
 StatusBar.setBarStyle("light-content", true);
+StatusBar.setTranslucent(true);
+StatusBar.setBackgroundColor("rgb(37, 38, 46)");
 
 const slide = new SlideAnimation({
-  slideFrom: 'bottom',
+  slideFrom: "bottom"
 });
 
 class ModalComponent extends React.Component {
-  componentWillReceiveProps = (nextProps) => {this.setState({})}
-  render = () => <View style={{flex: 1}}>
-    <A />
-    <PopupDialog
-      dismissOnHardwareBackPress={true}
-      onDismissed={() => { Reducer.dispatch({type: "HIDE_MODAL"}) }}
-      ref={(popupDialog) => { this.popupDialog = popupDialog; }}
-      dismissOnTouchOutside={true}
-      dialogStyle={{
-        backgroundColor: 'transparent',
-        flexDirection: 'column',
-        flex: 1,
-        justifyContent: 'flex-end'
-      }}
-      containerStyle={{
-        justifyContent: 'flex-end',
-      }}
-      show={Reducer.getState().modalController.opened}
-      dialogAnimation={slide}
-    >
-    <PopupCart />
-  </PopupDialog>
-</View>
+  static propTypes = {
+    spinnerController: propTypes.object
+  };
+  render = () => (
+    <View style={{ flex: 1 }}>
+      <A />
+      <PopupDialog
+        dismissOnHardwareBackPress={true}
+        overlayBackgroundColor="rgb(37, 38, 46)"
+        overlayOpacity={0.9}
+        onDismissed={() => {
+          Reducer.dispatch({ type: "HIDE_MODAL" });
+        }}
+        ref={popupDialog => {
+          this.popupDialog = popupDialog;
+        }}
+        dismissOnTouchOutside={true}
+        dialogStyle={{
+          backgroundColor: "transparent",
+          flexDirection: "column",
+          height: 550,
+          justifyContent: "flex-end"
+        }}
+        containerStyle={{
+          justifyContent: "flex-end"
+        }}
+        show={Reducer.getState().modalController.opened}
+        dialogAnimation={slide}
+      >
+        <PopupCart />
+      </PopupDialog>
+
+      <Spinner
+        color="#dcc49c"
+        overlayColor="rgba(37, 38, 46, 0.9)"
+        animation="fade"
+        visible={this.props.spinnerController.show}
+        textStyle={{ color: "#FFF" }}
+      />
+    </View>
+  );
 }
 
 const M = connect(
-  state => ({
-    modal: state.modalController
+  ({ modalController, spinnerController }) => ({
+    modal: modalController,
+    spinnerController: spinnerController
   }),
   dispatch => ({
-    open: () => dispatch({ type: "OPEN_MODAL"}),
-    close: () => dispatch({ type: "CLOSE_MODAL"}),
+    open: () => dispatch({ type: "OPEN_MODAL" }),
+    close: () => dispatch({ type: "CLOSE_MODAL" })
   })
 )(ModalComponent);
 
@@ -62,27 +79,19 @@ export default class App extends React.Component {
     this.state = { canRender: false };
   }
   async componentDidMount() {
-    await Font.loadAsync({
-      "open-sans-semibold": require("./assets/fonts/OpenSans-Semibold.ttf"),
-      "open-sans": require("./assets/fonts/OpenSans.ttf"),
-      "stem-medium": require("./assets/fonts/Stem-Medium.ttf"),
-      "stem-regular": require("./assets/fonts/Stem-Regular.ttf")
-    });
-
-    const fav = await AsyncStorage.getItem('fav');
-    const nan = await AsyncStorage.getItem('nan');
+    const fav = await AsyncStorage.getItem("fav");
+    const nan = await AsyncStorage.getItem("nan");
     if (fav != nan)
-      Reducer.dispatch({type: 'SET_FAV', payload: JSON.parse(fav)});
+      Reducer.dispatch({ type: "SET_FAV", payload: JSON.parse(fav) });
 
     this.setState({ canRender: true });
   }
 
   render() {
-
     if (this.state.canRender)
       return (
         <Provider store={Reducer}>
-          <M/>
+          <M />
         </Provider>
       );
     else return null;

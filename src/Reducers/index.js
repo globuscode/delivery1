@@ -4,9 +4,13 @@ import cart from "./cart";
 import user from "./user";
 import recomendations from "./recomendations";
 import modalController from "./modalController";
+import spinnerController from "./spinnerController";
 import address from "./address";
 import favourite from "./favourite";
 import lastViewed from "./lastViewed";
+import restaurants from "./restaurants";
+import plates from "./plates";
+import cards from "./cards";
 
 function lastAction(state = null, action) {
   return action;
@@ -19,10 +23,14 @@ const store = createStore(
     user,
     recomendations,
     modalController,
+    spinnerController,
     lastAction,
     address,
     favourite,
-    lastViewed
+    lastViewed,
+    restaurants,
+    plates,
+    cards
   })
 );
 

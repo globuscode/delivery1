@@ -1,0 +1,17 @@
+rootProject.name = 'dostavka1'
+include ':react-native-fbsdk'
+project(':react-native-fbsdk').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fbsdk/android')
+include ':react-native-payments'
+project(':react-native-payments').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-payments/android')
+include ':react-native-android-sms-listener'
+project(':react-native-android-sms-listener').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-android-sms-listener/android')
+include ':react-native-vkontakte-login'
+project(':react-native-vkontakte-login').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vkontakte-login/android')
+include ':react-native-wheel-picker'
+project(':react-native-wheel-picker').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-wheel-picker/android')
+include ':react-native-vector-icons'
+project(':react-native-vector-icons').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vector-icons/android')
+include ':react-native-linear-gradient'
+project(':react-native-linear-gradient').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-linear-gradient/android')
+
+include ':app'

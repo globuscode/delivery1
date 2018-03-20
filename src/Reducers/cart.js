@@ -1,73 +1,74 @@
-import { createStore } from 'redux';
-import { AsyncStorage } from 'react-native';
+import { getFirstItem } from "../utils";
 
-const initialState = [];
+const initialState = {};
 
-export default function cart(state = initialState, action) {
-    if (action.type === 'MAKE_ORDER') {
-        AsyncStorage.getItem('ORDERS_HISTORY', (err, value) => {
-            if (value != null) {
-                var history = JSON.parse(value);
-                history.push(state);
-            }
-            else {
-                var history = [JSON.parse.value];
-            }
-            AsyncStorage.setItem('ORDERS_HISTORY', JSON.stringify(history), () => {});
-        });
-        return initialState;
+/**
+ * Убирает блюдо из корзины
+ *
+ * @param {Object} state
+ * @param {Number} id
+ * @returns
+ */
+function removePlateById(state, id) {
+  if (typeof id === "number") {
+    let newState = state;
+    if (newState[id] != undefined) {
+      if (newState[id].count != undefined) {
+        newState[id].count -= 1;
+      }
     }
-
-    if (action.type === 'ADD_PLATE') {
-        var isNewPlate = true;
-        var i = 0;
-        while (isNewPlate && i < state.length) {
-            let equalTitle = action.payload.title === state[i].plate.title;
-            let equalId = action.payload.id === state[i].plate.id;
-            let equalRestaurant = action.payload.restaurant === state[i].plate.restaurant;
-            isNewPlate = !(equalTitle && equalRestaurant && equalId);
-            i++;
-            if (!equalRestaurant) {
-                return [{
-                    plate: action.payload,
-                    count: 1
-                }];
-            }
-        }
-
-        if (isNewPlate) {
-            return [
-                ...state,{
-                    plate: action.payload,
-                    count: 1
-                }
-            ];
-        }
-        else {
-            state[i-1].count++;
-            return [...state];
-        }
-    }
-    if (action.type === 'REMOVE_PLATE') {
-        if (state[action.index].count <= 1)
-            state.splice(action.index, 1);
-        else
-            state[action.index].count--;
-        return [...state];
-    }
-
-    if (action.type === 'REMOVE_PLATE_BY_OBJECT') {
-        for (let index = 0; index < state.length; index++) {
-            if (action.payload.id == state[index].plate.id) {
-                if (state[index].count <= 1)
-                    state.splice(index, 1);
-                else
-                    state[index].count--;
-                break;
-            }
-        }
-        return [...state];
-    }
-    return state;
+    if (newState[id].count === 0) delete newState[id];
+    return newState;
+  }
 }
 
+/**
+ * Обработчик dispatch'а в reducer cart
+ *
+ * @export
+ * @param {Object} [state=initialState]
+ * @param {Object} action
+ * @returns
+ */
+export default function cart(state = initialState, action) {
+  if (action.type === "MAKE_ORDER") {
+    return initialState;
+  }
+
+  /**
+   * Добавление нового блюда
+   */
+  if (action.type === "ADD_PLATE") {
+    const { id } = action.payload;
+    // if (action.payload.restaurant)
+    const firstItem = getFirstItem(state);
+    if (firstItem != undefined) {
+      if (firstItem.plate.restaurant != action.payload.restaurant) {
+        let result = {};
+        result[id] = {
+          plate: action.payload,
+          count: 1
+        };
+        return { ...result };
+      }
+    }
+    let newState = state;
+    if (state[id] === undefined) {
+      newState[id] = {
+        count: 1,
+        plate: action.payload
+      };
+    } else {
+      newState[id].count += 1;
+    }
+    return { ...newState };
+  }
+  if (
+    action.type === "REMOVE_PLATE" ||
+    action.type === "REMOVE_PLATE_BY_OBJECT"
+  ) {
+    const { id } = action.payload;
+    return { ...removePlateById(state, id) };
+  }
+  return state;
+}

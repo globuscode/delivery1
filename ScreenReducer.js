@@ -1,54 +1,53 @@
-import React from "react";
-import Expo from "expo";
-import { StatusBar, Platform } from "react-native";
+import { Platform } from "react-native";
 import { StackNavigator } from "react-navigation";
+import { getStatusBarHeight } from "react-native-status-bar-height";
 
-import { adaptWidth } from './src/etc';
+import { adaptWidth } from "./src/etc";
 
-import Login from "./src/Login";
-import Registration from "./src/Registration";
-import RegistratePhone from "./src/RegistatePhone";
-import SelectCity from "./src/SelectCity";
-import SelectTags from "./src/SelectTags";
-import SetAddress from "./src/SetAddress";
-import SelectTastes from "./src/SelectTastes";
-import About from "./src/about";
-import SpecialScreen from "./src/SpecialScreen";
-import LoadingScreen from "./src/LoadingScreen";
-import Main from "./src/Main";
-import AllRestourans from "./src/AllRestourans";
-import Restaurant from "./src/Restaurant";
-import RestaurantMenu from "./src/RestaurantMenu";
-import Plate from "./src/Plate";
-import Profile from "./src/Profile";
-import MakeOrder from "./src/MakeOrder";
-import MyOrders from "./src/MyOrders";
-import MyOrderDetail from "./src/MyOrderDetail";
-import PersonalInformation from "./src/PersonalInformation";
-import SetFullAddress from "./src/SetFullAddress";
-import SetCard from "./src/SetCard";
+import Login from "./src/screens/fullScreen/Login";
+import Registration from "./src/screens/fullScreen/Registration";
+import RegistratePhone from "./src/screens/fullScreen/RegistatePhone";
+import SelectCity from "./src/screens/fullScreen/SelectCity";
+import SelectTags from "./src/screens/fullScreen/SelectTags";
+import SetAddress from "./src/screens/fullScreen/SetAddress";
+import SelectTastes from "./src/screens/fullScreen/SelectTastes";
+import About from "./src/screens/fullScreen/about";
+import SpecialScreen from "./src/screens/fullScreen/SpecialScreen";
+import LoadingScreen from "./src/screens/fullScreen/LoadingScreen";
+import Main from "./src/screens/inTabs/Main";
+import Loader from "./src/screens/fullScreen/Loader";
+import Profile from "./src/screens/fullScreen/Profile";
+import MakeOrder from "./src/screens/fullScreen/MakeOrder";
+import MyOrders from "./src/screens/fullScreen/MyOrders";
+import MyOrderDetail from "./src/screens/fullScreen/MyOrderDetail";
+import PersonalInformation from "./src/screens/fullScreen/PersonalInformation";
+import SetFullAddress from "./src/screens/fullScreen/SetFullAddress";
+// import SetCard from "./src/SetCard";
+import SetCreditCard from "./src/screens/fullScreen/SetCreditCard";
+import UpdateProfile from "./src/screens/fullScreen/UpdateProfile";
+import UpdatePhone from "./src/screens/fullScreen/UpdatePhone";
+import Loyalty from "./src/screens/fullScreen/Loyalty";
 
-const headerStyleIOS = (title) => ({
+const headerStyleIOS = title => ({
   title: title,
-  headerTruncatedBackTitle: 'Назад',
-  headerTintColor: "#fff",
+  headerTruncatedBackTitle: "Назад",
   headerTitleStyle: {
-    fontFamily: "stem-medium",
+    fontFamily: "Stem-Medium",
     fontSize: 14,
     letterSpacing: 0.8,
-    color: '#fff'
+    color: "#fff"
   },
   headerTintColor: "#dcc49c",
   headerBackTitleStyle: {
     color: "#dcc49c"
   },
   headerStyle: {
-    marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
+    marginTop: Platform.OS === "ios" ? 0 : getStatusBarHeight(),
     backgroundColor: "transparent",
     padding: 0,
     borderBottomWidth: Platform.OS === "ios" ? 1 : 0,
     marginHorizontal: Platform.OS === "ios" ? 20 : -3,
-    borderBottomColor: 'rgb(87, 88, 98)'
+    borderBottomColor: "rgb(87, 88, 98)"
   }
 });
 
@@ -60,7 +59,7 @@ const tabs = StackNavigator(
         header: null,
         gesturesEnabled: false
       }
-    },
+    }
   },
   {
     cardStyle: {
@@ -80,7 +79,15 @@ export default StackNavigator(
     },
     SetFullAddress: {
       screen: SetFullAddress,
-      navigationOptions: headerStyleIOS('Адрес доставки')
+      navigationOptions: headerStyleIOS("Адрес доставки")
+    },
+    SetCreditCard: {
+      screen: SetCreditCard,
+      navigationOptions: headerStyleIOS("Добавить карту")
+    },
+    Loyalty: {
+      screen: Loyalty,
+      navigationOptions: headerStyleIOS("Программа лояльности")
     },
     SelectCity: {
       screen: SelectCity,
@@ -98,43 +105,54 @@ export default StackNavigator(
     },
     RegistratePhone: {
       screen: RegistratePhone,
-      navigationOptions: headerStyleIOS('Номер телефона')
+      navigationOptions: headerStyleIOS("Номер телефона")
     },
     SetAddress: {
       screen: SetAddress,
-      navigationOptions: {...headerStyleIOS(adaptWidth(0, 1, 1) ? 'Адрес доставки' : 'Адрес'), headerBackTitle: null}
+      navigationOptions: {
+        ...headerStyleIOS(adaptWidth(0, 1, 1) ? "Адрес доставки" : "Адрес"),
+        headerBackTitle: null
+      }
     },
     Profile: {
       screen: Profile,
-      navigationOptions: headerStyleIOS('Личный кабинет')
+      navigationOptions: headerStyleIOS("Личный кабинет")
+    },
+    UpdateProfile: {
+      screen: UpdateProfile,
+      navigationOptions: headerStyleIOS("Изменить данные")
+    },
+    UpdatePhone: {
+      screen: UpdatePhone,
+      navigationOptions: headerStyleIOS("Изменить телефон")
     },
     MakeOrder: {
       screen: MakeOrder,
-      navigationOptions: headerStyleIOS('Оплатить заказ')
+      navigationOptions: headerStyleIOS("Оплатить заказ")
     },
     MyOrders: {
       screen: MyOrders,
-      navigationOptions: headerStyleIOS('Мои заказы')
+      navigationOptions: headerStyleIOS("Мои заказы")
     },
-    SetCard: {
+    /*  SetCard: {
       screen: SetCard,
-      navigationOptions: headerStyleIOS('Прикрепить карту')
-    },
+      navigationOptions: headerStyleIOS("Прикрепить карту")
+    }, */
     MyOrderDetail: {
       screen: MyOrderDetail,
-      navigationOptions: headerStyleIOS('Заказ')
+      navigationOptions: headerStyleIOS("Заказ")
     },
     PersonalInformation: {
       screen: PersonalInformation,
-      navigationOptions: headerStyleIOS('Мои данные')
+      navigationOptions: headerStyleIOS("Мои данные")
     },
     Login: {
       screen: Login,
-      navigationOptions: headerStyleIOS('Авторизация')
+      navigationOptions: headerStyleIOS("Авторизация")
     },
     Registration: {
       screen: Registration,
-      navigationOptions: headerStyleIOS('Регистрация')
+      navigationOptions: headerStyleIOS("Регистрация")
     },
     SelectTags: {
       screen: SelectTags,
@@ -164,9 +182,16 @@ export default StackNavigator(
         gesturesEnabled: false
       }
     },
+    Loader: {
+      screen: Loader,
+      navigationOptions: {
+        header: null,
+        gesturesEnabled: false
+      }
+    }
   },
   {
-    headerMode: 'screen',
+    headerMode: "screen",
     headerStyle: {
       backcroundColor: "#292b37"
     },
