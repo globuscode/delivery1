@@ -66,7 +66,12 @@ class PersonalInfo extends React.Component {
       <TouchableOpacity
         onPress={() => {
           if (this.state.canNav) {
-            this.props.navigation.navigate(nav);
+            if (nav === "SetCreditCard")
+              this.props.navigation.navigate("SetCreditCard", {
+                token: this.props.userData.token,
+                nextScreen: "makeOrder"
+              });
+            else this.props.navigation.navigate(nav);
             this.setState({ canNav: false });
             setTimeout(() => {
               this.setState({ canNav: true });
@@ -178,7 +183,11 @@ class PersonalInfo extends React.Component {
           )}
         </View>
         {this.renderMenuItem("phone", "Изменить номер телефона", "UpdatePhone")}
-        {/*this.renderMenuItem("credit-card", "Привязать другую карту оплаты", "SetCard")*/}
+        {this.renderMenuItem(
+          "credit-card",
+          "Привязать другую карту оплаты",
+          "SetCreditCard"
+        )}
         {/*this.renderMenuItem("geotag", "Редактировать адреса доставки", null)}
             {this.renderMenuItem("lock", "Изменить пароль", null)*/}
 
