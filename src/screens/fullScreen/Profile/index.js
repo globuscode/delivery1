@@ -156,7 +156,11 @@ class Profile extends React.Component {
         {this.renderMenuItem("cart-small", "Мои заказы", "MyOrders")}
         {this.renderMenuItem("contact", "Мои данные", "PersonalInformation")}
         {this.renderMenuItem("dostavka", "О программе лояльности", "Loyalty")}
-        {/*this.renderMenuItem("book-small", "Путеводитель по приложению", null)*/}
+        {this.renderMenuItem(
+          "book-small",
+          "Путеводитель по приложению",
+          "Guide"
+        )}
 
         <View
           style={{
