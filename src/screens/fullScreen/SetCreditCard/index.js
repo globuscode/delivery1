@@ -9,12 +9,15 @@ class SetCreditCard extends React.Component {
     super(props);
     this.state = {
       htmlBody: "",
+      needToCheck: true,
       canNav: true,
       cardsCount: 0
     };
   }
 
   static propTypes = {
+    updateCards: propTypes.func,
+    cards: propTypes.array,
     navigation: propTypes.shape({
       navigate: propTypes.func,
       goBack: propTypes.func,
@@ -28,6 +31,7 @@ class SetCreditCard extends React.Component {
   };
 
   _check = async () => {
+    if (this.state.needToCheck === false) return 0;
     const cardsResponse = await fetchJson(
       `${host}/user/getCards/?token=${this.props.navigation.state.params.token}`
     );
@@ -54,6 +58,7 @@ class SetCreditCard extends React.Component {
 
           this.props.navigation.goBack();
         } else this.props.navigation.navigate("Feed");
+        this.setState({ needToCheck: false });
         setTimeout(() => {
           this.setState({ canNav: true });
         }, 2000);
@@ -79,7 +84,7 @@ class SetCreditCard extends React.Component {
 }
 
 export default connect(
-  () => ({}),
+  ({ cards }) => ({ cards: cards }),
   dispatch => ({
     updateCards: cards => dispatch({ type: "UPDATE_CARDS", payload: cards })
   })
