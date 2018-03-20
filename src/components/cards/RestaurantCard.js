@@ -91,12 +91,16 @@ class RestaurantCard extends React.Component {
   };
 
   renderLevel = () => {
-    const level = this.props.user.user.rang;
+    let level = 0;
+    if (this.props.user.user !== undefined) {
+      level = this.props.user.user.rang;
+    }
+
     let result = [];
     for (var i = 0; i < level; i++)
       result.push(
-        <View key={i} style={{ margin: 2 }}>
-          <IconD name="dostavka" color="#dcc49c" size={15} />
+        <View key={i} style={{ marginHorizontal: 2 }}>
+          <IconD name="dostavka" color="#dcc49c" size={16} />
         </View>
       );
     return result;
@@ -155,6 +159,7 @@ class RestaurantCard extends React.Component {
               style={{
                 paddingHorizontal: 5,
                 maxWidth: 150,
+                marginHorizontal: 2,
                 //fontFamily: 'Stem-Medium',
                 fontWeight: "bold",
                 fontSize: 13,
