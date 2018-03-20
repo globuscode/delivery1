@@ -137,7 +137,7 @@ class Profile extends React.Component {
                   top: Platform.OS === "ios" ? 1 : 0
                 }}
               >
-                {USER_RANGS[parseInt(this.props.userData.user.rang)]}
+                {USER_RANGS[parseInt(this.props.userData.user.rang) - 1]}
               </Text>
             </View>
           </View>
