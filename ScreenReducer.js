@@ -26,6 +26,7 @@ import SetFullAddress from "./src/screens/fullScreen/SetFullAddress";
 import SetCreditCard from "./src/screens/fullScreen/SetCreditCard";
 import UpdateProfile from "./src/screens/fullScreen/UpdateProfile";
 import UpdatePhone from "./src/screens/fullScreen/UpdatePhone";
+import Loyalty from "./src/screens/fullScreen/Loyalty";
 
 const headerStyleIOS = title => ({
   title: title,
@@ -82,7 +83,11 @@ export default StackNavigator(
     },
     SetCreditCard: {
       screen: SetCreditCard,
-      navigationOptions: headerStyleIOS("Адрес доставки")
+      navigationOptions: headerStyleIOS("Добавить карту")
+    },
+    Loyalty: {
+      screen: Loyalty,
+      navigationOptions: headerStyleIOS("Программа лояльности")
     },
     SelectCity: {
       screen: SelectCity,
