@@ -201,7 +201,7 @@ class Loyalty extends React.Component {
             }}
           />
         </ScrollView>
-        <View
+        {/* <View
           pointerEvents="none"
           style={{
             height: 60,
@@ -226,7 +226,7 @@ class Loyalty extends React.Component {
               width: viewportWidth - 40
             }}
           />
-        </View>
+        </View> */}
       </View>
     );
   };
