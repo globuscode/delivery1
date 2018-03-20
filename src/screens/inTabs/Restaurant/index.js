@@ -22,7 +22,7 @@ import IconD from "../../../components/ui/IconD";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
-const USER_RANGS = ["Ранг 1", "Ранг 2", "Ранг 3"];
+const USER_RANGS = ["Новичок", "Бывалый", "Профи"];
 
 const hr = (
   <View
@@ -288,7 +288,7 @@ class Restaurant extends React.Component {
           <View style={{ height: 70 - 20 }} />
 
           {/* Ранг пользователя */}
-          {this.state.rang === undefined ? null : (
+          {this.props.user.user === undefined ? null : (
             <View style={[styles.row, { justifyContent: "center" }]}>
               <Text
                 style={{
@@ -298,17 +298,21 @@ class Restaurant extends React.Component {
                   fontSize: 11
                 }}
               >
-                {USER_RANGS[this.state.rang]}
+                {USER_RANGS[parseInt(this.props.user.user.rang) - 1]}
               </Text>
             </View>
           )}
-          {this.state.rang === undefined ? null : (
+          {this.props.user.user === undefined ? null : (
             <View style={[styles.row, { justifyContent: "center" }]}>
               {[1, 2, 3].map(e => (
                 <View key={e} style={{ margin: 3.3 }}>
                   <IconD
                     name="dostavka"
-                    color={e <= this.state.rang ? "#dcc49c" : "rgb(87, 88, 98)"}
+                    color={
+                      e <= parseInt(this.props.user.user.rang)
+                        ? "#dcc49c"
+                        : "rgb(87, 88, 98)"
+                    }
                     size={16}
                   />
                 </View>
@@ -681,13 +685,20 @@ class Restaurant extends React.Component {
 Restaurant.propTypes = {
   navigation: PropTypes.object,
   favourite: PropTypes.object,
+  user: PropTypes.shape({
+    token: PropTypes.string,
+    user: PropTypes.shape({
+      rang: PropTypes.string
+    })
+  }),
   addToFav: PropTypes.func,
   removeFromFav: PropTypes.func
 };
 
 export default connect(
-  ({ favourite }) => ({
-    favourite: favourite
+  ({ favourite, user }) => ({
+    favourite: favourite,
+    user: user
   }),
   dispatch => ({
     addToFav: data => {
