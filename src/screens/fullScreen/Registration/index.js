@@ -1,9 +1,17 @@
 import React from "react";
-import { View, Dimensions, StyleSheet, Text } from "react-native";
+import { View, Dimensions, StyleSheet, Text, Alert } from "react-native";
 import propTypes from "prop-types";
 import { TextField } from "react-native-material-textfield";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Touchable from "react-native-platform-touchable";
+import {
+  LoginManager,
+  GraphRequest,
+  GraphRequestManager,
+  AccessToken
+} from "react-native-fbsdk";
+import VKLogin from "react-native-vkontakte-login";
+import IconD from "../../../components/ui/IconD";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -35,15 +43,143 @@ export default class Login extends React.Component {
   componentDidMount = () => {
     const { params } = this.props.navigation.state;
     if (params != undefined) {
-      const { firstName, lastName, email } = params;
+      // const { firstName, lastName, email } = params;
       this.setState({
-        firstName: firstName,
+        firstName: null,
         firstNameError: null,
-        secondName: lastName,
+        secondName: null,
         secondNameError: null,
-        email: email,
+        email: null,
         emailInputError: null
       });
+    }
+  };
+
+  renderSocialButtons = () => {
+    const buttons = [{ name: "vk", callback: this.vkAuth }];
+    if (Object.keys(LoginManager).length > 0)
+      buttons.push({
+        name: "fb",
+        callback: this.fbAuth
+      });
+    return buttons.map(({ name, callback }, index) =>
+      this.renderAuthButton(name, callback, index)
+    );
+  };
+
+  renderAuthButton = (name, callback, index) => {
+    return (
+      <Touchable
+        key={index}
+        onPress={callback}
+        style={{
+          borderRadius: (25 + 16) / 2,
+          width: 25 + 16,
+          height: 25 + 16,
+          justifyContent: "center",
+          alignItems: "center"
+        }}
+      >
+        <IconD name={name} size={20} color="rgb(225, 199, 155)" />
+      </Touchable>
+    );
+  };
+
+  vkAuth = async () => {
+    // const { navigate } = this.props.navigation;
+    const authResult = await VKLogin.login(["email", "photos"]);
+    if (authResult.access_token != undefined) {
+      let { access_token, user_id } = authResult;
+      let vkProfileResponse = await fetch(
+        `${"https://api.vk.com/method"}/users.get?user_ids=${user_id}&?fields=photo_100&access_token=${access_token}&v=V`
+      );
+      let vkProfile = await vkProfileResponse.json();
+      let { email } = authResult;
+      let { first_name, last_name } = vkProfile.response[0];
+
+      // const registarionBody = {
+      //   type: "vk",
+      //   firstName: first_name,
+      //   lastName: last_name,
+      //   email: email,
+      //   access_token: access_token,
+      //   user_id: user_id
+      // };
+
+      this.setState({
+        email: email,
+        firstName: first_name,
+        secondName: last_name
+      });
+
+      // navigate("Registration", registarionBody);
+    }
+  };
+
+  fbAuth = async () => {
+    // const { navigate } = this.props.navigation;
+    if (LoginManager.logInWithReadPermissions != undefined) {
+      LoginManager.logInWithReadPermissions(["public_profile", "email"]).then(
+        result => {
+          if (result.isCancelled) {
+            Alert.alert("Login cancelled");
+          } else {
+            Alert.alert(
+              "Login success with permissions: " +
+                result.grantedPermissions.toString()
+            );
+
+            AccessToken.getCurrentAccessToken().then(data => {
+              let accessToken = data.accessToken;
+              Alert.alert(accessToken.toString());
+
+              const responseInfoCallback = (error, result) => {
+                if (error) {
+                  Alert.alert("Error fetching data: " + error.toString());
+                } else {
+                  const { first_name, last_name, email } = result;
+                  // const registarionBody = {
+                  //   type: "fb",
+                  //   firstName: first_name,
+                  //   lastName: last_name,
+                  //   email: email,
+                  //   access_token: accessToken.toString(),
+                  //   user_id: id
+                  // };
+
+                  this.setState({
+                    email: email,
+                    firstName: first_name,
+                    secondName: last_name
+                  });
+
+                  // navigate("Registration", registarionBody);
+                  Alert.alert("Success fetching data: " + result.toString());
+                }
+              };
+
+              const infoRequest = new GraphRequest(
+                "/me",
+                {
+                  accessToken: accessToken,
+                  parameters: {
+                    fields: {
+                      string: "email,name,first_name,middle_name,last_name"
+                    }
+                  }
+                },
+                responseInfoCallback
+              );
+
+              // Start the graph request.
+              new GraphRequestManager().addRequest(infoRequest).start();
+            });
+          }
+        },
+        function(error) {
+          Alert.alert("Login fail with error: " + error);
+        }
+      );
     }
   };
 
@@ -186,6 +322,16 @@ export default class Login extends React.Component {
                 height: (screen == 0 ? 34 : screen == 1 ? 42 : 48) - 25
               }}
             />
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              width: viewportWidth,
+              alignSelf: "stretch"
+            }}
+          >
+            {this.renderSocialButtons()}
           </View>
         </KeyboardAwareScrollView>
         <View

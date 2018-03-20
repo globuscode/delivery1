@@ -3,6 +3,7 @@ import {
   View,
   Text,
   Dimensions,
+  AsyncStorage,
   DatePickerIOS,
   Platform,
   DatePickerAndroid,
@@ -16,7 +17,7 @@ import { connect } from "react-redux";
 import PopupDialog, { SlideAnimation } from "react-native-popup-dialog";
 import propTypes from "prop-types";
 
-import { adaptWidth } from "../../../etc";
+import { adaptWidth, fetchJson, host } from "../../../etc";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -85,7 +86,7 @@ class Forms extends React.Component {
     return 1;
   };
 
-  next = () => {
+  next = async () => {
     if (this.state.firstName == null || this.state.firstName == "")
       this.setState({ firstNameError: "Это поле обязательно" });
     if (this.state.secondName == null || this.state.secondName == "")
@@ -98,6 +99,8 @@ class Forms extends React.Component {
       this.setState({ houseError: "Это поле обязательно" });
     if (this.state.address.flat == null || this.state.address.flat == "")
       this.setState({ flatError: "Это поле обязательно" });
+    if (this.state.address.floor == null || this.state.address.floor == "")
+      this.setState({ floorError: "Это поле обязательно" });
     if (
       this.state.address.entrance == null ||
       this.state.address.entrance == ""
@@ -105,6 +108,15 @@ class Forms extends React.Component {
       this.setState({ entranceError: "Это поле обязательно" });
 
     if (this.isNext()) {
+      const cardsResponse = await fetchJson(
+        `${host}/user/getCards/?token=${this.props.user.token}`
+      );
+      const cards =
+        cardsResponse.errors === undefined ? cardsResponse.data : [];
+      this.props.updateCards(cards);
+
+      AsyncStorage.setItem("deliveryAddress", JSON.stringify(this.state.address));
+
       const date = this.state.date.getDate();
       const month = this.state.date.getMonth() + 1;
       const year = this.state.date.getFullYear();
@@ -138,10 +150,20 @@ class Forms extends React.Component {
           secondName: this.state.secondName,
           phone: this.state.phone,
           deliveryDate: this.state.selected == 1 ? dateString : null
-        }
+        },
+        cards: cards
       });
     }
   };
+
+  componentDidMount = async () => {
+    const prevAddres = await AsyncStorage.getItem("deliveryAddress");
+    if (prevAddres != null) {
+      let newAddres = JSON.parse(prevAddres);
+      newAddres.commentary = "";
+      this.setState({ address: newAddres });
+    }
+  }
 
   render = () => (
     <View>
@@ -385,7 +407,7 @@ class Forms extends React.Component {
             </View>
             <View style={{ width: adaptWidth(128, 150, 165) }}>
               <TextField
-                error={this.state.floor}
+                error={this.state.floorError}
                 tintColor="#dcc49c"
                 baseColor="rgb(87, 88, 98)"
                 textColor="#fff"
@@ -767,6 +789,7 @@ class Forms extends React.Component {
 
 Forms.propTypes = {
   user: propTypes.object,
+  updateCards: propTypes.func,
   address: propTypes.object,
   navigation: propTypes.object
 };
@@ -779,6 +802,7 @@ export default connect(
   dispatch => ({
     onAddPlate: plate => {
       dispatch({ type: "ADD_PLATE", payload: plate });
-    }
+    },
+    updateCards: cards => dispatch({ type: "UPDATE_CARDS", payload: cards })
   })
 )(Forms);

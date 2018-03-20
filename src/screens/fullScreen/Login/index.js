@@ -68,9 +68,42 @@ class Login extends React.Component {
 
   componentWillMount = async () => {
     await VKLogin.initialize(6365999);
-    SmsListener.addListener(({ body }) => {
+    SmsListener.addListener(async ({ body }) => {
       this.setState({ code: body });
+      this.props.showSpinner();
+      let form = new FormData();
+      form.append("code", body);
+      form.append("phone", this.state.phone.replace(/\D+/g, ""));
+
+      const authResponse = await fetchJson(
+        "https://dostavka1.com/v1/auth/auth/",
+        {
+          method: "POST",
+          body: form
+        }
+      );
+      if (authResponse.errors) {
+        let { code, title, detail } = authResponse.errors;
+        Alert.alert(`${title} ${code}`, detail, [
+          { text: "OK", onPress: this.props.hideSpinner }
+        ]);
+      } else {
+        this.props.hideSpinner();
+        this.login(authResponse);
+      }
+      // this.props.hideSpinner();
     });
+  };
+
+  login = data => {
+    this.props.login(data);
+    // if (this.props.navigation.state.params.nextScreen === "SetFullAddress")
+    //   this.props.navigation.navigate("Cart");
+    // else
+    this.props.navigation.navigate("Feed");
+    // this.props.navigation.navigate("SetCreditCard", {
+    //   url: `${host}/payture/add?token=${data.data.token}`
+    // });
   };
 
   authOnServer = async (body, suffix = "") => {
@@ -90,15 +123,13 @@ class Login extends React.Component {
       let { code, title, detail } = data.errors;
       Alert.alert(`${title} ${code}`, detail);
     } else {
-      this.props.login(data);
-      this.props.navigation.navigate("Feed");
+      this.login(data);
     }
   };
 
   vkAuth = async () => {
     const { navigate } = this.props.navigation;
-    const authResult = null;
-    await VKLogin.login(["email", "photos"]);
+    const authResult = await VKLogin.login(["email", "photos"]);
     if (authResult.access_token != undefined) {
       let { access_token, user_id } = authResult;
       let vkProfileResponse = await fetch(
@@ -125,61 +156,63 @@ class Login extends React.Component {
 
   fbAuth = async () => {
     const { navigate } = this.props.navigation;
-    LoginManager.logInWithReadPermissions(["public_profile", "email"]).then(
-      result => {
-        if (result.isCancelled) {
-          Alert.alert("Login cancelled");
-        } else {
-          Alert.alert(
-            "Login success with permissions: " +
-              result.grantedPermissions.toString()
-          );
-
-          AccessToken.getCurrentAccessToken().then(data => {
-            let accessToken = data.accessToken;
-            Alert.alert(accessToken.toString());
-
-            const responseInfoCallback = (error, result) => {
-              if (error) {
-                Alert.alert("Error fetching data: " + error.toString());
-              } else {
-                const { first_name, last_name, email, id } = result;
-                const registarionBody = {
-                  type: "fb",
-                  firstName: first_name,
-                  lastName: last_name,
-                  email: email,
-                  access_token: accessToken.toString(),
-                  user_id: id
-                };
-
-                navigate("Registration", registarionBody);
-                Alert.alert("Success fetching data: " + result.toString());
-              }
-            };
-
-            const infoRequest = new GraphRequest(
-              "/me",
-              {
-                accessToken: accessToken,
-                parameters: {
-                  fields: {
-                    string: "email,name,first_name,middle_name,last_name"
-                  }
-                }
-              },
-              responseInfoCallback
+    if (LoginManager.logInWithReadPermissions != undefined) {
+      LoginManager.logInWithReadPermissions(["public_profile", "email"]).then(
+        result => {
+          if (result.isCancelled) {
+            Alert.alert("Login cancelled");
+          } else {
+            Alert.alert(
+              "Login success with permissions: " +
+                result.grantedPermissions.toString()
             );
 
-            // Start the graph request.
-            new GraphRequestManager().addRequest(infoRequest).start();
-          });
+            AccessToken.getCurrentAccessToken().then(data => {
+              let accessToken = data.accessToken;
+              Alert.alert(accessToken.toString());
+
+              const responseInfoCallback = (error, result) => {
+                if (error) {
+                  Alert.alert("Error fetching data: " + error.toString());
+                } else {
+                  const { first_name, last_name, email, id } = result;
+                  const registarionBody = {
+                    type: "fb",
+                    firstName: first_name,
+                    lastName: last_name,
+                    email: email,
+                    access_token: accessToken.toString(),
+                    user_id: id
+                  };
+
+                  navigate("Registration", registarionBody);
+                  Alert.alert("Success fetching data: " + result.toString());
+                }
+              };
+
+              const infoRequest = new GraphRequest(
+                "/me",
+                {
+                  accessToken: accessToken,
+                  parameters: {
+                    fields: {
+                      string: "email,name,first_name,middle_name,last_name"
+                    }
+                  }
+                },
+                responseInfoCallback
+              );
+
+              // Start the graph request.
+              new GraphRequestManager().addRequest(infoRequest).start();
+            });
+          }
+        },
+        function(error) {
+          Alert.alert("Login fail with error: " + error);
         }
-      },
-      function(error) {
-        Alert.alert("Login fail with error: " + error);
-      }
-    );
+      );
+    }
   };
 
   twitterAuth = async () => {};
@@ -309,14 +342,24 @@ class Login extends React.Component {
                   body: form
                 }
               );
+              // this.props.hideSpinner();
+              this.setState({ code: null, codeError: null });
               if (authResponse.errors) {
-                let { code, title, detail } = authResponse.errors;
-                Alert.alert(`${title} ${code}`, detail);
+                if (authResponse.errors.code != 206) {
+                  let { code, title, detail } = authResponse.errors;
+                  Alert.alert(`${title} ${code}`, detail, [
+                    { text: "OK", onPress: this.props.hideSpinner }
+                  ]);
+                } else {
+                  this.login(authResponse);
+                  this.props.navigation.navigate("SetCreditCard", {
+                    token: authResponse.data.token
+                  });
+                }
               } else {
-                this.props.login(authResponse);
-                this.props.navigation.navigate("Feed");
+                this.props.hideSpinner();
+                this.login(authResponse);
               }
-              this.props.hideSpinner();
             }
           }}
           style={{
@@ -369,10 +412,13 @@ class Login extends React.Component {
     );
   };
   renderSocialButtons = () => {
-    return [
-      { name: "vk", callback: this.vkAuth },
-      { name: "fb", callback: this.fbAuth }
-    ].map(({ name, callback }, index) =>
+    const buttons = [{ name: "vk", callback: this.vkAuth }];
+    if (Object.keys(LoginManager).length > 0)
+      buttons.push({
+        name: "fb",
+        callback: this.fbAuth
+      });
+    return buttons.map(({ name, callback }, index) =>
       this.renderAuthButton(name, callback, index)
     );
   };
@@ -454,7 +500,7 @@ class Login extends React.Component {
         </Text>
 
         {this.renderForms()}
-        <View
+        {/* <View
           style={{
             flexDirection: "row",
             justifyContent: "center",
@@ -463,7 +509,7 @@ class Login extends React.Component {
           }}
         >
           {this.renderSocialButtons()}
-        </View>
+        </View> */}
         <View
           style={{
             position: "absolute",

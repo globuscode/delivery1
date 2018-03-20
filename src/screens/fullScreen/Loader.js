@@ -26,11 +26,15 @@ class Loader extends React.Component {
 
   static propTypes = {
     navigation: propTypes.object,
-    cacheImage: propTypes.func
+    cacheImage: propTypes.func,
+    user: propTypes.shape({
+      token: propTypes.string
+    })
   };
 
   componentWillMount = async () => {
     const { navigation } = this.props;
+    const { token } = this.props.user;
 
     if (navigation.state.params.action === "navigate") {
       const { screen } = navigation.state.params;
@@ -41,7 +45,7 @@ class Loader extends React.Component {
     if (navigation.state.params.action === "navigateToMenu") {
       const { id } = navigation.state.params;
       let response = await fetchJson(
-        `${host}/restaurantMenu?restaurantId=${id}`
+        `${host}/restaurantMenu?restaurantId=${id}&token=${token}`
       );
       // if (response["data"]) {
       //   if (response["data"]["result"]) {
@@ -55,7 +59,7 @@ class Loader extends React.Component {
       // }
 
       let responseRestaurant = await fetchJson(
-        `${host}/restaurant?restaurantId=${id}`
+        `${host}/restaurant?restaurantId=${id}&token=${token}&token=${token}`
       );
 
       if (responseRestaurant.data === undefined) {
@@ -80,7 +84,9 @@ class Loader extends React.Component {
     if (navigation.state.params.action === "navigateToRestaurant") {
       const { id } = navigation.state.params;
 
-      let response = await fetchJson(`${host}/restaurant?restaurantId=${id}`);
+      let response = await fetchJson(
+        `${host}/restaurant?restaurantId=${id}&token=${token}`
+      );
 
       if (response.errors != undefined) {
         let { title, detail, code } = response.errors;
@@ -96,6 +102,50 @@ class Loader extends React.Component {
         id: id,
         restaurant: restaurant
       });
+    }
+
+    if (navigation.state.params.action === "navigateToCollection") {
+      const { props } = this;
+      const { params } = props.navigation.state;
+      if (params.collection != undefined) {
+        const response = await fetchJson(
+          `${host}/collection?id=${params.collection.id}`
+        );
+        if (response.errors === undefined) {
+          // console.log(response);
+          navigation.navigate("Collection", {
+            id: params.collection.id,
+            collection: response
+          });
+        }
+        if (response.errors != undefined) {
+          let { title, detail, code } = response.errors;
+          Alert.alert(`${title} ${code}`, detail);
+          return -1;
+        }
+      }
+    }
+
+    if (navigation.state.params.action === "navigateToPromo") {
+      const { props } = this;
+      const { params } = props.navigation.state;
+      if (params.restaurant != undefined) {
+        let response = await fetchJson(
+          `${host}/restaurant?restaurantId=${params.restaurant}&token=${token}`
+        );
+        if (response.errors === undefined) {
+          // console.log(response);
+          navigation.navigate("Collection", {
+            id: params.collection.id,
+            collection: response
+          });
+        }
+        if (response.errors != undefined) {
+          let { title, detail, code } = response.errors;
+          Alert.alert(`${title} ${code}`, detail);
+          return -1;
+        }
+      }
     }
   };
 
@@ -147,7 +197,9 @@ class Loader extends React.Component {
 }
 
 export default connect(
-  () => ({}),
+  ({ user }) => ({
+    user: user
+  }),
   dispatch => ({
     cacheImage: link => dispatch({ type: "SAVE_IMG_TO_CACHE", payload: link })
   })

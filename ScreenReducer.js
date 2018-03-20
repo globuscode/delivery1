@@ -10,19 +10,23 @@ import RegistratePhone from "./src/screens/fullScreen/RegistatePhone";
 import SelectCity from "./src/screens/fullScreen/SelectCity";
 import SelectTags from "./src/screens/fullScreen/SelectTags";
 import SetAddress from "./src/screens/fullScreen/SetAddress";
-import SelectTastes from "./src/SelectTastes";
+import SelectTastes from "./src/screens/fullScreen/SelectTastes";
 import About from "./src/screens/fullScreen/about";
 import SpecialScreen from "./src/screens/fullScreen/SpecialScreen";
 import LoadingScreen from "./src/screens/fullScreen/LoadingScreen";
-import Main from "./src/Main";
+import Main from "./src/screens/inTabs/Main";
 import Loader from "./src/screens/fullScreen/Loader";
-import Profile from "./src/Profile";
+import Profile from "./src/screens/fullScreen/Profile";
 import MakeOrder from "./src/screens/fullScreen/MakeOrder";
 import MyOrders from "./src/screens/fullScreen/MyOrders";
 import MyOrderDetail from "./src/screens/fullScreen/MyOrderDetail";
-import PersonalInformation from "./src/PersonalInformation";
+import PersonalInformation from "./src/screens/fullScreen/PersonalInformation";
 import SetFullAddress from "./src/screens/fullScreen/SetFullAddress";
-import SetCard from "./src/SetCard";
+// import SetCard from "./src/SetCard";
+import SetCreditCard from "./src/screens/fullScreen/SetCreditCard";
+import UpdateProfile from "./src/screens/fullScreen/UpdateProfile";
+import UpdatePhone from "./src/screens/fullScreen/UpdatePhone";
+import Loyalty from "./src/screens/fullScreen/Loyalty";
 
 const headerStyleIOS = title => ({
   title: title,
@@ -77,6 +81,14 @@ export default StackNavigator(
       screen: SetFullAddress,
       navigationOptions: headerStyleIOS("Адрес доставки")
     },
+    SetCreditCard: {
+      screen: SetCreditCard,
+      navigationOptions: headerStyleIOS("Добавить карту")
+    },
+    Loyalty: {
+      screen: Loyalty,
+      navigationOptions: headerStyleIOS("Программа лояльности")
+    },
     SelectCity: {
       screen: SelectCity,
       navigationOptions: {
@@ -106,6 +118,14 @@ export default StackNavigator(
       screen: Profile,
       navigationOptions: headerStyleIOS("Личный кабинет")
     },
+    UpdateProfile: {
+      screen: UpdateProfile,
+      navigationOptions: headerStyleIOS("Изменить данные")
+    },
+    UpdatePhone: {
+      screen: UpdatePhone,
+      navigationOptions: headerStyleIOS("Изменить телефон")
+    },
     MakeOrder: {
       screen: MakeOrder,
       navigationOptions: headerStyleIOS("Оплатить заказ")
@@ -114,10 +134,10 @@ export default StackNavigator(
       screen: MyOrders,
       navigationOptions: headerStyleIOS("Мои заказы")
     },
-    SetCard: {
+    /*  SetCard: {
       screen: SetCard,
       navigationOptions: headerStyleIOS("Прикрепить карту")
-    },
+    }, */
     MyOrderDetail: {
       screen: MyOrderDetail,
       navigationOptions: headerStyleIOS("Заказ")

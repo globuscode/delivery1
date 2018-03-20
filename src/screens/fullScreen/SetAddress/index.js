@@ -73,9 +73,11 @@ class SelectAddress extends React.Component {
     let responseJson = await fetchJson(
       `${host}/address/autocomplete/?cityId=36&street=${address.street}&house=${
         address.house
-      }&restaurantId=${this.props.navigation.state.params.id}`
+      }&restaurantId=${this.props.navigation.state.params.id}`,
+      {
+        method: "POST"
+      }
     );
-
     if (responseJson.data === undefined) {
       if (responseJson.errors === undefined) {
         Alert.alert("Ошибка", "Ошибка запроса");
@@ -188,15 +190,22 @@ class SelectAddress extends React.Component {
       `${host}/address?cityId=36&street=${this.state.address}&house=${
         this.state.house
       }&restaurantId=${this.props.navigation.state.params.id}`,
-      {}
+      {
+        method: "POST"
+      }
     );
-    this.props.hideSpinner();
     if (responseJson["errors"] != undefined) {
-      // Alert.alert(responseJson["errors"]["title"] + ' ' + responseJson["errors"]["code"], responseJson["errors"]["detail"]);
+      Alert.alert(
+        responseJson["errors"]["title"] + " " + responseJson["errors"]["code"],
+        responseJson["errors"]["detail"],
+        [{ text: "OK", onPress: this.props.hideSpinner }]
+      );
       this.setState({ deliver: false });
       return -1;
-    } else if (responseJson["data"] != undefined)
+    } else if (responseJson["data"] != undefined) {
+      this.props.hideSpinner();
       this.setState({ deliver: responseJson["data"]["result"] == 0 });
+    }
   };
 
   next = () => {

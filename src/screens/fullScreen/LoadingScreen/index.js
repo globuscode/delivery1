@@ -17,10 +17,19 @@ import IconD from "../../../components/ui/IconD";
 import { host, fetchJson } from "../../../etc";
 var kitchenPhoto = require("../../../../assets/img/kitchen.jpg");
 
-const resetAction = NavigationActions.reset({
-  index: 0,
-  actions: [NavigationActions.navigate({ routeName: "Tabs" })]
-});
+const resetAction = params =>
+  NavigationActions.reset({
+    index: 0,
+    actions: [NavigationActions.navigate({ routeName: "Tabs", params: params })]
+  });
+
+const noCard = params =>
+  NavigationActions.reset({
+    index: 0,
+    actions: [
+      NavigationActions.navigate({ routeName: "SetCreditCard", params: params })
+    ]
+  });
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
@@ -92,7 +101,10 @@ class Loading extends React.Component {
     );
     if (responseJson.data != undefined) {
       this.setState({ text: "Изучаем манускрипты в поисках крутых рецептов" });
-      this.props.auth();
+      let data = await this.props.auth();
+      if (data.errors !== undefined)
+        if (data.errors.code === 206)
+          this.props.navigation.dispatch(noCard({ token: data.data.token }));
       for (let i = 0; i < responseJson.data.plates.length; i++) {
         let { image } = responseJson.data.plates[i];
         await Image.prefetch("http:" + image);
@@ -103,9 +115,14 @@ class Loading extends React.Component {
         await Image.prefetch("http:" + restourantLogo);
       }
       this.props.loadRecomendations(responseJson.data);
-      this.props.navigation.dispatch(resetAction);
+      if (data.errors === undefined)
+        this.props.navigation.dispatch(resetAction({}));
+      else if (data.errors.code === 323)
+        this.props.navigation.dispatch(resetAction({}));
     } else {
-      this.setState({ text: "Ошибка" });
+      this.setState({
+        text: responseJson.errors.title + "\n" + responseJson.errors.detail
+      });
     }
   }
 
@@ -161,26 +178,30 @@ export default connect(
   dispatch => ({
     loadRecomendations: data =>
       dispatch({ type: "SET_RECOMENDATIONS", payload: data }),
-    auth: () => {
-      AsyncStorage.getItem("lastToken", async (error, token) => {
-        // token = JSON.parse(token);
-        var formData = new FormData();
-        formData.append("token", token);
-        if (token != "") {
-          let data = await fetchJson(`${host}/auth/auth/`, {
-            method: "POST",
-            body: formData
-          });
+    auth: async () => {
+      const token = await AsyncStorage.getItem("lastToken");
+      var formData = new FormData();
+      formData.append("token", token);
+      if (token != null) {
+        let data = await fetchJson(`${host}/auth/auth/`, {
+          method: "POST",
+          body: formData
+        });
 
-          if (data.errors) {
-            if (data.errors.code != 200) {
-              //Alert.alert(data.errors.title, "Авторизируйтесь повторно");
-            }
-          } else {
-            dispatch({ type: "AUTH", payload: data });
+        if (data.errors) {
+          if (data.errors.code != 200) {
+            // Alert.alert(data.errors.title, "Авторизируйтесь повторно");
           }
+          if (data.errors.code === 206) {
+            dispatch({ type: "AUTH", payload: data });
+            // callback(data);
+          }
+        } else {
+          dispatch({ type: "AUTH", payload: data });
         }
-      });
+        return data;
+      }
+      return {};
     }
   })
 )(Loading);

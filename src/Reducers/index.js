@@ -10,6 +10,7 @@ import favourite from "./favourite";
 import lastViewed from "./lastViewed";
 import restaurants from "./restaurants";
 import plates from "./plates";
+import cards from "./cards";
 
 function lastAction(state = null, action) {
   return action;
@@ -28,7 +29,8 @@ const store = createStore(
     favourite,
     lastViewed,
     restaurants,
-    plates
+    plates,
+    cards
   })
 );
 

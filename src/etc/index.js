@@ -1,4 +1,4 @@
-import { Alert, Dimensions } from "react-native";
+import { Dimensions } from "react-native";
 import Reducer from "../Reducers";
 
 const { width: viewportWidth } = Dimensions.get("window");
@@ -42,18 +42,35 @@ export const fetchJson = async (url, params) => {
   try {
     response = await fetch(url, params);
   } catch (e) {
-    Alert.alert("Ошибка", "Сервер не отвечает. Запрос " + url);
-    return {};
+    // Alert.alert(
+    //   "Ошибка",
+    //   "Сервер не отвечает. Запрос " + url,
+    //   callback === undefined ? undefined : [{ text: "OK", onPress: callback }]
+    // );
+    return {
+      errors: {
+        code: 404,
+        title: "Сервер не отвечает",
+        detail: "Запрос " + url
+      }
+    };
   }
 
   try {
     responseJson = await response.json();
   } catch (error) {
-    Alert.alert(
-      "Ошибка " + response.status.toString(),
-      "Ответ не является JSON'ом. Запрос " + url
-    );
-    return {};
+    // Alert.alert(
+    //   "Ошибка " + response.status.toString(),
+    //   "Ответ не является JSON'ом. Запрос " + url,
+    //   callback === undefined ? undefined : [{ text: "OK", onPress: callback }]
+    // );
+    return {
+      errors: {
+        code: response.status.toString(),
+        title: "Ответ не является JSON'ом.",
+        detail: "Запрос " + url
+      }
+    };
   }
 
   if (url.indexOf(`${host}/restaurant?restaurantId`) != -1) {
