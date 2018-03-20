@@ -70,7 +70,7 @@ class Cart extends React.Component {
       promoDiscount: 0,
       price: 0,
       totalPrice: 0,
-      change: 0,
+      // change: 0,
       promocode: "",
       withSales: 0,
       persons: 1,
@@ -95,10 +95,10 @@ class Cart extends React.Component {
         this.setState({ restaurant: restJson["data"]["result"] });
       }
 
-      this.state.totalPrice = getCartTotalPrice(cart);
-      this.setState({ change: this.state.totalPrice });
+      // this.state.totalPrice = getCartTotalPrice(cart);
+      // this.setState({ change: this.state.totalPrice });
       await this.getSalesPrice(newProps);
-      this.setState({ change: this.change() });
+      // this.setState({ change: this.change() });
     }
   };
 
@@ -116,9 +116,9 @@ class Cart extends React.Component {
         });
       }
       await this.getSalesPrice(this.props);
-      this.setState({
-        totalPrice: getCartTotalPrice(cart)
-      });
+      // this.setState({
+      //   totalPrice: getCartTotalPrice(cart)
+      // });
     }
   };
 
@@ -134,9 +134,10 @@ class Cart extends React.Component {
           restaurant: restJson["data"]["result"]
         });
       }
-      this.setState({
-        totalPrice: getCartTotalPrice(cart)
-      });
+      await this.getSalesPrice(this.props);
+      // this.setState({
+      //   totalPrice: getCartTotalPrice(cart)
+      // });
     }
   };
 
@@ -437,6 +438,7 @@ class Cart extends React.Component {
           {"Если у вас есть сертификат, введите номер чтобы получить скидку"}
         </Text>
         <TextField
+          value={this.state.promocode}
           tintColor="#dcc49c"
           baseColor="rgb(87, 88, 98)"
           textColor="#fff"
@@ -445,6 +447,7 @@ class Cart extends React.Component {
             alignItems: "center",
             textAlign: "center"
           }}
+          onChangeText={code => this.setState({ promocode: code })}
           inputContainerStyle={{
             flexDirection: "column",
             alignItems: "center",
@@ -570,7 +573,7 @@ class Cart extends React.Component {
               />
             </SummaryItem>
             <SummaryItem label="Сумма заказа" text={this.state.price + " ₽"} />
-            {/*this.renderPromoCode()*/}
+            {this.renderPromoCode()}
             {this.state.promoDiscount === undefined ? null : (
               <SummaryItem
                 label="Скидка по акции"
