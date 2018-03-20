@@ -789,6 +789,7 @@ class Forms extends React.Component {
 
 Forms.propTypes = {
   user: propTypes.object,
+  updateCards: propTypes.func,
   address: propTypes.object,
   navigation: propTypes.object
 };
