@@ -17,6 +17,7 @@ const screen =
   viewportWidth >= 320 && viewportWidth < 375
     ? 0
     : viewportWidth >= 375 && viewportWidth < 414 ? 1 : 2;
+const USER_RANGS = ["Новичок", "Бывалый", "Профи"];
 
 const { width: viewportWidth } = Dimensions.get("window");
 class Profile extends React.Component {
@@ -35,7 +36,8 @@ class Profile extends React.Component {
     userData: propTypes.shape({
       user: propTypes.shape({
         firstName: propTypes.string,
-        lastName: propTypes.string
+        lastName: propTypes.string,
+        rang: propTypes.string
       })
     })
   };
@@ -109,7 +111,7 @@ class Profile extends React.Component {
             paddingLeft: 20
           }}
         >
-          {/*<View
+          <View
             style={{
               marginLeft: 63,
               flexDirection: "column"
@@ -125,19 +127,20 @@ class Profile extends React.Component {
               {"Статус"}
             </Text>
             <View style={{ flexDirection: "row" }}>
-              {this.renderStatus(2)}
+              {this.renderStatus(parseInt(this.props.userData.user.rang))}
               <Text
                 style={{
-                  fontFamily: "OpenSans", fontWeight: "600",
+                  fontFamily: "OpenSans",
+                  fontWeight: "600",
                   fontSize: 12,
                   color: "#ffffff",
                   top: Platform.OS === "ios" ? 1 : 0
                 }}
               >
-                {"Бывалый"}
+                {USER_RANGS[parseInt(this.props.userData.user.rang)]}
               </Text>
             </View>
-              </View>*/}
+          </View>
         </View>
 
         <View
