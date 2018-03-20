@@ -17,6 +17,10 @@ export default class SelectCity extends React.Component {
     super(props);
     this.state = {
       canNav: true,
+      selectedCity: {
+        restaurantCount: 0,
+        deliveryTime: 0
+      },
       cities: [
         {
           title: "Санкт-Петербург",
