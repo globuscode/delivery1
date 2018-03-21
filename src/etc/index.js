@@ -64,7 +64,6 @@ export const fetchJson = async (url, params) => {
     //   "Ответ не является JSON'ом. Запрос " + url,
     //   callback === undefined ? undefined : [{ text: "OK", onPress: callback }]
     // );
-    console.log(response);
     return {
       errors: {
         code: response.status.toString(),
