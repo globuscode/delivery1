@@ -12,6 +12,10 @@ const { width: viewportWidth } = Dimensions.get("window");
 
 class ButtonD extends React.Component {
   render = () => {
+    const title =
+      typeof this.props.title === "string"
+        ? [this.props.title]
+        : this.props.title;
     return (
       <View style={{ alignSelf: "stretch" }}>
         <View
@@ -26,7 +30,8 @@ class ButtonD extends React.Component {
               alignContent: "center",
               borderRadius: 4,
               borderColor: "white"
-            }
+            },
+            this.props.style
           ]}
         >
           {this.props.title.map((element, index) => (
@@ -58,13 +63,14 @@ class ButtonD extends React.Component {
               alignContent: "center",
               borderRadius: 4,
               borderColor: "#dcc49c"
-            }
+            },
+            this.props.style
           ]}
         >
-          {this.props.title.map((element, index) => (
+          {title.map((element, index) => (
             <Text
               style={{
-                color: "#ffffff",
+                color: this.props.textColor ? this.props.textColor : "#ffffff",
                 textAlign: "center",
                 fontSize: 14,
                 fontFamily: "Stem-Medium",
@@ -82,8 +88,10 @@ class ButtonD extends React.Component {
 }
 
 ButtonD.propTypes = {
+  style: propTypes.object,
   width: propTypes.number,
   title: propTypes.array,
+  textColor: propTypes.string,
   onPress: propTypes.func
 };
 
