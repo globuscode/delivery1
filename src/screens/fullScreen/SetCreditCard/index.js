@@ -4,6 +4,8 @@ import propTypes from "prop-types";
 import { connect } from "react-redux";
 import { fetchJson, host } from "../../../etc";
 
+let lagTime = 10000;
+
 class SetCreditCard extends React.Component {
   constructor(props) {
     super(props);
@@ -11,6 +13,7 @@ class SetCreditCard extends React.Component {
       htmlBody: "",
       needToCheck: true,
       canNav: true,
+      lagTime: 10000,
       cardsCount: 0
     };
   }
@@ -65,7 +68,8 @@ class SetCreditCard extends React.Component {
       }
       return 0;
     }
-    setTimeout(this._check, 10000);
+    setTimeout(this._check, lagTime);
+    lagTime = 5000;
   };
 
   render = () => {
