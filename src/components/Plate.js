@@ -8,12 +8,15 @@ import LinearGradient from "react-native-linear-gradient";
 import IconD from "./ui/IconD";
 import { adaptWidth } from "../etc";
 import PriceButton from "./ui/PriceButton";
+import ButtonD from "./ui/ButtonD";
 
 const { width: viewportWidth } = Dimensions.get("window");
 const imageHeight = adaptWidth(100, 117, 130);
 
 class Plate extends React.Component {
   static propTypes = {
+    giftSelected: propTypes.bool,
+    gift: propTypes.bool,
     onPress: propTypes.func,
     onFavPress: propTypes.func,
     onPriceButtonPress: propTypes.func,
@@ -148,12 +151,30 @@ class Plate extends React.Component {
               </View>
             </View>
             <View style={{ flexDirection: "row" }}>
-              <PriceButton
-                value={e.price}
-                pressed={itemCount !== 0}
-                count={itemCount}
-                onPress={this.props.onPriceButtonPress}
-              />
+              {this.props.gift ? (
+                <ButtonD
+                  title={["Выбрать"]}
+                  onPress={this.props.onPriceButtonPress}
+                  textColor={
+                    this.props.giftSelected ? "rgb(46, 46, 51)" : undefined
+                  }
+                  style={{
+                    padding: 10,
+                    height: adaptWidth(28, 30, 34),
+                    backgroundColor: this.props.giftSelected
+                      ? "#dcc49c"
+                      : undefined,
+                    width: adaptWidth(89, 97, 104)
+                  }}
+                />
+              ) : (
+                <PriceButton
+                  value={e.price}
+                  pressed={itemCount !== 0}
+                  count={itemCount}
+                  onPress={this.props.onPriceButtonPress}
+                />
+              )}
               {itemCount === 0 ? null : (
                 <Touchable
                   background={Touchable.SelectableBackground()}
