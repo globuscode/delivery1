@@ -49,6 +49,7 @@ class Collection extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      canNav: true,
       collection: this.props.navigation.state.params.collection.data.collection
     };
   }
@@ -567,15 +568,16 @@ class Collection extends React.Component {
           <Touchable
             activeOpacity={0.8}
             onPress={() => {
-              // if (this.state.canNav) {
-              //   this.props.navigation.navigate("Loader", {
-              //     restaurant: this.state,
-              //   });
-              //   this.setState({ canNav: false });
-              //   setTimeout(() => {
-              //     this.setState({ canNav: true });
-              //   }, 1500);
-              // }
+              if (this.state.canNav) {
+                this.props.navigation.navigate("Loader", {
+                  action: "navigateToPromo",
+                  promo: item.id
+                });
+                this.setState({ canNav: false });
+                setTimeout(() => {
+                  this.setState({ canNav: true });
+                }, 1500);
+              }
             }}
             foreground={Touchable.SelectableBackgroundBorderless()}
             style={{
