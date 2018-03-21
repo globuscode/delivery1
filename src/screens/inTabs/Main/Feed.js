@@ -217,7 +217,20 @@ class Feed extends React.Component {
               </View>
             </View>
           </TouchableOpacity>
-          {/*<TouchableOpacity style={{width: 30, justifyContent: 'center'}}><IconD name='find' color='#dcc49c' size={15} /></TouchableOpacity>*/}
+          <TouchableOpacity
+            onPress={() => {
+              if (this.state.canNav) {
+                this.props.navigation.navigate("Search");
+                this.setState({ canNav: false });
+                setTimeout(() => {
+                  this.setState({ canNav: true });
+                }, 1500);
+              }
+            }}
+            style={{ width: 30, justifyContent: "center" }}
+          >
+            <IconD name="find" color="#dcc49c" size={15} />
+          </TouchableOpacity>
         </View>
         <ScrollView ref={scroll => (this.scroll = scroll)} horizontal={false}>
           <GuideButton
