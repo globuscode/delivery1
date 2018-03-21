@@ -291,6 +291,7 @@ class MakeOrder extends React.Component {
                 let body = {
                   token: this.props.userStore.token,
                   items: cartForRequest,
+                  gift: this.props.navigation.state.params.gift,
                   address: navitagionParams.address,
                   client: navitagionParams.client,
                   deliveryDate:
