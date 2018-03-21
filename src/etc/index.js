@@ -3,7 +3,7 @@ import Reducer from "../Reducers";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
-const host = "http://dostavka1.com/v1";
+const host = "https://dostavka1.com/v1";
 
 const adaptWidth = (width320, width375, width414) => {
   if (viewportWidth <= 320) return width320;
@@ -64,6 +64,7 @@ export const fetchJson = async (url, params) => {
     //   "Ответ не является JSON'ом. Запрос " + url,
     //   callback === undefined ? undefined : [{ text: "OK", onPress: callback }]
     // );
+    console.log(response);
     return {
       errors: {
         code: response.status.toString(),
