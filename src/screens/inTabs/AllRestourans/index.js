@@ -5,7 +5,6 @@ import {
   View,
   TouchableOpacity,
   Dimensions,
-  ScrollView,
   ActivityIndicator,
   FlatList
 } from "react-native";
@@ -87,15 +86,26 @@ class AllRestourans extends React.Component {
   updateResults = async () => {
     const { page } = this.state;
     const tag = this.state.types[this.state.selectedType];
+    let newRests = this.state.restaurans;
     this.setState({ updating: true });
     let responseJson = await fetchJson(
-      `${host}/restaurants?cityId=36&tag=${tag}&page=${page}&results=1&token=${
+      `${host}/restaurants?cityId=36&tag=${tag}&page=${page}&results=3&token=${
         this.props.user.token
       }`
     );
+    for (let j = 0; j < responseJson.data.restaurants.length; j++) {
+      let isErr = false;
+      for (let i = 0; i < this.state.restaurans.length; i++) {
+        isErr =
+          isErr &&
+          responseJson.data.restaurants[j].id !== this.state.restaurans[i].id;
+      }
+
+      if (!isErr) newRests.push(responseJson.data.restaurants[j]);
+    }
     this.setState({
-      restaurans: [...this.state.restaurans, ...responseJson.data.restaurants],
-      page: this.state.page + 1,
+      restaurans: newRests,
+      // page: this.state.page + 1,
       updating: false
     });
   };
@@ -204,62 +214,72 @@ class AllRestourans extends React.Component {
               </View>
             </TouchableOpacity>
           </View>
-          <ScrollView contentContainerStyle={{ width: viewportWidth }}>
-            <Text
-              style={{
-                fontSize: 10,
-                color: "#dcc49c",
-                textAlign: "center",
-                marginTop: 5,
-                marginBottom: 2,
-                fontFamily: "OpenSans"
-              }}
-            >
-              {"Тип кухни"}
-            </Text>
-            <View
-              style={{
-                width: viewportWidth - 40,
-                marginBottom: 20,
-                padding: 6,
-                alignSelf: "center",
-                flexDirection: "row",
-                justifyContent: "center",
-                borderBottomWidth: 1,
-                borderColor: "#dcc49c"
-              }}
-            >
-              <TouchableOpacity
-                onPress={() => this._drawer.open()}
-                style={{ flexDirection: "row" }}
-              >
-                <Text style={{ fontSize: 18, color: "#ffffff" }}>
-                  {this.state.types[this.state.selectedType] + " "}
-                </Text>
-                <Icon
-                  name="ios-arrow-down"
-                  color="#ffffff"
-                  style={{ top: 3 }}
-                  size={18}
-                />
-              </TouchableOpacity>
-            </View>
+          <View style={{ width: viewportWidth, flex: 1 }}>
             <FlatList
+              ListHeaderComponent={
+                <View>
+                  <Text
+                    style={{
+                      fontSize: 10,
+                      color: "#dcc49c",
+                      textAlign: "center",
+                      marginTop: 5,
+                      marginBottom: 2,
+                      fontFamily: "OpenSans"
+                    }}
+                  >
+                    {"Тип кухни"}
+                  </Text>
+                  <View
+                    style={{
+                      width: viewportWidth - 40,
+                      marginBottom: 20,
+                      padding: 6,
+                      alignSelf: "center",
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      borderBottomWidth: 1,
+                      borderColor: "#dcc49c"
+                    }}
+                  >
+                    <TouchableOpacity
+                      onPress={() => this._drawer.open()}
+                      style={{ flexDirection: "row" }}
+                    >
+                      <Text style={{ fontSize: 18, color: "#ffffff" }}>
+                        {this.state.types[this.state.selectedType] + " "}
+                      </Text>
+                      <Icon
+                        name="ios-arrow-down"
+                        color="#ffffff"
+                        style={{ top: 3 }}
+                        size={18}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              }
               keyExtractor={item => item.id}
               data={this.state.restaurans}
               renderItem={({ item, index }) =>
                 this.renderRestaurant(item, index)
               }
-              onEndReachedThreshold={0.1}
+              onEndReachedThreshold={0.5}
               onEndReached={() => {
-                if (!this.state.updating) this.updateResults();
+                if (!this.state.updating)
+                  this.setState(
+                    {
+                      page: this.state.page + 1
+                    },
+                    () => this.updateResults()
+                  );
               }}
             />
-            <View style={{ height: 20 }} />
+            <View style={{ height: 0 }} />
             {this.state.updating ? (
               <ActivityIndicator size="large" style={{ alignSelf: "center" }} />
             ) : null}
-          </ScrollView>
+          </View>
 
           <View
             pointerEvents="none"
