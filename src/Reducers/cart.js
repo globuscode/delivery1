@@ -32,7 +32,7 @@ function removePlateById(state, id) {
  */
 export default function cart(state = initialState, action) {
   if (action.type === "MAKE_ORDER") {
-    return initialState;
+    return {};
   }
 
   /**
