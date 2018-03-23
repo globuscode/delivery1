@@ -35,6 +35,7 @@ class Search extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      canNav: true,
       searchValue: "",
       searchResults: {
         restaurants: [],
