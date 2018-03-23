@@ -33,6 +33,9 @@ export default class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      firstName: "",
+      secondName: "",
+      email: "",
       rang: 2,
       canNav: true,
       passwordInputError: null,
@@ -375,14 +378,32 @@ export default class Login extends React.Component {
 
   next = () => {
     const { params } = this.props.navigation.state;
-    if (this.state.firstName == null || this.state.firstName == "")
+    if (
+      this.state.firstName == undefined ||
+      this.state.firstName == null ||
+      this.state.firstName == ""
+    ) {
       this.setState({ firstNameError: "Это поле обязательно" });
-    if (this.state.secondName == null || this.state.secondName == "")
+      return 0;
+    }
+    if (
+      this.state.secondName == undefined ||
+      this.state.secondName == null ||
+      this.state.secondName == ""
+    ) {
       this.setState({ secondNameError: "Это поле обязательно" });
+      return 0;
+    }
     // if (this.state.password == null || this.state.password == "")
     //   this.setState({ passwordInputError: "Это поле обязательно" });
-    if (this.state.email == null || this.state.email == "")
+    if (
+      this.state.email == undefined ||
+      this.state.email == null ||
+      this.state.email == ""
+    ) {
       this.setState({ emailInputError: "Это поле обязательно" });
+      return 0;
+    }
     if (this.state.canNav && this.isNext()) {
       this.props.navigation.navigate("RegistratePhone", {
         userName: this.state.email,
