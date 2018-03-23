@@ -295,6 +295,12 @@ class UpdateProfile extends React.Component {
   };
 
   isNext = () => {
+    if (
+      this.state.firstName === "" ||
+      this.state.secondName === "" ||
+      this.state.email === ""
+    )
+      return false;
     return (
       // this.state.password &&
       this.state.firstName ||
