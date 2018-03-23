@@ -688,7 +688,7 @@ class Collection extends React.Component {
       return (
         <View key={index}>
           {renderHeader(block.title)}
-          <Plates data={plates} hideArrow />
+          <Plates navigation={this.props.navigation} data={plates} hideArrow />
           <Text
             style={{
               fontFamily: "OpenSans",
