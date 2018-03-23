@@ -742,6 +742,16 @@ class RestaurantMenu extends React.Component {
               activeOpacity: 0.2,
               background: Touchable.Ripple("gray")
             }}
+            onChange={async index => {
+              if (index === false) return 0;
+              for (let i = 0; i < params.menu[index].plates.length; i++) {
+                // await Image.prefetch("http:" + );
+
+                let { image } = params.menu[index].plates[i];
+                await Image.prefetch(`http:${image}`);
+                //         Image.prefetch(`http:${image}`);
+              }
+            }}
             duration={500}
             touchableComponent={Touchable}
             underlayColor="#292b37"
