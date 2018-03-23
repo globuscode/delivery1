@@ -53,6 +53,7 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      locked: false,
       rang: 2,
       phone: "",
       canNav: true
@@ -97,10 +98,10 @@ class Login extends React.Component {
 
   login = data => {
     this.props.login(data);
-    // if (this.props.navigation.state.params.nextScreen === "SetFullAddress")
-    //   this.props.navigation.navigate("Cart");
-    // else
-    this.props.navigation.navigate("Feed");
+    if (this.props.navigation.state.params !== undefined)
+      this.props.navigation.navigate("Cart");
+    else
+      this.props.navigation.navigate("Feed");
     // this.props.navigation.navigate("SetCreditCard", {
     //   url: `${host}/payture/add?token=${data.data.token}`
     // });
@@ -236,7 +237,9 @@ class Login extends React.Component {
   };
 
   isNext = () => {
-    return this.state.phone.replace(/\D+/g, "").length > 10;
+    return (
+      this.state.phone.replace(/\D+/g, "").length > 10 && !this.state.locked
+    );
   };
 
   renderStatus = () => {
@@ -544,7 +547,9 @@ class Login extends React.Component {
                 }
               ]}
             >
-              {this.isNext() ? "Выслать код" : "Введите номер телефона"}
+              {this.state.locked
+                ? "Ждите. Вас много, а сервер один"
+                : this.isNext() ? "Выслать код" : "Введите номер телефона"}
             </Text>
           </Touchable>
         </View>
@@ -558,6 +563,10 @@ class Login extends React.Component {
    */
   next = async () => {
     if (this.isNext()) {
+      this.setState({ locked: true });
+      setTimeout(() => {
+        this.setState({ locked: false });
+      }, 60000);
       sendPhone(this.state.phone.replace(/\D+/g, ""));
     }
   };
