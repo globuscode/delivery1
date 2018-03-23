@@ -463,6 +463,9 @@ class Cart extends React.Component {
             alignItems: "center",
             justifyContent: "center"
           }}
+          onBlur={() => {
+            this.getSalesPrice(this.props);
+          }}
           label="Введите номер сертификата"
         />
         <View style={{ height: screen == 0 ? 32 : screen == 1 ? 40 : 46 }} />
