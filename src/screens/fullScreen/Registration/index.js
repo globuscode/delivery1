@@ -131,11 +131,11 @@ export default class Login extends React.Component {
 
             AccessToken.getCurrentAccessToken().then(data => {
               let accessToken = data.accessToken;
-              Alert.alert(accessToken.toString());
+              // Alert.alert(accessToken.toString());
 
               const responseInfoCallback = (error, result) => {
                 if (error) {
-                  Alert.alert("Error fetching data: " + error.toString());
+                  // Alert.alert("Error fetching data: " + error.toString());
                 } else {
                   const { first_name, last_name, email } = result;
                   // const registarionBody = {
@@ -154,7 +154,7 @@ export default class Login extends React.Component {
                   });
 
                   // navigate("Registration", registarionBody);
-                  Alert.alert("Success fetching data: " + result.toString());
+                  // Alert.alert("Success fetching data: " + result.toString());
                 }
               };
 
@@ -177,7 +177,7 @@ export default class Login extends React.Component {
           }
         },
         function(error) {
-          Alert.alert("Login fail with error: " + error);
+          // Alert.alert("Login fail with error: " + error);
         }
       );
     }
