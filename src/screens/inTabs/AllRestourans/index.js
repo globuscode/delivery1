@@ -216,6 +216,9 @@ class AllRestourans extends React.Component {
           </View>
           <View style={{ width: viewportWidth, flex: 1 }}>
             <FlatList
+              ListFooterComponent={this.state.updating ? (
+                <ActivityIndicator size="large" style={{ alignSelf: "center" }} />
+              ) : null}
               ListHeaderComponent={
                 <View>
                   <Text
@@ -276,9 +279,6 @@ class AllRestourans extends React.Component {
               }}
             />
             <View style={{ height: 0 }} />
-            {this.state.updating ? (
-              <ActivityIndicator size="large" style={{ alignSelf: "center" }} />
-            ) : null}
           </View>
 
           <View
