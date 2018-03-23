@@ -51,7 +51,7 @@ export const fetchJson = async (url, params) => {
       errors: {
         code: 404,
         title: "Сервер не отвечает",
-        detail: "Запрос " + url
+        detail: "Проверьте ваше интернет соединение"
       }
     };
   }
