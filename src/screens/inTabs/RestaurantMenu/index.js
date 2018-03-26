@@ -159,8 +159,8 @@ class RestaurantMenu extends React.Component {
     // if (responseJson["data"] && responseJson["data"]["result"]) {
     //   responseJson["data"]["result"]["menu"] = [];
     //   this.state.data = responseJson['data']["result"];
-    //   this.props.setLastViewed(responseJson['data']["result"]["id"]);
     // }
+    this.props.setLastViewed(this.props.navigation.state.params.restaurant.id);
     this.props.navigation.setParams({
       title: this.state.data.title
     });
@@ -815,6 +815,7 @@ RestaurantMenu.propTypes = {
   removeFromFav: PropTypes.func,
   addRestToFav: PropTypes.func,
   removeRestFromFav: PropTypes.func,
+  setLastViewed: PropTypes.func,
   onAddPlate: PropTypes.func,
   deletePlate: PropTypes.func,
   cart: PropTypes.object
