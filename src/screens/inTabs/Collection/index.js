@@ -706,6 +706,7 @@ class Collection extends React.Component {
     }
     if (block.type === "COLLECTION_TEXT") {
       const { text, plates } = block.meta;
+      if (plates.length === undefined) return null;
       return (
         <View key={index}>
           {renderHeader(block.title)}
@@ -763,6 +764,8 @@ class Collection extends React.Component {
   };
 
   _renderBlocks = () => {
+    if (this.state.blocks === undefined)
+      return null;
     return this.state.collection.blocks.map(this._renderBlock);
   };
 
