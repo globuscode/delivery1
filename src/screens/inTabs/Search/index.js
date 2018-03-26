@@ -28,6 +28,7 @@ class Search extends React.Component {
     removeRestFromFav: propTypes.func,
     onAddPlate: propTypes.func,
     deletePlate: propTypes.func,
+    open: propTypes.func,
     showSpinner: propTypes.func,
     hideSpinner: propTypes.func,
     cart: propTypes.object
@@ -166,7 +167,10 @@ class Search extends React.Component {
                           [
                             {
                               text: "OK",
-                              onPress: () => this.props.onAddPlate(e)
+                              onPress: () => {
+                                this.props.onAddPlate(e);
+                                this.props.open(e);
+                              }
                             },
                             {
                               text: "Отмена",
@@ -176,8 +180,14 @@ class Search extends React.Component {
                           ],
                           { cancelable: false }
                         );
-                      else this.props.onAddPlate(e);
-                    } else this.props.onAddPlate(e);
+                      else {
+                        this.props.onAddPlate(e);
+                        // this.props.open(e);
+                      }
+                    } else {
+                      this.props.onAddPlate(e);
+                      this.props.open(e);
+                    }
                   }}
                   onDeletePlatePress={() => {
                     this.props.deletePlate(e);
@@ -223,6 +233,7 @@ export default connect(
     favourite: favourite
   }),
   dispatch => ({
+    open: data => dispatch({ type: "OPEN_MODAL", payload: data }),
     onAddPlate: plate => {
       dispatch({ type: "ADD_PLATE", payload: plate });
     },
