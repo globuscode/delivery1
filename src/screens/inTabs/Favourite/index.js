@@ -298,7 +298,7 @@ export default connect(
     onAddPlate: plate => {
       dispatch({ type: "ADD_PLATE", payload: plate });
     },
-    onRemovePlate: plate => {
+    deletePlate: plate => {
       dispatch({ type: "REMOVE_PLATE_BY_OBJECT", payload: plate });
     },
     open: data => dispatch({ type: "OPEN_MODAL", payload: data }),
