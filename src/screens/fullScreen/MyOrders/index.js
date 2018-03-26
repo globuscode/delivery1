@@ -4,7 +4,7 @@ import Touchable from "react-native-platform-touchable";
 import { connect } from "react-redux";
 import propTypes from "prop-types";
 
-import { host } from "../../../etc";
+import { host, line } from "../../../etc";
 
 class MyOrders extends React.Component {
   static propTypes = {
@@ -107,7 +107,18 @@ class MyOrders extends React.Component {
         </Touchable>
       );
     });
-    return <ScrollView>{history}</ScrollView>;
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "flex-start",
+          flexDirection: "column"
+        }}
+      >
+        {line()}
+        <ScrollView>{history}</ScrollView>
+      </View>
+    );
   };
 }
 

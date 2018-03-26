@@ -15,7 +15,7 @@ import { connect } from "react-redux";
 import propTypes from "prop-types";
 
 import Counter from "../../../components/ui/Counter";
-import { adaptWidth } from "../../../etc";
+import { adaptWidth, line } from "../../../etc";
 import IconD from "../../../components/ui/IconD";
 import ButtonD from "../../../components/ui/ButtonD";
 import { host } from "../../../etc";
@@ -519,6 +519,7 @@ class Cart extends React.Component {
     if (Object.keys(cart).length != 0)
       return (
         <View style={styles.container}>
+          {line()}
           <ScrollView
             contentContainerStyle={{
               justifyContent: "flex-start",

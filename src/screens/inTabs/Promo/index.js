@@ -16,7 +16,7 @@ import propTypes from "prop-types";
 import LinearGradient from "react-native-linear-gradient";
 
 import IconD from "../../../components/ui/IconD";
-import { adaptWidth } from "../../../etc";
+import { adaptWidth, line } from "../../../etc";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -128,6 +128,7 @@ class Promo extends React.Component {
   render = () => {
     return (
       <View>
+        {line()}
         <ScrollView
           style={styles.container}
           contentContainerStyle={{

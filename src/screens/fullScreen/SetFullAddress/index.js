@@ -17,7 +17,7 @@ import { connect } from "react-redux";
 import PopupDialog, { SlideAnimation } from "react-native-popup-dialog";
 import propTypes from "prop-types";
 
-import { adaptWidth, fetchJson, host } from "../../../etc";
+import { adaptWidth, fetchJson, host, line } from "../../../etc";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -171,6 +171,7 @@ class Forms extends React.Component {
 
   render = () => (
     <View>
+      {line()}
       <KeyboardAwareScrollView
         extraHeight={100}
         extraScrollHeight={100}

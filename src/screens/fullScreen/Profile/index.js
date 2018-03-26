@@ -12,6 +12,7 @@ import propTypes from "prop-types";
 import { connect } from "react-redux";
 
 import IconD from "../../../components/ui/IconD";
+import { line } from "../../../etc";
 
 const screen =
   viewportWidth >= 320 && viewportWidth < 375
@@ -75,6 +76,7 @@ class Profile extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        {line()}
         {/*<TouchableOpacity onPress={() => this.props.logout()}>
           <Text>{"Разлогиниться"}</Text>
         </TouchableOpacity>*/}

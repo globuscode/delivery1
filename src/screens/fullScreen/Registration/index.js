@@ -12,6 +12,7 @@ import {
 } from "react-native-fbsdk";
 import VKLogin from "react-native-vkontakte-login";
 import IconD from "../../../components/ui/IconD";
+import { line } from "../../../etc";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -189,6 +190,7 @@ export default class Login extends React.Component {
   render = () => {
     return (
       <View style={{ flex: 1, justifyContent: "space-between" }}>
+        {line()}
         <KeyboardAwareScrollView
           extraHeight={100}
           extraScrollHeight={100}

@@ -25,6 +25,7 @@ const { width: viewportWidth } = Dimensions.get("window");
 
 const headerStyleIOS = (design = false) => ({
   headerTruncatedBackTitle: "Назад",
+  headerBackTitle: null,
   headerTitleStyle: {
     fontFamily: "Stem-Medium",
     fontSize: 14,
@@ -38,9 +39,10 @@ const headerStyleIOS = (design = false) => ({
   headerStyle: {
     marginTop: Platform.OS === "ios" ? 0 : getStatusBarHeight(),
     backgroundColor: "#292b37",
-    paddingHorizontal: Platform.OS === "ios" ? adaptWidth(16, 18, 24) : -3,
-    marginHorizontal: design ? (Platform.OS === "ios" ? 20 : -3) : undefined,
-    borderBottomColor: design ? "rgb(87, 88, 98)" : undefined
+    // paddingHorizontal: Platform.OS === "ios" ? adaptWidth(16, 18, 24) : -3,
+    marginHorizontal: Platform.OS === "ios" ? 10 : -3,
+    // marginHorizontal: design ? (Platform.OS === "ios" ? 20 : -3) : undefined,
+    borderBottomColor: undefined
   }
 });
 

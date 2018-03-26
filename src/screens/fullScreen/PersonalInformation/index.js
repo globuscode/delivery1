@@ -13,7 +13,7 @@ import { connect } from "react-redux";
 import propTypes from "prop-types";
 
 import IconD from "../../../components/ui/IconD";
-import { fetchJson, host } from "../../../etc";
+import { fetchJson, host, line } from "../../../etc";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -120,78 +120,86 @@ class PersonalInfo extends React.Component {
 
   render() {
     return (
-      <ScrollView style={styles.container}>
-        <View style={styles.userFullNameContainer}>
-          <Text style={styles.userFullName}>
-            {this.props.userData.user
-              ? this.props.userData.user.firstName +
-                "\n" +
-                this.props.userData.user.lastName
-              : null}
-          </Text>
-        </View>
-        <Text style={styles.email}>{this.props.userData.user.email}</Text>
-
-        <View style={{ height: screen == 0 ? 37 : screen == 1 ? 50 : 60 }} />
-
-        <TouchableOpacity
-          onPress={() => {
-            if (this.state.canNav) {
-              this.props.navigation.navigate("UpdateProfile");
-              this.setState({ canNav: false });
-              setTimeout(() => {
-                this.setState({ canNav: true });
-              }, 1500);
-            }
-          }}
-        >
-          <Text style={[styles.email, { opacity: 0.5 }]}>
-            {"Изменить данные аккаунта"}
-          </Text>
-        </TouchableOpacity>
-
-        <View style={{ height: screen == 0 ? 17 : screen == 1 ? 21 : 24 }} />
-
-        <View style={styles.phoneAndCard}>
-          <View
-            style={{
-              flexDirection: "column",
-              width: screen == 0 ? 150 : 170
-            }}
-          >
-            <Text style={styles.smallHeader}>{"Телефон"}</Text>
-            <Text style={[styles.smallHeader, { color: "rgb(225, 199, 155)" }]}>
-              {this.props.userData.user.phone
-                ? this.props.userData.user.phone
+      <View style={{ flex: 1 }}>
+        {line()}
+        <ScrollView style={styles.container}>
+          <View style={styles.userFullNameContainer}>
+            <Text style={styles.userFullName}>
+              {this.props.userData.user
+                ? this.props.userData.user.firstName +
+                  "\n" +
+                  this.props.userData.user.lastName
                 : null}
             </Text>
           </View>
+          <Text style={styles.email}>{this.props.userData.user.email}</Text>
 
-          {this.state.cards.length === 0 ? null : (
+          <View style={{ height: screen == 0 ? 37 : screen == 1 ? 50 : 60 }} />
+
+          <TouchableOpacity
+            onPress={() => {
+              if (this.state.canNav) {
+                this.props.navigation.navigate("UpdateProfile");
+                this.setState({ canNav: false });
+                setTimeout(() => {
+                  this.setState({ canNav: true });
+                }, 1500);
+              }
+            }}
+          >
+            <Text style={[styles.email, { opacity: 0.5 }]}>
+              {"Изменить данные аккаунта"}
+            </Text>
+          </TouchableOpacity>
+
+          <View style={{ height: screen == 0 ? 17 : screen == 1 ? 21 : 24 }} />
+
+          <View style={styles.phoneAndCard}>
             <View
               style={{
-                flexDirection: "column"
+                flexDirection: "column",
+                width: screen == 0 ? 150 : 170
               }}
             >
-              <Text style={styles.smallHeader}>{"Карта оплаты"}</Text>
+              <Text style={styles.smallHeader}>{"Телефон"}</Text>
               <Text
                 style={[styles.smallHeader, { color: "rgb(225, 199, 155)" }]}
               >
-                {this.state.cards[this.state.cards.length - 1].cardName}
+                {this.props.userData.user.phone
+                  ? this.props.userData.user.phone
+                  : null}
               </Text>
             </View>
+
+            {this.state.cards.length === 0 ? null : (
+              <View
+                style={{
+                  flexDirection: "column"
+                }}
+              >
+                <Text style={styles.smallHeader}>{"Карта оплаты"}</Text>
+                <Text
+                  style={[styles.smallHeader, { color: "rgb(225, 199, 155)" }]}
+                >
+                  {this.state.cards[this.state.cards.length - 1].cardName}
+                </Text>
+              </View>
+            )}
+          </View>
+          {this.renderMenuItem(
+            "phone",
+            "Изменить номер телефона",
+            "UpdatePhone"
           )}
-        </View>
-        {this.renderMenuItem("phone", "Изменить номер телефона", "UpdatePhone")}
-        {this.renderMenuItem(
-          "credit-card",
-          "Привязать другую карту оплаты",
-          "SetCreditCard"
-        )}
-        {/*this.renderMenuItem("geotag", "Редактировать адреса доставки", null)}
+          {this.renderMenuItem(
+            "credit-card",
+            "Привязать другую карту оплаты",
+            "SetCreditCard"
+          )}
+          {/*this.renderMenuItem("geotag", "Редактировать адреса доставки", null)}
             {this.renderMenuItem("lock", "Изменить пароль", null)*/}
 
-        {/*<View
+          {/*<View
           style={{
             height: 1,
             borderTopWidth: 1,
@@ -199,7 +207,8 @@ class PersonalInfo extends React.Component {
             marginTop: screen == 0 ? 22 : screen == 1 ? 28 : 33
           }}
         />*/}
-      </ScrollView>
+        </ScrollView>
+      </View>
     );
   }
 }

@@ -25,7 +25,7 @@ import propTypes from "prop-types";
 import VKLogin from "react-native-vkontakte-login";
 
 import IconD from "../../../components/ui/IconD";
-import { host, adaptWidth, fetchJson } from "../../../etc";
+import { host, adaptWidth, fetchJson, line } from "../../../etc";
 
 const { width: viewportWidth } = Dimensions.get("window");
 const vk = "https://api.vk.com/method";
@@ -100,8 +100,7 @@ class Login extends React.Component {
     this.props.login(data);
     if (this.props.navigation.state.params !== undefined)
       this.props.navigation.navigate("Cart");
-    else
-      this.props.navigation.navigate("Feed");
+    else this.props.navigation.navigate("Feed");
     // this.props.navigation.navigate("SetCreditCard", {
     //   url: `${host}/payture/add?token=${data.data.token}`
     // });
@@ -437,6 +436,7 @@ class Login extends React.Component {
         style={styles.container}
         contentContainerStyle={{ flex: 1 }}
       >
+        {line()}
         <View style={{ height: screen == 0 ? 18 : screen == 1 ? 34 : 45 }} />
 
         <Text
@@ -479,7 +479,7 @@ class Login extends React.Component {
         <View
           style={{
             alignSelf: "stretch",
-            marginHorizontal: screen == 0 ? 20 : 15,
+            marginHorizontal: screen == 0 ? 20 : 20,
             height: 1,
             backgroundColor: "rgb(87, 88, 98)"
           }}
@@ -615,7 +615,6 @@ const styles = StyleSheet.create({
     //height: viewportHeight,
     flex: 1,
     flexDirection: "column",
-    elevation: -10,
-    backgroundColor: "rgb( 45, 46, 58)"
+    elevation: -10
   }
 });

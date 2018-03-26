@@ -239,7 +239,15 @@ class Feed extends React.Component {
         </View>
         <ScrollView ref={scroll => (this.scroll = scroll)} horizontal={false}>
           <GuideButton
-            onPress={() => this.props.navigation.navigate("Guide")}
+            onPress={() => {
+              if (this.state.canNav) {
+                this.props.navigation.navigate("Guide");
+                this.setState({ canNav: false });
+                setTimeout(() => {
+                  this.setState({ canNav: true });
+                }, 1500);
+              }
+            }}
           />
           {this.renderCardHeader(
             "Рекомендуем",

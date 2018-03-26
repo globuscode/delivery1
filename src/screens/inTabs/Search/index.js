@@ -10,7 +10,7 @@ import IconD from "../../../components/ui/IconD";
 import RestaurantList from "../../../components/cards/RestaurantList";
 import Plate from "../../../components/Plate";
 import { getCartItemCount } from "../../../utils";
-import { fetchJson, host } from "../../../etc";
+import { fetchJson, host, line } from "../../../etc";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -90,6 +90,7 @@ class Search extends React.Component {
     const { cart } = this.props;
     return (
       <View style={{ flex: 1 }}>
+        {line()}
         <ScrollView style={{ paddingTop: getStatusBarHeight() }}>
           <View
             style={{

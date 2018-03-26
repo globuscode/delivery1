@@ -15,7 +15,7 @@ import propTypes from "prop-types";
 
 import PriceButton from "../../../components/ui/PriceButton";
 import ButtonD from "../../../components/ui/ButtonD";
-import { host, adaptWidth } from "../../../etc";
+import { host, adaptWidth, line } from "../../../etc";
 import { getCartItemCount } from "../../../utils";
 
 const { width: viewportWidth } = Dimensions.get("window");
@@ -339,209 +339,220 @@ class MyOrderDetail extends React.Component {
         ? this.state.order.deliveryTime.match(re)[0]
         : addTimeToTimestring(orderTime);
       return (
-        <ScrollView style={{ flex: 1, flexDirection: "column" }}>
-          <Image
-            style={{
-              height: adaptWidth(85, 100, 117),
-              width: viewportWidth - 60,
-              marginTop: adaptWidth(47, 64, 79),
-              marginBottom: 30,
-              alignSelf: "center"
-            }}
-            resizeMode="contain"
-            source={{ uri: "http:" + this.state.restaurantLogo }}
-          />
-          <View
-            style={{
-              height: 1,
-              marginHorizontal: 15,
-              alignSelf: "stretch",
-              backgroundColor: "rgb(54, 55, 58)"
-            }}
-          />
-          <Text
-            style={{
-              marginTop: adaptWidth(25, 30, 35),
-              marginBottom: adaptWidth(28, 38, 44),
-              fontFamily: "Stem-Medium",
-              fontSize: 17,
-              letterSpacing: 0.9,
-              textAlign: "center",
-              alignSelf: "stretch",
-              color: "rgb(225, 199, 155)"
-            }}
-          >
-            {"Спасибо за заказ!"}
-          </Text>
-
-          <View
-            style={{
-              alignSelf: "stretch",
-              paddingHorizontal: adaptWidth(29, 51, 68)
-            }}
-          >
-            <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
-            >
-              <Text
-                style={{
-                  fontFamily: "OpenSans",
-                  fontSize: 12,
-                  color: "#fff"
-                }}
-              >
-                {"Время начала \nвыполнения заказа"}
-              </Text>
-              <Text
-                style={{
-                  fontFamily: "OpenSans",
-                  fontSize: 12,
-                  color: "#fff"
-                }}
-              >
-                {"Примерное время \nприбытия курьера"}
-              </Text>
-            </View>
+        <View style={{ flex: 1 }}>
+          {line()}
+          <ScrollView style={{ flex: 1, flexDirection: "column" }}>
+            <Image
+              style={{
+                height: adaptWidth(85, 100, 117),
+                width: viewportWidth - 60,
+                marginTop: adaptWidth(47, 64, 79),
+                marginBottom: 30,
+                alignSelf: "center"
+              }}
+              resizeMode="contain"
+              source={{ uri: "http:" + this.state.restaurantLogo }}
+            />
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                paddingRight: 15,
-                marginTop: 8
+                height: 1,
+                marginHorizontal: 15,
+                alignSelf: "stretch",
+                backgroundColor: "rgb(54, 55, 58)"
               }}
-            >
-              <Text
-                style={{
-                  fontFamily: "Stem-Medium",
-                  fontSize: 30,
-                  letterSpacing: 1.5,
-                  color: "rgb(225, 199, 155)"
-                }}
-              >
-                {orderTime}
-              </Text>
-              <Text
-                style={{
-                  fontFamily: "Stem-Medium",
-                  fontSize: 30,
-                  letterSpacing: 1.5,
-                  color: "rgb(225, 199, 155)"
-                }}
-              >
-                {">"}
-              </Text>
-              <Text
-                style={{
-                  fontFamily: "Stem-Medium",
-                  fontSize: 30,
-                  letterSpacing: 1.5,
-                  color: "rgb(225, 199, 155)"
-                }}
-              >
-                {`${deliveryTime}`}
-              </Text>
-            </View>
-          </View>
-
-          <View
-            style={{
-              alignSelf: "center",
-              marginTop: screen === 0 ? 25 : screen === 1 ? 35 : 41,
-              marginBottom: 35,
-              marginHorizontal: 15
-            }}
-          >
-            <ButtonD
-              onPress={() => this.props.navigation.navigate("Feed")}
-              title={["Вернуться в приложение"]}
-              width={screen === 0 ? 260 : screen === 1 ? 315 : 354}
             />
-          </View>
-
-          <View
-            style={{
-              height: 1,
-              marginHorizontal: 15,
-              alignSelf: "stretch",
-              backgroundColor: "rgb(87, 88, 98)"
-            }}
-          />
-          <Text
-            style={{
-              marginLeft: 23,
-              marginVertical: screen === 0 ? 15 : screen === 1 ? 17 : 21,
-              fontFamily: "OpenSans",
-              fontSize: 12,
-              color: "#fff"
-            }}
-          >
-            {"Служба поддержки 495-995-1-995 "}
-          </Text>
-          <View
-            style={{
-              height: 1,
-              marginHorizontal: 15,
-              alignSelf: "stretch",
-              backgroundColor: "rgb(87, 88, 98)"
-            }}
-          />
-          <View
-            style={{
-              marginHorizontal: 23,
-              marginVertical: screen === 0 ? 15 : screen === 1 ? 17 : 21,
-              flexDirection: "row",
-              justifyContent: "space-between"
-            }}
-          >
             <Text
               style={{
+                marginTop: adaptWidth(25, 30, 35),
+                marginBottom: adaptWidth(28, 38, 44),
+                fontFamily: "Stem-Medium",
+                fontSize: 17,
+                letterSpacing: 0.9,
+                textAlign: "center",
+                alignSelf: "stretch",
+                color: "rgb(225, 199, 155)"
+              }}
+            >
+              {"Спасибо за заказ!"}
+            </Text>
+
+            <View
+              style={{
+                alignSelf: "stretch",
+                paddingHorizontal: adaptWidth(29, 51, 68)
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between"
+                }}
+              >
+                <Text
+                  style={{
+                    fontFamily: "OpenSans",
+                    fontSize: 12,
+                    color: "#fff"
+                  }}
+                >
+                  {"Время начала \nвыполнения заказа"}
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: "OpenSans",
+                    fontSize: 12,
+                    color: "#fff"
+                  }}
+                >
+                  {"Примерное время \nприбытия курьера"}
+                </Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  paddingRight: 15,
+                  marginTop: 8
+                }}
+              >
+                <Text
+                  style={{
+                    fontFamily: "Stem-Medium",
+                    fontSize: 30,
+                    letterSpacing: 1.5,
+                    color: "rgb(225, 199, 155)"
+                  }}
+                >
+                  {orderTime}
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: "Stem-Medium",
+                    fontSize: 30,
+                    letterSpacing: 1.5,
+                    color: "rgb(225, 199, 155)"
+                  }}
+                >
+                  {">"}
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: "Stem-Medium",
+                    fontSize: 30,
+                    letterSpacing: 1.5,
+                    color: "rgb(225, 199, 155)"
+                  }}
+                >
+                  {`${deliveryTime}`}
+                </Text>
+              </View>
+            </View>
+
+            <View
+              style={{
+                alignSelf: "center",
+                marginTop: screen === 0 ? 25 : screen === 1 ? 35 : 41,
+                marginBottom: 35,
+                marginHorizontal: 15
+              }}
+            >
+              <ButtonD
+                onPress={() => this.props.navigation.navigate("Feed")}
+                title={["Вернуться в приложение"]}
+                width={screen === 0 ? 260 : screen === 1 ? 315 : 354}
+              />
+            </View>
+
+            <View
+              style={{
+                height: 1,
+                marginHorizontal: 15,
+                alignSelf: "stretch",
+                backgroundColor: "rgb(87, 88, 98)"
+              }}
+            />
+            <Text
+              style={{
+                marginLeft: 23,
+                marginVertical: screen === 0 ? 15 : screen === 1 ? 17 : 21,
+                fontFamily: "OpenSans",
                 fontSize: 12,
                 color: "#fff"
               }}
             >
-              {`Стоимость заказа ${this.state.order.total}`}
+              {"Служба поддержки 495-995-1-995 "}
             </Text>
-            <Text
+            <View
               style={{
-                fontSize: 12,
-                color: "rgb(225, 199, 155)"
+                height: 1,
+                marginHorizontal: 15,
+                alignSelf: "stretch",
+                backgroundColor: "rgb(87, 88, 98)"
+              }}
+            />
+            <View
+              style={{
+                marginHorizontal: 23,
+                marginVertical: screen === 0 ? 15 : screen === 1 ? 17 : 21,
+                flexDirection: "row",
+                justifyContent: "space-between"
               }}
             >
-              {"Заказ оплачен"}
-            </Text>
-          </View>
-        </ScrollView>
+              <Text
+                style={{
+                  fontSize: 12,
+                  color: "#fff"
+                }}
+              >
+                {`Стоимость заказа ${this.state.order.total}`}
+              </Text>
+              <Text
+                style={{
+                  fontSize: 12,
+                  color: "rgb(225, 199, 155)"
+                }}
+              >
+                {"Заказ оплачен"}
+              </Text>
+            </View>
+          </ScrollView>
+        </View>
       );
     }
     return (
-      <View
-        style={{
-          flex: 1,
-          paddingTop: screen === 0 ? 12 : screen === 1 ? 25 : 32
-        }}
-      >
-        {this.renderInfo()}
-        <View style={{ height: 14 }} />
+      <View style={{ flex: 1 }}>
+        {line()}
         <View
           style={{
-            marginHorizontal: 15,
-            alignSelf: "stretch",
-            height: 1,
-            backgroundColor: "rgb(87, 88, 98)"
-          }}
-        />
-        {this.renderContent(this.state.cart)}
-        <View
-          style={{
-            alignSelf: "center",
-            marginVertical: 20
+            flex: 1,
+            paddingTop: screen === 0 ? 12 : screen === 1 ? 25 : 32
           }}
         >
-          <ButtonD
-            onPress={this.addAll}
-            title={[`Добавить заказ в корзину за ${this.state.order.total} ₽`]}
-            width={screen === 0 ? 260 : screen === 1 ? 315 : 354}
+          {this.renderInfo()}
+          <View style={{ height: 14 }} />
+          <View
+            style={{
+              marginHorizontal: 15,
+              alignSelf: "stretch",
+              height: 1,
+              backgroundColor: "rgb(87, 88, 98)"
+            }}
           />
+          {this.renderContent(this.state.cart)}
+          <View
+            style={{
+              alignSelf: "center",
+              marginVertical: 20
+            }}
+          >
+            <ButtonD
+              onPress={this.addAll}
+              title={[
+                `Добавить заказ в корзину за ${this.state.order.total} ₽`
+              ]}
+              width={screen === 0 ? 260 : screen === 1 ? 315 : 354}
+            />
+          </View>
         </View>
       </View>
     );
