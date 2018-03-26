@@ -124,8 +124,8 @@ class Guide extends React.Component {
           style={{
             paddingVertical: 36,
             marginHorizontal: adaptWidth(15, 20, 20),
-            borderBottomWidth: index != 4 ? 1 : 0,
             borderColor: "rgb(87, 88, 98)",
+            borderTopWidth: 1,
             flexDirection: "column"
           }}
         >
