@@ -18,6 +18,13 @@ const initialState = {
 };
 
 export default function modalController(state = initialState, action) {
+  if (action.type == "OPEN_COLLECTION_MODAL") {
+    return {
+      type: "collection",
+      plate: initialState.plate,
+      opened: true
+    };
+  }
   if (action.type == "OPEN_MODAL") {
     return {
       type: "cart",

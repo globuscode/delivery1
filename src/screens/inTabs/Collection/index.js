@@ -49,6 +49,7 @@ class Collection extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      canNav: true,
       collection: this.props.navigation.state.params.collection.data.collection
     };
   }
@@ -567,15 +568,16 @@ class Collection extends React.Component {
           <Touchable
             activeOpacity={0.8}
             onPress={() => {
-              // if (this.state.canNav) {
-              //   this.props.navigation.navigate("Loader", {
-              //     restaurant: this.state,
-              //   });
-              //   this.setState({ canNav: false });
-              //   setTimeout(() => {
-              //     this.setState({ canNav: true });
-              //   }, 1500);
-              // }
+              if (this.state.canNav) {
+                this.props.navigation.navigate("Loader", {
+                  action: "navigateToPromo",
+                  promo: item.id
+                });
+                this.setState({ canNav: false });
+                setTimeout(() => {
+                  this.setState({ canNav: true });
+                }, 1500);
+              }
             }}
             foreground={Touchable.SelectableBackgroundBorderless()}
             style={{
@@ -686,7 +688,7 @@ class Collection extends React.Component {
       return (
         <View key={index}>
           {renderHeader(block.title)}
-          <Plates data={plates} hideArrow />
+          <Plates navigation={this.props.navigation} data={plates} hideArrow />
           <Text
             style={{
               fontFamily: "OpenSans",
@@ -704,6 +706,7 @@ class Collection extends React.Component {
     }
     if (block.type === "COLLECTION_TEXT") {
       const { text, plates } = block.meta;
+      if (plates.length === undefined) return null;
       return (
         <View key={index}>
           {renderHeader(block.title)}
@@ -761,6 +764,8 @@ class Collection extends React.Component {
   };
 
   _renderBlocks = () => {
+    if (this.state.blocks === undefined)
+      return null;
     return this.state.collection.blocks.map(this._renderBlock);
   };
 

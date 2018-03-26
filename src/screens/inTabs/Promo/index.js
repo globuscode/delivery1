@@ -16,7 +16,7 @@ import propTypes from "prop-types";
 import LinearGradient from "react-native-linear-gradient";
 
 import IconD from "../../../components/ui/IconD";
-import { adaptWidth } from "../../../etc";
+import { adaptWidth, line } from "../../../etc";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -40,43 +40,20 @@ class Promo extends React.Component {
     removeFromFav: propTypes.func
   };
 
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: navigation.state.params.restaurant.title
+    };
+  };
+
   constructor(props) {
     super(props);
     this.state = {
-      data: {
-        id: 0,
-        title:
-          "Акция Бутылка лучшего вина лета к каждому заказу на сумму от 5 000 ₽",
-        detail:
-          "Закажите доставку любимых блюд из ресторана Место время и получите приятный подарок:"
-      },
-      restaurant: {
-        id: "168285",
-        title: "Florentini City Cafe",
-        image:
-          "//dostavka1.com/upload/iblock/541/5410721de1214a826acad06180f5dd7d.jpg",
-        logoImage:
-          "//dostavka1.com/upload/uf/33f/33f4e95ff9f180642e0001d76fbfd9a5.png",
-        favorite: false,
-        minOrder: "1000",
-        description: {
-          title: "",
-          description: ""
-        },
-        time: "с 12:00 до 22:45",
-        averageBill: "2500",
-        minBill: "1000",
-        discount: 0,
-        freeDelivery: null
-      }
+      canNav: true,
+      data: this.props.navigation.state.params.promo,
+      restaurant: this.props.navigation.state.params.restaurant
     };
   }
-
-  componentWillMount = () => {
-    this.props.navigation.setParams({
-      title: this.state.restaurant.title
-    });
-  };
 
   renderButton = (title, callback) => {
     return (
@@ -151,6 +128,7 @@ class Promo extends React.Component {
   render = () => {
     return (
       <View>
+        {line()}
         <ScrollView
           style={styles.container}
           contentContainerStyle={{
@@ -161,7 +139,7 @@ class Promo extends React.Component {
           {/* Фото ресторана */}
           <Image
             source={{
-              uri: "http:" + this.state.restaurant.image
+              uri: "http:" + this.state.data.image
             }}
             style={{
               width: viewportWidth,
@@ -236,7 +214,7 @@ class Promo extends React.Component {
 
           {/* Кнопка Открыть меню ресторана */}
           {this.renderButton("Открыть меню ресторана", () => {
-            if (this.state.canNav && this.state.restaurant.id != 0) {
+            if (this.state.canNav) {
               this.props.navigation.navigate("SetAddress", {
                 id: this.state.restaurant.id
               });
@@ -321,6 +299,18 @@ class Promo extends React.Component {
                 {this.state.restaurant.title}
               </Text>
               <TouchableOpacity
+                onPress={() => {
+                  if (this.state.canNav) {
+                    this.props.navigation.navigate("Loader", {
+                      id: this.state.restaurant.id,
+                      action: "navigateToRestaurant"
+                    });
+                    this.setState({ canNav: false });
+                    setTimeout(() => {
+                      this.setState({ canNav: true });
+                    }, 1500);
+                  }
+                }}
                 style={{
                   marginBottom: adaptWidth(17, 21, 25)
                 }}

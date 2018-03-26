@@ -31,8 +31,8 @@ function removePlateById(state, id) {
  * @returns
  */
 export default function cart(state = initialState, action) {
-  if (action.type === "MAKE_ORDER") {
-    return initialState;
+  if (action.type === "MAKE_ORDER" || action.type === "CLEAR_CART") {
+    return {};
   }
 
   /**

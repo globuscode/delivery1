@@ -15,15 +15,16 @@ import { connect } from "react-redux";
 import propTypes from "prop-types";
 
 import Counter from "../../../components/ui/Counter";
-import { adaptWidth } from "../../../etc";
+import { adaptWidth, line } from "../../../etc";
 import IconD from "../../../components/ui/IconD";
 import ButtonD from "../../../components/ui/ButtonD";
 import { host } from "../../../etc";
 import { fetchJson } from "../../../etc";
 import renderButton from "./mockup";
-import { getCartTotalPrice, getCartTotalCount } from "../../../utils";
+import { getCartTotalCount } from "../../../utils";
 import SummaryItem from "./SummaryItem";
 import EmptyCart from "./EmptyCart";
+import Plate from "../../../components/Plate";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -66,6 +67,8 @@ class Cart extends React.Component {
     super(props);
 
     this.state = {
+      selectedGift: null,
+      gifts: [],
       sales: 0,
       promoDiscount: 0,
       price: 0,
@@ -200,16 +203,21 @@ class Cart extends React.Component {
     let restJson = await fetchJson(`${host}/cart/create/`, {
       method: "post",
       body: JSON.stringify({
+        promocode: this.state.promocode,
         items: cart_request,
         token: this.props.user.token,
         restaurantId: this.state.restaurant.id
       })
     });
+
+    const { data } = restJson;
     this.setState({
-      sales: restJson.data.rangDiscount,
-      price: restJson.data.price,
-      totalPrice: restJson.data.totalPrice,
-      promoDiscount: restJson.data.promoDiscount
+      gifts: data.gifts !== undefined ? data.gifts : [],
+      sales: data.rangDiscount,
+      price: data.price,
+      totalPrice: data.totalPrice,
+      promoDiscount: data.promoDiscount,
+      promocodeDiscount: data.promocodeDiscount
     });
     return {
       sales: restJson.rangDiscount,
@@ -244,6 +252,7 @@ class Cart extends React.Component {
         if (this.props.user.token)
           this.props.navigation.navigate("SetFullAddress", {
             price: this.state.totalPrice,
+            gift: this.state.selectedGift,
             persons: this.state.persons
           });
         else
@@ -261,11 +270,12 @@ class Cart extends React.Component {
    * @returns {JSX.Element}
    * @memberof Cart
    */
-  _renderContent = e => {
+  _renderContent = (e, index) => {
     const imageHeight = adaptWidth(100, 117, 130);
     const isInFav = this.isInFav(e.plate);
     return (
       <View
+        key={index}
         style={{
           flexDirection: "row",
           marginLeft: 10,
@@ -453,12 +463,53 @@ class Cart extends React.Component {
             alignItems: "center",
             justifyContent: "center"
           }}
+          onBlur={() => {
+            this.getSalesPrice(this.props);
+          }}
           label="Введите номер сертификата"
         />
         <View style={{ height: screen == 0 ? 32 : screen == 1 ? 40 : 46 }} />
       </View>
     );
   }
+
+  renderGift = plate => {
+    const isInFav = this.isInFav(plate);
+    return (
+      <Plate
+        gift
+        giftSelected={this.state.selectedGift === plate.id}
+        onPress
+        onFavPress={() => {
+          if (isInFav) {
+            this.props.removeFromFav(plate);
+          } else {
+            this.props.addToFav(plate);
+          }
+          this.setState({});
+        }}
+        onPriceButtonPress={() => {
+          this.setState({
+            selectedGift: plate.id
+          });
+        }}
+        onDeletePlatePress={null}
+        key={plate.id}
+        itemCount={0}
+        data={plate}
+        fav={isInFav}
+      />
+    );
+  };
+
+  renderGifts = () => {
+    return (
+      <View>
+        <SummaryItem label="Акция: блюдо в подарок" />
+        {this.state.gifts.map(this.renderGift)}
+      </View>
+    );
+  };
 
   render() {
     const screen = adaptWidth(0, 1, 2);
@@ -468,6 +519,7 @@ class Cart extends React.Component {
     if (Object.keys(cart).length != 0)
       return (
         <View style={styles.container}>
+          {line()}
           <ScrollView
             contentContainerStyle={{
               justifyContent: "flex-start",
@@ -573,6 +625,7 @@ class Cart extends React.Component {
               />
             </SummaryItem>
             <SummaryItem label="Сумма заказа" text={this.state.price + " ₽"} />
+            {this.state.gifts.length === 0 ? null : this.renderGifts()}
             {this.renderPromoCode()}
             {this.state.promoDiscount === undefined ? null : (
               <SummaryItem
@@ -589,6 +642,12 @@ class Cart extends React.Component {
                   : this.state.restaurant.delivery
               }
             />
+            {this.state.promocodeDiscount === undefined ? null : (
+              <SummaryItem
+                label="Скидка по сертификату"
+                text={this.state.promocodeDiscount + " ₽"}
+              />
+            )}
             <SummaryItem
               label="Итоговая сумма заказа"
               text={this.state.totalPrice + " ₽"}

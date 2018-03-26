@@ -1,5 +1,11 @@
 import React from "react";
-import { Text, TouchableOpacity, Dimensions, AsyncStorage } from "react-native";
+import {
+  Text,
+  TouchableOpacity,
+  Dimensions,
+  AsyncStorage,
+  View
+} from "react-native";
 import propTypes from "prop-types";
 import { adaptWidth } from "../../etc";
 import IconD from "./IconD";
@@ -35,26 +41,21 @@ export default class GuideButton extends React.Component {
           alignSelf: "center",
           alignItems: "center",
           justifyContent: "center",
-          marginVertical: adaptWidth(36, 53, 66),
-          width: adaptWidth(280, 328, 362),
-          height: adaptWidth(150, 175, 195)
+          marginTop: adaptWidth(0, 23, 66),
+          marginBottom: adaptWidth(35, 58, 60)
         }}
       >
-        <IconD
-          name="food-feed"
-          style={{
-            top: 20
-          }}
-          size={130}
-          color="rgb(231, 208, 172)"
-        />
+        <View style={{ height: 102 }}>
+          <IconD name="food-feed" size={130} color="rgb(231, 208, 172)" />
+        </View>
         <Text
           style={{
             fontFamily: "OpenSans",
             fontWeight: "bold",
             color: "rgb(225, 199, 155)",
             textAlign: "center",
-            fontSize: 17
+            fontSize: 17,
+            marginTop: adaptWidth(5, 10, 10)
           }}
         >
           {"Путеводитель по приложению"}
@@ -65,7 +66,7 @@ export default class GuideButton extends React.Component {
             fontWeight: "bold",
             color: "rgb(255, 255, 255)",
             textAlign: "center",
-            maxWidth: viewportWidth / 2,
+            maxWidth: adaptWidth(200, viewportWidth / 2, viewportWidth / 2),
             fontSize: 12,
             marginTop: 5
           }}
@@ -78,7 +79,7 @@ export default class GuideButton extends React.Component {
           onPress={this.changeState}
           style={{
             alignSelf: "center",
-            marginBottom: adaptWidth(48, 58, 65)
+            marginTop: adaptWidth(15, 20, 25)
           }}
         >
           <Text

@@ -92,12 +92,23 @@ class Loading extends React.Component {
       return 0;
     }
 
+    const themes = await AsyncStorage.getItem("collectionThemes");
+    let themesJson;
+    let themesIds = "";
+
+    if (themes != nan) {
+      themesJson = JSON.parse(themes);
+      themesJson.forEach(element => {
+        themesIds += element.id.toString() + ",";
+      });
+    }
+
     this.setState({ text: "Собираем идеи для семейного ужина" });
 
     let responseJson = await fetchJson(
       `${host}/recommendations/?cityid=${
         cityIdJson.id
-      }&tagId=${tastesIds}&tagGroup=${tagsIds}`
+      }&tagId=${tastesIds}&tagGroup=${tagsIds}&themes=${themesIds}`
     );
     if (responseJson.data != undefined) {
       this.setState({ text: "Изучаем манускрипты в поисках крутых рецептов" });

@@ -13,17 +13,18 @@ import Favoutite from "../Favourite";
 import Collection from "../Collection";
 import Guide from "../Guide";
 import Promo from "../Promo";
+import Search from "../Search";
 import Cart from "../../fullScreen/Cart";
 
 import CartTabIcon from "./CartTabIcon";
 import IconD from "../../../components/ui/IconD";
-import { adaptWidth } from "../../../etc";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
-const headerStyleIOS = (design = false) => ({
+const headerStyleIOS = () => ({
   headerTruncatedBackTitle: "Назад",
+  headerBackTitle: null,
   headerTitleStyle: {
     fontFamily: "Stem-Medium",
     fontSize: 14,
@@ -37,9 +38,10 @@ const headerStyleIOS = (design = false) => ({
   headerStyle: {
     marginTop: Platform.OS === "ios" ? 0 : getStatusBarHeight(),
     backgroundColor: "#292b37",
-    paddingHorizontal: Platform.OS === "ios" ? adaptWidth(16, 18, 24) : -3,
-    marginHorizontal: design ? (Platform.OS === "ios" ? 20 : -3) : undefined,
-    borderBottomColor: design ? "rgb(87, 88, 98)" : undefined
+    // paddingHorizontal: Platform.OS === "ios" ? adaptWidth(16, 18, 24) : -3,
+    marginHorizontal: Platform.OS === "ios" ? 10 : -3,
+    // marginHorizontal: design ? (Platform.OS === "ios" ? 20 : -3) : undefined,
+    borderBottomColor: undefined
   }
 });
 
@@ -51,6 +53,10 @@ const FirstScreen = StackNavigator(
         header: null,
         gesturesEnabled: false
       }
+    },
+    Search: {
+      screen: Search,
+      navigationOptions: headerStyleIOS(true)
     },
     Promo: {
       screen: Promo,

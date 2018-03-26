@@ -45,9 +45,10 @@ const headerStyleIOS = title => ({
     marginTop: Platform.OS === "ios" ? 0 : getStatusBarHeight(),
     backgroundColor: "transparent",
     padding: 0,
-    borderBottomWidth: Platform.OS === "ios" ? 1 : 0,
-    marginHorizontal: Platform.OS === "ios" ? 20 : -3,
-    borderBottomColor: "rgb(87, 88, 98)"
+    // borderBottomWidth: Platform.OS === "ios" ? 1 : 0,
+    marginHorizontal: Platform.OS === "ios" ? 10 : -3,
+    // borderBottomColor: "rgb(87, 88, 98)"
+    borderBottomColor: "rgba(0,0,0,0)"
   }
 });
 

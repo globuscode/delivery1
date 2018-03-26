@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Dimensions,
   ScrollView,
-  Platform,
   AsyncStorage
 } from "react-native";
 import Touchable from "react-native-platform-touchable";
@@ -256,7 +255,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingTop: Platform.OS === "ios" ? 0 : getStatusBarHeight(),
+    paddingTop: getStatusBarHeight(),
     backgroundColor: "#292b37",
     justifyContent: "space-between",
     alignItems: "center"

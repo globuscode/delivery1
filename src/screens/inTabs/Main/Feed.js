@@ -8,6 +8,7 @@ import {
   ScrollView
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
+import Reducer from "../../../Reducers";
 import PlatesCarousel from "../../../components/cards/PlatesCarousel";
 import RestaurantList from "../../../components/cards/RestaurantList";
 import { connect } from "react-redux";
@@ -106,6 +107,10 @@ class Feed extends React.Component {
 
         <TouchableOpacity
           onPress={() => {
+            if (nav === "SelectTastes") {
+              Reducer.dispatch({ type: "OPEN_COLLECTION_MODAL" });
+              return 0;
+            }
             if (this.state.canNav) {
               this.props.navigation.navigate(nav);
               this.setState({ canNav: false });
@@ -217,11 +222,32 @@ class Feed extends React.Component {
               </View>
             </View>
           </TouchableOpacity>
-          {/*<TouchableOpacity style={{width: 30, justifyContent: 'center'}}><IconD name='find' color='#dcc49c' size={15} /></TouchableOpacity>*/}
+          <TouchableOpacity
+            onPress={() => {
+              if (this.state.canNav) {
+                this.props.navigation.navigate("Search");
+                this.setState({ canNav: false });
+                setTimeout(() => {
+                  this.setState({ canNav: true });
+                }, 1500);
+              }
+            }}
+            style={{ width: 30, justifyContent: "center" }}
+          >
+            <IconD name="find" color="#dcc49c" size={15} />
+          </TouchableOpacity>
         </View>
         <ScrollView ref={scroll => (this.scroll = scroll)} horizontal={false}>
           <GuideButton
-            onPress={() => this.props.navigation.navigate("Guide")}
+            onPress={() => {
+              if (this.state.canNav) {
+                this.props.navigation.navigate("Guide");
+                this.setState({ canNav: false });
+                setTimeout(() => {
+                  this.setState({ canNav: true });
+                }, 1500);
+              }
+            }}
           />
           {this.renderCardHeader(
             "Рекомендуем",

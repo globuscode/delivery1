@@ -329,7 +329,7 @@ class PlatesCarousel extends React.Component {
                 );
               else {
                 this.props.onAddPlate(item);
-                this.props.open(item);
+                // this.props.open(item);
               }
             } else {
               this.props.onAddPlate(item);
@@ -396,12 +396,13 @@ class PlatesCarousel extends React.Component {
 
   render() {
     Storage.subscribe(() => {
-      if (Storage.getState().lastAction.type === "CLOSE_MODAL") {
-        Storage.dispatch({ type: null });
-        this.props.navigation.navigate("SetAddress", {
-          id: Storage.getState().modalController.plate.restaurant
-        });
-      }
+      if (Storage.getState().modalController.type === "cart")
+        if (Storage.getState().lastAction.type === "CLOSE_MODAL") {
+          Storage.dispatch({ type: null });
+          this.props.navigation.navigate("SetAddress", {
+            id: Storage.getState().modalController.plate.restaurant
+          });
+        }
     });
 
     let slideW = adaptWidth(

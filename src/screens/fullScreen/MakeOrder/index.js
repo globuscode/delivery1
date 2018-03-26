@@ -14,7 +14,7 @@ import { PaymentRequest } from "react-native-payments";
 
 import IconD from "../../../components/ui/IconD";
 import { connect } from "react-redux";
-import { host } from "../../../etc";
+import { host, line } from "../../../etc";
 import { fetchJson } from "../../../etc";
 import { getCartTotalPrice } from "../../../utils";
 
@@ -193,6 +193,7 @@ class MakeOrder extends React.Component {
     const navitagionParams = this.props.navigation.state.params;
     return (
       <View style={{ flex: 1 }}>
+        {line()}
         <View
           style={{
             flexDirection: "column"
@@ -291,6 +292,7 @@ class MakeOrder extends React.Component {
                 let body = {
                   token: this.props.userStore.token,
                   items: cartForRequest,
+                  gift: this.props.navigation.state.params.gift,
                   address: navitagionParams.address,
                   client: navitagionParams.client,
                   deliveryDate:

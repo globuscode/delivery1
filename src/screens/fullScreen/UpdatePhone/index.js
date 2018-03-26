@@ -16,7 +16,7 @@ import Touchable from "react-native-platform-touchable";
 import { connect } from "react-redux";
 import propTypes from "prop-types";
 
-import { adaptWidth, fetchJson } from "../../../etc";
+import { adaptWidth, fetchJson, line } from "../../../etc";
 import { host } from "../../../etc";
 import IconD from "../../../components/ui/IconD";
 
@@ -142,6 +142,7 @@ class UpdatePhone extends React.Component {
         style={styles.container}
         contentContainerStyle={{ flex: 1 }}
       >
+        {line()}
         <View style={{ height: adaptWidth(24, 41, 53) + 4 }} />
 
         <Text
@@ -382,7 +383,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
-    elevation: -10,
-    backgroundColor: "rgb( 45, 46, 58)"
+    elevation: -10
   }
 });

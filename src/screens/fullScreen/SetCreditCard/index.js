@@ -4,13 +4,17 @@ import propTypes from "prop-types";
 import { connect } from "react-redux";
 import { fetchJson, host } from "../../../etc";
 
+let lagTime = 10000;
+
 class SetCreditCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      cardsLength: 0,
       htmlBody: "",
       needToCheck: true,
       canNav: true,
+      lagTime: 10000,
       cardsCount: 0
     };
   }
@@ -30,18 +34,23 @@ class SetCreditCard extends React.Component {
     })
   };
 
-  _check = async () => {
-    if (this.state.needToCheck === false) return 0;
+  componentWillMount = async () => {
     const cardsResponse = await fetchJson(
       `${host}/user/getCards/?token=${this.props.navigation.state.params.token}`
     );
     const cards = cardsResponse.errors === undefined ? cardsResponse.data : [];
+    this.setState({ cardsLength: cards.length });
+  };
+
+  _check = async () => {
+    if (this.state.needToCheck === false) return 0;
     let response = await fetchJson(
       "https://dostavka1.com/v1/payture/checkCardAdd?cardsCount=" +
-        cards.length +
+        this.state.cardsLength +
         "&token=" +
         this.props.navigation.state.params.token
     );
+    console.warn(response);
     if (response.data.result) {
       if (this.state.canNav) {
         this.setState({ canNav: false });
@@ -66,6 +75,7 @@ class SetCreditCard extends React.Component {
       return 0;
     }
     setTimeout(this._check, 10000);
+    lagTime = 5000;
   };
 
   render = () => {
