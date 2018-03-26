@@ -28,6 +28,10 @@ class MyOrders extends React.Component {
       `${host}/cart/orders?token=${this.props.user.token}`
     );
     const responseJson = await response.json();
+    if (responseJson.errors != undefined) {
+      this.setState({ history: [] });
+      return 0;
+    }
     this.state.history = responseJson["data"];
     for (var i = 0; i < this.state.history.length; i++) {
       if (this.state.history[i].restaurantId != "") {
