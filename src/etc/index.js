@@ -1,4 +1,5 @@
-import { Dimensions } from "react-native";
+import React from "react";
+import { Dimensions, Platform, View } from "react-native";
 import Reducer from "../Reducers";
 
 const { width: viewportWidth } = Dimensions.get("window");
@@ -14,6 +15,18 @@ const adaptWidth = (width320, width375, width414) => {
 export { adaptWidth };
 
 export { host };
+
+export const line = () =>
+  Platform.OS !== "ios" ? null : (
+    <View
+      style={{
+        marginHorizontal: 20,
+        height: 1,
+        alignSelf: "stretch",
+        backgroundColor: "rgb(87, 88, 98)"
+      }}
+    />
+  );
 
 export const fetchJson = async (url, params) => {
   let response, responseJson;
