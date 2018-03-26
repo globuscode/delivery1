@@ -302,6 +302,8 @@ class UpdateProfile extends React.Component {
       this.state.email === ""
     )
       return false;
+    if (validateEmail(this.state.email) != true) return false;
+
     return (
       // this.state.password &&
       this.state.firstName ||
