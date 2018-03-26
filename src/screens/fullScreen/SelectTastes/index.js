@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Dimensions,
   ScrollView,
-  Platform,
   AsyncStorage
 } from "react-native";
 import Touchable from "react-native-platform-touchable";
