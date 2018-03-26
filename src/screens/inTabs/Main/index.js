@@ -18,12 +18,11 @@ import Cart from "../../fullScreen/Cart";
 
 import CartTabIcon from "./CartTabIcon";
 import IconD from "../../../components/ui/IconD";
-import { adaptWidth } from "../../../etc";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
-const headerStyleIOS = (design = false) => ({
+const headerStyleIOS = () => ({
   headerTruncatedBackTitle: "Назад",
   headerBackTitle: null,
   headerTitleStyle: {
