@@ -8,6 +8,7 @@ import {
   ScrollView
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
+import Reducer from "../../../Reducers";
 import PlatesCarousel from "../../../components/cards/PlatesCarousel";
 import RestaurantList from "../../../components/cards/RestaurantList";
 import { connect } from "react-redux";
@@ -106,6 +107,10 @@ class Feed extends React.Component {
 
         <TouchableOpacity
           onPress={() => {
+            if (nav === "SelectTastes") {
+              Reducer.dispatch({ type: "OPEN_COLLECTION_MODAL" });
+              return 0;
+            }
             if (this.state.canNav) {
               this.props.navigation.navigate(nav);
               this.setState({ canNav: false });
