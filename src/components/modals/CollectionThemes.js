@@ -14,6 +14,7 @@ const { width: viewportWidth } = Dimensions.get("window");
 
 import ButtonD from "../ui/ButtonD";
 import Icon from "react-native-vector-icons/Ionicons";
+import { fetchJson, host } from "../../etc";
 
 class CollectionThemes extends React.Component {
   static propTypes = {
@@ -32,6 +33,12 @@ class CollectionThemes extends React.Component {
   }
 
   componentDidMount = async () => {
+    const themesResponse = await fetchJson(
+      `${host}/classificator/collection-themes`
+    );
+    if (themesResponse.data != undefined) {
+      this.setState({ items: themesResponse.data });
+    }
     let selected = [];
     for (let i = 0; i < this.state.items.length; i++) {
       selected.push(false);
@@ -54,6 +61,12 @@ class CollectionThemes extends React.Component {
         }
       }
       this.setState({});
+    } else {
+      let selected = [];
+      for (let i = 0; i < this.state.items.length; i++) {
+        selected.push(true);
+      }
+      this.setState({ selected });
     }
   };
 
@@ -102,7 +115,7 @@ class CollectionThemes extends React.Component {
             fontSize: 14
           }}
         >
-          {item.text}
+          {item.title}
         </Text>
       </TouchableOpacity>
     );
