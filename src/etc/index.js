@@ -1,9 +1,10 @@
-import { Dimensions } from "react-native";
+import React from "react";
+import { Dimensions, Platform, View } from "react-native";
 import Reducer from "../Reducers";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
-const host = "http://dostavka1.com/v1";
+const host = "https://dostavka1.com/v1";
 
 const adaptWidth = (width320, width375, width414) => {
   if (viewportWidth <= 320) return width320;
@@ -14,6 +15,18 @@ const adaptWidth = (width320, width375, width414) => {
 export { adaptWidth };
 
 export { host };
+
+export const line = () =>
+  Platform.OS !== "ios" ? null : (
+    <View
+      style={{
+        marginHorizontal: 20,
+        height: 1,
+        alignSelf: "stretch",
+        backgroundColor: "rgb(87, 88, 98)"
+      }}
+    />
+  );
 
 export const fetchJson = async (url, params) => {
   let response, responseJson;
@@ -51,7 +64,7 @@ export const fetchJson = async (url, params) => {
       errors: {
         code: 404,
         title: "Сервер не отвечает",
-        detail: "Запрос " + url
+        detail: "Проверьте ваше интернет соединение"
       }
     };
   }

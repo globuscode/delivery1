@@ -17,7 +17,7 @@ import { connect } from "react-redux";
 import PopupDialog, { SlideAnimation } from "react-native-popup-dialog";
 import propTypes from "prop-types";
 
-import { adaptWidth, fetchJson, host } from "../../../etc";
+import { adaptWidth, fetchJson, host, line } from "../../../etc";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -115,7 +115,10 @@ class Forms extends React.Component {
         cardsResponse.errors === undefined ? cardsResponse.data : [];
       this.props.updateCards(cards);
 
-      AsyncStorage.setItem("deliveryAddress", JSON.stringify(this.state.address));
+      AsyncStorage.setItem(
+        "deliveryAddress",
+        JSON.stringify(this.state.address)
+      );
 
       const date = this.state.date.getDate();
       const month = this.state.date.getMonth() + 1;
@@ -151,6 +154,7 @@ class Forms extends React.Component {
           phone: this.state.phone,
           deliveryDate: this.state.selected == 1 ? dateString : null
         },
+        gift: this.props.navigation.state.params.gift,
         cards: cards
       });
     }
@@ -163,10 +167,11 @@ class Forms extends React.Component {
       newAddres.commentary = "";
       this.setState({ address: newAddres });
     }
-  }
+  };
 
   render = () => (
     <View>
+      {line()}
       <KeyboardAwareScrollView
         extraHeight={100}
         extraScrollHeight={100}

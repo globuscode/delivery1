@@ -155,20 +155,22 @@ class RestaurantCard extends React.Component {
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <View style={{ flexDirection: "row", alignSelf: "flex-start" }}>
             {this.renderLevel()}
-            <Text
-              style={{
-                paddingHorizontal: 5,
-                maxWidth: 150,
-                marginHorizontal: 2,
-                //fontFamily: 'Stem-Medium',
-                fontWeight: "bold",
-                fontSize: 13,
-                backgroundColor: "#dcc49c",
-                color: "#292b37"
-              }}
-            >
-              {item.discount}
-            </Text>
+            {item.discount === "0%" ? null : (
+              <Text
+                style={{
+                  paddingHorizontal: 5,
+                  maxWidth: 150,
+                  marginHorizontal: 2,
+                  //fontFamily: 'Stem-Medium',
+                  fontWeight: "bold",
+                  fontSize: 13,
+                  backgroundColor: "#dcc49c",
+                  color: "#292b37"
+                }}
+              >
+                {item.discount}
+              </Text>
+            )}
           </View>
           <View>{this.renderHeart()}</View>
         </View>

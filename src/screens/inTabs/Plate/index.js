@@ -502,13 +502,14 @@ class Plate extends React.Component {
                     { cancelable: false }
                   );
                 else {
-                  this.props.onAddPlate(item);
                   if (fromMenu === undefined)
-                    if (cart[item.id] !== undefined) this.props.openModal(item);
+                    if (cart[item.id] === undefined) this.props.openModal(item);
+                  this.props.onAddPlate(item);
                 }
               } else {
                 this.props.onAddPlate(item);
-                if (fromMenu === undefined) this.props.openModal(item);
+                if (fromMenu === undefined)
+                  if (cart[item.id] !== undefined) this.props.openModal(item);
               }
             }}
           />

@@ -16,7 +16,7 @@ import Touchable from "react-native-platform-touchable";
 import { connect } from "react-redux";
 import propTypes from "prop-types";
 
-import { adaptWidth } from "../../../etc";
+import { adaptWidth, line } from "../../../etc";
 import { host } from "../../../etc";
 import IconD from "../../../components/ui/IconD";
 
@@ -142,6 +142,7 @@ class Registration extends React.Component {
         style={styles.container}
         contentContainerStyle={{ flex: 1 }}
       >
+        {line()}
         <View style={{ height: adaptWidth(24, 41, 53) + 4 }} />
 
         <Text

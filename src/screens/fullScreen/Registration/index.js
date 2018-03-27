@@ -12,6 +12,7 @@ import {
 } from "react-native-fbsdk";
 import VKLogin from "react-native-vkontakte-login";
 import IconD from "../../../components/ui/IconD";
+import { line } from "../../../etc";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -33,6 +34,9 @@ export default class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      firstName: "",
+      secondName: "",
+      email: "",
       rang: 2,
       canNav: true,
       passwordInputError: null,
@@ -131,11 +135,11 @@ export default class Login extends React.Component {
 
             AccessToken.getCurrentAccessToken().then(data => {
               let accessToken = data.accessToken;
-              Alert.alert(accessToken.toString());
+              // Alert.alert(accessToken.toString());
 
               const responseInfoCallback = (error, result) => {
                 if (error) {
-                  Alert.alert("Error fetching data: " + error.toString());
+                  // Alert.alert("Error fetching data: " + error.toString());
                 } else {
                   const { first_name, last_name, email } = result;
                   // const registarionBody = {
@@ -154,7 +158,7 @@ export default class Login extends React.Component {
                   });
 
                   // navigate("Registration", registarionBody);
-                  Alert.alert("Success fetching data: " + result.toString());
+                  // Alert.alert("Success fetching data: " + result.toString());
                 }
               };
 
@@ -177,7 +181,7 @@ export default class Login extends React.Component {
           }
         },
         function(error) {
-          Alert.alert("Login fail with error: " + error);
+          // Alert.alert("Login fail with error: " + error);
         }
       );
     }
@@ -186,6 +190,7 @@ export default class Login extends React.Component {
   render = () => {
     return (
       <View style={{ flex: 1, justifyContent: "space-between" }}>
+        {line()}
         <KeyboardAwareScrollView
           extraHeight={100}
           extraScrollHeight={100}
@@ -375,14 +380,32 @@ export default class Login extends React.Component {
 
   next = () => {
     const { params } = this.props.navigation.state;
-    if (this.state.firstName == null || this.state.firstName == "")
+    if (
+      this.state.firstName == undefined ||
+      this.state.firstName == null ||
+      this.state.firstName == ""
+    ) {
       this.setState({ firstNameError: "Это поле обязательно" });
-    if (this.state.secondName == null || this.state.secondName == "")
+      return 0;
+    }
+    if (
+      this.state.secondName == undefined ||
+      this.state.secondName == null ||
+      this.state.secondName == ""
+    ) {
       this.setState({ secondNameError: "Это поле обязательно" });
+      return 0;
+    }
     // if (this.state.password == null || this.state.password == "")
     //   this.setState({ passwordInputError: "Это поле обязательно" });
-    if (this.state.email == null || this.state.email == "")
+    if (
+      this.state.email == undefined ||
+      this.state.email == null ||
+      this.state.email == ""
+    ) {
       this.setState({ emailInputError: "Это поле обязательно" });
+      return 0;
+    }
     if (this.state.canNav && this.isNext()) {
       this.props.navigation.navigate("RegistratePhone", {
         userName: this.state.email,

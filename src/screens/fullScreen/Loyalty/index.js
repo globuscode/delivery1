@@ -1,12 +1,12 @@
 import React from "react";
-import { View, Dimensions, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import { connect } from "react-redux";
-import LinearGradient from "react-native-linear-gradient";
+// import LinearGradient from "react-native-linear-gradient";
 
 import IconD from "../../../components/ui/IconD";
-import { adaptWidth } from "../../../etc";
+import { adaptWidth, line } from "../../../etc";
 
-const { width: viewportWidth } = Dimensions.get("window");
+// const { width: viewportWidth } = Dimensions.get("window");
 
 class Loyalty extends React.Component {
   constructor(props) {
@@ -171,6 +171,7 @@ class Loyalty extends React.Component {
   render = () => {
     return (
       <View style={{ flex: 1 }}>
+        {line()}
         <ScrollView>
           {this.renderHead()}
 

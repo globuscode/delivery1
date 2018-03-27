@@ -14,7 +14,7 @@ import Touchable from "react-native-platform-touchable";
 import { connect } from "react-redux";
 import propTypes from "prop-types";
 
-import { fetchJson, host, adaptWidth } from "../../../etc";
+import { fetchJson, host, adaptWidth, line } from "../../../etc";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -251,6 +251,7 @@ class SelectAddress extends React.Component {
   render = () => {
     return (
       <View style={styles.container}>
+        {line()}
         <KeyboardAwareScrollView
           extraHeight={100}
           extraScrollHeight={150}

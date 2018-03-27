@@ -5,7 +5,7 @@ import { TextField } from "react-native-material-textfield";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Touchable from "react-native-platform-touchable";
 import { connect } from "react-redux";
-import { fetchJson, host } from "../../../etc";
+import { fetchJson, host, line } from "../../../etc";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -66,6 +66,7 @@ class UpdateProfile extends React.Component {
   render = () => {
     return (
       <View style={{ flex: 1, justifyContent: "space-between" }}>
+        {line()}
         <KeyboardAwareScrollView
           extraHeight={100}
           extraScrollHeight={100}
@@ -295,6 +296,14 @@ class UpdateProfile extends React.Component {
   };
 
   isNext = () => {
+    if (
+      this.state.firstName === "" ||
+      this.state.secondName === "" ||
+      this.state.email === ""
+    )
+      return false;
+    if (validateEmail(this.state.email) != true) return false;
+
     return (
       // this.state.password &&
       this.state.firstName ||

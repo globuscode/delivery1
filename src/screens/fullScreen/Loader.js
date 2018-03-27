@@ -129,21 +129,30 @@ class Loader extends React.Component {
     if (navigation.state.params.action === "navigateToPromo") {
       const { props } = this;
       const { params } = props.navigation.state;
-      if (params.restaurant != undefined) {
-        let response = await fetchJson(
-          `${host}/restaurant?restaurantId=${params.restaurant}&token=${token}`
+      let response = await fetchJson(
+        `${host}/promoDetail?promoId=${
+          params.promo != undefined ? params.promo : 194969
+        }`
+      );
+      if (response.errors != undefined) {
+        let { title, detail, code } = response.errors;
+        Alert.alert(`${title} ${code}`, detail);
+        return -1;
+      } else {
+        let responseRest = await fetchJson(
+          `${host}/restaurant?restaurantId=${
+            response.data.restaurantId
+          }&token=${token}`
         );
-        if (response.errors === undefined) {
-          // console.log(response);
-          navigation.navigate("Collection", {
-            id: params.collection.id,
-            collection: response
-          });
-        }
-        if (response.errors != undefined) {
+        if (responseRest.errors != undefined) {
           let { title, detail, code } = response.errors;
           Alert.alert(`${title} ${code}`, detail);
           return -1;
+        } else {
+          navigation.navigate("Promo", {
+            promo: response.data.promo,
+            restaurant: responseRest.data.result
+          });
         }
       }
     }

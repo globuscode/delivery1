@@ -7,6 +7,7 @@ import propTypes from "prop-types";
 import Reducer from "./src/Reducers";
 import A from "./ScreenReducer";
 import PopupCart from "./src/components/modals/PopupCart";
+import CollectionModal from "./src/components/modals/CollectionThemes";
 
 import PopupDialog, { SlideAnimation } from "react-native-popup-dialog";
 
@@ -22,44 +23,53 @@ class ModalComponent extends React.Component {
   static propTypes = {
     spinnerController: propTypes.object
   };
-  render = () => (
-    <View style={{ flex: 1 }}>
-      <A />
-      <PopupDialog
-        dismissOnHardwareBackPress={true}
-        overlayBackgroundColor="rgb(37, 38, 46)"
-        overlayOpacity={0.9}
-        onDismissed={() => {
-          Reducer.dispatch({ type: "HIDE_MODAL" });
-        }}
-        ref={popupDialog => {
-          this.popupDialog = popupDialog;
-        }}
-        dismissOnTouchOutside={true}
-        dialogStyle={{
-          backgroundColor: "transparent",
-          flexDirection: "column",
-          height: 550,
-          justifyContent: "flex-end"
-        }}
-        containerStyle={{
-          justifyContent: "flex-end"
-        }}
-        show={Reducer.getState().modalController.opened}
-        dialogAnimation={slide}
-      >
-        <PopupCart />
-      </PopupDialog>
+  render = () => {
+    const { modalController } = Reducer.getState();
+    return (
+      <View style={{ flex: 1 }}>
+        <A />
+        <PopupDialog
+          dismissOnHardwareBackPress={true}
+          overlayBackgroundColor="rgb(37, 38, 46)"
+          overlayOpacity={0.9}
+          onDismissed={() => {
+            Reducer.dispatch({ type: "HIDE_MODAL" });
+          }}
+          ref={popupDialog => {
+            this.popupDialog = popupDialog;
+          }}
+          dismissOnTouchOutside={true}
+          dialogStyle={{
+            backgroundColor: "transparent",
+            flexDirection: "column",
+            height: 550,
+            justifyContent:
+              modalController.type === "cart" ? "flex-end" : "center"
+          }}
+          containerStyle={{
+            justifyContent:
+              modalController.type === "cart" ? "flex-end" : "center"
+          }}
+          show={modalController.opened}
+          dialogAnimation={slide}
+        >
+          {modalController.type === "cart" ? (
+            <PopupCart />
+          ) : (
+            <CollectionModal />
+          )}
+        </PopupDialog>
 
-      <Spinner
-        color="#dcc49c"
-        overlayColor="rgba(37, 38, 46, 0.9)"
-        animation="fade"
-        visible={this.props.spinnerController.show}
-        textStyle={{ color: "#FFF" }}
-      />
-    </View>
-  );
+        <Spinner
+          color="#dcc49c"
+          overlayColor="rgba(37, 38, 46, 0.9)"
+          animation="fade"
+          visible={this.props.spinnerController.show}
+          textStyle={{ color: "#FFF" }}
+        />
+      </View>
+    );
+  };
 }
 
 const M = connect(

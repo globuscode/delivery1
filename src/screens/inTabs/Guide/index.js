@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import LinearGradient from "react-native-linear-gradient";
 
 import IconD from "../../../components/ui/IconD";
-import { adaptWidth } from "../../../etc";
+import { adaptWidth, line } from "../../../etc";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -124,8 +124,8 @@ class Guide extends React.Component {
           style={{
             paddingVertical: 36,
             marginHorizontal: adaptWidth(15, 20, 20),
-            borderBottomWidth: index != 4 ? 1 : 0,
             borderColor: "rgb(87, 88, 98)",
+            borderTopWidth: 1,
             flexDirection: "column"
           }}
         >
@@ -188,6 +188,7 @@ class Guide extends React.Component {
   render = () => {
     return (
       <View style={{ flex: 1 }}>
+        {line()}
         <ScrollView>
           {this.renderHead()}
           {this.renderBlocks()}
